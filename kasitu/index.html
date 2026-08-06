@@ -750,11 +750,11 @@ PRICING
 
             </h3>
 
-            <h1>
-
-                R2 999
-
-            </h1>
+  <div class="price">
+<h1>
+ R2 999
+</h1>
+            </div>
 
             <ul>
 
@@ -765,6 +765,10 @@ PRICING
                 <li>✔ Contact Form</li>
 
                 <li>✔ Basic SEO</li>
+                
+                <li>✔ Free Domain (1 Year)</li>
+
+                <li>✔ SSL Certificate</li>
 
                 <li>✔ Free Consultation</li>
 
@@ -800,14 +804,15 @@ PRICING
 
             </h3>
 
-            <h1>
-
-                R5 999
-
-            </h1>
+  <div class="price">
+<h1>
+    R5 999
+</h1>
+            </div>
 
             <ul>
-
+                <li>✔ Everything in Starter</li>
+                  
                 <li>✔ Up to 10 Pages</li>
 
                 <li>✔ Premium Design</li>
@@ -846,15 +851,17 @@ PRICING
 
             </h3>
 
-            <h1>
-
-                From R9 999
-
-            </h1>
-
+  <div class="price">
+<h1>
+ From R9 999
+</h1>
+            </div>
+                
             <ul>
 
                 <li>✔ Unlimited Products</li>
+
+                <li>✔ Online Store</li>
 
                 <li>✔ Secure Payments</li>
 
@@ -863,6 +870,8 @@ PRICING
                 <li>✔ Customer Accounts</li>
 
                 <li>✔ Admin Dashboard</li>
+
+                <li>✔ Premium Support</li>
 
             </ul>
 
@@ -878,33 +887,40 @@ PRICING
 
 </section>
 
-    <section id="calculator">
+    <!-- ===========================================
+PROJECT ESTIMATOR
+=========================================== -->
 
-    <div class="section-header">
+<section class="calculator">
 
-        <span class="section-tag">
+    <div class="calculator-left">
 
-            COST CALCULATOR
+        <span class="section-subtitle">
+
+            LIVE ESTIMATE
 
         </span>
 
         <h2>
 
-            Estimate Your Project
+            Build Your
+
+            <span>Perfect Website</span>
 
         </h2>
 
         <p>
 
-            Select a package and optional services to get an estimated project cost.
+            Select a package and customise it
+            to receive an instant estimate.
 
         </p>
 
     </div>
 
-    <div class="calculator">
+    <div class="calculator-right">
 
-        <div class="calculator-options">
+        <form id="price-form">
 
             <label>
 
@@ -914,85 +930,98 @@ PRICING
 
             <input
                 id="site-type"
-                type="text"
                 readonly
                 placeholder="Select a package above">
 
-            <h3>
+            <fieldset>
 
-                Optional Extras
+                <legend>
 
-            </h3>
+                    Extra Features
 
-            <label>
+                </legend>
 
-                <input
-                    class="extra"
-                    type="checkbox"
-                    value="500">
+                <label>
 
-                Extra Page (+R500)
+                    <input
+                        class="extra"
+                        type="checkbox"
+                        value="1200">
 
-            </label>
+                    SEO Optimisation
 
-            <label>
+                </label>
 
-                <input
-                    class="extra"
-                    type="checkbox"
-                    value="1200">
+                <label>
 
-                SEO Optimisation (+R1200)
+                    <input
+                        class="extra"
+                        type="checkbox"
+                        value="900">
 
-            </label>
+                    Contact Forms
 
-            <label>
+                </label>
 
-                <input
-                    class="extra"
-                    type="checkbox"
-                    value="1500">
+                <label>
 
-                Google Business Profile (+R1500)
+                    <input
+                        class="extra"
+                        type="checkbox"
+                        value="1800">
 
-            </label>
+                    Blog System
 
-            <label>
+                </label>
 
-                <input
-                    class="extra"
-                    type="checkbox"
-                    value="800">
+                <label>
 
-                Logo Design (+R800)
+                    <input
+                        class="extra"
+                        type="checkbox"
+                        value="2500">
 
-            </label>
+                    Booking System
 
-            <label>
+                </label>
 
-                <input
-                    class="extra"
-                    type="checkbox"
-                    value="999">
+                <label>
 
-                Website Maintenance (+R999)
+                    <input
+                        class="extra"
+                        type="checkbox"
+                        value="3500">
 
-            </label>
+                    User Login System
 
-        </div>
+                </label>
 
-        <div class="calculator-summary">
+                <label>
 
-            <h2>
+                    <input
+                        class="extra"
+                        type="checkbox"
+                        value="2200">
 
-                Estimated Total
+                    WhatsApp Integration
 
-            </h2>
+                </label>
 
-            <div
-                id="total">
+            </fieldset>
 
-                R0
+            <div class="estimate-box">
+
+                <small>
+
+                    Estimated Investment
+
+                </small>
+
+                <h2 id="total">
+
+                    R0
+
+                </h2>
 
             </div>
 
@@ -1000,17 +1029,17 @@ PRICING
                 id="whatsapp-btn"
                 class="primary-btn">
 
-                Request Quote via WhatsApp
+                Continue
 
             </button>
 
-        </div>
+        </form>
 
     </div>
 
 </section>
 
-    <!-- ===========================================
+<!-- ===========================================
 WHY CHOOSE US
 =========================================== -->
 
@@ -1136,7 +1165,9 @@ TESTIMONIALS
 
                     <strong>John Smith</strong>
 
-                    <small>Business Owner</small>
+                    <small><span>
+                        Business Owner
+                    </span></small>
 
                 </div>
 
@@ -1164,7 +1195,9 @@ TESTIMONIALS
 
                     <strong>Sarah Williams</strong>
 
-                    <small>Marketing Manager</small>
+                    <small><span>
+                        Marketing Manager
+                    </span></small>
 
                 </div>
 
@@ -1191,7 +1224,9 @@ TESTIMONIALS
 
                     <strong>David Brown</strong>
 
-                    <small>Director</small>
+                    <small><span>
+                        Director
+                    </span></small>
 
                 </div>
 
@@ -2059,158 +2094,6 @@ PRICING
 </section>
 
 <!-- ===========================================
-PROJECT ESTIMATOR
-=========================================== -->
-
-<section class="calculator">
-
-    <div class="calculator-left">
-
-        <span class="section-subtitle">
-
-            LIVE ESTIMATE
-
-        </span>
-
-        <h2>
-
-            Build Your
-
-            <span>Perfect Website</span>
-
-        </h2>
-
-        <p>
-
-            Select a package and customise it
-            to receive an instant estimate.
-
-        </p>
-
-    </div>
-
-    <div class="calculator-right">
-
-        <form id="price-form">
-
-            <label>
-
-                Website Package
-
-            </label>
-
-            <input
-                id="site-type"
-                readonly
-                placeholder="Select a package above">
-
-            <fieldset>
-
-                <legend>
-
-                    Extra Features
-
-                </legend>
-
-                <label>
-
-                    <input
-                        class="extra"
-                        type="checkbox"
-                        value="1200">
-
-                    SEO Optimisation
-
-                </label>
-
-                <label>
-
-                    <input
-                        class="extra"
-                        type="checkbox"
-                        value="900">
-
-                    Contact Forms
-
-                </label>
-
-                <label>
-
-                    <input
-                        class="extra"
-                        type="checkbox"
-                        value="1800">
-
-                    Blog System
-
-                </label>
-
-                <label>
-
-                    <input
-                        class="extra"
-                        type="checkbox"
-                        value="2500">
-
-                    Booking System
-
-                </label>
-
-                <label>
-
-                    <input
-                        class="extra"
-                        type="checkbox"
-                        value="3500">
-
-                    User Login System
-
-                </label>
-
-                <label>
-
-                    <input
-                        class="extra"
-                        type="checkbox"
-                        value="2200">
-
-                    WhatsApp Integration
-
-                </label>
-
-            </fieldset>
-
-            <div class="estimate-box">
-
-                <small>
-
-                    Estimated Investment
-
-                </small>
-
-                <h2 id="total">
-
-                    R0
-
-                </h2>
-
-            </div>
-
-            <button
-                id="whatsapp-btn"
-                class="primary-btn">
-
-                Continue
-
-            </button>
-
-        </form>
-
-    </div>
-
-</section>
-
-<!-- ===========================================
 FAQ
 =========================================== -->
 
@@ -2572,3 +2455,5 @@ All Rights Reserved.
 </body>
 
 </html>  
+
+
