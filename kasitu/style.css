@@ -3342,3 +3342,83 @@ color:#06B6D4;
 color:#8B5CF6;
 
 }
+
+/*=========================================
+PROJECT TECH STACK
+=========================================*/
+
+.project-tech{
+
+display:flex;
+
+flex-wrap:wrap;
+
+gap:10px;
+
+margin:25px 0;
+
+}
+
+.project-tech span{
+
+padding:8px 14px;
+
+border-radius:30px;
+
+background:rgba(79,70,229,.12);
+
+border:1px solid rgba(79,70,229,.2);
+
+font-size:.8rem;
+
+font-weight:600;
+
+transition:.35s;
+
+}
+
+.project-tech span:hover{
+
+background:#4F46E5;
+
+transform:translateY(-4px);
+
+}
+
+.project-links{
+
+display:flex;
+
+gap:15px;
+
+margin-top:25px;
+
+}
+
+.project-links a{
+
+flex:1;
+
+text-align:center;
+
+padding:14px;
+
+border-radius:14px;
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(255,255,255,.08);
+
+transition:.35s;
+
+font-weight:600;
+
+}
+
+.project-links a:hover{
+
+background:#4F46E5;
+
+transform:translateY(-5px);
+
+}
