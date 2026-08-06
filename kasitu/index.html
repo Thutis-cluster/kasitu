@@ -2,206 +2,286 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KASITU Webs | Software Developer & Web Solutions</title>
 
-<title>KASITU Webs | Building The Future</title>
+    <meta name="description"
+        content="KASITU Webs builds modern websites, mobile applications, business systems, and digital solutions for businesses across South Africa.">
 
-<meta name="description"
-content="Premium Web Development, Business Systems and Cloud Solutions.">
+    <meta name="keywords"
+        content="Website Development, Software Developer, Web Design, Mobile Apps, KASITU Webs, Pretoria">
 
-<meta name="theme-color" content="#070B17">
+    <meta name="author" content="KASITU Webs">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
+    <meta name="theme-color" content="#0B1120">
 
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Open Graph -->
+    <meta property="og:title" content="KASITU Webs">
+    <meta property="og:description"
+        content="Premium websites, apps and business software.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="images/preview.jpg">
 
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-<link rel="stylesheet" href="style.css">
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
 
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="style.css">
 
 </head>
-
 <body>
-
+    
+<div id="progress-bar"></div>
+    <canvas id="particles"></canvas>
 <div class="bg-grid"></div>
 <div class="gradient-1"></div>
 <div class="gradient-2"></div>
 
 <header class="header">
 
-<nav class="navbar">
+    <div class="logo">
 
-<a href="#" class="logo">
+        <span>KASITU</span>
 
-<div class="logo-circle">
+        <small>Webs</small>
 
-K
+    </div>
 
-</div>
+    <nav>
 
-<div>
+        <ul class="nav-links">
 
-<h2>KASITU</h2>
+            <li><a href="#home">Home</a></li>
 
-<span>Building Digital Excellence</span>
+            <li><a href="#services">Services</a></li>
 
-</div>
+            <li><a href="#portfolio">Portfolio</a></li>
 
-</a>
+            <li><a href="#pricing">Pricing</a></li>
 
-<ul class="nav-links">
+            <li><a href="#contact">Contact</a></li>
 
-<li><a href="#home">Home</a></li>
+        </ul>
 
-<li><a href="#services">Services</a></li>
+    </nav>
 
-<li><a href="#projects">Projects</a></li>
+    <div class="nav-actions">
 
-<li><a href="#pricing">Pricing</a></li>
+        <button
+            id="theme-toggle"
+            aria-label="Toggle Theme">
 
-<li><a href="#contact">Contact</a></li>
+            🌙
 
-</ul>
+        </button>
 
-<div class="nav-actions">
+        <button
+            class="menu-btn"
+            aria-label="Open Menu">
 
-<button id="theme-toggle">
+            <i class="fas fa-bars"></i>
 
-🌙
+        </button>
 
-</button>
-
-<button class="menu-btn">
-
-☰
-
-</button>
-
-</div>
-
-</nav>
+    </div>
 
 </header>
-
 <!-- HERO -->
 
-<section class="hero" id="home">
+<!-- ==========================================
+HOME
+========================================== -->
 
-<div class="hero-left">
+<section id="home" class="hero">
 
-<div class="badge">
+    <!-- LEFT SIDE -->
 
-🚀 SOUTH AFRICAN SOFTWARE COMPANY
+    <div class="hero-left">
 
-</div>
+        <span class="hero-badge">
+            <i class="fas fa-circle"></i>
+            Available for Projects
+        </span>
 
-<h1>
+        <h1>
 
-Building
+            We Build
 
-<span>Future Driven</span>
+            <span>Premium Digital</span>
 
-Digital Experiences
+            Solutions.
 
-</h1>
+        </h1>
 
-<p>
+        <p>
 
-We build premium websites,
+            KASITU Webs develops modern websites,
 
-business systems,
+            business systems, mobile applications,
 
-eCommerce platforms,
+            and cloud solutions that help businesses
 
-automation solutions
+            grow faster and operate smarter.
 
-and cloud applications
+        </p>
 
-that help businesses grow.
+        <div class="hero-buttons">
 
-</p>
+            <a href="#contact" class="primary-btn">
 
-<div class="hero-buttons">
+                Get Started
 
-<a href="#pricing" class="primary-btn">
+            </a>
 
-Start Your Project
+            <a href="#portfolio" class="secondary-btn">
 
-</a>
+                View Portfolio
 
-<a href="#projects" class="secondary-btn">
+            </a>
 
-View Portfolio
+            <button
 
-</a>
+                id="terminal-toggle"
 
-</div>
+                class="secondary-btn">
 
-<div class="hero-stats">
+                <i class="fas fa-terminal"></i>
 
-<div>
+                Terminal
 
-<h2>50+</h2>
+            </button>
 
-<span>Projects</span>
+        </div>
 
-</div>
+        <!-- STATS -->
 
-<div>
+        <div class="hero-stats">
 
-<h2>100%</h2>
+            <div>
 
-<span>Client Satisfaction</span>
+                <h2
 
-</div>
+                    class="counter"
 
-<div>
+                    data-target="50">
 
-<h2>24/7</h2>
+                    0
 
-<span>Support</span>
+                </h2>
 
-</div>
+                <span>Projects</span>
 
-</div>
+            </div>
 
-</div>
+            <div>
 
-<div class="hero-right">
+                <h2
 
-<div class="laptop">
+                    class="counter"
 
-<div class="screen">
+                    data-target="25">
 
-<div class="code">
+                    0
 
-<span class="blue">&lt;html&gt;</span><br>
+                </h2>
 
-<span class="purple">&lt;body&gt;</span><br>
+                <span>Happy Clients</span>
 
-<span class="green">Future()</span><br>
+            </div>
 
-<span class="orange">Innovation()</span><br>
+            <div>
 
-<span class="blue">&lt;/body&gt;</span><br>
+                <h2
 
-<span class="blue">&lt;/html&gt;</span>
+                    class="counter"
 
-</div>
+                    data-target="5">
 
-</div>
+                    0
 
-<div class="base"></div>
+                </h2>
 
-</div>
+                <span>Years Experience</span>
 
-</div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+
+    <div class="hero-right">
+
+        <div class="laptop">
+
+            <div class="laptop-top">
+
+                <span></span>
+
+                <span></span>
+
+                <span></span>
+
+            </div>
+
+            <div class="code"></div>
+
+        </div>
+
+        <!-- FLOATING TECHNOLOGIES -->
+
+        <div class="floating-tech html">
+
+            <i class="fab fa-html5"></i>
+
+        </div>
+
+        <div class="floating-tech css">
+
+            <i class="fab fa-css3-alt"></i>
+
+        </div>
+
+        <div class="floating-tech js">
+
+            <i class="fab fa-js-square"></i>
+
+        </div>
+
+        <div class="floating-tech node">
+
+            <i class="fab fa-node-js"></i>
+
+        </div>
+
+        <div class="floating-tech github">
+
+            <i class="fab fa-github"></i>
+
+        </div>
+
+    </div>
 
 </section>
+    
 <!-- ===========================================
 TRUST SECTION
 =========================================== -->
@@ -1664,12 +1744,61 @@ All Rights Reserved.
 
 </footer>
 
-<button
-id="scrollTop">
+<button id="scrollTop">
 
-↑
+    <i class="fas fa-arrow-up"></i>
 
 </button>
+    <div id="command-palette">
+
+    <input
+
+        id="command-search"
+
+        type="text"
+
+        placeholder="Jump to a section...">
+
+</div>
+    <div id="terminal">
+
+    <div class="terminal-header">
+
+        <strong>KASITU OS</strong>
+
+        <button id="terminal-close">
+
+            ✕
+
+        </button>
+
+    </div>
+
+    <div id="terminal-body">
+
+        <div class="terminal-line">
+
+            Welcome to KASITU OS
+
+        </div>
+
+        <div class="terminal-line">
+
+            Type <strong>help</strong> to begin.
+
+        </div>
+
+    </div>
+
+    <input
+
+        id="terminal-input"
+
+        autocomplete="off"
+
+        placeholder="Type a command...">
+
+</div>
 
 <script src="script.js"></script>
 
