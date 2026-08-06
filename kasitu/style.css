@@ -1075,6 +1075,144 @@ color:var(--muted);
 }
 
 /*==================================================
+PORTFOLIO
+==================================================*/
+
+.portfolio-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+
+gap:40px;
+
+}
+
+.project-card{
+
+position:relative;
+
+overflow:hidden;
+
+border-radius:28px;
+
+background:var(--glass);
+
+border:1px solid var(--border);
+
+backdrop-filter:blur(20px);
+
+transition:.45s;
+
+}
+
+.project-card:hover{
+
+transform:translateY(-15px) rotateX(4deg);
+
+box-shadow:
+
+0 25px 70px rgba(79,70,229,.35);
+
+}
+
+.project-image{
+
+height:240px;
+
+overflow:hidden;
+
+}
+
+.project-image img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+transition:.7s;
+
+}
+
+.project-card:hover img{
+
+transform:scale(1.12);
+
+}
+
+.project-content{
+
+padding:30px;
+
+}
+
+.project-tag{
+
+display:inline-block;
+
+padding:8px 18px;
+
+border-radius:40px;
+
+background:rgba(79,70,229,.18);
+
+color:#06B6D4;
+
+font-size:.8rem;
+
+margin-bottom:18px;
+
+}
+
+.project-content h3{
+
+font-size:1.5rem;
+
+margin-bottom:15px;
+
+}
+
+.project-content p{
+
+color:var(--muted);
+
+margin-bottom:25px;
+
+}
+
+.project-links{
+
+display:flex;
+
+gap:18px;
+
+}
+
+.project-links a{
+
+padding:12px 24px;
+
+border-radius:40px;
+
+background:rgba(255,255,255,.05);
+
+border:1px solid var(--border);
+
+transition:.35s;
+
+}
+
+.project-links a:hover{
+
+background:#4F46E5;
+
+transform:translateY(-4px);
+
+}
+
+/*==================================================
 WHY US
 ==================================================*/
 
@@ -1131,6 +1269,108 @@ font-weight:500;
 background:rgba(79,70,229,.18);
 
 transform:translateX(8px);
+
+}
+
+/*=========================================
+PRICING
+=========================================*/
+
+.pricing-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+
+gap:35px;
+
+margin-top:60px;
+
+}
+
+.price-card{
+
+position:relative;
+
+padding:40px;
+
+border-radius:24px;
+
+background:var(--glass);
+
+border:1px solid var(--border);
+
+transition:.35s;
+
+}
+
+.price-card:hover{
+
+transform:translateY(-12px);
+
+}
+
+.featured{
+
+border:2px solid #4F46E5;
+
+transform:scale(1.04);
+
+}
+
+.popular{
+
+position:absolute;
+
+top:-15px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+padding:8px 18px;
+
+background:#4F46E5;
+
+color:white;
+
+border-radius:40px;
+
+font-size:.8rem;
+
+font-weight:700;
+
+}
+
+.price{
+
+font-size:3rem;
+
+font-weight:700;
+
+margin:30px 0;
+
+background:linear-gradient(
+
+90deg,
+
+#06B6D4,
+
+#8B5CF6);
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+}
+
+.price-card ul{
+
+margin:30px 0;
+
+padding-left:20px;
+
+line-height:2;
 
 }
 
@@ -2484,107 +2724,6 @@ transform:translateY(-5px);
 
 }
 
-/*=========================================
-PRICING
-=========================================*/
-
-.pricing-grid{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-
-gap:35px;
-
-margin-top:60px;
-
-}
-
-.price-card{
-
-position:relative;
-
-padding:40px;
-
-border-radius:24px;
-
-background:var(--glass);
-
-border:1px solid var(--border);
-
-transition:.35s;
-
-}
-
-.price-card:hover{
-
-transform:translateY(-12px);
-
-}
-
-.featured{
-
-border:2px solid #4F46E5;
-
-transform:scale(1.04);
-
-}
-
-.popular{
-
-position:absolute;
-
-top:-15px;
-
-left:50%;
-
-transform:translateX(-50%);
-
-padding:8px 18px;
-
-background:#4F46E5;
-
-color:white;
-
-border-radius:40px;
-
-font-size:.8rem;
-
-font-weight:700;
-
-}
-
-.price{
-
-font-size:3rem;
-
-font-weight:700;
-
-margin:30px 0;
-
-background:linear-gradient(
-
-90deg,
-
-#06B6D4,
-
-#8B5CF6);
-
--webkit-background-clip:text;
-
--webkit-text-fill-color:transparent;
-
-}
-
-.price-card ul{
-
-margin:30px 0;
-
-padding-left:20px;
-
-line-height:2;
-
-}
 
 /*=========================================
 TESTIMONIALS
