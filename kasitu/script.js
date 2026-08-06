@@ -1514,3 +1514,57 @@ document.body.classList.remove("loaded");
 /*==================================================
 END PART 5
 ==================================================*/
+
+/*=========================================
+FOOTER YEAR
+=========================================*/
+
+const year = document.getElementById("year");
+
+if(year){
+
+    year.textContent = new Date().getFullYear();
+
+}
+
+/*=========================================
+SMOOTH SECTION REVEAL
+=========================================*/
+
+const revealItems = document.querySelectorAll(
+
+"section,.project-card,.service-card,.testimonial-card"
+
+);
+
+const revealObserver = new IntersectionObserver(
+
+entries=>{
+
+entries.forEach(entry=>{
+
+if(entry.isIntersecting){
+
+entry.target.classList.add("show");
+
+}
+
+});
+
+},
+
+{
+
+threshold:.15
+
+}
+
+);
+
+revealItems.forEach(item=>{
+
+item.classList.add("hidden");
+
+revealObserver.observe(item);
+
+});
