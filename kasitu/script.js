@@ -344,7 +344,12 @@ if (menuBtn && mobileMenu) {
 
     menuBtn.addEventListener("click", () => {
 
-        mobileMenu.classList.toggle("mobile-open");
+       const isOpen = mobileMenu.classList.toggle("mobile-open");
+
+menuBtn.setAttribute(
+    "aria-expanded",
+    isOpen
+);
 
         menuBtn.classList.toggle("open");
 
