@@ -1108,18 +1108,14 @@ submitButton.textContent="Sending...";
 
 try{
 
+emailjs.init("YOUR_PUBLIC_KEY");
+
 const response = await emailjs.sendForm(
-
-window.EMAILJS_CONFIG.serviceId,
-
-window.EMAILJS_CONFIG.templateId,
-
-contactForm,
-
-window.EMAILJS_CONFIG.publicKey
-
+    "YOUR_SERVICE_ID",
+    "YOUR_TEMPLATE_ID",
+    contactForm
 );
-
+    
 submitButton.textContent="Sent ✓";
 
 showToast(
@@ -1328,7 +1324,7 @@ www.kasituwebs.co.za
 
 WhatsApp:
 
-+27 xx xxx xxxx
++27 79 348 0103 
 
 `,
 
