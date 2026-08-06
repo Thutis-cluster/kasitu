@@ -571,11 +571,11 @@ PACKAGE PRICES
 
 const packagePrices = {
 
-    "Starter Website":2999,
+    "Starter Website": 2999,
 
-    "Business Website":5999,
+    "Business Website": 5999,
 
-    "eCommerce Store":9999
+    "Online Store": 9999
 
 };
 
