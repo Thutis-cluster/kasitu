@@ -639,6 +639,17 @@ const packagePrices = {
     "Business Website": 4999,
 
     "Online Store": 5999
+           },
+
+           extras: {
+        seo: 500,
+        contact: 600,
+        blog: 700,
+        booking: 1000,
+        dashboard: 1600,
+        login: 1300,
+        whatsapp: 900
+    }
 
 };
 
@@ -714,7 +725,8 @@ extras.forEach(extra=>{
 
 if(extra.checked){
 
-total+=Number(extra.value);
+const price = parseInt(extra.value.replace(/\D/g, ""), 10);
+total += price;
 
 }
 
@@ -744,7 +756,7 @@ PRICE ANIMATION
 
 function animatePrice(target){
 
-let current=0;
+let current = currentTotal;
 
 const increment=
 
