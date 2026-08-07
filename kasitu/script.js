@@ -369,6 +369,64 @@ menuBtn.setAttribute(
 
 }
 
+/*==================================================*
+ * CLOSE MOBILE MENU ON SCROLL
+ *==================================================*/
+
+window.addEventListener("scroll", () => {
+
+    if (mobileMenu.classList.contains("mobile-open")) {
+
+        mobileMenu.classList.remove("mobile-open");
+
+        menuBtn.classList.remove("open");
+
+        menuBtn.setAttribute("aria-expanded", "false");
+
+    }
+
+});
+
+/*==================================================*
+ * CLOSE MOBILE MENU ON DESKTOP
+ *==================================================*/
+
+window.addEventListener("resize", () => {
+
+    if (window.innerWidth > 900) {
+
+        mobileMenu.classList.remove("mobile-open");
+
+        menuBtn.classList.remove("open");
+
+        menuBtn.setAttribute("aria-expanded", "false");
+
+    }
+
+});
+
+/*==================================================*
+ * CLOSE MOBILE MENU WHEN CLICKING OUTSIDE
+ *==================================================*/
+
+document.addEventListener("click", (e) => {
+
+    if (
+        mobileMenu.classList.contains("mobile-open") &&
+        !mobileMenu.contains(e.target) &&
+        !menuBtn.contains(e.target)
+    ) {
+
+        mobileMenu.classList.remove("mobile-open");
+
+        menuBtn.classList.remove("open");
+
+        menuBtn.setAttribute("aria-expanded", "false");
+
+    }
+
+});
+
 /*==================================================
 TYPEWRITER EFFECT
 ==================================================*/
