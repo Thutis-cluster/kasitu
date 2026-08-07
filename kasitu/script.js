@@ -636,9 +636,9 @@ const packagePrices = {
 
     "Starter Website": 2999,
 
-    "Business Website": 5999,
+    "Business Website": 4999,
 
-    "Online Store": 9999
+    "Online Store": 5999
 
 };
 
