@@ -1517,47 +1517,71 @@ transform:translateX(8px);
 /*=========================================
 PRICING
 =========================================*/
+/*==================================================*
+* PRICING — RESPONSIVE 4 CARD LAYOUT
+*==================================================*/
 
 .pricing-grid{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-
-gap:35px;
-
-margin-top:60px;
-
+    display:grid;
+    grid-template-columns:repeat(4, minmax(0, 1fr));
+    gap:25px;
+    margin-top:60px;
 }
 
+/* Make all pricing cards equal height */
 .price-card{
+    position:relative;
+    padding:35px;
+    border-radius:24px;
+    background:var(--glass);
+    border:1px solid var(--border);
+    transition:.35s;
+    height:100%;
+}
 
-position:relative;
-
-padding:40px;
-
-border-radius:24px;
-
-background:var(--glass);
-
-border:1px solid var(--border);
-
-transition:.35s;
-
+/* Featured card */
+.price-card.featured{
+    border:2px solid #4F46E5;
+    transform:scale(1.03);
+    z-index:2;
 }
 
 .price-card:hover{
-
-transform:translateY(-12px);
-
+    transform:translateY(-12px);
 }
 
-.featured{
+/*==================================================*
+* 2 × 2 LAYOUT
+*==================================================*/
 
-border:2px solid #4F46E5;
+@media(max-width:1200px){
+    .pricing-grid{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+        gap:25px;
+    }
 
-transform:scale(1.04);
+    .price-card.featured{
+        transform:none;
+    }
+}
 
+/*==================================================*
+* MOBILE — ONE CARD PER ROW
+*==================================================*/
+
+@media(max-width:600px){
+    .pricing-grid{
+        grid-template-columns:1fr;
+        gap:20px;
+    }
+
+    .price-card{
+        padding:30px 25px;
+    }
+
+    .price-card.featured{
+        transform:none;
+    }
 }
 
 .popular{
@@ -1780,46 +1804,294 @@ background:linear-gradient(
 
 }
 
-/* ==========================================
-   RECOMMENDED EXTRA
-========================================== */
+/*==================================================*
+* FUTURISTIC RECOMMENDED EXTRAS
+*==================================================*/
 
-.extra-option {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.25s ease;
+.extra-option{
+    position:relative;
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:13px 14px;
+
+    margin:10px 0;
+
+    border-radius:14px;
+
+    transition:
+        .35s ease;
+
+    overflow:hidden;
 }
 
 
-/* Recommended highlight */
+/*-----------------------------------------*
+* HOLOGRAPHIC RECOMMENDED CARD
+*-----------------------------------------*/
 
-.extra-option.recommended {
-    border: 1px solid rgba(0, 200, 255, 0.45);
-    background: rgba(0, 200, 255, 0.08);
-    box-shadow: 0 0 15px rgba(0, 200, 255, 0.08);
+.extra-option.recommended{
+
+    border:1px solid rgba(6,182,212,.55);
+
+    background:
+        linear-gradient(
+            110deg,
+            rgba(6,182,212,.08),
+            rgba(79,70,229,.12),
+            rgba(139,92,246,.08)
+        );
+
+    box-shadow:
+        0 0 10px rgba(6,182,212,.10),
+        inset 0 0 18px rgba(79,70,229,.06);
+
+    animation:
+        recommendedPulse 3s ease-in-out infinite;
 }
 
 
-/* Recommended badge */
+/*-----------------------------------------*
+* MOVING NEON LINE
+*-----------------------------------------*/
 
-.recommended-badge {
-    display: none;
-    margin-left: auto;
-    padding: 4px 9px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.4px;
-    white-space: nowrap;
+.extra-option.recommended::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:-120%;
+
+    width:80%;
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #06B6D4,
+            #8B5CF6,
+            transparent
+        );
+
+    box-shadow:
+        0 0 12px #06B6D4;
+
+    animation:
+        scanLine 3s linear infinite;
 }
 
 
-/* Only show badge when recommended */
+/*-----------------------------------------*
+* LEFT NEON INDICATOR
+*-----------------------------------------*/
 
-.extra-option.recommended .recommended-badge {
-    display: inline-block;
+.extra-option.recommended::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    top:15%;
+
+    width:3px;
+    height:70%;
+
+    border-radius:10px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #06B6D4,
+            #8B5CF6
+        );
+
+    box-shadow:
+        0 0 10px #06B6D4,
+        0 0 20px rgba(6,182,212,.6);
+}
+
+
+/*-----------------------------------------*
+* FUTURISTIC BADGE
+*-----------------------------------------*/
+
+.recommended-badge{
+
+    display:none;
+
+    margin-left:auto;
+
+    position:relative;
+
+    padding:5px 10px;
+
+    border-radius:8px;
+
+    white-space:nowrap;
+
+    font-size:9px;
+
+    font-weight:800;
+
+    letter-spacing:1px;
+
+    text-transform:uppercase;
+
+    color:#67e8f9;
+
+    background:
+        rgba(6,182,212,.10);
+
+    border:1px solid rgba(6,182,212,.45);
+
+    box-shadow:
+        0 0 10px rgba(6,182,212,.15);
+
+    text-shadow:
+        0 0 8px rgba(6,182,212,.8);
+
+    animation:
+        badgeGlow 2s ease-in-out infinite;
+}
+
+
+/*-----------------------------------------*
+* SHOW BADGE
+*-----------------------------------------*/
+
+.extra-option.recommended
+.recommended-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+    justify-content:center;
+
+}
+
+
+/* Add futuristic "AI" style indicator */
+
+.extra-option.recommended
+.recommended-badge::before{
+
+    content:"✦";
+
+    margin-right:5px;
+
+    color:#8B5CF6;
+
+    text-shadow:
+        0 0 8px #8B5CF6;
+
+}
+
+
+/*-----------------------------------------*
+* CHECKBOX
+*-----------------------------------------*/
+
+.extra-option.recommended
+.extra{
+
+    accent-color:#06B6D4;
+
+    filter:
+        drop-shadow(
+            0 0 5px
+            rgba(6,182,212,.7)
+        );
+}
+
+
+/*-----------------------------------------*
+* HOVER
+*-----------------------------------------*/
+
+.extra-option.recommended:hover{
+
+    transform:
+        translateX(5px);
+
+    border-color:
+        rgba(6,182,212,.85);
+
+    background:
+        linear-gradient(
+            110deg,
+            rgba(6,182,212,.14),
+            rgba(79,70,229,.18),
+            rgba(139,92,246,.12)
+        );
+
+    box-shadow:
+        0 0 20px rgba(6,182,212,.16),
+        0 0 40px rgba(79,70,229,.10),
+        inset 0 0 20px rgba(6,182,212,.06);
+}
+
+
+/*-----------------------------------------*
+* ANIMATIONS
+*-----------------------------------------*/
+
+@keyframes recommendedPulse{
+
+    0%,100%{
+
+        box-shadow:
+            0 0 10px rgba(6,182,212,.08),
+            inset 0 0 15px rgba(79,70,229,.04);
+
+    }
+
+    50%{
+
+        box-shadow:
+            0 0 20px rgba(6,182,212,.18),
+            0 0 35px rgba(79,70,229,.08),
+            inset 0 0 20px rgba(6,182,212,.07);
+
+    }
+
+}
+
+
+@keyframes scanLine{
+
+    0%{
+        left:-120%;
+    }
+
+    100%{
+        left:140%;
+    }
+
+}
+
+
+@keyframes badgeGlow{
+
+    0%,100%{
+
+        box-shadow:
+            0 0 5px rgba(6,182,212,.15);
+
+    }
+
+    50%{
+
+        box-shadow:
+            0 0 15px rgba(6,182,212,.35);
+
+    }
+
 }
 
 /*==================================================
@@ -3114,5 +3386,134 @@ transition:.8s;
 opacity:1;
 
 transform:none;
+
+}
+
+/*==================================================*
+* MOBILE SERVICES = TECHNOLOGY STYLE
+*==================================================*/
+
+@media (max-width: 600px){
+
+    .services-grid{
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .service-card{
+        min-height: 180px;
+        padding: 22px 15px;
+        border-radius: 20px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        text-align: center;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(255,255,255,.065),
+                rgba(79,70,229,.07)
+            );
+
+        border: 1px solid rgba(255,255,255,.10);
+
+        backdrop-filter: blur(20px);
+
+        transition:
+            transform .35s ease,
+            box-shadow .35s ease,
+            border-color .35s ease;
+    }
+
+    /* Service icon becomes like technology icons */
+
+    .service-icon{
+        width:58px;
+        height:58px;
+
+        margin-bottom:14px;
+
+        border-radius:17px;
+
+        font-size:1.45rem;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(79,70,229,.9),
+                rgba(6,182,212,.9)
+            );
+
+        box-shadow:
+            0 0 20px rgba(79,70,229,.25);
+
+        flex-shrink:0;
+    }
+
+    .service-card h3{
+        font-size:.95rem;
+        line-height:1.3;
+        margin-bottom:0;
+    }
+
+    /* Hide descriptions on mobile */
+
+    .service-card p{
+        display:none;
+    }
+
+    /* Futuristic hover/touch effect */
+
+    .service-card:hover{
+        transform:translateY(-6px);
+
+        border-color:
+            rgba(6,182,212,.45);
+
+        box-shadow:
+            0 10px 35px rgba(79,70,229,.25),
+            0 0 20px rgba(6,182,212,.08);
+    }
+
+    .service-card:hover .service-icon{
+        transform:
+            scale(1.08)
+            rotate(5deg);
+
+        box-shadow:
+            0 0 30px rgba(6,182,212,.35);
+    }
+
+}
+
+
+/*==================================================*
+* VERY SMALL PHONES
+*==================================================*/
+
+@media (max-width: 380px){
+
+    .services-grid{
+        gap:10px;
+    }
+
+    .service-card{
+        min-height:165px;
+        padding:18px 10px;
+    }
+
+    .service-icon{
+        width:52px;
+        height:52px;
+        font-size:1.25rem;
+    }
+
+    .service-card h3{
+        font-size:.85rem;
+    }
 
 }
