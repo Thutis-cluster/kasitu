@@ -657,20 +657,26 @@ let currentTotal = 0;
 const recommendedExtras = {
 
     "Starter Website": [
-        "seo"
+        "seo",
+        "whatsapp",
+        "blog"
     ],
 
     "Business Website": [
-        "seo",
-        "whatsapp"
-    ],
-
-    "Online Store": [
+        "app",
         "seo",
         "booking",
         "dashboard",
-        "login",
-        "whatsapp"
+        "login"
+    ],
+
+    "Online Store": [
+        "app",
+        "login"
+    ],
+
+        "Online Store PRO": [
+        "app"
     ]
 
 };
@@ -685,7 +691,6 @@ function formatCurrency(value) {
     return "R" + Number(value).toLocaleString("en-ZA");
 
 }
-
 
 /* ==========================================
    CALCULATE TOTAL
