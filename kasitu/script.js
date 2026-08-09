@@ -707,48 +707,32 @@ CALCULATE PRICE
 
 function calculateTotal(){
 
-if(!selectedPackage){
+    if(!selectedPackage){
 
-currentTotal=0;
+        animatePrice(0);
 
-updatePrice();
+        return;
 
-return;
+    }
 
-}
+    let total =
+        pricing.packages[selectedPackage];
 
-let total=
+    extras.forEach(extra=>{
 
-packagePrices[selectedPackage]||0;
+        if(extra.checked){
 
-extras.forEach(extra=>{
+            total += Number(
+                extra.dataset.price
+            );
 
-if(extra.checked){
+        }
 
-const price = parseInt(extra.value.replace(/\D/g, ""), 10);
-total += price;
+    });
 
-}
-
-});
-
-currentTotal=total;
-
-animatePrice(total);
+    animatePrice(total);
 
 }
-
-extras.forEach(extra=>{
-
-extra.addEventListener(
-
-"change",
-
-calculateTotal
-
-);
-
-});
 
 /*==================================================
 PRICE ANIMATION
@@ -756,43 +740,39 @@ PRICE ANIMATION
 
 function animatePrice(target){
 
-let current = currentTotal;
+    const start = currentTotal;
 
-const increment=
+    const duration = 600;
 
-target/60;
+    const startTime = performance.now();
 
-function update(){
+    function animate(now){
 
-current+=increment;
+        const progress = Math.min(
+            (now-startTime)/duration,
+            1
+        );
 
-if(current<target){
+        const value =
+            start +
+            (target-start)*progress;
 
-totalElement.textContent=
+        totalElement.textContent =
+            formatCurrency(Math.round(value));
 
-"R"+Math.floor(current)
+        if(progress<1){
 
-.toLocaleString();
+            requestAnimationFrame(animate);
 
-requestAnimationFrame(update);
+        }else{
 
-}else{
+            currentTotal = target;
 
-totalElement.textContent=
+        }
 
-"R"+target.toLocaleString();
+    }
 
-}
-
-}
-
-update();
-
-}
-
-function updatePrice(){
-
-totalElement.textContent="R0";
+    requestAnimationFrame(animate);
 
 }
 
