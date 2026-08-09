@@ -628,145 +628,185 @@ Validation
 WhatsApp Quote
 ==================================================*/
 
-/*==================================================
-PACKAGE PRICES
-==================================================*/
+/* ==========================================
+   LIVE PRICE CALCULATOR
+========================================== */
 
-const pricing = {
-    packages: {
-        "Starter Website": 2999,
-        "Business Website": 4999,
-        "Online Store": 5999
-    },
-
-    extras: {
-        seo: 500,
-        contact: 600,
-        blog: 700,
-        booking: 1000,
-        dashboard: 1600,
-        login: 1300,
-        whatsapp: 900
-    }
+const packagePrices = {
+    "Starter Website": 2999,
+    "Business Website": 4999,
+    "Online Store": 5999
 };
 
-const packageButtons =
-document.querySelectorAll(".select-price");
-
-const packageInput =
-document.getElementById("site-type");
-
-const totalElement =
-document.getElementById("total");
-
-const extras =
-document.querySelectorAll(".extra");
+const packageButtons = document.querySelectorAll(".select-price");
+const packageInput = document.getElementById("site-type");
+const extraInputs = document.querySelectorAll(".extra");
+const totalElement = document.getElementById("total");
 
 let selectedPackage = "";
-
 let currentTotal = 0;
 
-/*==================================================
-SELECT PACKAGE
-==================================================*/
 
-packageButtons.forEach(button=>{
+/* ==========================================
+   FORMAT CURRENCY
+========================================== */
 
-button.addEventListener("click",()=>{
-
-selectedPackage=
-
-button.closest(".price-card")
-
-.querySelector("h3").textContent.trim();
-
-packageInput.value=
-
-selectedPackage;
-
-calculateTotal();
-
-showToast(
-
-selectedPackage+
-
-" selected"
-
-);
-
-});
-
-});
-
-/*==================================================
-CALCULATE PRICE
-==================================================*/
-
-function calculateTotal(){
-
-    if(!selectedPackage){
-
-        animatePrice(0);
-
-        return;
-
-    }
-
-    let total =
-        pricing.packages[selectedPackage];
-
-    extras.forEach(extra=>{
-
-        if(extra.checked){
-
-            total += Number(
-                extra.dataset.price
-            );
-
-        }
-
-    });
-
-    animatePrice(total);
-
-}
-
-/*==================================================
-PRICE ANIMATION
-==================================================*/
 function formatCurrency(value) {
     return "R" + Number(value).toLocaleString("en-ZA");
 }
 
+
+/* ==========================================
+   CALCULATE TOTAL
+========================================== */
+
+function calculateTotal() {
+
+    // Start with selected package price
+    let total = packagePrices[selectedPackage] || 0;
+
+    // Add every selected extra
+    extraInputs.forEach(extra => {
+
+        if (extra.checked) {
+
+            const extraPrice =
+                Number(extra.dataset.price) || 0;
+
+            total += extraPrice;
+        }
+
+    });
+
+    return total;
+}
+
+
+/* ==========================================
+   UPDATE TOTAL
+========================================== */
+
+function updatePrice() {
+
+    const total = calculateTotal();
+
+    animatePrice(total);
+}
+
+
+/* ==========================================
+   ANIMATE PRICE
+========================================== */
+
 function animatePrice(target) {
+
+    if (!totalElement) return;
+
     const start = currentTotal;
-    const duration = 600;
+    const difference = target - start;
+    const duration = 400;
     const startTime = performance.now();
 
-    function animate(now) {
+    function animate(currentTime) {
+
+        const elapsed = currentTime - startTime;
 
         const progress = Math.min(
-            (now - startTime) / duration,
+            elapsed / duration,
             1
         );
 
+        // Smooth animation
         const value =
-            start + (target - start) * progress;
+            start + difference * progress;
 
-        if (totalElement) {
-            totalElement.textContent =
-                formatCurrency(Math.round(value));
-        }
+        totalElement.textContent =
+            formatCurrency(Math.round(value));
 
         if (progress < 1) {
+
             requestAnimationFrame(animate);
+
         } else {
+
             currentTotal = target;
         }
     }
 
     requestAnimationFrame(animate);
 }
+
+
+/* ==========================================
+   SELECT PACKAGE
+========================================== */
+
+packageButtons.forEach(button => {
+
+    button.addEventListener("click", function () {
+
+        const card =
+            this.closest(".price-card");
+
+        if (!card) return;
+
+        const packageName =
+            card.querySelector("h3");
+
+        if (!packageName) return;
+
+        selectedPackage =
+            packageName.textContent.trim();
+
+        // Put package name into calculator
+        if (packageInput) {
+            packageInput.value =
+                selectedPackage;
+        }
+
+        // Recalculate immediately
+        updatePrice();
+
+        // Scroll to calculator
+        const calculator =
+            document.querySelector(".calculator");
+
+        if (calculator) {
+
+            calculator.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }
+
+    });
+
+});
+
+
+/* ==========================================
+   EXTRA FEATURES
+   UPDATE PRICE AUTOMATICALLY
+========================================== */
+
+extraInputs.forEach(extra => {
+
+    extra.addEventListener("change", function () {
+
+        // Recalculate immediately when checked/unchecked
+        updatePrice();
+
+    });
+
+});
+
+
+/* ==========================================
+   INITIAL PRICE
+========================================== */
+
+updatePrice();
+
 
 /*==================================================
 WHATSAPP QUOTE
