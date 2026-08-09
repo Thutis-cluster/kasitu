@@ -375,12 +375,12 @@ menuBtn.setAttribute(
 
 window.addEventListener("scroll", () => {
 
+    if (!mobileMenu || !menuBtn) return;
+
     if (mobileMenu.classList.contains("mobile-open")) {
 
         mobileMenu.classList.remove("mobile-open");
-
         menuBtn.classList.remove("open");
-
         menuBtn.setAttribute("aria-expanded", "false");
 
     }
@@ -393,12 +393,12 @@ window.addEventListener("scroll", () => {
 
 window.addEventListener("resize", () => {
 
+    if (!mobileMenu || !menuBtn) return;
+
     if (window.innerWidth > 900) {
 
         mobileMenu.classList.remove("mobile-open");
-
         menuBtn.classList.remove("open");
-
         menuBtn.setAttribute("aria-expanded", "false");
 
     }
@@ -411,6 +411,8 @@ window.addEventListener("resize", () => {
 
 document.addEventListener("click", (e) => {
 
+    if (!mobileMenu || !menuBtn) return;
+
     if (
         mobileMenu.classList.contains("mobile-open") &&
         !mobileMenu.contains(e.target) &&
@@ -418,9 +420,7 @@ document.addEventListener("click", (e) => {
     ) {
 
         mobileMenu.classList.remove("mobile-open");
-
         menuBtn.classList.remove("open");
-
         menuBtn.setAttribute("aria-expanded", "false");
 
     }
@@ -632,16 +632,14 @@ WhatsApp Quote
 PACKAGE PRICES
 ==================================================*/
 
-const packagePrices = {
+const pricing = {
+    packages: {
+        "Starter Website": 2999,
+        "Business Website": 4999,
+        "Online Store": 5999
+    },
 
-    "Starter Website": 2999,
-
-    "Business Website": 4999,
-
-    "Online Store": 5999
-           },
-
-           extras: {
+    extras: {
         seo: 500,
         contact: 600,
         blog: 700,
@@ -650,7 +648,6 @@ const packagePrices = {
         login: 1300,
         whatsapp: 900
     }
-
 };
 
 const packageButtons =
@@ -737,43 +734,38 @@ function calculateTotal(){
 /*==================================================
 PRICE ANIMATION
 ==================================================*/
+function formatCurrency(value) {
+    return "R" + Number(value).toLocaleString("en-ZA");
+}
 
-function animatePrice(target){
-
+function animatePrice(target) {
     const start = currentTotal;
-
     const duration = 600;
-
     const startTime = performance.now();
 
-    function animate(now){
+    function animate(now) {
 
         const progress = Math.min(
-            (now-startTime)/duration,
+            (now - startTime) / duration,
             1
         );
 
         const value =
-            start +
-            (target-start)*progress;
+            start + (target - start) * progress;
 
-        totalElement.textContent =
-            formatCurrency(Math.round(value));
-
-        if(progress<1){
-
-            requestAnimationFrame(animate);
-
-        }else{
-
-            currentTotal = target;
-
+        if (totalElement) {
+            totalElement.textContent =
+                formatCurrency(Math.round(value));
         }
 
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        } else {
+            currentTotal = target;
+        }
     }
 
     requestAnimationFrame(animate);
-
 }
 
 /*==================================================
