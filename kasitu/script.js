@@ -636,7 +636,8 @@ WhatsApp Quote
 const packagePrices = {
     "Starter Website": 2999,
     "Business Website": 4999,
-    "Online Store": 5999
+    "Online Store": 5999,
+    "Online Store PRO": 7999
 };
 
 const packageButtons = document.querySelectorAll(".select-price");
@@ -981,7 +982,7 @@ return;
 
 let features=[];
 
-extras.forEach(extra=>{
+extraInputs.forEach(extra=>{
 
 if(extra.checked){
 
