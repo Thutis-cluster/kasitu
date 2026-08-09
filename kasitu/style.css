@@ -1780,6 +1780,48 @@ background:linear-gradient(
 
 }
 
+/* ==========================================
+   RECOMMENDED EXTRA
+========================================== */
+
+.extra-option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.25s ease;
+}
+
+
+/* Recommended highlight */
+
+.extra-option.recommended {
+    border: 1px solid rgba(0, 200, 255, 0.45);
+    background: rgba(0, 200, 255, 0.08);
+    box-shadow: 0 0 15px rgba(0, 200, 255, 0.08);
+}
+
+
+/* Recommended badge */
+
+.recommended-badge {
+    display: none;
+    margin-left: auto;
+    padding: 4px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+}
+
+
+/* Only show badge when recommended */
+
+.extra-option.recommended .recommended-badge {
+    display: inline-block;
+}
+
 /*==================================================
 SCROLL TO TOP
 ==================================================*/
