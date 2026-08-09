@@ -628,6 +628,7 @@ Validation
 WhatsApp Quote
 ==================================================*/
 
+
 /* ==========================================
    LIVE PRICE CALCULATOR
 ========================================== */
@@ -648,11 +649,41 @@ let currentTotal = 0;
 
 
 /* ==========================================
+   RECOMMENDED EXTRAS
+   These are HIGHLIGHTED only.
+   They are NOT automatically checked.
+========================================== */
+
+const recommendedExtras = {
+
+    "Starter Website": [
+        "seo"
+    ],
+
+    "Business Website": [
+        "seo",
+        "whatsapp"
+    ],
+
+    "Online Store": [
+        "seo",
+        "booking",
+        "dashboard",
+        "login",
+        "whatsapp"
+    ]
+
+};
+
+
+/* ==========================================
    FORMAT CURRENCY
 ========================================== */
 
 function formatCurrency(value) {
+
     return "R" + Number(value).toLocaleString("en-ZA");
+
 }
 
 
@@ -662,10 +693,10 @@ function formatCurrency(value) {
 
 function calculateTotal() {
 
-    // Start with selected package price
-    let total = packagePrices[selectedPackage] || 0;
+    let total =
+        packagePrices[selectedPackage] || 0;
 
-    // Add every selected extra
+
     extraInputs.forEach(extra => {
 
         if (extra.checked) {
@@ -674,11 +705,14 @@ function calculateTotal() {
                 Number(extra.dataset.price) || 0;
 
             total += extraPrice;
+
         }
 
     });
 
+
     return total;
+
 }
 
 
@@ -688,9 +722,11 @@ function calculateTotal() {
 
 function updatePrice() {
 
-    const total = calculateTotal();
+    const total =
+        calculateTotal();
 
     animatePrice(total);
+
 }
 
 
@@ -702,26 +738,41 @@ function animatePrice(target) {
 
     if (!totalElement) return;
 
+
     const start = currentTotal;
-    const difference = target - start;
+
+    const difference =
+        target - start;
+
     const duration = 400;
-    const startTime = performance.now();
+
+    const startTime =
+        performance.now();
+
 
     function animate(currentTime) {
 
-        const elapsed = currentTime - startTime;
+        const elapsed =
+            currentTime - startTime;
 
-        const progress = Math.min(
-            elapsed / duration,
-            1
-        );
 
-        // Smooth animation
+        const progress =
+            Math.min(
+                elapsed / duration,
+                1
+            );
+
+
         const value =
-            start + difference * progress;
+            start +
+            difference * progress;
+
 
         totalElement.textContent =
-            formatCurrency(Math.round(value));
+            formatCurrency(
+                Math.round(value)
+            );
+
 
         if (progress < 1) {
 
@@ -730,10 +781,68 @@ function animatePrice(target) {
         } else {
 
             currentTotal = target;
+
         }
+
     }
 
+
     requestAnimationFrame(animate);
+
+}
+
+
+/* ==========================================
+   HIGHLIGHT RECOMMENDED EXTRAS
+========================================== */
+
+function updateRecommendedExtras() {
+
+    // Remove previous recommendations
+
+    extraInputs.forEach(extra => {
+
+        const option =
+            extra.closest(".extra-option");
+
+        if (!option) return;
+
+        option.classList.remove("recommended");
+
+    });
+
+
+    // Get recommendations for selected package
+
+    const recommendations =
+        recommendedExtras[selectedPackage] || [];
+
+
+    // Highlight matching extras
+
+    extraInputs.forEach(extra => {
+
+        const extraType =
+            extra.dataset.extra;
+
+
+        if (
+            recommendations.includes(extraType)
+        ) {
+
+            const option =
+                extra.closest(".extra-option");
+
+            if (!option) return;
+
+            option.classList.add(
+                "recommended"
+            );
+
+        }
+
+    });
+
 }
 
 
@@ -743,60 +852,84 @@ function animatePrice(target) {
 
 packageButtons.forEach(button => {
 
-    button.addEventListener("click", function () {
+    button.addEventListener(
+        "click",
+        function () {
 
-        const card =
-            this.closest(".price-card");
+            const card =
+                this.closest(".price-card");
 
-        if (!card) return;
+            if (!card) return;
 
-        const packageName =
-            card.querySelector("h3");
 
-        if (!packageName) return;
+            const packageName =
+                card.querySelector("h3");
 
-        selectedPackage =
-            packageName.textContent.trim();
+            if (!packageName) return;
 
-        // Put package name into calculator
-        if (packageInput) {
-            packageInput.value =
-                selectedPackage;
+
+            selectedPackage =
+                packageName.textContent.trim();
+
+
+            /* Update package field */
+
+            if (packageInput) {
+
+                packageInput.value =
+                    selectedPackage;
+
+            }
+
+
+            /* Highlight recommendations */
+
+            updateRecommendedExtras();
+
+
+            /* Recalculate price */
+
+            updatePrice();
+
+
+            /* Scroll to calculator */
+
+            const calculator =
+                document.querySelector(
+                    ".calculator"
+                );
+
+
+            if (calculator) {
+
+                calculator.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            }
+
         }
-
-        // Recalculate immediately
-        updatePrice();
-
-        // Scroll to calculator
-        const calculator =
-            document.querySelector(".calculator");
-
-        if (calculator) {
-
-            calculator.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
-        }
-
-    });
+    );
 
 });
 
 
 /* ==========================================
    EXTRA FEATURES
-   UPDATE PRICE AUTOMATICALLY
+   UPDATE PRICE WHEN CHECKED/UNCHECKED
 ========================================== */
 
 extraInputs.forEach(extra => {
 
-    extra.addEventListener("change", function () {
+    extra.addEventListener(
+        "change",
+        function () {
 
-        // Recalculate immediately when checked/unchecked
-        updatePrice();
+            updatePrice();
 
-    });
+        }
+    );
 
 });
 
@@ -806,7 +939,6 @@ extraInputs.forEach(extra => {
 ========================================== */
 
 updatePrice();
-
 
 /*==================================================
 WHATSAPP QUOTE
