@@ -3460,10 +3460,19 @@ transform:none;
         margin-bottom:0;
     }
 
-    /* Hide descriptions on mobile */
+/* KEEP SERVICE DESCRIPTIONS VISIBLE */
+    .service-card p {
+        display: block;
+        visibility: visible;
+        opacity: 1;
+        height: auto;
+        max-height: none;
+        overflow: visible;
 
-    .service-card p{
-        display:none;
+        font-size: .82rem;
+        line-height: 1.55;
+        color: var(--muted);
+        margin-top: 8px;
     }
 
     /* Futuristic hover/touch effect */
@@ -3514,6 +3523,11 @@ transform:none;
 
     .service-card h3{
         font-size:.85rem;
+    }
+
+        .service-card p {
+        font-size: .9rem;
+        line-height: 1.6;
     }
 
 }
