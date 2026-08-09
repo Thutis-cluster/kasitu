@@ -3531,3 +3531,223 @@ transform:none;
     }
 
 }
+
+/*==================================================*
+* COLORFUL SERVICE ICONS
+*==================================================*/
+
+.service-icon{
+    position:relative;
+    overflow:hidden;
+
+    width:75px;
+    height:75px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:22px;
+
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+
+    backdrop-filter:blur(20px);
+
+    transition:
+        transform .4s ease,
+        box-shadow .4s ease,
+        border-color .4s ease;
+}
+
+/* Futuristic shine */
+
+.service-icon::before{
+    content:"";
+
+    position:absolute;
+    inset:-50%;
+
+    background:
+        conic-gradient(
+            transparent,
+            rgba(255,255,255,.25),
+            transparent 30%
+        );
+
+    animation:serviceIconSpin 5s linear infinite;
+}
+
+/* Inner glow */
+
+.service-icon::after{
+    content:"";
+
+    position:absolute;
+    inset:2px;
+
+    border-radius:20px;
+
+    background:rgba(7,11,23,.55);
+
+    z-index:0;
+}
+
+.service-icon i{
+    position:relative;
+    z-index:2;
+
+    font-size:2rem;
+
+    transition:
+        transform .4s ease,
+        filter .4s ease;
+}
+
+
+/*==================================================*
+* INDIVIDUAL SERVICE COLORS
+*==================================================*/
+
+/* Website Development */
+.service-card:nth-child(1) .service-icon{
+    border-color:rgba(0,210,255,.45);
+    box-shadow:
+        0 0 25px rgba(0,210,255,.15),
+        inset 0 0 20px rgba(0,210,255,.08);
+}
+
+.service-card:nth-child(1) .service-icon i{
+    color:#00d9ff;
+    filter:drop-shadow(0 0 10px rgba(0,217,255,.8));
+}
+
+
+/* Mobile Applications */
+.service-card:nth-child(2) .service-icon{
+    border-color:rgba(139,92,246,.5);
+    box-shadow:
+        0 0 25px rgba(139,92,246,.18),
+        inset 0 0 20px rgba(139,92,246,.08);
+}
+
+.service-card:nth-child(2) .service-icon i{
+    color:#a78bfa;
+    filter:drop-shadow(0 0 10px rgba(139,92,246,.85));
+}
+
+
+/* eCommerce */
+.service-card:nth-child(3) .service-icon{
+    border-color:rgba(34,197,94,.45);
+    box-shadow:
+        0 0 25px rgba(34,197,94,.16),
+        inset 0 0 20px rgba(34,197,94,.08);
+}
+
+.service-card:nth-child(3) .service-icon i{
+    color:#4ade80;
+    filter:drop-shadow(0 0 10px rgba(34,197,94,.8));
+}
+
+
+/* Graphic Design */
+.service-card:nth-child(4) .service-icon{
+    border-color:rgba(236,72,153,.45);
+    box-shadow:
+        0 0 25px rgba(236,72,153,.16),
+        inset 0 0 20px rgba(236,72,153,.08);
+}
+
+.service-card:nth-child(4) .service-icon i{
+    color:#f472b6;
+    filter:drop-shadow(0 0 10px rgba(236,72,153,.8));
+}
+
+
+/* Business Registration */
+.service-card:nth-child(5) .service-icon{
+    border-color:rgba(251,191,36,.5);
+    box-shadow:
+        0 0 25px rgba(251,191,36,.16),
+        inset 0 0 20px rgba(251,191,36,.08);
+}
+
+.service-card:nth-child(5) .service-icon i{
+    color:#fbbf24;
+    filter:drop-shadow(0 0 10px rgba(251,191,36,.85));
+}
+
+
+/* Bluetooth Key Locators */
+.service-card:nth-child(6) .service-icon{
+    border-color:rgba(6,182,212,.5);
+    box-shadow:
+        0 0 25px rgba(6,182,212,.18),
+        inset 0 0 20px rgba(6,182,212,.08);
+}
+
+.service-card:nth-child(6) .service-icon i{
+    color:#22d3ee;
+    filter:drop-shadow(0 0 10px rgba(6,182,212,.9));
+}
+
+
+/* Security Alarms */
+.service-card:nth-child(7) .service-icon{
+    border-color:rgba(239,68,68,.5);
+    box-shadow:
+        0 0 25px rgba(239,68,68,.18),
+        inset 0 0 20px rgba(239,68,68,.08);
+}
+
+.service-card:nth-child(7) .service-icon i{
+    color:#fb7185;
+    filter:drop-shadow(0 0 10px rgba(239,68,68,.9));
+}
+
+
+/* Maintenance & Support */
+.service-card:nth-child(8) .service-icon{
+    border-color:rgba(129,140,248,.5);
+    box-shadow:
+        0 0 25px rgba(129,140,248,.18),
+        inset 0 0 20px rgba(129,140,248,.08);
+}
+
+.service-card:nth-child(8) .service-icon i{
+    color:#818cf8;
+    filter:drop-shadow(0 0 10px rgba(129,140,248,.9));
+}
+
+
+/*==================================================*
+* HOVER EFFECT
+*==================================================*/
+
+.service-card:hover .service-icon{
+    transform:
+        translateY(-5px)
+        scale(1.08);
+}
+
+.service-card:hover .service-icon i{
+    transform:scale(1.15) rotate(5deg);
+}
+
+
+/*==================================================*
+* ANIMATION
+*==================================================*/
+
+@keyframes serviceIconSpin{
+
+    0%{
+        transform:rotate(0deg);
+    }
+
+    100%{
+        transform:rotate(360deg);
+    }
+
+}
