@@ -4200,3 +4200,453 @@ MOBILE
     }
 
 }
+
+/*==================================================
+  KASITU WEBS — LIGHT MODE
+==================================================*/
+
+[data-theme="light"] {
+
+    --primary:#4F46E5;
+    --secondary:#0891B2;
+    --accent:#7C3AED;
+
+    --bg:#F5F7FB;
+    --bg2:#FFFFFF;
+
+    --glass:rgba(255,255,255,.78);
+    --glass2:rgba(255,255,255,.92);
+
+    --border:rgba(15,23,42,.12);
+
+    --text:#111827;
+    --muted:#5B6475;
+
+    --success:#159957;
+    --danger:#DC3545;
+
+    --shadow:
+        0 15px 40px rgba(15,23,42,.12);
+}
+
+
+/*==================================================
+  LIGHT BODY
+==================================================*/
+
+[data-theme="light"] body {
+
+    background:var(--bg);
+    color:var(--text);
+}
+
+
+/*==================================================
+  LIGHT BACKGROUND EFFECT
+==================================================*/
+
+[data-theme="light"] body::before {
+
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(79,70,229,.08),
+            transparent 35%
+        ),
+
+        radial-gradient(
+            circle at 80% 10%,
+            rgba(6,182,212,.07),
+            transparent 40%
+        ),
+
+        radial-gradient(
+            circle at 60% 80%,
+            rgba(139,92,246,.06),
+            transparent 35%
+        );
+}
+
+
+/*==================================================
+  LIGHT GRID
+==================================================*/
+
+[data-theme="light"] .bg-grid {
+
+    background-image:
+        linear-gradient(
+            rgba(15,23,42,.045) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(15,23,42,.045) 1px,
+            transparent 1px
+        );
+}
+
+
+/*==================================================
+  LIGHT HEADER
+==================================================*/
+
+[data-theme="light"] .header.scrolled {
+
+    background:rgba(255,255,255,.88);
+
+    border-bottom:
+        1px solid rgba(15,23,42,.10);
+
+    box-shadow:
+        0 10px 35px rgba(15,23,42,.10);
+}
+
+
+/*==================================================
+  LIGHT NAVIGATION
+==================================================*/
+
+[data-theme="light"] .nav-links a {
+
+    color:var(--text);
+}
+
+[data-theme="light"] .nav-links a:hover {
+
+    color:var(--secondary);
+}
+
+
+/*==================================================
+  LIGHT THEME BUTTON
+==================================================*/
+
+[data-theme="light"] #theme-toggle {
+
+    color:var(--text);
+
+    background:
+        rgba(255,255,255,.85);
+
+    border:
+        1px solid rgba(15,23,42,.12);
+
+    box-shadow:
+        0 5px 20px rgba(15,23,42,.08);
+}
+
+
+/*==================================================
+  LIGHT SECONDARY BUTTON
+==================================================*/
+
+[data-theme="light"] .secondary-btn {
+
+    color:var(--text);
+
+    background:
+        rgba(255,255,255,.75);
+
+    border:
+        1px solid rgba(15,23,42,.12);
+
+    box-shadow:
+        0 8px 25px rgba(15,23,42,.06);
+}
+
+[data-theme="light"] .secondary-btn:hover {
+
+    background:#FFFFFF;
+}
+
+
+/*==================================================
+  LIGHT CARDS
+==================================================*/
+
+[data-theme="light"]
+.service-card,
+
+[data-theme="light"]
+.project-card,
+
+[data-theme="light"]
+.price-card,
+
+[data-theme="light"]
+.testimonial-card,
+
+[data-theme="light"]
+.tech-card,
+
+[data-theme="light"]
+.feature,
+
+[data-theme="light"]
+.stat-card,
+
+[data-theme="light"]
+.trusted-grid div,
+
+[data-theme="light"]
+.hero-stats div {
+
+    background:
+        rgba(255,255,255,.82);
+
+    border:
+        1px solid rgba(15,23,42,.10);
+
+    box-shadow:
+        0 15px 35px rgba(15,23,42,.08);
+
+    color:var(--text);
+}
+
+
+/*==================================================
+  LIGHT CARD TEXT
+==================================================*/
+
+[data-theme="light"]
+.service-card p,
+
+[data-theme="light"]
+.project-card p,
+
+[data-theme="light"]
+.price-card p,
+
+[data-theme="light"]
+.testimonial-card p,
+
+[data-theme="light"]
+.tech-card p,
+
+[data-theme="light"]
+.feature p,
+
+[data-theme="light"]
+.stat-card p {
+
+    color:var(--muted);
+}
+
+
+/*==================================================
+  LIGHT FORM
+==================================================*/
+
+[data-theme="light"]
+input,
+
+[data-theme="light"]
+textarea,
+
+[data-theme="light"]
+select {
+
+    background:
+        rgba(255,255,255,.95);
+
+    color:
+        #111827;
+
+    border:
+        1px solid rgba(15,23,42,.14);
+}
+
+[data-theme="light"]
+input::placeholder,
+
+[data-theme="light"]
+textarea::placeholder {
+
+    color:#7A8496;
+}
+
+[data-theme="light"]
+input:focus,
+
+[data-theme="light"]
+textarea:focus,
+
+[data-theme="light"]
+select:focus {
+
+    border-color:
+        var(--secondary);
+
+    box-shadow:
+        0 0 0 3px rgba(6,182,212,.12);
+
+    outline:none;
+}
+
+
+/*==================================================
+  LIGHT EXTRA OPTIONS
+==================================================*/
+
+[data-theme="light"]
+.extra-option {
+
+    background:
+        rgba(255,255,255,.82);
+
+    border:
+        1px solid rgba(15,23,42,.10);
+
+    color:var(--text);
+}
+
+[data-theme="light"]
+.extra-option:hover {
+
+    background:#FFFFFF;
+}
+
+
+/*==================================================
+  LIGHT CALCULATOR
+==================================================*/
+
+[data-theme="light"]
+.calculator,
+
+[data-theme="light"]
+.price-calculator {
+
+    color:var(--text);
+}
+
+
+/*==================================================
+  LIGHT TERMINAL
+==================================================*/
+
+[data-theme="light"]
+#terminal,
+
+[data-theme="light"]
+.terminal {
+
+    background:
+        #111827;
+
+    color:
+        #E5E7EB;
+
+    border:
+        1px solid rgba(15,23,42,.15);
+}
+
+
+/*==================================================
+  LIGHT COMMAND PALETTE
+==================================================*/
+
+[data-theme="light"]
+#command-palette {
+
+    background:
+        rgba(255,255,255,.97);
+
+    color:
+        #111827;
+
+    border:
+        1px solid rgba(15,23,42,.12);
+
+    box-shadow:
+        0 25px 80px rgba(15,23,42,.20);
+}
+
+
+/*==================================================
+  LIGHT MODALS
+==================================================*/
+
+[data-theme="light"]
+.quotation-modal,
+
+[data-theme="light"]
+#quotation-modal {
+
+    background:
+        rgba(15,23,42,.35);
+}
+
+
+/* Modal content */
+
+[data-theme="light"]
+.quotation-modal-content,
+
+[data-theme="light"]
+#quotation-modal .modal-content,
+
+[data-theme="light"]
+#quotation-modal .quotation-content {
+
+    background:
+        #FFFFFF;
+
+    color:
+        #111827;
+
+    border:
+        1px solid rgba(15,23,42,.12);
+
+    box-shadow:
+        0 30px 90px rgba(15,23,42,.20);
+}
+
+
+/*==================================================
+  LIGHT MODAL TEXT
+==================================================*/
+
+[data-theme="light"]
+#quotation-modal h2,
+
+[data-theme="light"]
+#quotation-modal h3,
+
+[data-theme="light"]
+#quotation-modal p,
+
+[data-theme="light"]
+#quotation-modal span {
+
+    color:inherit;
+}
+
+
+/*==================================================
+  LIGHT SCROLLBAR
+==================================================*/
+
+[data-theme="light"] ::-webkit-scrollbar {
+
+    width:10px;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-track {
+
+    background:#EEF1F6;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+
+    background:#B7C0CF;
+
+    border-radius:20px;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+
+    background:#8D98AA;
+}
