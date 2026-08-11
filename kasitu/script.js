@@ -950,82 +950,46 @@ updatePrice();
 WHATSAPP QUOTE
 ==================================================*/
 
-const whatsappBtn=
+/*==================================================
+CONTINUE → CONTACT FORM
+==================================================*/
 
-document.getElementById(
+const whatsappBtn = document.getElementById("whatsapp-btn");
+const contactSection = document.getElementById("contact");
+const contactForm = document.getElementById("contact-form");
 
-"whatsapp-btn"
+if (whatsappBtn) {
 
-);
+    whatsappBtn.addEventListener("click", () => {
 
-if(whatsappBtn){
+        /* ------------------------------------------
+           NO PACKAGE SELECTED
+        ------------------------------------------ */
 
-whatsappBtn.addEventListener(
+        if (!selectedPackage) {
 
-"click",
+            showToast(
+                "Please select a package to proceed."
+            );
 
-e=>{
+            return;
+        }
 
-e.preventDefault();
 
-if(!selectedPackage){
+        /* ------------------------------------------
+           PACKAGE SELECTED
+        ------------------------------------------ */
 
-showToast(
+        if (contactSection) {
 
-"Please select a package."
+            contactSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
 
-);
+        }
 
-return;
-
-}
-
-let features=[];
-
-extraInputs.forEach(extra=>{
-
-if(extra.checked){
-
-features.push(
-
-extra.parentElement.textContent.trim()
-
-);
-
-}
-
-});
-
-const message=
-
-`Hello KASITU Webs 👋
-
-I would like a quotation.
-
-Package:
-${selectedPackage}
-
-Extras:
-${features.join(", ")||"None"}
-
-Estimated Total:
-R${currentTotal.toLocaleString()}
-
-Please contact me.`;
-
-const phone=
-
-"27794380103"; // CHANGE TO YOUR NUMBER
-
-window.open(
-
-`https://wa.me/${phone}?text=${encodeURIComponent(message)}`,
-
-"_blank"
-
-);
-
-});
+    });
 
 }
 
@@ -1299,81 +1263,1291 @@ animateParticles();
 EMAIL FORM
 ==================================================*/
 
-const contactForm =
-document.getElementById("contact-form");
+/*==================================================
+KASITU PROPOSAL REQUEST SYSTEM
+==================================================*/
+
+const proposalForm =
+    document.getElementById("contact-form");
 
 let lastSubmit = 0;
 
-if(contactForm){
 
-contactForm.addEventListener("submit", async e=>{
+/*==================================================
+COUNT WORDS
+==================================================*/
 
-e.preventDefault();
+function countWords(text) {
 
-const now = Date.now();
-
-if(now-lastSubmit<10000){
-
-showToast(
-"Please wait before sending another message."
-);
-
-return;
+    return text
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean)
+        .length;
 
 }
 
-lastSubmit = now;
 
-const submitButton =
-contactForm.querySelector("button");
+/*==================================================
+GET SELECTED EXTRAS
+==================================================*/
 
-submitButton.disabled=true;
+function getSelectedExtras() {
 
-submitButton.textContent="Sending...";
+    const selected = [];
 
-try{
+    extras.forEach(extra => {
 
-emailjs.init("YOUR_PUBLIC_KEY");
+        if (extra.checked) {
 
-const response = await emailjs.sendForm(
-    "YOUR_SERVICE_ID",
-    "YOUR_TEMPLATE_ID",
-    contactForm
-);
+            const label =
+                extra.parentElement.textContent.trim();
+
+            selected.push(label);
+
+        }
+
+    });
+
+    return selected;
+
+}
+
+
+/*==================================================
+BUILD WHATSAPP MESSAGE
+==================================================*/
+
+function buildWhatsAppMessage(customer) {
+
+    const selectedExtras =
+        getSelectedExtras();
+
+    return `Hello KASITU Webs 👋
+
+I would like to proceed with a website project.
+
+Customer:
+${customer.name}
+
+Email:
+${customer.email}
+
+Phone:
+${customer.phone || "Not provided"}
+
+Company:
+${customer.company || "Not provided"}
+
+Package:
+${selectedPackage}
+
+Extras:
+${selectedExtras.join(", ") || "None"}
+
+Estimated Total:
+R${currentTotal.toLocaleString("en-ZA")}
+
+Project:
+${customer.message}
+
+Thank you.`;
+}
+
+
+/*==================================================
+BUILD PDF DATA
+==================================================*/
+
+function getQuotationData() {
+
+    const selectedExtras =
+        getSelectedExtras();
+
+    return {
+
+        packageName: selectedPackage,
+
+        packagePrice:
+            packagePrices[selectedPackage] || 0,
+
+        extras: selectedExtras,
+
+        total: currentTotal
+
+    };
+
+}
+
+
+/*==================================================
+PROPOSAL FORM
+==================================================*/
+
+if (proposalForm) {
+
+    proposalForm.addEventListener(
+        "submit",
+        async function (e) {
+
+            e.preventDefault();
+
+
+            /* --------------------------------------
+               PACKAGE CHECK
+            -------------------------------------- */
+
+            if (!selectedPackage) {
+
+                showToast(
+                    "Please select a package first."
+                );
+
+                return;
+
+            }
+
+
+            /* --------------------------------------
+               FORM ELEMENTS
+            -------------------------------------- */
+
+            const nameInput =
+                proposalForm.querySelector(
+                    '[name="name"]'
+                );
+
+            const emailInput =
+                proposalForm.querySelector(
+                    '[name="email"]'
+                );
+
+            const phoneInput =
+                proposalForm.querySelector(
+                    '[name="phone"]'
+                );
+
+            const companyInput =
+                proposalForm.querySelector(
+                    '[name="company"]'
+                );
+
+            const messageInput =
+                proposalForm.querySelector(
+                    '[name="message"]'
+                );
+
+
+            /* --------------------------------------
+               BASIC VALIDATION
+            -------------------------------------- */
+
+            const name =
+                nameInput.value.trim();
+
+            const email =
+                emailInput.value.trim();
+
+            const phone =
+                phoneInput.value.trim();
+
+            const company =
+                companyInput.value.trim();
+
+            const message =
+                messageInput.value.trim();
+
+
+            if (!name) {
+
+                showToast(
+                    "Please enter your full name."
+                );
+
+                nameInput.focus();
+
+                return;
+
+            }
+
+
+            if (!email) {
+
+                showToast(
+                    "Please enter your email address."
+                );
+
+                emailInput.focus();
+
+                return;
+
+            }
+
+
+            if (!emailInput.checkValidity()) {
+
+                showToast(
+                    "Please enter a valid email address."
+                );
+
+                emailInput.focus();
+
+                return;
+
+            }
+
+
+            /* --------------------------------------
+               8 WORD MINIMUM
+            -------------------------------------- */
+
+            const wordCount =
+                countWords(message);
+
+
+            if (wordCount < 8) {
+
+                showToast(
+                    `Please describe your project using at least 8 words. You currently have ${wordCount}.`
+                );
+
+                messageInput.focus();
+
+                return;
+
+            }
+
+
+            /* --------------------------------------
+               ANTI-SPAM COOLDOWN
+            -------------------------------------- */
+
+            const now = Date.now();
+
+            if (now - lastSubmit < 10000) {
+
+                showToast(
+                    "Please wait before sending another request."
+                );
+
+                return;
+
+            }
+
+            lastSubmit = now;
+
+
+            /* --------------------------------------
+               BUTTON
+            -------------------------------------- */
+
+            const submitButton =
+                proposalForm.querySelector(
+                    'button[type="submit"]'
+                );
+
+            submitButton.disabled = true;
+
+            submitButton.textContent =
+                "Sending Proposal...";
+
+
+            try {
+
+                /* ----------------------------------
+                   EMAILJS
+                ---------------------------------- */
+
+                const response =
+                    await emailjs.sendForm(
+
+                        window.EMAILJS_CONFIG.serviceId,
+
+                        window.EMAILJS_CONFIG.templateId,
+
+                        proposalForm,
+
+                        window.EMAILJS_CONFIG.publicKey
+
+                    );
+
+
+                console.log(
+                    "Proposal sent:",
+                    response
+                );
+
+
+                submitButton.textContent =
+                    "Proposal Sent ✓";
+
+
+                showToast(
+                    "Proposal request sent successfully!"
+                );
+
+
+                /* ----------------------------------
+                   CUSTOMER DATA
+                ---------------------------------- */
+
+                const customer = {
+
+                    name,
+                    email,
+                    phone,
+                    company,
+                    message
+
+                };
+
+
+                /* ----------------------------------
+                   WHATSAPP
+                ---------------------------------- */
+
+                const whatsappMessage =
+                    buildWhatsAppMessage(
+                        customer
+                    );
+
+
+                const whatsappPhone =
+                    "27794380103";
+
+
+                const whatsappURL =
+                    `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(
+                        whatsappMessage
+                    )}`;
+
+
+                /*
+                 * Give the browser a moment to finish
+                 * the email request before opening
+                 * WhatsApp.
+                 */
+
+                setTimeout(() => {
+
+                    window.open(
+                        whatsappURL,
+                        "_blank"
+                    );
+
+                }, 700);
+
+
+                /* ----------------------------------
+                   PDF QUESTION
+                ---------------------------------- */
+
+                setTimeout(() => {
+
+                    showQuotationChoice(
+                        customer
+                    );
+
+                }, 1400);
+
+
+            } catch (error) {
+
+                console.error(
+                    "Proposal sending failed:",
+                    error
+                );
+
+
+                submitButton.disabled = false;
+
+                submitButton.textContent =
+                    "Send Proposal Request";
+
+
+                showToast(
+                    "Failed to send message. Please try again."
+                );
+
+            }
+
+        }
+    );
+
+}
+
+/*==================================================
+KASITU QUOTATION SYSTEM
+==================================================*/
+
+
+/*==================================================
+LOAD jsPDF
+==================================================*/
+
+function loadJsPDF() {
+
+    return new Promise((resolve, reject) => {
+
+        if (window.jspdf) {
+
+            resolve(window.jspdf.jsPDF);
+
+            return;
+
+        }
+
+
+        const script =
+            document.createElement("script");
+
+        script.src =
+            "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+
+        script.onload = () => {
+
+            resolve(window.jspdf.jsPDF);
+
+        };
+
+        script.onerror = () => {
+
+            reject(
+                new Error(
+                    "Unable to load PDF library."
+                )
+            );
+
+        };
+
+        document.head.appendChild(script);
+
+    });
+
+}
+
+
+/*==================================================
+QUOTATION MODAL
+==================================================*/
+
+const quotationModal =
+    document.getElementById(
+        "quotation-modal"
+    );
+
+const quotationClose =
+    document.getElementById(
+        "quotation-close"
+    );
+
+const quotationLater =
+    document.getElementById(
+        "quotation-later"
+    );
+
+const downloadQuotation =
+    document.getElementById(
+        "download-quotation"
+    );
+
+const quotationPackage =
+    document.getElementById(
+        "quotation-package"
+    );
+
+const quotationTotal =
+    document.getElementById(
+        "quotation-total"
+    );
+
+const quotationMessage =
+    document.getElementById(
+        "quotation-message"
+    );
+
+
+/*==================================================
+SHOW QUOTATION CHOICE
+==================================================*/
+
+function showQuotationChoice(customer) {
+
+    if (!quotationModal) return;
+
+
+    quotationPackage.textContent =
+        selectedPackage;
+
+
+    quotationTotal.textContent =
+        `R${currentTotal.toLocaleString("en-ZA")}`;
+
+
+    quotationMessage.textContent =
+        `Thank you, ${customer.name}. Your proposal request has been sent successfully.`;
+
     
-submitButton.textContent="Sent ✓";
+    quotationModal.classList.add("show");
 
-showToast(
-"Message sent successfully!"
-);
-
-contactForm.reset();
-
-setTimeout(()=>{
-
-submitButton.disabled=false;
-
-submitButton.textContent=
-"Send Proposal Request";
-
-},2500);
-
-}catch(error){
-
-console.error(error);
-
-submitButton.disabled=false;
-
-submitButton.textContent=
-"Send Proposal Request";
-
-showToast(
-"Failed to send message."
-);
+    
+    document.body.style.overflow =
+        "hidden";
 
 }
 
-});
+
+/*==================================================
+CLOSE QUOTATION
+==================================================*/
+
+function closeQuotationModal() {
+
+    quotationModal.classList.remove(
+        "show"
+    );
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+if (quotationClose) {
+
+    quotationClose.addEventListener(
+        "click",
+        closeQuotationModal
+    );
+
+}
+
+
+if (quotationLater) {
+
+    quotationLater.addEventListener(
+        "click",
+        closeQuotationModal
+    );
+
+}
+
+
+/*==================================================
+CLICK OUTSIDE
+==================================================*/
+
+if (quotationModal) {
+
+    quotationModal.addEventListener(
+        "click",
+        e => {
+
+            if (
+                e.target ===
+                quotationModal
+            ) {
+
+                closeQuotationModal();
+
+            }
+
+        }
+    );
+
+}
+
+
+/*==================================================
+GENERATE PDF
+==================================================*/
+
+async function generateQuotationPDF() {
+
+    try {
+
+        downloadQuotation.disabled =
+            true;
+
+        downloadQuotation.innerHTML =
+            `<i class="fas fa-spinner fa-spin"></i> Creating PDF...`;
+
+
+        const jsPDF =
+            await loadJsPDF();
+
+
+        const doc =
+            new jsPDF({
+
+                orientation:"portrait",
+
+                unit:"mm",
+
+                format:"a4"
+
+            });
+
+
+        const data =
+            getQuotationData();
+
+
+        const name =
+            proposalForm
+                .querySelector(
+                    '[name="name"]'
+                )
+                .value
+                .trim();
+
+
+        const email =
+            proposalForm
+                .querySelector(
+                    '[name="email"]'
+                )
+                .value
+                .trim();
+
+
+        const phone =
+            proposalForm
+                .querySelector(
+                    '[name="phone"]'
+                )
+                .value
+                .trim();
+
+
+        const company =
+            proposalForm
+                .querySelector(
+                    '[name="company"]'
+                )
+                .value
+                .trim();
+
+
+        const message =
+            proposalForm
+                .querySelector(
+                    '[name="message"]'
+                )
+                .value
+                .trim();
+
+
+        /* ------------------------------------------
+           COLORS
+        ------------------------------------------ */
+
+        const navy =
+            [7,11,23];
+
+        const purple =
+            [79,70,229];
+
+        const cyan =
+            [6,182,212];
+
+        const light =
+            [245,247,255];
+
+        const muted =
+            [110,120,145];
+
+
+        /* ------------------------------------------
+           BACKGROUND
+        ------------------------------------------ */
+
+        doc.setFillColor(
+            ...navy
+        );
+
+        doc.rect(
+            0,
+            0,
+            210,
+            297,
+            "F"
+        );
+
+
+        /* ------------------------------------------
+           TOP ACCENT
+        ------------------------------------------ */
+
+        doc.setFillColor(
+            ...purple
+        );
+
+        doc.rect(
+            0,
+            0,
+            210,
+            5,
+            "F"
+        );
+
+
+        doc.setFillColor(
+            ...cyan
+        );
+
+        doc.rect(
+            0,
+            5,
+            210,
+            1.5,
+            "F"
+        );
+
+
+        /* ------------------------------------------
+           BRAND
+        ------------------------------------------ */
+
+        doc.setTextColor(
+            ...light
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(25);
+
+        doc.text(
+            "KASITU",
+            20,
+            28
+        );
+
+
+        doc.setTextColor(
+            ...cyan
+        );
+
+        doc.setFontSize(10);
+
+        doc.text(
+            "WEBS",
+            20,
+            35
+        );
+
+
+        doc.setTextColor(
+            ...muted
+        );
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        doc.setFontSize(8);
+
+        doc.text(
+            "Building Digital Excellence",
+            20,
+            41
+        );
+
+
+        /* ------------------------------------------
+           QUOTATION TITLE
+        ------------------------------------------ */
+
+        doc.setTextColor(
+            ...light
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(22);
+
+        doc.text(
+            "PROJECT QUOTATION",
+            190,
+            28,
+            {
+                align:"right"
+            }
+        );
+
+
+        doc.setTextColor(
+            ...muted
+        );
+
+        doc.setFontSize(8);
+
+        doc.text(
+            "PRELIMINARY ESTIMATE",
+            190,
+            35,
+            {
+                align:"right"
+            }
+        );
+
+
+        doc.text(
+            new Date().toLocaleDateString(
+                "en-ZA"
+            ),
+            190,
+            41,
+            {
+                align:"right"
+            }
+        );
+
+
+        /* ------------------------------------------
+           DIVIDER
+        ------------------------------------------ */
+
+        doc.setDrawColor(
+            45,
+            55,
+            80
+        );
+
+        doc.line(
+            20,
+            52,
+            190,
+            52
+        );
+
+
+        /* ------------------------------------------
+           CLIENT INFORMATION
+        ------------------------------------------ */
+
+        doc.setTextColor(
+            ...cyan
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(10);
+
+        doc.text(
+            "CLIENT INFORMATION",
+            20,
+            66
+        );
+
+
+        doc.setTextColor(
+            ...light
+        );
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        doc.setFontSize(10);
+
+        doc.text(
+            `Name: ${name}`,
+            20,
+            76
+        );
+
+
+        doc.text(
+            `Email: ${email}`,
+            20,
+            84
+        );
+
+
+        doc.text(
+            `Phone: ${phone || "Not provided"}`,
+            20,
+            92
+        );
+
+
+        doc.text(
+            `Company: ${company || "Not provided"}`,
+            20,
+            100
+        );
+
+
+        /* ------------------------------------------
+           PACKAGE
+        ------------------------------------------ */
+
+        doc.setFillColor(
+            14,
+            21,
+            42
+        );
+
+        doc.roundedRect(
+            20,
+            112,
+            170,
+            38,
+            5,
+            5,
+            "F"
+        );
+
+
+        doc.setTextColor(
+            ...cyan
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(9);
+
+        doc.text(
+            "SELECTED PACKAGE",
+            28,
+            124
+        );
+
+
+        doc.setTextColor(
+            ...light
+        );
+
+        doc.setFontSize(15);
+
+        doc.text(
+            data.packageName,
+            28,
+            137
+        );
+
+
+        doc.setTextColor(
+            ...muted
+        );
+
+        doc.setFontSize(9);
+
+        doc.text(
+            `Base price: R${data.packagePrice.toLocaleString("en-ZA")}`,
+            28,
+            145
+        );
+
+
+        /* ------------------------------------------
+           EXTRAS
+        ------------------------------------------ */
+
+        doc.setTextColor(
+            ...cyan
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(10);
+
+        doc.text(
+            "ADDITIONAL FEATURES",
+            20,
+            168
+        );
+
+
+        let y =
+            178;
+
+
+        doc.setTextColor(
+            ...light
+        );
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        doc.setFontSize(9);
+
+
+        if (
+            data.extras.length === 0
+        ) {
+
+            doc.text(
+                "No additional features selected.",
+                20,
+                y
+            );
+
+            y += 8;
+
+        } else {
+
+            data.extras.forEach(
+                feature => {
+
+                    const cleanFeature =
+                        feature.replace(
+                            /\s+/g,
+                            " "
+                        );
+
+                    doc.text(
+                        `• ${cleanFeature}`,
+                        22,
+                        y
+                    );
+
+                    y += 8;
+
+                }
+            );
+
+        }
+
+
+        /* ------------------------------------------
+           TOTAL
+        ------------------------------------------ */
+
+        y += 8;
+
+
+        doc.setFillColor(
+            ...purple
+        );
+
+        doc.roundedRect(
+            20,
+            y,
+            170,
+            28,
+            5,
+            5,
+            "F"
+        );
+
+
+        doc.setTextColor(
+            220,
+            225,
+            255
+        );
+
+        doc.setFontSize(9);
+
+        doc.text(
+            "ESTIMATED PROJECT INVESTMENT",
+            28,
+            y + 11
+        );
+
+
+        doc.setTextColor(
+            255,
+            255,
+            255
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(19);
+
+        doc.text(
+            `R${data.total.toLocaleString("en-ZA")}`,
+            182,
+            y + 19,
+            {
+                align:"right"
+            }
+        );
+
+
+        /* ------------------------------------------
+           PROJECT DESCRIPTION
+        ------------------------------------------ */
+
+        y += 43;
+
+
+        doc.setTextColor(
+            ...cyan
+        );
+
+        doc.setFontSize(10);
+
+        doc.text(
+            "PROJECT DESCRIPTION",
+            20,
+            y
+        );
+
+
+        y += 9;
+
+
+        doc.setTextColor(
+            ...light
+        );
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        doc.setFontSize(8.5);
+
+
+        const wrapped =
+            doc.splitTextToSize(
+                message,
+                165
+            );
+
+
+        doc.text(
+            wrapped,
+            20,
+            y
+        );
+
+
+        /* ------------------------------------------
+           FOOTER
+        ------------------------------------------ */
+
+        doc.setDrawColor(
+            45,
+            55,
+            80
+        );
+
+        doc.line(
+            20,
+            270,
+            190,
+            270
+        );
+
+
+        doc.setTextColor(
+            ...muted
+        );
+
+        doc.setFontSize(7.5);
+
+        doc.text(
+            "KASITU Webs • Soshanguve, Pretoria, Gauteng, South Africa",
+            20,
+            280
+        );
+
+
+        doc.text(
+            "info@kasituwebs.co.za • +27 79 438 0103",
+            20,
+            287
+        );
+
+
+        doc.setTextColor(
+            ...cyan
+        );
+
+        doc.text(
+            "This quotation is an estimate and may be adjusted after project consultation.",
+            190,
+            287,
+            {
+                align:"right"
+            }
+        );
+
+
+        /* ------------------------------------------
+           SAVE
+        ------------------------------------------ */
+
+        const safeName =
+            name
+                .replace(
+                    /[^a-z0-9]/gi,
+                    "-"
+                )
+                .toLowerCase();
+
+
+        doc.save(
+            `KASITU-Webs-Quotation-${safeName || "Client"}.pdf`
+        );
+
+
+        showToast(
+            "Quotation downloaded successfully!"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "PDF generation failed:",
+            error
+        );
+
+        showToast(
+            "Unable to create the quotation PDF."
+        );
+
+    } finally {
+
+        downloadQuotation.disabled =
+            false;
+
+        downloadQuotation.innerHTML =
+            `<i class="fas fa-file-pdf"></i> Download Quotation`;
+
+    }
+
+}
+
+
+/*==================================================
+DOWNLOAD BUTTON
+==================================================*/
+
+if (downloadQuotation) {
+
+    downloadQuotation.addEventListener(
+        "click",
+        generateQuotationPDF
+    );
 
 }
 
