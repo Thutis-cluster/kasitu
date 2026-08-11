@@ -1555,6 +1555,7 @@ EMAIL FORM
 
 /*==================================================
 KASITU PROPOSAL REQUEST SYSTEM
+EmailJS + WhatsApp + Quotation
 ==================================================*/
 
 const proposalForm =
@@ -1586,18 +1587,51 @@ function getSelectedExtras() {
 
     const selected = [];
 
-    extras.forEach(extra => {
+    /*
+       Use the existing extraInputs variable
+       from the calculator section.
+    */
 
-        if (extra.checked) {
+    if (typeof extraInputs !== "undefined") {
 
-            const label =
-                extra.parentElement.textContent.trim();
+        extraInputs.forEach(extra => {
 
-            selected.push(label);
+            if (extra.checked) {
 
-        }
+                const option =
+                    extra.closest(".extra-option");
 
-    });
+                let label = "";
+
+                if (option) {
+
+                    label =
+                        option.textContent
+                            .replace(/\s+/g, " ")
+                            .trim();
+
+                } else {
+
+                    label =
+                        extra.parentElement
+                            ? extra.parentElement.textContent
+                                .replace(/\s+/g, " ")
+                                .trim()
+                            : extra.dataset.extra || "";
+
+                }
+
+                if (label) {
+
+                    selected.push(label);
+
+                }
+
+            }
+
+        });
+
+    }
 
     return selected;
 
@@ -1615,9 +1649,9 @@ function buildWhatsAppMessage(customer) {
 
     return `Hello KASITU Webs 👋
 
-I would like to proceed with a website project.
+I would like to request a quotation.
 
-Customer:
+Name:
 ${customer.name}
 
 Email:
@@ -1636,17 +1670,18 @@ Extras:
 ${selectedExtras.join(", ") || "None"}
 
 Estimated Total:
-R${currentTotal.toLocaleString("en-ZA")}
+${formatCurrency(currentTotal)}
 
-Project:
+Project Details:
 ${customer.message}
 
 Thank you.`;
+
 }
 
 
 /*==================================================
-BUILD PDF DATA
+BUILD QUOTATION DATA
 ==================================================*/
 
 function getQuotationData() {
@@ -1656,14 +1691,17 @@ function getQuotationData() {
 
     return {
 
-        packageName: selectedPackage,
+        packageName:
+            selectedPackage,
 
         packagePrice:
             packagePrices[selectedPackage] || 0,
 
-        extras: selectedExtras,
+        extras:
+            selectedExtras,
 
-        total: currentTotal
+        total:
+            currentTotal
 
     };
 
@@ -1683,9 +1721,53 @@ if (proposalForm) {
             e.preventDefault();
 
 
-            /* --------------------------------------
-               PACKAGE CHECK
-            -------------------------------------- */
+            /*========================================
+              EMAILJS CHECK
+            ========================================*/
+
+            if (
+                typeof emailjs === "undefined"
+            ) {
+
+                console.error(
+                    "EmailJS library was not loaded."
+                );
+
+                showToast(
+                    "Email service is currently unavailable."
+                );
+
+                return;
+
+            }
+
+
+            /*========================================
+              EMAILJS CONFIGURATION CHECK
+            ========================================*/
+
+            if (
+                !EMAILJS_SERVICE_ID ||
+                !EMAILJS_TEMPLATE_ID ||
+                !EMAILJS_PUBLIC_KEY
+            ) {
+
+                console.error(
+                    "EmailJS configuration is incomplete."
+                );
+
+                showToast(
+                    "Email service has not been configured."
+                );
+
+                return;
+
+            }
+
+
+            /*========================================
+              PACKAGE CHECK
+            ========================================*/
 
             if (!selectedPackage) {
 
@@ -1698,9 +1780,9 @@ if (proposalForm) {
             }
 
 
-            /* --------------------------------------
-               FORM ELEMENTS
-            -------------------------------------- */
+            /*========================================
+              FORM ELEMENTS
+            ========================================*/
 
             const nameInput =
                 proposalForm.querySelector(
@@ -1728,9 +1810,32 @@ if (proposalForm) {
                 );
 
 
-            /* --------------------------------------
-               BASIC VALIDATION
-            -------------------------------------- */
+            /*========================================
+              SAFETY CHECK
+            ========================================*/
+
+            if (
+                !nameInput ||
+                !emailInput ||
+                !messageInput
+            ) {
+
+                console.error(
+                    "Required form fields are missing."
+                );
+
+                showToast(
+                    "Some form fields are missing."
+                );
+
+                return;
+
+            }
+
+
+            /*========================================
+              GET VALUES
+            ========================================*/
 
             const name =
                 nameInput.value.trim();
@@ -1739,14 +1844,22 @@ if (proposalForm) {
                 emailInput.value.trim();
 
             const phone =
-                phoneInput.value.trim();
+                phoneInput
+                    ? phoneInput.value.trim()
+                    : "";
 
             const company =
-                companyInput.value.trim();
+                companyInput
+                    ? companyInput.value.trim()
+                    : "";
 
             const message =
                 messageInput.value.trim();
 
+
+            /*========================================
+              NAME VALIDATION
+            ========================================*/
 
             if (!name) {
 
@@ -1761,6 +1874,10 @@ if (proposalForm) {
             }
 
 
+            /*========================================
+              EMAIL VALIDATION
+            ========================================*/
+
             if (!email) {
 
                 showToast(
@@ -1774,7 +1891,9 @@ if (proposalForm) {
             }
 
 
-            if (!emailInput.checkValidity()) {
+            if (
+                !emailInput.checkValidity()
+            ) {
 
                 showToast(
                     "Please enter a valid email address."
@@ -1787,9 +1906,26 @@ if (proposalForm) {
             }
 
 
-            /* --------------------------------------
-               8 WORD MINIMUM
-            -------------------------------------- */
+            /*========================================
+              MESSAGE VALIDATION
+            ========================================*/
+
+            if (!message) {
+
+                showToast(
+                    "Please describe your project."
+                );
+
+                messageInput.focus();
+
+                return;
+
+            }
+
+
+            /*========================================
+              8 WORD MINIMUM
+            ========================================*/
 
             const wordCount =
                 countWords(message);
@@ -1808,13 +1944,17 @@ if (proposalForm) {
             }
 
 
-            /* --------------------------------------
-               ANTI-SPAM COOLDOWN
-            -------------------------------------- */
+            /*========================================
+              ANTI-SPAM COOLDOWN
+            ========================================*/
 
-            const now = Date.now();
+            const now =
+                Date.now();
 
-            if (now - lastSubmit < 10000) {
+
+            if (
+                now - lastSubmit < 10000
+            ) {
 
                 showToast(
                     "Please wait before sending another request."
@@ -1824,71 +1964,113 @@ if (proposalForm) {
 
             }
 
+
+            /*========================================
+              SAVE SUBMISSION TIME
+            ========================================*/
+
             lastSubmit = now;
 
 
-            /* --------------------------------------
-               BUTTON
-            -------------------------------------- */
+            /*========================================
+              CALCULATE FINAL TOTAL
+            ========================================*/
+
+            currentTotal =
+                calculateTotal();
+
+
+            /*========================================
+              SUBMIT BUTTON
+            ========================================*/
 
             const submitButton =
                 proposalForm.querySelector(
                     'button[type="submit"]'
                 );
 
-            submitButton.disabled = true;
 
-            submitButton.textContent =
-                "Sending Proposal...";
+            if (submitButton) {
 
+                submitButton.disabled =
+                    true;
+
+                submitButton.textContent =
+                    "Sending Proposal...";
+
+            }
+
+
+            /*========================================
+              CUSTOMER DATA
+            ========================================*/
+
+            const customer = {
+
+                name,
+                email,
+                phone,
+                company,
+                message
+
+            };
+
+
+            /*========================================
+              SEND EMAIL WITH EMAILJS
+            ========================================*/
 
             try {
 
-                /* ----------------------------------
-                   EMAILJS
-                ---------------------------------- */
+                /*
+                   EmailJS was already initialized
+                   at the top of this JavaScript file.
+
+                   DO NOT initialize it again here.
+                */
 
                 const response =
-                await emailjs.sendForm(
-                EMAILJS_SERVICE_ID,
-                EMAILJS_TEMPLATE_ID,
-                proposalForm
+                    await emailjs.sendForm(
+
+                        EMAILJS_SERVICE_ID,
+
+                        EMAILJS_TEMPLATE_ID,
+
+                        proposalForm
+
                     );
 
 
                 console.log(
-                    "Proposal sent:",
+                    "Proposal sent successfully:",
                     response
                 );
 
 
-                submitButton.textContent =
-                    "Proposal Sent ✓";
+                /*====================================
+                  SUCCESS BUTTON
+                ====================================*/
 
+                if (submitButton) {
+
+                    submitButton.textContent =
+                        "Proposal Sent ✓";
+
+                }
+
+
+                /*====================================
+                  SUCCESS MESSAGE
+                ====================================*/
 
                 showToast(
                     "Proposal request sent successfully!"
                 );
 
 
-                /* ----------------------------------
-                   CUSTOMER DATA
-                ---------------------------------- */
-
-                const customer = {
-
-                    name,
-                    email,
-                    phone,
-                    company,
-                    message
-
-                };
-
-
-                /* ----------------------------------
-                   WHATSAPP
-                ---------------------------------- */
+                /*====================================
+                  WHATSAPP MESSAGE
+                ====================================*/
 
                 const whatsappMessage =
                     buildWhatsAppMessage(
@@ -1896,9 +2078,18 @@ if (proposalForm) {
                     );
 
 
+                /*
+                   KASITU Webs WhatsApp number.
+                */
+
                 const whatsappPhone =
                     "27794380103";
 
+
+                /*
+                   IMPORTANT:
+                   This is the corrected WhatsApp URL.
+                */
 
                 const whatsappURL =
                     `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(
@@ -1906,11 +2097,9 @@ if (proposalForm) {
                     )}`;
 
 
-                /*
-                 * Give the browser a moment to finish
-                 * the email request before opening
-                 * WhatsApp.
-                 */
+                /*====================================
+                  OPEN WHATSAPP
+                ====================================*/
 
                 setTimeout(() => {
 
@@ -1922,9 +2111,9 @@ if (proposalForm) {
                 }, 700);
 
 
-                /* ----------------------------------
-                   PDF QUESTION
-                ---------------------------------- */
+                /*====================================
+                  SHOW QUOTATION OPTION
+                ====================================*/
 
                 setTimeout(() => {
 
@@ -1943,11 +2132,24 @@ if (proposalForm) {
                 );
 
 
-                submitButton.disabled = false;
+                /*====================================
+                  RESTORE BUTTON
+                ====================================*/
 
-                submitButton.textContent =
-                    "Send Proposal Request";
+                if (submitButton) {
 
+                    submitButton.disabled =
+                        false;
+
+                    submitButton.textContent =
+                        "Send Proposal Request";
+
+                }
+
+
+                /*====================================
+                  ERROR MESSAGE
+                ====================================*/
 
                 showToast(
                     "Failed to send message. Please try again."
