@@ -956,11 +956,13 @@ CONTINUE → CONTACT FORM
 
 const whatsappBtn = document.getElementById("whatsapp-btn");
 const contactSection = document.getElementById("contact");
-const contactForm = document.getElementById("contact-form");
 
 if (whatsappBtn) {
 
-    whatsappBtn.addEventListener("click", () => {
+    whatsappBtn.addEventListener("click", function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
 
         /* ------------------------------------------
            NO PACKAGE SELECTED
@@ -973,8 +975,8 @@ if (whatsappBtn) {
             );
 
             return;
-        }
 
+        }
 
         /* ------------------------------------------
            PACKAGE SELECTED
@@ -1073,39 +1075,28 @@ toast.remove();
 INPUT SANITIZER
 ==================================================*/
 
-function sanitize(value){
+function sanitizeInput(value) {
 
-return value
-
-.replace(/[<>]/g,"")
-
-.trim();
+    return value.replace(/[<>]/g, "");
 
 }
 
 document
+.querySelectorAll("input, textarea")
+.forEach(input => {
 
-.querySelectorAll(
+    input.addEventListener("input", () => {
 
-"input,textarea"
+        const cursorPosition = input.selectionStart;
 
-)
+        input.value = sanitizeInput(input.value);
 
-.forEach(input=>{
+        input.setSelectionRange(
+            cursorPosition,
+            cursorPosition
+        );
 
-input.addEventListener(
-
-"input",
-
-()=>{
-
-input.value=
-
-sanitize(input.value);
-
-}
-
-);
+    });
 
 });
 
