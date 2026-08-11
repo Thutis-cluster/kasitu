@@ -2191,7 +2191,7 @@ if (proposalForm) {
 
         }
 
-    }, 1800);
+    }, 1800); }
 
             } catch (error) {
 
