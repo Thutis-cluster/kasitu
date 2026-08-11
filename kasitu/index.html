@@ -1763,11 +1763,18 @@ we'll prepare a personalised proposal.
                 placeholder="Email Address"
                 required>
 
+
             <input
                 type="tel"
                 name="phone"
-                placeholder="Phone Number">
+                placeholder="Phone Number (10 digits)"
+                inputmode="numeric"
+                pattern="[0-9]{10}"
+                minlength="10"
+                maxlength="10"
+                required>
 
+            
             <input
                 type="text"
                 name="company"
