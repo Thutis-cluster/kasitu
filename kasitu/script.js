@@ -7,6 +7,30 @@ Version 2.0
 'use strict';
 
 /*==================================================
+KASITU EMAILJS CONFIGURATION
+==================================================*/
+
+const EMAILJS_PUBLIC_KEY = "a3wBtn2bKfskDS4Sa";
+const EMAILJS_SERVICE_ID = "service_9a3fush";
+const EMAILJS_TEMPLATE_ID = "template_3lwzm3g";
+
+if (typeof emailjs !== "undefined") {
+
+    emailjs.init({
+        publicKey: a3wBtn2bKfskDS4Sa
+    });
+
+    console.log("EmailJS initialized ✔");
+
+} else {
+
+    console.error(
+        "EmailJS library was not loaded."
+    );
+
+}
+
+/*==================================================
 SELECTORS
 ==================================================*/
 
@@ -633,221 +657,280 @@ WhatsApp Quote
    LIVE PRICE CALCULATOR
 ========================================== */
 
+/*==================================================
+LIVE PRICE CALCULATOR
+==================================================*/
+
 const packagePrices = {
-    "Starter Website": 2999,
-    "Business Website": 4999,
-    "Online Store": 5999,
-    "Online Store PRO": 7999
+
+```
+"Starter Website": 2999,
+
+"Business Website": 4999,
+
+"Online Store": 5999,
+
+"Online Store PRO": 7999
+```
+
 };
 
-const packageButtons = document.querySelectorAll(".select-price");
-const packageInput = document.getElementById("site-type");
-const extraInputs = document.querySelectorAll(".extra");
-const totalElement = document.getElementById("total");
+const packageButtons =
+document.querySelectorAll(".select-price");
+
+const packageInput =
+document.getElementById("site-type");
+
+const extraInputs =
+document.querySelectorAll(".extra");
+
+const totalElement =
+document.getElementById("total");
+
+const calculatorForm =
+document.getElementById("price-form");
 
 let selectedPackage = "";
+
 let currentTotal = 0;
 
+/*==================================================
+RECOMMENDED EXTRAS
 
-/* ==========================================
-   RECOMMENDED EXTRAS
-   These are HIGHLIGHTED only.
-   They are NOT automatically checked.
-========================================== */
+IMPORTANT:
+These are ONLY highlighted.
+They are NOT automatically selected.
+==================================================*/
 
 const recommendedExtras = {
 
-    "Starter Website": [
-        "seo",
-        "whatsapp",
-        "blog"
-    ],
+```
+"Starter Website": [
 
-    "Business Website": [
-        "app",
-        "seo",
-        "booking",
-        "dashboard",
-        "login"
-    ],
+    "seo",
+    "whatsapp",
+    "blog"
 
-    "Online Store": [
-        "app",
-        "login"
-    ],
+],
 
-        "Online Store PRO": [
-        "app"
-    ]
+"Business Website": [
+
+    "app",
+    "seo",
+    "booking",
+    "dashboard",
+    "login"
+
+],
+
+"Online Store": [
+
+    "app",
+    "login"
+
+],
+
+"Online Store PRO": [
+
+    "app",
+    "dashboard",
+    "login"
+
+]
+```
 
 };
 
-
-/* ==========================================
-   FORMAT CURRENCY
-========================================== */
+/*==================================================
+FORMAT CURRENCY
+==================================================*/
 
 function formatCurrency(value) {
 
-    return "R" + Number(value).toLocaleString("en-ZA");
+```
+return "R" +
+    Number(value).toLocaleString("en-ZA");
+```
 
 }
 
-/* ==========================================
-   CALCULATE TOTAL
-========================================== */
+/*==================================================
+CALCULATE TOTAL
+==================================================*/
 
 function calculateTotal() {
 
-    let total =
-        packagePrices[selectedPackage] || 0;
+```
+let total =
+    packagePrices[selectedPackage] || 0;
 
 
-    extraInputs.forEach(extra => {
+extraInputs.forEach(extra => {
 
-        if (extra.checked) {
+    if (extra.checked) {
 
-            const extraPrice =
-                Number(extra.dataset.price) || 0;
+        const extraPrice =
+            Number(extra.dataset.price) || 0;
 
-            total += extraPrice;
-
-        }
-
-    });
-
-
-    return total;
-
-}
-
-
-/* ==========================================
-   UPDATE TOTAL
-========================================== */
-
-function updatePrice() {
-
-    const total =
-        calculateTotal();
-
-    animatePrice(total);
-
-}
-
-
-/* ==========================================
-   ANIMATE PRICE
-========================================== */
-
-function animatePrice(target) {
-
-    if (!totalElement) return;
-
-
-    const start = currentTotal;
-
-    const difference =
-        target - start;
-
-    const duration = 400;
-
-    const startTime =
-        performance.now();
-
-
-    function animate(currentTime) {
-
-        const elapsed =
-            currentTime - startTime;
-
-
-        const progress =
-            Math.min(
-                elapsed / duration,
-                1
-            );
-
-
-        const value =
-            start +
-            difference * progress;
-
-
-        totalElement.textContent =
-            formatCurrency(
-                Math.round(value)
-            );
-
-
-        if (progress < 1) {
-
-            requestAnimationFrame(animate);
-
-        } else {
-
-            currentTotal = target;
-
-        }
+        total += extraPrice;
 
     }
 
+});
 
-    requestAnimationFrame(animate);
+
+return total;
+```
+
+}
+
+/*==================================================
+UPDATE TOTAL
+==================================================*/
+
+function updatePrice() {
+
+```
+const total =
+    calculateTotal();
+
+animatePrice(total);
+```
+
+}
+
+/*==================================================
+ANIMATE PRICE
+==================================================*/
+
+function animatePrice(target) {
+
+```
+if (!totalElement) return;
+
+
+const start =
+    currentTotal;
+
+const difference =
+    target - start;
+
+const duration =
+    400;
+
+const startTime =
+    performance.now();
+
+
+function animate(currentTime) {
+
+    const elapsed =
+        currentTime - startTime;
+
+
+    const progress =
+        Math.min(
+            elapsed / duration,
+            1
+        );
+
+
+    const value =
+        start +
+        difference * progress;
+
+
+    totalElement.textContent =
+        formatCurrency(
+            Math.round(value)
+        );
+
+
+    if (progress < 1) {
+
+        requestAnimationFrame(
+            animate
+        );
+
+    } else {
+
+        currentTotal =
+            target;
+
+    }
 
 }
 
 
-/* ==========================================
-   HIGHLIGHT RECOMMENDED EXTRAS
-========================================== */
+requestAnimationFrame(
+    animate
+);
+```
+
+}
+
+/*==================================================
+HIGHLIGHT RECOMMENDED EXTRAS
+==================================================*/
 
 function updateRecommendedExtras() {
 
-    // Remove previous recommendations
+```
+/* Remove old recommendations */
 
-    extraInputs.forEach(extra => {
+extraInputs.forEach(extra => {
+
+    const option =
+        extra.closest(".extra-option");
+
+    if (!option) return;
+
+    option.classList.remove(
+        "recommended"
+    );
+
+});
+
+
+/* Get recommendations */
+
+const recommendations =
+    recommendedExtras[
+        selectedPackage
+    ] || [];
+
+
+/* Highlight recommendations */
+
+extraInputs.forEach(extra => {
+
+    const extraType =
+        extra.dataset.extra;
+
+
+    if (
+        recommendations.includes(
+            extraType
+        )
+    ) {
 
         const option =
-            extra.closest(".extra-option");
+            extra.closest(
+                ".extra-option"
+            );
+
 
         if (!option) return;
 
-        option.classList.remove("recommended");
 
-    });
+        option.classList.add(
+            "recommended"
+        );
 
+    }
 
-    // Get recommendations for selected package
-
-    const recommendations =
-        recommendedExtras[selectedPackage] || [];
-
-
-    // Highlight matching extras
-
-    extraInputs.forEach(extra => {
-
-        const extraType =
-            extra.dataset.extra;
-
-
-        if (
-            recommendations.includes(extraType)
-        ) {
-
-            const option =
-                extra.closest(".extra-option");
-
-            if (!option) return;
-
-            option.classList.add(
-                "recommended"
-            );
-
-        }
-
-    });
+});
+```
 
 }
 
@@ -857,79 +940,279 @@ SELECT PACKAGE
 
 packageButtons.forEach(button => {
 
-    button.addEventListener("click", e => {
+```
+button.addEventListener(
+    "click",
+    function () {
 
-        e.preventDefault();
 
-        const card = button.closest(".price-card");
+        const card =
+            this.closest(
+                ".price-card"
+            );
+
 
         if (!card) return;
 
+
+        const heading =
+            card.querySelector("h3");
+
+
+        if (!heading) return;
+
+
         selectedPackage =
-            card.querySelector("h3").textContent.trim();
+            heading.textContent.trim();
 
-        packageInput.value = selectedPackage;
 
-        calculateTotal();
+        /* Put package into calculator */
 
-        /* Highlight selected package */
-        document.querySelectorAll(".price-card")
-            .forEach(card => {
-                card.classList.remove("package-selected");
-            });
+        if (packageInput) {
 
-        card.classList.add("package-selected");
+            packageInput.value =
+                selectedPackage;
 
-        /* Tell the user what happened */
-        showToast(
-            `${selectedPackage} selected ✓`
-        );
+        }
 
-        /* Small delay before moving to calculator */
-        setTimeout(() => {
 
-            const calculator =
-                document.querySelector(".calculator");
+        /* Recalculate */
 
-            if (calculator) {
+        updatePrice();
+
+
+        /* Highlight recommendations */
+
+        updateRecommendedExtras();
+
+
+        /* Notify user */
+
+        if (
+            typeof showToast ===
+            "function"
+        ) {
+
+            showToast(
+                selectedPackage +
+                " selected ✓"
+            );
+
+        }
+
+
+        /* Smooth scroll to calculator */
+
+        const calculator =
+            document.getElementById(
+                "calculator"
+            );
+
+
+        if (calculator) {
+
+            setTimeout(() => {
 
                 calculator.scrollIntoView({
+
                     behavior: "smooth",
+
                     block: "center"
+
                 });
 
-            }
+            }, 150);
 
-        }, 350);
+        }
 
-    });
+    }
+);
+```
 
 });
 
-/* ==========================================
-   EXTRA FEATURES
-   UPDATE PRICE WHEN CHECKED/UNCHECKED
-========================================== */
+/*==================================================
+EXTRA FEATURE CHANGES
+==================================================*/
 
 extraInputs.forEach(extra => {
 
-    extra.addEventListener(
-        "change",
-        function () {
+```
+extra.addEventListener(
+    "change",
+    () => {
 
-            updatePrice();
+        updatePrice();
 
-        }
-    );
+    }
+);
+```
 
 });
 
+/*==================================================
+CONTINUE BUTTON
+==================================================*/
 
-/* ==========================================
-   INITIAL PRICE
-========================================== */
+const continueButton =
+document.getElementById(
+"whatsapp-btn"
+);
 
-updatePrice();
+if (continueButton) {
+
+```
+continueButton.addEventListener(
+    "click",
+    function () {
+
+
+        /* No package selected */
+
+        if (!selectedPackage) {
+
+            if (
+                typeof showToast ===
+                "function"
+            ) {
+
+                showToast(
+                    "Please select a package to proceed."
+                );
+
+            } else {
+
+                alert(
+                    "Please select a package to proceed."
+                );
+
+            }
+
+            return;
+
+        }
+
+
+        /* Make sure latest price is calculated */
+
+        currentTotal =
+            calculateTotal();
+
+
+        /* Find contact form */
+
+        const contactSection =
+            document.getElementById(
+                "contact"
+            );
+
+
+        const contactForm =
+            document.getElementById(
+                "contact-form"
+            );
+
+
+        /* Tell user what happened */
+
+        if (
+            typeof showToast ===
+            "function"
+        ) {
+
+            showToast(
+
+                selectedPackage +
+                " selected ✓ Scroll down to complete your proposal."
+
+            );
+
+        }
+
+
+        /* Smooth scroll */
+
+        if (contactSection) {
+
+            contactSection.scrollIntoView({
+
+                behavior: "smooth",
+
+                block: "start"
+
+            });
+
+        }
+
+
+        /* Put selected package into form */
+
+        if (packageInput) {
+
+            packageInput.value =
+                selectedPackage;
+
+        }
+
+
+        /* Highlight name field */
+
+        if (contactForm) {
+
+            setTimeout(() => {
+
+                const nameInput =
+                    contactForm.querySelector(
+                        'input[name="name"]'
+                    );
+
+
+                if (nameInput) {
+
+                    nameInput.classList.add(
+                        "form-highlight"
+                    );
+
+
+                    nameInput.focus();
+
+
+                    setTimeout(() => {
+
+                        nameInput.classList.remove(
+                            "form-highlight"
+                        );
+
+                    }, 3000);
+
+                }
+
+            }, 900);
+
+        }
+
+    }
+);
+```
+
+}
+
+/*==================================================
+INITIAL STATE
+==================================================*/
+
+if (totalElement) {
+
+```
+totalElement.textContent =
+    "R0";
+```
+
+}
+
+console.log(
+"KASITU Calculator Loaded ✓"
+);
 
 /*==================================================
 WHATSAPP QUOTE
@@ -1592,16 +1875,10 @@ if (proposalForm) {
                 ---------------------------------- */
 
                 const response =
-                    await emailjs.sendForm(
-
-                        window.EMAILJS_CONFIG.serviceId,
-
-                        window.EMAILJS_CONFIG.templateId,
-
-                        proposalForm,
-
-                        window.EMAILJS_CONFIG.publicKey
-
+                await emailjs.sendForm(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                proposalForm
                     );
 
 
