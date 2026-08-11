@@ -1895,6 +1895,48 @@ if (proposalForm) {
 
             }
 
+           
+                  /*========================================
+                       PHONE VALIDATION
+                       EXACTLY 10 DIGITS
+                   ========================================*/
+
+                        if (!phoneInput) {
+
+                            showToast(
+                           "Phone number field is missing."
+                                     );
+
+                               return;
+
+                              }
+
+
+                              if (!phone) {
+
+                               showToast(
+                               "Please enter your phone number."
+                               );
+
+                               phoneInput.focus();
+
+                               return;
+
+                              }
+
+
+                              if (!/^\d{10}$/.test(phone)) {
+
+                               showToast(
+                             "Please enter exactly 10 digits for your phone number."
+                            );
+
+                   phoneInput.focus();
+
+                   return;
+
+               }
+
 
             /*========================================
               MESSAGE VALIDATION
@@ -2114,11 +2156,13 @@ if (proposalForm) {
         Give the user the quotation option too.
         */
 
-        setTimeout(() => {
+if (selectedPackage) {
 
-            showQuotationChoice(customer);
+    setTimeout(() => {
+        showQuotationChoice(customer);
+    }, 1200);
 
-        }, 1200);
+}
 
         return;
     }
@@ -2171,15 +2215,17 @@ if (proposalForm) {
             handleVisibilityChange
         );
 
-        if (!whatsappOpened) {
+if (!whatsappOpened) {
 
-            showToast(
-                "WhatsApp is unavailable. You can download your quotation instead."
-            );
+    showToast(
+        "WhatsApp is unavailable. You can continue without downloading a quotation."
+    );
 
-            showQuotationChoice(customer);
+    if (selectedPackage) {
+        showQuotationChoice(customer);
+    }
 
-        }
+}
 
     }, 1800); }
 
@@ -2318,29 +2364,27 @@ SHOW QUOTATION CHOICE
 
 function showQuotationChoice(customer) {
 
-    if (!quotationModal) return;
+    /* Never show quotation modal without a package */
+    if (!selectedPackage) {
+        return;
+    }
 
+    if (!quotationModal) return;
 
     quotationPackage.textContent =
         selectedPackage;
 
-
     quotationTotal.textContent =
         `R${currentTotal.toLocaleString("en-ZA")}`;
-
 
     quotationMessage.textContent =
         `Thank you, ${customer.name}. Your proposal request has been sent successfully.`;
 
-    
     quotationModal.classList.add("show");
 
-    
     document.body.style.overflow =
         "hidden";
-
 }
-
 
 /*==================================================
 CLOSE QUOTATION
