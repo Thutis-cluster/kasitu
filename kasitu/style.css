@@ -4650,3 +4650,181 @@ select:focus {
 
     background:#8D98AA;
 }
+
+/*==================================================
+   KASITU QUOTATION MODAL — LIGHT MODE FIX
+==================================================*/
+
+[data-theme="light"] .quotation-modal {
+    background:rgba(15,23,42,.45);
+}
+
+[data-theme="light"] .quotation-modal-card {
+    background:
+        linear-gradient(
+            145deg,
+            #FFFFFF,
+            #F8FAFC
+        );
+
+    color:#111827;
+
+    border:
+        1px solid rgba(15,23,42,.12);
+
+    box-shadow:
+        0 30px 90px rgba(15,23,42,.22);
+}
+
+
+/* Modal heading */
+
+[data-theme="light"] .quotation-modal-card h2,
+[data-theme="light"] .quotation-modal-card h3 {
+    color:#111827;
+}
+
+
+/* Modal paragraph */
+
+[data-theme="light"] .quotation-modal-card > p {
+    color:#5B6475;
+}
+
+
+/* Close button */
+
+[data-theme="light"] .quotation-close {
+    background:#FFFFFF;
+    color:#111827;
+    border:
+        1px solid rgba(15,23,42,.12);
+
+    box-shadow:
+        0 5px 20px rgba(15,23,42,.08);
+}
+
+[data-theme="light"] .quotation-close:hover {
+    background:#4F46E5;
+    color:#FFFFFF;
+}
+
+
+/* Preview cards */
+
+[data-theme="light"] .quotation-preview > div {
+    background:
+        rgba(255,255,255,.90);
+
+    border:
+        1px solid rgba(15,23,42,.10);
+
+    box-shadow:
+        0 8px 25px rgba(15,23,42,.06);
+}
+
+
+[data-theme="light"] .quotation-preview span {
+    color:#687386;
+}
+
+
+[data-theme="light"] .quotation-preview strong {
+    color:#111827;
+}
+
+
+/* Decorative modal glow */
+
+[data-theme="light"] .quotation-modal-card::before {
+    opacity:.10;
+}
+
+[data-theme="light"] .quotation-modal-card::after {
+    opacity:.08;
+}
+
+
+/*==================================================
+   KASITU FOOTER — LIGHT MODE FIX
+==================================================*/
+
+[data-theme="light"] .footer {
+
+    background:
+        linear-gradient(
+            180deg,
+            #FFFFFF,
+            #F3F6FB
+        );
+
+    border-top:
+        1px solid rgba(15,23,42,.10);
+
+    color:#111827;
+
+    box-shadow:
+        0 -10px 40px rgba(15,23,42,.06);
+}
+
+
+/* Footer headings */
+
+[data-theme="light"] .footer h2,
+[data-theme="light"] .footer h3 {
+    color:#111827;
+}
+
+
+/* Footer text */
+
+[data-theme="light"] .footer p,
+[data-theme="light"] .footer li {
+    color:#5B6475;
+}
+
+
+/* Footer links */
+
+[data-theme="light"] .footer a {
+    color:#374151;
+}
+
+[data-theme="light"] .footer a:hover {
+    color:#0891B2;
+}
+
+
+/* Social buttons */
+
+[data-theme="light"] .footer-social a {
+
+    background:
+        rgba(15,23,42,.06);
+
+    border:
+        1px solid rgba(15,23,42,.08);
+
+    color:#374151;
+}
+
+[data-theme="light"] .footer-social a:hover {
+
+    background:#4F46E5;
+
+    color:#FFFFFF;
+
+    border-color:#4F46E5;
+}
+
+
+/* Footer bottom */
+
+[data-theme="light"] .footer-bottom {
+
+    border-top:
+        1px solid rgba(15,23,42,.10);
+
+    color:#687386;
+}
+
