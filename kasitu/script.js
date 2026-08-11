@@ -851,60 +851,45 @@ function updateRecommendedExtras() {
 
 }
 
-
-/* ==========================================
-   SELECT PACKAGE
-========================================== */
+/*==================================================
+SELECT PACKAGE
+==================================================*/
 
 packageButtons.forEach(button => {
 
-    button.addEventListener(
-        "click",
-        function () {
+    button.addEventListener("click", e => {
 
-            const card =
-                this.closest(".price-card");
+        e.preventDefault();
 
-            if (!card) return;
+        const card = button.closest(".price-card");
 
+        if (!card) return;
 
-            const packageName =
-                card.querySelector("h3");
+        selectedPackage =
+            card.querySelector("h3").textContent.trim();
 
-            if (!packageName) return;
+        packageInput.value = selectedPackage;
 
+        calculateTotal();
 
-            selectedPackage =
-                packageName.textContent.trim();
+        /* Highlight selected package */
+        document.querySelectorAll(".price-card")
+            .forEach(card => {
+                card.classList.remove("package-selected");
+            });
 
+        card.classList.add("package-selected");
 
-            /* Update package field */
+        /* Tell the user what happened */
+        showToast(
+            `${selectedPackage} selected ✓`
+        );
 
-            if (packageInput) {
-
-                packageInput.value =
-                    selectedPackage;
-
-            }
-
-
-            /* Highlight recommendations */
-
-            updateRecommendedExtras();
-
-
-            /* Recalculate price */
-
-            updatePrice();
-
-
-            /* Scroll to calculator */
+        /* Small delay before moving to calculator */
+        setTimeout(() => {
 
             const calculator =
-                document.querySelector(
-                    ".calculator"
-                );
-
+                document.querySelector(".calculator");
 
             if (calculator) {
 
@@ -915,11 +900,11 @@ packageButtons.forEach(button => {
 
             }
 
-        }
-    );
+        }, 350);
+
+    });
 
 });
-
 
 /* ==========================================
    EXTRA FEATURES
@@ -954,19 +939,29 @@ WHATSAPP QUOTE
 CONTINUE → CONTACT FORM
 ==================================================*/
 
-const whatsappBtn = document.getElementById("whatsapp-btn");
-const contactSection = document.getElementById("contact");
+const whatsappBtn =
+    document.getElementById("whatsapp-btn");
+
+const contactSection =
+    document.getElementById("contact");
+
+const contactForm =
+    document.getElementById("contact-form");
+
+const nameInput =
+    contactForm?.querySelector('input[name="name"]');
 
 if (whatsappBtn) {
 
-    whatsappBtn.addEventListener("click", function (e) {
+    whatsappBtn.addEventListener("click", function(e) {
 
         e.preventDefault();
+
         e.stopPropagation();
 
-        /* ------------------------------------------
-           NO PACKAGE SELECTED
-        ------------------------------------------ */
+        /* ==========================================
+           NO PACKAGE
+        ========================================== */
 
         if (!selectedPackage) {
 
@@ -974,13 +969,34 @@ if (whatsappBtn) {
                 "Please select a package to proceed."
             );
 
+            /* Take the user back to packages */
+            const pricingSection =
+                document.getElementById("pricing");
+
+            if (pricingSection) {
+
+                pricingSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            }
+
             return;
 
         }
 
-        /* ------------------------------------------
+        /* ==========================================
            PACKAGE SELECTED
-        ------------------------------------------ */
+        ========================================== */
+
+        showToast(
+            `${selectedPackage} selected ✓ — Please tell us about your project.`
+        );
+
+        /* ==========================================
+           SCROLL TO CONTACT
+        ========================================== */
 
         if (contactSection) {
 
@@ -990,6 +1006,32 @@ if (whatsappBtn) {
             });
 
         }
+
+        /* ==========================================
+           FOCUS NAME FIELD AFTER SCROLL
+        ========================================== */
+
+        setTimeout(() => {
+
+            if (nameInput) {
+
+                nameInput.focus();
+
+                nameInput.classList.add(
+                    "input-attention"
+                );
+
+                setTimeout(() => {
+
+                    nameInput.classList.remove(
+                        "input-attention"
+                    );
+
+                }, 2500);
+
+            }
+
+        }, 900);
 
     });
 
