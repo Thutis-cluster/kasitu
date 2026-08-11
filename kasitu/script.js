@@ -921,97 +921,87 @@ extraInputs.forEach(extra => {
 }
 
 /*==================================================
-SELECT PACKAGE
+   SELECT PACKAGE
 ==================================================*/
 
 packageButtons.forEach(button => {
 
-button.addEventListener(
-    "click",
-    function () {
+    button.addEventListener("click", function () {
 
-
-        const card =
-            this.closest(
-                ".price-card"
-            );
-
+        const card = this.closest(".price-card");
 
         if (!card) return;
 
-
-        const heading =
-            card.querySelector("h3");
-
+        const heading = card.querySelector("h3");
 
         if (!heading) return;
 
+        /* ------------------------------------------
+           SAVE SELECTED PACKAGE
+        ------------------------------------------ */
 
-        selectedPackage =
-            heading.textContent.trim();
+        selectedPackage = heading.textContent.trim();
 
 
-        /* Put package into calculator */
+        /* ------------------------------------------
+           PUT PACKAGE INTO CALCULATOR
+        ------------------------------------------ */
 
         if (packageInput) {
-
-            packageInput.value =
-                selectedPackage;
-
+            packageInput.value = selectedPackage;
         }
 
 
-        /* Recalculate */
+        /* ------------------------------------------
+           RECALCULATE PRICE
+        ------------------------------------------ */
 
         updatePrice();
 
 
-        /* Highlight recommendations */
+        /* ------------------------------------------
+           HIGHLIGHT RECOMMENDED EXTRAS
+        ------------------------------------------ */
 
         updateRecommendedExtras();
 
 
-        /* Notify user */
+        /* ------------------------------------------
+           NOTIFY USER
+        ------------------------------------------ */
 
-        if (
-            typeof showToast ===
-            "function"
-        ) {
+        if (typeof showToast === "function") {
 
             showToast(
-                selectedPackage +
-                " selected ✓"
+                selectedPackage + " selected ✓"
             );
 
         }
 
 
-        /* Smooth scroll to calculator */
+        /* ------------------------------------------
+           SMOOTH SCROLL DIRECTLY TO EXTRAS
+        ------------------------------------------ */
 
-        const calculator =
-            document.getElementById(
-                "calculator"
+        const extrasSection =
+            document.querySelector(
+                ".calculator fieldset"
             );
 
-
-        if (calculator) {
+        if (extrasSection) {
 
             setTimeout(() => {
 
-                calculator.scrollIntoView({
-
+                extrasSection.scrollIntoView({
                     behavior: "smooth",
-
                     block: "center"
-
                 });
 
             }, 150);
 
         }
 
-    }
-);
+    });
 
 });
 
