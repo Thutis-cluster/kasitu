@@ -16,9 +16,9 @@ const EMAILJS_TEMPLATE_ID = "template_3lwzm3g";
 
 if (typeof emailjs !== "undefined") {
 
-    emailjs.init({
-        publicKey: a3wBtn2bKfskDS4Sa
-    });
+   emailjs.init({
+    publicKey: EMAILJS_PUBLIC_KEY
+});
 
     console.log("EmailJS initialized ✔");
 
@@ -662,8 +662,7 @@ LIVE PRICE CALCULATOR
 ==================================================*/
 
 const packagePrices = {
-
-```
+    
 "Starter Website": 2999,
 
 "Business Website": 4999,
@@ -671,7 +670,6 @@ const packagePrices = {
 "Online Store": 5999,
 
 "Online Store PRO": 7999
-```
 
 };
 
@@ -704,7 +702,6 @@ They are NOT automatically selected.
 
 const recommendedExtras = {
 
-```
 "Starter Website": [
 
     "seo",
@@ -737,7 +734,6 @@ const recommendedExtras = {
     "login"
 
 ]
-```
 
 };
 
@@ -747,10 +743,8 @@ FORMAT CURRENCY
 
 function formatCurrency(value) {
 
-```
 return "R" +
     Number(value).toLocaleString("en-ZA");
-```
 
 }
 
@@ -759,8 +753,7 @@ CALCULATE TOTAL
 ==================================================*/
 
 function calculateTotal() {
-
-```
+    
 let total =
     packagePrices[selectedPackage] || 0;
 
@@ -780,8 +773,7 @@ extraInputs.forEach(extra => {
 
 
 return total;
-```
-
+    
 }
 
 /*==================================================
@@ -790,12 +782,10 @@ UPDATE TOTAL
 
 function updatePrice() {
 
-```
 const total =
     calculateTotal();
 
 animatePrice(total);
-```
 
 }
 
@@ -805,7 +795,6 @@ ANIMATE PRICE
 
 function animatePrice(target) {
 
-```
 if (!totalElement) return;
 
 
@@ -865,7 +854,6 @@ function animate(currentTime) {
 requestAnimationFrame(
     animate
 );
-```
 
 }
 
@@ -875,7 +863,6 @@ HIGHLIGHT RECOMMENDED EXTRAS
 
 function updateRecommendedExtras() {
 
-```
 /* Remove old recommendations */
 
 extraInputs.forEach(extra => {
@@ -930,7 +917,6 @@ extraInputs.forEach(extra => {
     }
 
 });
-```
 
 }
 
@@ -940,7 +926,6 @@ SELECT PACKAGE
 
 packageButtons.forEach(button => {
 
-```
 button.addEventListener(
     "click",
     function () {
@@ -1027,7 +1012,6 @@ button.addEventListener(
 
     }
 );
-```
 
 });
 
@@ -1037,7 +1021,6 @@ EXTRA FEATURE CHANGES
 
 extraInputs.forEach(extra => {
 
-```
 extra.addEventListener(
     "change",
     () => {
@@ -1046,7 +1029,6 @@ extra.addEventListener(
 
     }
 );
-```
 
 });
 
@@ -1061,7 +1043,6 @@ document.getElementById(
 
 if (continueButton) {
 
-```
 continueButton.addEventListener(
     "click",
     function () {
@@ -1092,12 +1073,10 @@ continueButton.addEventListener(
 
         }
 
-
         /* Make sure latest price is calculated */
 
         currentTotal =
             calculateTotal();
-
 
         /* Find contact form */
 
@@ -1129,7 +1108,6 @@ continueButton.addEventListener(
 
         }
 
-
         /* Smooth scroll */
 
         if (contactSection) {
@@ -1143,7 +1121,6 @@ continueButton.addEventListener(
             });
 
         }
-
 
         /* Put selected package into form */
 
@@ -1193,7 +1170,6 @@ continueButton.addEventListener(
 
     }
 );
-```
 
 }
 
@@ -1203,10 +1179,8 @@ INITIAL STATE
 
 if (totalElement) {
 
-```
 totalElement.textContent =
     "R0";
-```
 
 }
 
