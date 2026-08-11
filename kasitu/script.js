@@ -2058,7 +2058,6 @@ if (proposalForm) {
 
                 }
 
-
                 /*====================================
                   SUCCESS MESSAGE
                 ====================================*/
@@ -2067,62 +2066,132 @@ if (proposalForm) {
                     "Proposal request sent successfully!"
                 );
 
+               /*====================================
+                 WHATSAPP / QUOTATION
+               ====================================*/
 
-                /*====================================
-                  WHATSAPP MESSAGE
-                ====================================*/
+               openWhatsAppOrQuotation(customer);
 
+
+               /*==================================================
+                 WHATSAPP / QUOTATION FALLBACK
+               ==================================================*/
+
+               async function openWhatsAppOrQuotation(customer) {
+      
                 const whatsappMessage =
-                    buildWhatsAppMessage(
-                        customer
-                    );
-
-
-                /*
-                   KASITU Webs WhatsApp number.
-                */
+                 buildWhatsAppMessage(customer);
 
                 const whatsappPhone =
-                    "27794380103";
+                 "27794380103";
+
+                const encodedMessage =
+              encodeURIComponent(whatsappMessage);
+
+             const whatsappWebURL =
+              `https://wa.me/${whatsappPhone}?text=${encodedMessage}`;
+
+                const whatsappAppURL =
+              `whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage}`;
+
+             /*
+             ==================================================
+                DESKTOP
+             ==================================================
+             */
+
+             const isMobile =
+              /Android|iPhone|iPad|iPod/i.test(
+            navigator.userAgent
+           );
+
+          if (!isMobile) {
+
+        /*
+        Desktop browsers cannot reliably detect
+        whether the person has a WhatsApp account.
+
+        Open WhatsApp Web.
+        */
+
+        window.open(
+            whatsappWebURL,
+            "_blank",
+            "noopener,noreferrer"
+        );
+
+        /*
+        Give the user the quotation option too.
+        */
+
+        setTimeout(() => {
+
+            showQuotationChoice(customer);
+
+        }, 1200);
+
+        return;
+    }
 
 
-                /*
-                   IMPORTANT:
-                   This is the corrected WhatsApp URL.
-                */
+    /*
+    ==================================================
+    MOBILE / TABLET
+    ==================================================
+    */
 
-                const whatsappURL =
-                    `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(
-                        whatsappMessage
-                    )}`;
+    let whatsappOpened = false;
+
+    const handleVisibilityChange = () => {
+
+        if (document.hidden) {
+
+            whatsappOpened = true;
+
+            document.removeEventListener(
+                "visibilitychange",
+                handleVisibilityChange
+            );
+        }
+
+    };
+
+    document.addEventListener(
+        "visibilitychange",
+        handleVisibilityChange
+    );
 
 
-                /*====================================
-                  OPEN WHATSAPP
-                ====================================*/
+    /*
+    Attempt to open the WhatsApp application.
+    */
 
-                setTimeout(() => {
-
-                    window.open(
-                        whatsappURL,
-                        "_blank"
-                    );
-
-                }, 700);
+    window.location.href =
+        whatsappAppURL;
 
 
-                /*====================================
-                  SHOW QUOTATION OPTION
-                ====================================*/
+    /*
+    If WhatsApp did not open, show quotation modal.
+    */
 
-                setTimeout(() => {
+    setTimeout(() => {
 
-                    showQuotationChoice(
-                        customer
-                    );
+        document.removeEventListener(
+            "visibilitychange",
+            handleVisibilityChange
+        );
 
-                }, 1400);
+        if (!whatsappOpened) {
 
+            showToast(
+                "WhatsApp is unavailable. You can download your quotation instead."
+            );
+
+            showQuotationChoice(customer);
+
+        }
+
+    }, 1800);
 
             } catch (error) {
 
