@@ -985,36 +985,34 @@ packageButtons.forEach(button => {
            top while showing the package + extras below.
         ------------------------------------------ */
 
-        const liveEstimate =
-            document.getElementById("live-estimate");
+/* ------------------------------------------
+   SMOOTH SCROLL TO TOP OF LIVE ESTIMATE
+   ------------------------------------------ */
 
-        if (liveEstimate) {
+const liveEstimate = document.getElementById("live-estimate");
 
-            setTimeout(() => {
+if (liveEstimate) {
 
-                const header =
-                    document.querySelector(".header");
+    setTimeout(() => {
 
-                const headerOffset =
-                    header ? header.offsetHeight + 12 : 12;
+        const header = document.querySelector(".header");
 
-                const targetTop =
-                    liveEstimate.getBoundingClientRect().top +
-                    window.scrollY -
-                    headerOffset;
+        const headerOffset =
+            header ? header.offsetHeight + 15 : 15;
 
-                window.scrollTo({
-                    top: Math.max(0, targetTop),
-                    behavior: "smooth"
-                });
+        const targetTop =
+            liveEstimate.getBoundingClientRect().top +
+            window.scrollY -
+            headerOffset;
 
-            }, 150);
+        window.scrollTo({
+            top: Math.max(0, targetTop),
+            behavior: "smooth"
+        });
 
-        }
+    }, 100);
 
-    });
-
-});
+}
 
 /*==================================================
 EXTRA FEATURE CHANGES
@@ -1231,14 +1229,24 @@ if (whatsappBtn) {
             const pricingSection =
                 document.getElementById("pricing");
 
-            if (pricingSection) {
+if (pricingSection) {
 
-                pricingSection.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
+    const header = document.querySelector(".header");
 
-            }
+    const headerOffset =
+        header ? header.offsetHeight + 15 : 15;
+
+    const targetTop =
+        pricingSection.getBoundingClientRect().top +
+        window.scrollY -
+        headerOffset;
+
+    window.scrollTo({
+        top: Math.max(0, targetTop),
+        behavior: "smooth"
+    });
+
+}
 
             return;
 
