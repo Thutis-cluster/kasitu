@@ -1,3 +1,58 @@
+
+/* ==========================================
+   SHARED KASITU THEME SYSTEM
+   Uses the same localStorage key as Home.
+========================================== */
+
+const PROJECT_THEME_KEY = "kasitu-theme";
+const projectThemeToggle =
+    document.getElementById("project-theme-toggle");
+
+function applyProjectTheme(theme) {
+
+    const safeTheme =
+        theme === "light" ? "light" : "dark";
+
+    document.documentElement.setAttribute(
+        "data-theme",
+        safeTheme
+    );
+
+    if (projectThemeToggle) {
+        projectThemeToggle.textContent =
+            safeTheme === "light" ? "☀️" : "🌙";
+    }
+
+}
+
+function loadProjectTheme() {
+
+    const savedTheme =
+        localStorage.getItem(PROJECT_THEME_KEY) || "dark";
+
+    applyProjectTheme(savedTheme);
+
+}
+
+if (projectThemeToggle) {
+
+    projectThemeToggle.addEventListener("click", () => {
+
+        const current =
+            document.documentElement.getAttribute("data-theme") || "dark";
+
+        const next =
+            current === "dark" ? "light" : "dark";
+
+        applyProjectTheme(next);
+        localStorage.setItem(PROJECT_THEME_KEY, next);
+
+    });
+
+}
+
+loadProjectTheme();
+
  /* ==========================================
    KASITU WEBS
    REUSABLE PROJECT VIEWER
