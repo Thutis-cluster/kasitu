@@ -934,84 +934,677 @@ footer strong {
 }
 
 /* ==========================================
-   PROJECT LIGHT MODE
-   Matches the Home page's kasitu-theme key.
+   KASITU WEBS
+   PREMIUM LIGHT MODE
+   Project Viewer
 ========================================== */
 
 [data-theme="light"] body {
+
     background:
-        radial-gradient(circle at 10% 10%, rgba(0,140,255,.07), transparent 35%),
-        radial-gradient(circle at 90% 90%, rgba(124,60,255,.06), transparent 35%),
-        #F5F7FB;
-    color:#111827;
+        radial-gradient(
+            circle at 8% 8%,
+            rgba(6, 182, 212, 0.08),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 92% 85%,
+            rgba(79, 70, 229, 0.07),
+            transparent 32%
+        ),
+        linear-gradient(
+            135deg,
+            #f8fafc,
+            #f4f7fb
+        );
+
+    color: #172033;
+
 }
+
+
+/* ==========================================
+   BACKGROUND GLOWS
+========================================== */
+
+[data-theme="light"] .background-glow {
+
+    opacity: 0.08;
+
+}
+
+[data-theme="light"] .glow-one {
+
+    background: #06b6d4;
+
+}
+
+[data-theme="light"] .glow-two {
+
+    background: #6366f1;
+
+}
+
+
+/* ==========================================
+   NAVIGATION
+========================================== */
 
 [data-theme="light"] .project-nav {
-    background:transparent;
+
+    background: transparent;
+
 }
+
 
 [data-theme="light"] .brand {
-    color:#111827;
+
+    color: #172033;
+
+    letter-spacing: -0.3px;
+
 }
+
+
+[data-theme="light"] .brand span {
+
+    color: #0891b2;
+
+}
+
+
+/* ==========================================
+   BACK BUTTON
+========================================== */
 
 [data-theme="light"] .back-btn {
-    color:#111827;
-    background:rgba(255,255,255,.78);
-    border-color:rgba(15,23,42,.12);
-    box-shadow:0 8px 25px rgba(15,23,42,.06);
+
+    color: #243047;
+
+    background:
+        rgba(255, 255, 255, 0.82);
+
+    border: 1px solid
+        rgba(15, 23, 42, 0.09);
+
+    box-shadow:
+        0 8px 25px
+        rgba(15, 23, 42, 0.055);
+
+    backdrop-filter: blur(12px);
+
 }
+
 
 [data-theme="light"] .back-btn:hover {
-    background:#fff;
+
+    color: #0891b2;
+
+    background: #ffffff;
+
+    border-color:
+        rgba(6, 182, 212, 0.22);
+
+    box-shadow:
+        0 12px 30px
+        rgba(15, 23, 42, 0.09);
+
+    transform:
+        translateX(-4px);
+
 }
+
+
+/* ==========================================
+   THEME TOGGLE
+========================================== */
 
 [data-theme="light"] .theme-toggle {
-    color:#111827;
-    background:rgba(255,255,255,.85);
-    border-color:rgba(15,23,42,.12);
-    box-shadow:0 5px 20px rgba(15,23,42,.08);
+
+    color: #26344d;
+
+    background:
+        rgba(255, 255, 255, 0.88);
+
+    border: 1px solid
+        rgba(15, 23, 42, 0.09);
+
+    box-shadow:
+        0 8px 25px
+        rgba(15, 23, 42, 0.07);
+
+    backdrop-filter: blur(12px);
+
 }
+
+
+[data-theme="light"] .theme-toggle:hover {
+
+    color: #0891b2;
+
+    background: #ffffff;
+
+    border-color:
+        rgba(6, 182, 212, 0.25);
+
+    transform:
+        translateY(-2px)
+        rotate(8deg);
+
+}
+
+
+/* ==========================================
+   PROJECT HEADER
+========================================== */
+
+[data-theme="light"] .project-header h1 {
+
+    color: #111827;
+
+}
+
 
 [data-theme="light"] .project-description {
-    color:#5B6475;
+
+    color: #667085;
+
 }
+
+
+/* ==========================================
+   PROJECT CATEGORY
+========================================== */
 
 [data-theme="light"] .project-category {
-    color:#0891B2;
-    border-color:rgba(6,182,212,.25);
-    background:rgba(255,255,255,.55);
+
+    color: #087f9f;
+
+    background:
+        rgba(255, 255, 255, 0.78);
+
+    border:
+        1px solid
+        rgba(6, 182, 212, 0.22);
+
+    box-shadow:
+        0 6px 20px
+        rgba(6, 182, 212, 0.06);
+
 }
 
-[data-theme="light"] .project-card,
-[data-theme="light"] .details-card,
-[data-theme="light"] .live-preview,
-[data-theme="light"] .browser-window {
-    background:rgba(255,255,255,.82);
-    border-color:rgba(15,23,42,.10);
-    color:#111827;
-    box-shadow:0 15px 40px rgba(15,23,42,.08);
+
+/* ==========================================
+   TECHNOLOGY BADGES
+========================================== */
+
+[data-theme="light"] .project-tech span {
+
+    color: #344054;
+
+    background:
+        rgba(255, 255, 255, 0.85);
+
+    border:
+        1px solid
+        rgba(15, 23, 42, 0.08);
+
+    box-shadow:
+        0 5px 18px
+        rgba(15, 23, 42, 0.045);
+
 }
+
+
+[data-theme="light"] .project-tech span:hover {
+
+    color: #087f9f;
+
+    border-color:
+        rgba(6, 182, 212, 0.25);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* ==========================================
+   PRIMARY BUTTON
+========================================== */
+
+[data-theme="light"] .primary-btn {
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0891b2,
+            #4f46e5
+        );
+
+    box-shadow:
+        0 10px 25px
+        rgba(79, 70, 229, 0.18);
+
+}
+
+
+[data-theme="light"] .primary-btn:hover {
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 16px 35px
+        rgba(79, 70, 229, 0.24);
+
+}
+
+
+/* ==========================================
+   SECONDARY BUTTON
+========================================== */
+
+[data-theme="light"] .secondary-btn {
+
+    color: #344054;
+
+    background:
+        rgba(255, 255, 255, 0.82);
+
+    border:
+        1px solid
+        rgba(15, 23, 42, 0.10);
+
+    box-shadow:
+        0 7px 22px
+        rgba(15, 23, 42, 0.05);
+
+}
+
+
+[data-theme="light"] .secondary-btn:hover {
+
+    color: #087f9f;
+
+    background: #ffffff;
+
+    border-color:
+        rgba(6, 182, 212, 0.22);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* ==========================================
+   PROJECT DETAILS
+========================================== */
+
+[data-theme="light"] .detail-card {
+
+    background:
+        rgba(255, 255, 255, 0.82);
+
+    border:
+        1px solid
+        rgba(15, 23, 42, 0.075);
+
+    box-shadow:
+        0 15px 40px
+        rgba(15, 23, 42, 0.055);
+
+    backdrop-filter: blur(12px);
+
+}
+
+
+[data-theme="light"] .detail-card:hover {
+
+    transform:
+        translateY(-4px);
+
+    border-color:
+        rgba(6, 182, 212, 0.18);
+
+    box-shadow:
+        0 20px 45px
+        rgba(15, 23, 42, 0.08);
+
+}
+
+
+[data-theme="light"] .detail-card i {
+
+    color: #0891b2;
+
+}
+
+
+[data-theme="light"] .detail-card span {
+
+    color: #7b8495;
+
+}
+
+
+[data-theme="light"] .detail-card strong {
+
+    color: #172033;
+
+}
+
+
+/* ==========================================
+   ONLINE STATUS
+========================================== */
+
+[data-theme="light"] .online {
+
+    color: #15966c;
+
+}
+
+
+[data-theme="light"] .online i {
+
+    color: #15966c;
+
+}
+
+
+/* ==========================================
+   SECTION HEADINGS
+========================================== */
+
+[data-theme="light"] .section-heading span,
+[data-theme="light"] .live-heading span {
+
+    color: #0891b2;
+
+}
+
+
+[data-theme="light"] .section-heading h2,
+[data-theme="light"] .live-heading h2 {
+
+    color: #111827;
+
+}
+
+
+/* ==========================================
+   FEATURE CARDS
+========================================== */
+
+[data-theme="light"] .feature-item {
+
+    background:
+        rgba(255, 255, 255, 0.82);
+
+    border:
+        1px solid
+        rgba(15, 23, 42, 0.07);
+
+    color: #344054;
+
+    box-shadow:
+        0 12px 35px
+        rgba(15, 23, 42, 0.045);
+
+}
+
+
+[data-theme="light"] .feature-item:hover {
+
+    background: #ffffff;
+
+    border-color:
+        rgba(6, 182, 212, 0.18);
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 18px 40px
+        rgba(15, 23, 42, 0.075);
+
+}
+
+
+[data-theme="light"] .feature-item i {
+
+    color: #0891b2;
+
+}
+
+
+/* ==========================================
+   LIVE SECTION
+========================================== */
+
+[data-theme="light"] .live-status {
+
+    color: #15966c;
+
+}
+
+
+[data-theme="light"] .live-status i {
+
+    color: #15966c;
+
+}
+
+
+/* ==========================================
+   BROWSER WINDOW
+========================================== */
+
+[data-theme="light"] .browser-window {
+
+    background: #ffffff;
+
+    border:
+        1px solid
+        rgba(15, 23, 42, 0.10);
+
+    box-shadow:
+        0 30px 80px
+        rgba(15, 23, 42, 0.12);
+
+}
+
+
+/* ==========================================
+   BROWSER BAR
+========================================== */
+
+[data-theme="light"] .browser-bar {
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #f7f9fc
+        );
+
+    border-bottom:
+        1px solid
+        rgba(15, 23, 42, 0.08);
+
+}
+
+
+/* ==========================================
+   BROWSER DOTS
+========================================== */
+
+[data-theme="light"] .browser-dots span {
+
+    background: #cbd3df;
+
+}
+
+
+[data-theme="light"] .browser-dots span:nth-child(1) {
+
+    background: #ff6b6b;
+
+}
+
+
+[data-theme="light"] .browser-dots span:nth-child(2) {
+
+    background: #f5c451;
+
+}
+
+
+[data-theme="light"] .browser-dots span:nth-child(3) {
+
+    background: #48c774;
+
+}
+
+
+/* ==========================================
+   BROWSER URL
+========================================== */
+
+[data-theme="light"] .browser-url {
+
+    background:
+        #eef2f7;
+
+    color: #667085;
+
+    border:
+        1px solid
+        rgba(15, 23, 42, 0.055);
+
+}
+
+
+/* ==========================================
+   IFRAME
+========================================== */
+
+[data-theme="light"] .iframe-container {
+
+    background: #ffffff;
+
+}
+
+
+/* ==========================================
+   IFRAME LOADER
+========================================== */
+
+[data-theme="light"] .iframe-loader {
+
+    background:
+        linear-gradient(
+            135deg,
+            #f8fafc,
+            #eef4f8
+        );
+
+    color: #344054;
+
+}
+
+
+[data-theme="light"] .loader-spinner {
+
+    border:
+        3px solid
+        rgba(15, 23, 42, 0.08);
+
+    border-top-color:
+        #0891b2;
+
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
 
 [data-theme="light"] footer {
-    color:#5B6475;
+
+    color: #667085;
+
+    border-top:
+        1px solid
+        rgba(15, 23, 42, 0.08);
+
 }
 
-@media (max-width:700px) {
-    .project-nav {
-        gap:12px;
-        padding:18px 5%;
+
+[data-theme="light"] footer strong {
+
+    color: #172033;
+
+}
+
+
+/* ==========================================
+   LIVE ACTION AREA
+========================================== */
+
+[data-theme="light"] .live-actions {
+
+    color: #667085;
+
+}
+
+
+/* ==========================================
+   MOBILE LIGHT MODE
+========================================== */
+
+@media (max-width: 700px) {
+
+    [data-theme="light"] .project-nav {
+
+        padding:
+            18px 5%;
+
     }
 
-    .project-nav-actions {
-        gap:8px;
+    [data-theme="light"] .back-btn {
+
+        box-shadow:
+            0 5px 18px
+            rgba(15, 23, 42, 0.05);
+
     }
 
-    .back-btn {
-        padding:9px 12px;
+    [data-theme="light"] .theme-toggle {
+
+        box-shadow:
+            0 5px 18px
+            rgba(15, 23, 42, 0.06);
+
     }
 
-    .theme-toggle {
-        width:40px;
-        height:40px;
+}
+
+
+/* ==========================================
+   REDUCED MOTION
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    [data-theme="light"] * {
+
+        transition: none !important;
+
     }
+
 }
