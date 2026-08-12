@@ -4132,3 +4132,490 @@ updateClearPackageButton();
 console.log(
     "KASITU Info Modals + Package Clear Loaded ✓"
 );
+
+   /* ==================================================
+   FLOATING WHATSAPP BUTTON
+   Click = WhatsApp
+   Hold = Drag
+================================================== */
+
+(() => {
+
+    const button =
+        document.getElementById(
+            "floating-whatsapp"
+        );
+
+    if (!button) return;
+
+
+    /* ==========================================
+       YOUR WHATSAPP NUMBER
+       ========================================== */
+
+    const WHATSAPP_NUMBER =
+        "27794380103";
+
+
+    /* ==========================================
+       PRE-TYPED MESSAGE
+       ========================================== */
+
+    const WHATSAPP_MESSAGE =
+`Hi KASITU Webs 👋
+
+I just visited your website and I would like to discuss a project with you.
+
+I would like some advice on the best digital solution for my business.
+
+Please let me know how we can get started. Thank you!`;
+
+
+    /* ==========================================
+       SETTINGS
+       ========================================== */
+
+    const HOLD_TIME = 450;
+
+    const MOVE_THRESHOLD = 8;
+
+
+    let holdTimer = null;
+
+    let isHolding = false;
+
+    let isDragging = false;
+
+    let pointerId = null;
+
+    let startX = 0;
+
+    let startY = 0;
+
+    let startLeft = 0;
+
+    let startTop = 0;
+
+
+    /* ==========================================
+       OPEN WHATSAPP
+       ========================================== */
+
+    function openWhatsApp() {
+
+        const message =
+            encodeURIComponent(
+                WHATSAPP_MESSAGE
+            );
+
+        const url =
+            `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+
+        window.open(
+            url,
+            "_blank",
+            "noopener,noreferrer"
+        );
+
+    }
+
+
+    /* ==========================================
+       KEEP BUTTON INSIDE SCREEN
+       ========================================== */
+
+    function keepInsideScreen(
+        left,
+        top
+    ) {
+
+        const width =
+            button.offsetWidth;
+
+        const height =
+            button.offsetHeight;
+
+
+        return {
+
+            left: Math.max(
+                8,
+                Math.min(
+                    left,
+                    window.innerWidth -
+                    width -
+                    8
+                )
+            ),
+
+            top: Math.max(
+                8,
+                Math.min(
+                    top,
+                    window.innerHeight -
+                    height -
+                    8
+                )
+            )
+
+        };
+
+    }
+
+
+    /* ==========================================
+       CLEAR HOLD TIMER
+       ========================================== */
+
+    function clearHoldTimer() {
+
+        if (holdTimer) {
+
+            clearTimeout(
+                holdTimer
+            );
+
+            holdTimer = null;
+
+        }
+
+    }
+
+
+    /* ==========================================
+       POINTER DOWN
+       ========================================== */
+
+    button.addEventListener(
+        "pointerdown",
+        event => {
+
+            if (
+                event.pointerType === "mouse" &&
+                event.button !== 0
+            ) {
+
+                return;
+
+            }
+
+
+            pointerId =
+                event.pointerId;
+
+
+            startX =
+                event.clientX;
+
+            startY =
+                event.clientY;
+
+
+            const rect =
+                button.getBoundingClientRect();
+
+
+            startLeft =
+                rect.left;
+
+            startTop =
+                rect.top;
+
+
+            isHolding = false;
+
+            isDragging = false;
+
+
+            clearHoldTimer();
+
+
+            /* ==================================
+               HOLD ACTIVATION
+            ================================== */
+
+            holdTimer =
+                setTimeout(() => {
+
+                    isHolding = true;
+
+
+                    /* Convert fixed
+                       right/bottom positioning
+                       into left/top */
+
+                    button.style.left =
+                        startLeft + "px";
+
+                    button.style.top =
+                        startTop + "px";
+
+                    button.style.right =
+                        "auto";
+
+                    button.style.bottom =
+                        "auto";
+
+
+                    button.classList.add(
+                        "is-holding"
+                    );
+
+
+                    if (
+                        button.setPointerCapture
+                    ) {
+
+                        try {
+
+                            button.setPointerCapture(
+                                pointerId
+                            );
+
+                        } catch (_) {}
+
+                    }
+
+                }, HOLD_TIME);
+
+        }
+    );
+
+
+    /* ==========================================
+       POINTER MOVE
+       ========================================== */
+
+    button.addEventListener(
+        "pointermove",
+        event => {
+
+            if (
+                pointerId !==
+                event.pointerId
+            ) {
+
+                return;
+
+            }
+
+
+            const deltaX =
+                event.clientX -
+                startX;
+
+
+            const deltaY =
+                event.clientY -
+                startY;
+
+
+            /* User moved before holding */
+
+            if (
+                !isHolding &&
+                (
+                    Math.abs(deltaX) >
+                        MOVE_THRESHOLD ||
+
+                    Math.abs(deltaY) >
+                        MOVE_THRESHOLD
+                )
+            ) {
+
+                clearHoldTimer();
+
+                return;
+
+            }
+
+
+            if (!isHolding) {
+
+                return;
+
+            }
+
+
+            /* Start dragging */
+
+            if (!isDragging) {
+
+                isDragging = true;
+
+                button.classList.remove(
+                    "is-holding"
+                );
+
+                button.classList.add(
+                    "is-dragging"
+                );
+
+            }
+
+
+            const position =
+                keepInsideScreen(
+                    startLeft + deltaX,
+                    startTop + deltaY
+                );
+
+
+            button.style.left =
+                position.left + "px";
+
+            button.style.top =
+                position.top + "px";
+
+
+            event.preventDefault();
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    /* ==========================================
+       POINTER UP
+       ========================================== */
+
+    button.addEventListener(
+        "pointerup",
+        event => {
+
+            if (
+                pointerId !==
+                event.pointerId
+            ) {
+
+                return;
+
+            }
+
+
+            const wasHeld =
+                isHolding ||
+                isDragging;
+
+
+            clearHoldTimer();
+
+
+            button.classList.remove(
+                "is-holding",
+                "is-dragging"
+            );
+
+
+            isHolding = false;
+
+            isDragging = false;
+
+            pointerId = null;
+
+
+            /* Normal click */
+
+            if (!wasHeld) {
+
+                openWhatsApp();
+
+            }
+
+        }
+    );
+
+
+    /* ==========================================
+       POINTER CANCEL
+       ========================================== */
+
+    button.addEventListener(
+        "pointercancel",
+        () => {
+
+            clearHoldTimer();
+
+            button.classList.remove(
+                "is-holding",
+                "is-dragging"
+            );
+
+            isHolding = false;
+
+            isDragging = false;
+
+            pointerId = null;
+
+        }
+    );
+
+
+    /* ==========================================
+       KEEP POSITION VALID AFTER RESIZE
+       ========================================== */
+
+    window.addEventListener(
+        "resize",
+        () => {
+
+            if (
+                !button.style.left
+            ) {
+
+                return;
+
+            }
+
+
+            const rect =
+                button.getBoundingClientRect();
+
+
+            const position =
+                keepInsideScreen(
+                    rect.left,
+                    rect.top
+                );
+
+
+            button.style.left =
+                position.left + "px";
+
+            button.style.top =
+                position.top + "px";
+
+        }
+    );
+
+
+    /* ==========================================
+       KEYBOARD ACCESS
+       ========================================== */
+
+    button.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter" ||
+                event.key === " "
+            ) {
+
+                event.preventDefault();
+
+                openWhatsApp();
+
+            }
+
+        }
+    );
+
+
+    console.log(
+        "Floating WhatsApp Button Loaded ✓"
+    );
+
+})();
