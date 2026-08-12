@@ -4866,7 +4866,7 @@ select:focus {
 .clear-package-btn {
     position: absolute;
     right: 12px;
-    top: 50%;
+    top: 46%;
     transform: translateY(-50%);
 
     width: 28px;
