@@ -3454,7 +3454,3496 @@ indicator.classList.add("online");
 });
 
 /*==================================================
+PAGE TRANSITIONS/*==================================================
+KASITU WEBS V2
+Premium Portfolio Script
+Version 2.0
+==================================================*/
+
+'use strict';
+
+/*==================================================
+KASITU EMAILJS CONFIGURATION
+==================================================*/
+
+const EMAILJS_PUBLIC_KEY = "a3wBtn2bKfskDS4Sa";
+const EMAILJS_SERVICE_ID = "service_9a3fush";
+const EMAILJS_TEMPLATE_ID = "template_3lwzm3g";
+
+if (typeof emailjs !== "undefined") {
+
+   emailjs.init({
+    publicKey: EMAILJS_PUBLIC_KEY
+});
+
+    console.log("EmailJS initialized ✔");
+
+} else {
+
+    console.error(
+        "EmailJS library was not loaded."
+    );
+
+}
+
+/*==================================================
+SELECTORS
+==================================================*/
+
+const header = document.querySelector('.header');
+const navLinks = document.querySelectorAll('.nav-links a');
+const sections = document.querySelectorAll('section');
+const counters = document.querySelectorAll('.counter');
+const scrollTopBtn = document.getElementById('scrollTop');
+const menuBtn = document.querySelector('.menu-btn');
+const mobileMenu = document.querySelector('.nav-links');
+const themeToggle = document.getElementById('theme-toggle');
+
+/*==================================================
+HELPERS
+==================================================*/
+
+const debounce = (callback, delay = 100) => {
+    let timer;
+
+    return (...args) => {
+        clearTimeout(timer);
+
+        timer = setTimeout(() => {
+            callback(...args);
+        }, delay);
+    };
+};
+
+const clamp = (value, min, max) => {
+    return Math.min(Math.max(value, min), max);
+};
+
+/*==================================================
+STICKY HEADER
+==================================================*/
+
+function updateHeader() {
+
+    if (window.scrollY > 80) {
+
+        header.classList.add("scrolled");
+
+    } else {
+
+        header.classList.remove("scrolled");
+
+    }
+
+}
+
+window.addEventListener("scroll", debounce(updateHeader));
+
+updateHeader();
+
+/*==================================================
+SMOOTH SCROLL
+==================================================*/
+
+navLinks.forEach(link => {
+
+    link.addEventListener("click", function (e) {
+
+        const href = this.getAttribute("href");
+
+        if (!href.startsWith("#")) return;
+
+        e.preventDefault();
+
+        const target = document.querySelector(href);
+
+        if (!target) return;
+
+        target.scrollIntoView({
+
+            behavior: "smooth",
+
+            block: "start"
+
+        });
+
+    });
+
+});
+
+/*==================================================
+ACTIVE NAVIGATION
+==================================================*/
+
+function highlightNavigation() {
+
+    let current = "";
+
+    sections.forEach(section => {
+
+        const top = window.scrollY;
+
+        const offset = section.offsetTop - 180;
+
+        const height = section.offsetHeight;
+
+        if (top >= offset && top < offset + height) {
+
+            current = section.getAttribute("id");
+
+        }
+
+    });
+
+    navLinks.forEach(link => {
+
+        link.classList.remove("active");
+
+        if (link.getAttribute("href") === "#" + current) {
+
+            link.classList.add("active");
+
+        }
+
+    });
+
+}
+
+window.addEventListener(
+
+    "scroll",
+
+    debounce(highlightNavigation)
+
+);
+
+/*==================================================
+SCROLL TO TOP
+==================================================*/
+
+if (scrollTopBtn) {
+
+    scrollTopBtn.addEventListener("click", () => {
+
+        window.scrollTo({
+
+            top: 0,
+
+            behavior: "smooth"
+
+        });
+
+    });
+
+}
+
+/*==================================================
+SCROLL BUTTON VISIBILITY
+==================================================*/
+
+function updateScrollButton() {
+
+    if (!scrollTopBtn) return;
+
+    scrollTopBtn.style.opacity =
+        window.scrollY > 400 ? "1" : "0";
+
+    scrollTopBtn.style.pointerEvents =
+        window.scrollY > 400 ? "auto" : "none";
+
+}
+
+window.addEventListener(
+
+    "scroll",
+
+    debounce(updateScrollButton)
+
+);
+
+updateScrollButton();
+
+/*==================================================
+COUNTER ANIMATION
+==================================================*/
+
+const counterObserver = new IntersectionObserver(entries => {
+
+    entries.forEach(entry => {
+
+        if (!entry.isIntersecting) return;
+
+        const counter = entry.target;
+
+        const target = Number(counter.dataset.target);
+
+        let value = 0;
+
+        const speed = target / 120;
+
+        const animate = () => {
+
+            value += speed;
+
+            if (value < target) {
+
+                counter.textContent = Math.floor(value);
+
+                requestAnimationFrame(animate);
+
+            } else {
+
+                counter.textContent = target;
+
+            }
+
+        };
+
+        animate();
+
+        counterObserver.unobserve(counter);
+
+    });
+
+}, {
+
+    threshold: 0.4
+
+});
+
+counters.forEach(counter => {
+
+    counterObserver.observe(counter);
+
+});
+
+/*==================================================
+SCROLL REVEAL
+==================================================*/
+
+const revealElements = document.querySelectorAll(
+
+    ".service-card,.project-card,.price-card,.testimonial-card,.tech-card,.feature,.stat-card"
+
+);
+
+const revealObserver = new IntersectionObserver(entries => {
+
+    entries.forEach(entry => {
+
+        if (entry.isIntersecting) {
+
+            entry.target.classList.add("show");
+
+        }
+
+    });
+
+}, {
+
+    threshold: 0.15
+
+});
+
+revealElements.forEach(item => {
+
+    item.classList.add("hidden");
+
+    revealObserver.observe(item);
+
+});
+
+/*==================================================
+END OF PART 1
+==================================================*/
+
+/*==================================================
+PART 2
+Dark Mode
+Mobile Menu
+Typewriter
+Cursor Glow
+Magnetic Buttons
+==================================================*/
+
+/*==================================================
+THEME SYSTEM
+==================================================*/
+
+const THEME_KEY = "kasitu-theme";
+
+function applyTheme(theme) {
+
+    document.documentElement.setAttribute("data-theme", theme);
+
+    if (themeToggle) {
+
+        themeToggle.textContent =
+            theme === "light" ? "☀️" : "🌙";
+
+    }
+
+}
+
+function loadTheme() {
+
+    const savedTheme =
+        localStorage.getItem(THEME_KEY) || "dark";
+
+    applyTheme(savedTheme);
+
+}
+
+function toggleTheme() {
+
+    const currentTheme =
+        document.documentElement.getAttribute("data-theme") || "dark";
+
+    const nextTheme =
+        currentTheme === "dark" ? "light" : "dark";
+
+    applyTheme(nextTheme);
+
+    localStorage.setItem(THEME_KEY, nextTheme);
+
+}
+
+if (themeToggle) {
+
+    themeToggle.addEventListener("click", toggleTheme);
+
+}
+
+loadTheme();
+
+/*==================================================
+MOBILE MENU
+==================================================*/
+
+if (menuBtn && mobileMenu) {
+
+    menuBtn.addEventListener("click", () => {
+
+       const isOpen = mobileMenu.classList.toggle("mobile-open");
+
+menuBtn.setAttribute(
+    "aria-expanded",
+    isOpen
+);
+
+        menuBtn.classList.toggle("open");
+
+    });
+
+    navLinks.forEach(link => {
+
+        link.addEventListener("click", () => {
+
+            mobileMenu.classList.remove("mobile-open");
+
+            menuBtn.classList.remove("open");
+
+        });
+
+    });
+
+}
+
+/*==================================================*
+ * CLOSE MOBILE MENU ON SCROLL
+ *==================================================*/
+
+window.addEventListener("scroll", () => {
+
+    if (!mobileMenu || !menuBtn) return;
+
+    if (mobileMenu.classList.contains("mobile-open")) {
+
+        mobileMenu.classList.remove("mobile-open");
+        menuBtn.classList.remove("open");
+        menuBtn.setAttribute("aria-expanded", "false");
+
+    }
+
+});
+
+/*==================================================*
+ * CLOSE MOBILE MENU ON DESKTOP
+ *==================================================*/
+
+window.addEventListener("resize", () => {
+
+    if (!mobileMenu || !menuBtn) return;
+
+    if (window.innerWidth > 900) {
+
+        mobileMenu.classList.remove("mobile-open");
+        menuBtn.classList.remove("open");
+        menuBtn.setAttribute("aria-expanded", "false");
+
+    }
+
+});
+
+/*==================================================*
+ * CLOSE MOBILE MENU WHEN CLICKING OUTSIDE
+ *==================================================*/
+
+document.addEventListener("click", (e) => {
+
+    if (!mobileMenu || !menuBtn) return;
+
+    if (
+        mobileMenu.classList.contains("mobile-open") &&
+        !mobileMenu.contains(e.target) &&
+        !menuBtn.contains(e.target)
+    ) {
+
+        mobileMenu.classList.remove("mobile-open");
+        menuBtn.classList.remove("open");
+        menuBtn.setAttribute("aria-expanded", "false");
+
+    }
+
+});
+
+/*==================================================
+TYPEWRITER EFFECT
+==================================================*/
+
+const codeWindow =
+document.querySelector(".code");
+
+if (codeWindow) {
+
+const codeLines = [
+
+'const company = "KASITU Webs";',
+
+"",
+
+"buildWebsite(client);",
+
+"deployCloud();",
+
+"optimisePerformance();",
+
+"",
+
+"console.log('Success ✔');"
+
+];
+
+let line = 0;
+
+let character = 0;
+
+let output = "";
+
+function typeCode() {
+
+if (line >= codeLines.length) {
+
+setTimeout(() => {
+
+output = "";
+
+line = 0;
+
+character = 0;
+
+codeWindow.innerHTML = "";
+
+typeCode();
+
+}, 2500);
+
+return;
+
+}
+
+const current = codeLines[line];
+
+if (character < current.length) {
+
+output += current.charAt(character);
+
+codeWindow.innerHTML =
+output.replace(/\n/g, "<br>") +
+'<span class="cursor">|</span>';
+
+character++;
+
+setTimeout(typeCode, 45);
+
+} else {
+
+output += "\n";
+
+line++;
+
+character = 0;
+
+setTimeout(typeCode, 250);
+
+}
+
+}
+
+typeCode();
+
+}
+
+/*==================================================
+CURSOR GLOW
+==================================================*/
+
+const glow = document.createElement("div");
+
+glow.className = "cursor-glow";
+
+document.body.appendChild(glow);
+
+window.addEventListener("mousemove", e => {
+
+glow.style.left = e.clientX + "px";
+
+glow.style.top = e.clientY + "px";
+
+});
+
+/*==================================================
+MAGNETIC BUTTONS
+==================================================*/
+
+const magneticButtons =
+document.querySelectorAll(
+".primary-btn,.secondary-btn"
+);
+
+magneticButtons.forEach(button => {
+
+button.addEventListener("mousemove", e => {
+
+const rect = button.getBoundingClientRect();
+
+const x =
+e.clientX - rect.left - rect.width / 2;
+
+const y =
+e.clientY - rect.top - rect.height / 2;
+
+button.style.transform =
+`translate(${x * .18}px, ${y * .18}px)`;
+
+});
+
+button.addEventListener("mouseleave", () => {
+
+button.style.transform = "";
+
+});
+
+});
+
+/*==================================================
+FLOATING ICONS
+==================================================*/
+
+const floatingIcons =
+document.querySelectorAll(".service-icon");
+
+floatingIcons.forEach(icon => {
+
+const speed =
+Math.random() * 2 + 1;
+
+let angle = Math.random() * 360;
+
+function floatIcon() {
+
+angle += 0.01 * speed;
+
+icon.style.transform =
+`translateY(${Math.sin(angle) * 6}px)`;
+
+requestAnimationFrame(floatIcon);
+
+}
+
+floatIcon();
+
+});
+
+/*==================================================
+PAGE LOADED
+==================================================*/
+
+window.addEventListener("load", () => {
+
+document.body.classList.add("loaded");
+
+});
+
+console.log(
+"%cKASITU Webs",
+"color:#06B6D4;font-size:24px;font-weight:bold;"
+);
+
+console.log(
+"%cPremium Portfolio Loaded Successfully ✔",
+"color:#63ff99;font-size:14px;"
+);
+
+/*==================================================
+END PART 2
+==================================================*/
+
+/*==================================================
+PART 3
+Calculator
+Progress Bar
+Toast
+Validation
+WhatsApp Quote
+==================================================*/
+
+
+/* ==========================================
+   LIVE PRICE CALCULATOR
+========================================== */
+
+/*==================================================
+LIVE PRICE CALCULATOR
+==================================================*/
+
+const packagePrices = {
+    
+"Starter Website": 2999,
+
+"Business Website": 4999,
+
+"Online Store": 5999,
+
+"Online Store PRO": 7999
+
+};
+
+const packageButtons =
+document.querySelectorAll(".select-price");
+
+const packageInput =
+document.getElementById("site-type");
+
+const extraInputs =
+document.querySelectorAll(".extra");
+
+const totalElement =
+document.getElementById("total");
+
+const calculatorForm =
+document.getElementById("price-form");
+
+let selectedPackage = "";
+
+let currentTotal = 0;
+
+/*==================================================
+RECOMMENDED EXTRAS
+
+IMPORTANT:
+These are ONLY highlighted.
+They are NOT automatically selected.
+==================================================*/
+
+const recommendedExtras = {
+
+"Starter Website": [
+
+    "seo",
+    "whatsapp",
+    "blog"
+
+],
+
+"Business Website": [
+
+    "app",
+    "seo",
+    "booking",
+    "dashboard",
+    "login"
+
+],
+
+"Online Store": [
+
+    "app",
+    "login"
+
+],
+
+"Online Store PRO": [
+
+    "app",
+    "dashboard",
+    "login"
+
+]
+
+};
+
+/*==================================================
+FORMAT CURRENCY
+==================================================*/
+
+function formatCurrency(value) {
+
+return "R" +
+    Number(value).toLocaleString("en-ZA");
+
+}
+
+/*==================================================
+CALCULATE TOTAL
+==================================================*/
+
+function calculateTotal() {
+    
+let total =
+    packagePrices[selectedPackage] || 0;
+
+
+extraInputs.forEach(extra => {
+
+    if (extra.checked) {
+
+        const extraPrice =
+            Number(extra.dataset.price) || 0;
+
+        total += extraPrice;
+
+    }
+
+});
+
+
+return total;
+    
+}
+
+/*==================================================
+UPDATE TOTAL
+==================================================*/
+
+function updatePrice() {
+
+const total =
+    calculateTotal();
+
+animatePrice(total);
+
+}
+
+/*==================================================
+ANIMATE PRICE
+==================================================*/
+
+function animatePrice(target) {
+
+if (!totalElement) return;
+
+
+const start =
+    currentTotal;
+
+const difference =
+    target - start;
+
+const duration =
+    400;
+
+const startTime =
+    performance.now();
+
+
+function animate(currentTime) {
+
+    const elapsed =
+        currentTime - startTime;
+
+
+    const progress =
+        Math.min(
+            elapsed / duration,
+            1
+        );
+
+
+    const value =
+        start +
+        difference * progress;
+
+
+    totalElement.textContent =
+        formatCurrency(
+            Math.round(value)
+        );
+
+
+    if (progress < 1) {
+
+        requestAnimationFrame(
+            animate
+        );
+
+    } else {
+
+        currentTotal =
+            target;
+
+    }
+
+}
+
+
+requestAnimationFrame(
+    animate
+);
+
+}
+
+/*==================================================
+HIGHLIGHT RECOMMENDED EXTRAS
+==================================================*/
+
+function updateRecommendedExtras() {
+
+/* Remove old recommendations */
+
+extraInputs.forEach(extra => {
+
+    const option =
+        extra.closest(".extra-option");
+
+    if (!option) return;
+
+    option.classList.remove(
+        "recommended"
+    );
+
+});
+
+
+/* Get recommendations */
+
+const recommendations =
+    recommendedExtras[
+        selectedPackage
+    ] || [];
+
+
+/* Highlight recommendations */
+
+extraInputs.forEach(extra => {
+
+    const extraType =
+        extra.dataset.extra;
+
+
+    if (
+        recommendations.includes(
+            extraType
+        )
+    ) {
+
+        const option =
+            extra.closest(
+                ".extra-option"
+            );
+
+
+        if (!option) return;
+
+
+        option.classList.add(
+            "recommended"
+        );
+
+    }
+
+});
+
+}
+
+/*==================================================
+   SELECT PACKAGE
+==================================================*/
+
+packageButtons.forEach(button => {
+
+    button.addEventListener("click", function () {
+
+        const card = this.closest(".price-card");
+
+        if (!card) return;
+
+        const heading = card.querySelector("h3");
+
+        if (!heading) return;
+
+        /* ------------------------------------------
+           SAVE SELECTED PACKAGE
+        ------------------------------------------ */
+
+        selectedPackage = heading.textContent.trim();
+
+
+        /* ------------------------------------------
+           PUT PACKAGE INTO CALCULATOR
+        ------------------------------------------ */
+
+        if (packageInput) {
+            packageInput.value = selectedPackage;
+        }
+
+
+        /* ------------------------------------------
+           RECALCULATE PRICE
+        ------------------------------------------ */
+
+        updatePrice();
+
+
+        /* ------------------------------------------
+           HIGHLIGHT RECOMMENDED EXTRAS
+        ------------------------------------------ */
+
+        updateRecommendedExtras();
+
+
+        /* ------------------------------------------
+           NOTIFY USER
+        ------------------------------------------ */
+
+        if (typeof showToast === "function") {
+
+            showToast(
+                selectedPackage + " selected ✓"
+            );
+
+        }
+
+
+        /* ------------------------------------------
+           SMOOTH SCROLL TO TOP OF LIVE ESTIMATE
+           This keeps the LIVE ESTIMATE heading at the
+           top while showing the package + extras below.
+        ------------------------------------------ */
+
+        const liveEstimate =
+            document.getElementById("live-estimate");
+
+        if (liveEstimate) {
+
+            setTimeout(() => {
+
+                const header =
+                    document.querySelector(".header");
+
+                const headerOffset =
+                    header ? header.offsetHeight + 12 : 12;
+
+                const targetTop =
+                    liveEstimate.getBoundingClientRect().top +
+                    window.scrollY -
+                    headerOffset;
+
+                window.scrollTo({
+                    top: Math.max(0, targetTop),
+                    behavior: "smooth"
+                });
+
+            }, 150);
+
+        }
+
+    });
+
+});
+
+/*==================================================
+EXTRA FEATURE CHANGES
+==================================================*/
+
+extraInputs.forEach(extra => {
+
+extra.addEventListener(
+    "change",
+    () => {
+
+        updatePrice();
+
+    }
+);
+
+});
+
+/*==================================================
+CONTINUE BUTTON
+==================================================*/
+
+const continueButton =
+document.getElementById(
+"whatsapp-btn"
+);
+
+if (continueButton) {
+
+continueButton.addEventListener(
+    "click",
+    function () {
+
+
+        /* No package selected */
+
+        if (!selectedPackage) {
+
+            if (
+                typeof showToast ===
+                "function"
+            ) {
+
+                showToast(
+                    "Please select a package to proceed."
+                );
+
+            } else {
+
+                alert(
+                    "Please select a package to proceed."
+                );
+
+            }
+
+            return;
+
+        }
+
+        /* Make sure latest price is calculated */
+
+        currentTotal =
+            calculateTotal();
+
+        /* Find contact form */
+
+        const contactSection =
+            document.getElementById(
+                "contact"
+            );
+
+
+        const contactForm =
+            document.getElementById(
+                "contact-form"
+            );
+
+
+        /* Tell user what happened */
+
+        if (
+            typeof showToast ===
+            "function"
+        ) {
+
+            showToast(
+
+                selectedPackage +
+                " selected ✓ Scroll down to complete your proposal."
+
+            );
+
+        }
+
+        /* Smooth scroll */
+
+        if (contactSection) {
+
+            contactSection.scrollIntoView({
+
+                behavior: "smooth",
+
+                block: "start"
+
+            });
+
+        }
+
+        /* Put selected package into form */
+
+        if (packageInput) {
+
+            packageInput.value =
+                selectedPackage;
+
+        }
+
+
+        /* Highlight name field */
+
+        if (contactForm) {
+
+            setTimeout(() => {
+
+                const nameInput =
+                    contactForm.querySelector(
+                        'input[name="name"]'
+                    );
+
+
+                if (nameInput) {
+
+                    nameInput.classList.add(
+                        "form-highlight"
+                    );
+
+
+                    nameInput.focus();
+
+
+                    setTimeout(() => {
+
+                        nameInput.classList.remove(
+                            "form-highlight"
+                        );
+
+                    }, 3000);
+
+                }
+
+            }, 900);
+
+        }
+
+    }
+);
+
+}
+
+/*==================================================
+INITIAL STATE
+==================================================*/
+
+if (totalElement) {
+
+totalElement.textContent =
+    "R0";
+
+}
+
+console.log(
+"KASITU Calculator Loaded ✓"
+);
+
+/*==================================================
+WHATSAPP QUOTE
+==================================================*/
+
+/*==================================================
+CONTINUE → CONTACT FORM
+==================================================*/
+
+const whatsappBtn =
+    document.getElementById("whatsapp-btn");
+
+const contactSection =
+    document.getElementById("contact");
+
+const contactForm =
+    document.getElementById("contact-form");
+
+const nameInput =
+    contactForm?.querySelector('input[name="name"]');
+
+if (whatsappBtn) {
+
+    whatsappBtn.addEventListener("click", function(e) {
+
+        e.preventDefault();
+
+        e.stopPropagation();
+
+        /* ==========================================
+           NO PACKAGE
+        ========================================== */
+
+        if (!selectedPackage) {
+
+            showToast(
+                "Please select a package to proceed."
+            );
+
+            /* Take the user back to packages */
+            const pricingSection =
+                document.getElementById("pricing");
+
+            if (pricingSection) {
+
+                pricingSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            }
+
+            return;
+
+        }
+
+        /* ==========================================
+           PACKAGE SELECTED
+        ========================================== */
+
+        showToast(
+            `${selectedPackage} selected ✓ — Please tell us about your project.`
+        );
+
+        /* ==========================================
+           SCROLL TO CONTACT
+        ========================================== */
+
+        if (contactSection) {
+
+            contactSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        }
+
+        /* ==========================================
+           FOCUS NAME FIELD AFTER SCROLL
+        ========================================== */
+
+        setTimeout(() => {
+
+            if (nameInput) {
+
+                nameInput.focus();
+
+                nameInput.classList.add(
+                    "input-attention"
+                );
+
+                setTimeout(() => {
+
+                    nameInput.classList.remove(
+                        "input-attention"
+                    );
+
+                }, 2500);
+
+            }
+
+        }, 900);
+
+    });
+
+}
+
+/*==================================================
+SCROLL PROGRESS
+==================================================*/
+
+const progress=
+
+document.createElement("div");
+
+progress.id="progress-bar";
+
+document.body.appendChild(progress);
+
+window.addEventListener(
+
+"scroll",
+
+()=>{
+
+const scroll=
+
+window.scrollY;
+
+const height=
+
+document.body.scrollHeight-
+
+window.innerHeight;
+
+const percent=
+
+(scroll/height)*100;
+
+progress.style.width=
+
+percent+"%";
+
+}
+
+);
+
+/*==================================================
+TOAST
+==================================================*/
+
+function showToast(message){
+
+let toast=
+
+document.createElement("div");
+
+toast.className="toast";
+
+toast.textContent=message;
+
+document.body.appendChild(toast);
+
+setTimeout(()=>{
+
+toast.classList.add("show");
+
+},100);
+
+setTimeout(()=>{
+
+toast.classList.remove("show");
+
+setTimeout(()=>{
+
+toast.remove();
+
+},400);
+
+},2500);
+
+}
+
+/*==================================================
+INPUT SANITIZER
+==================================================*/
+
+function sanitizeInput(value) {
+
+    return value.replace(/[<>]/g, "");
+
+}
+
+document
+.querySelectorAll("input, textarea")
+.forEach(input => {
+
+    input.addEventListener("input", () => {
+
+        const cursorPosition = input.selectionStart;
+
+        input.value = sanitizeInput(input.value);
+
+        input.setSelectionRange(
+            cursorPosition,
+            cursorPosition
+        );
+
+    });
+
+});
+
+/*==================================================
+END PART 3
+==================================================*/
+
+/*==================================================
+PART 4
+Premium Interactions
+==================================================*/
+
+/*==================================================
+3D PROJECT CARDS
+==================================================*/
+
+const projectCards = document.querySelectorAll(".project-card");
+
+projectCards.forEach(card => {
+
+    card.addEventListener("mousemove", e => {
+
+        const rect = card.getBoundingClientRect();
+
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const rotateY = ((x / rect.width) - 0.5) * 18;
+        const rotateX = ((y / rect.height) - 0.5) * -18;
+
+        card.style.transform =
+            `
+            perspective(1200px)
+            rotateX(${rotateX}deg)
+            rotateY(${rotateY}deg)
+            translateY(-12px)
+            `;
+    });
+
+    card.addEventListener("mouseleave", () => {
+
+        card.style.transform = "";
+
+    });
+
+});
+
+/*==================================================
+PARTICLE BACKGROUND
+==================================================*/
+
+const particleCanvas = document.createElement("canvas");
+
+particleCanvas.id = "particles";
+
+document.body.prepend(particleCanvas);
+
+const ctx = particleCanvas.getContext("2d");
+
+let particles = [];
+
+function resizeCanvas(){
+
+    particleCanvas.width = window.innerWidth;
+    particleCanvas.height = window.innerHeight;
+
+}
+
+resizeCanvas();
+
+window.addEventListener("resize", resizeCanvas);
+
+class Particle{
+
+    constructor(){
+
+        this.reset();
+
+    }
+
+    reset(){
+
+        this.x = Math.random()*particleCanvas.width;
+        this.y = Math.random()*particleCanvas.height;
+
+        this.radius = Math.random()*2+1;
+
+        this.speedX = (Math.random()-.5)*0.4;
+        this.speedY = (Math.random()-.5)*0.4;
+
+    }
+
+    update(){
+
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if(this.x<0 || this.x>particleCanvas.width)
+            this.speedX *= -1;
+
+        if(this.y<0 || this.y>particleCanvas.height)
+            this.speedY *= -1;
+
+    }
+
+    draw(){
+
+        ctx.beginPath();
+
+        ctx.arc(
+            this.x,
+            this.y,
+            this.radius,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fillStyle="rgba(6,182,212,.45)";
+        ctx.fill();
+
+    }
+
+}
+
+for(let i=0;i<90;i++){
+
+    particles.push(new Particle());
+
+}
+
+function animateParticles(){
+
+    ctx.clearRect(
+        0,
+        0,
+        particleCanvas.width,
+        particleCanvas.height
+    );
+
+    particles.forEach(p=>{
+
+        p.update();
+
+        p.draw();
+
+    });
+
+    requestAnimationFrame(animateParticles);
+
+}
+
+animateParticles();
+
+/*==================================================
+EMAIL FORM
+==================================================*/
+
+/*==================================================
+KASITU PROPOSAL REQUEST SYSTEM
+EmailJS + WhatsApp + Optional Quotation
+==================================================*/
+
+const proposalForm =
+    document.getElementById("contact-form");
+
+let lastSubmit = 0;
+
+
+/*==================================================
+COUNT WORDS
+==================================================*/
+
+function countWords(text) {
+
+    return text
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean)
+        .length;
+
+}
+
+
+/*==================================================
+GET SELECTED EXTRAS
+==================================================*/
+
+function getSelectedExtras() {
+
+    const selected = [];
+
+    extraInputs.forEach(extra => {
+
+        if (extra.checked) {
+
+            const option =
+                extra.closest(".extra-option");
+
+            let label = "";
+
+            if (option) {
+
+                label =
+                    option.textContent
+                        .replace(/\s+/g, " ")
+                        .trim();
+
+            } else {
+
+                label =
+                    extra.parentElement
+                        ? extra.parentElement.textContent
+                            .replace(/\s+/g, " ")
+                            .trim()
+                        : extra.dataset.extra || "";
+
+            }
+
+            if (label) {
+
+                selected.push(label);
+
+            }
+
+        }
+
+    });
+
+    return selected;
+
+}
+
+
+/*==================================================
+BUILD WHATSAPP MESSAGE
+==================================================*/
+
+function buildWhatsAppMessage(customer) {
+
+    const selectedExtras =
+        getSelectedExtras();
+
+    const packageText =
+        selectedPackage || "Package not selected";
+
+    const totalText =
+        selectedPackage
+            ? formatCurrency(currentTotal)
+            : "To be discussed";
+
+    return `Hello KASITU Webs 👋
+
+I would like to request information about a website/project.
+
+Name:
+${customer.name}
+
+Email:
+${customer.email}
+
+Phone:
+${customer.phone}
+
+Company:
+${customer.company || "Not provided"}
+
+Package:
+${packageText}
+
+Extras:
+${selectedExtras.join(", ") || "None"}
+
+Estimated Total:
+${totalText}
+
+Project Details:
+${customer.message}
+
+Thank you.`;
+
+}
+
+
+/*==================================================
+GET QUOTATION DATA
+==================================================*/
+
+function getQuotationData() {
+
+    const selectedExtras =
+        getSelectedExtras();
+
+    return {
+
+        packageName:
+            selectedPackage,
+
+        packagePrice:
+            packagePrices[selectedPackage] || 0,
+
+        extras:
+            selectedExtras,
+
+        total:
+            currentTotal
+
+    };
+
+}
+
+
+/*==================================================
+SEND TO WHATSAPP
+==================================================*/
+
+function sendToWhatsApp(customer) {
+
+    const whatsappMessage =
+        buildWhatsAppMessage(customer);
+
+    const whatsappPhone =
+        "27794380103";
+
+    const encodedMessage =
+        encodeURIComponent(
+            whatsappMessage
+        );
+
+    const whatsappWebURL =
+        `https://wa.me/${whatsappPhone}?text=${encodedMessage}`;
+
+    const whatsappAppURL =
+        `whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage}`;
+
+
+    const isMobile =
+        /Android|iPhone|iPad|iPod/i.test(
+            navigator.userAgent
+        );
+
+
+    /*==================================================
+      DESKTOP
+    ==================================================*/
+
+    if (!isMobile) {
+
+        window.open(
+            whatsappWebURL,
+            "_blank",
+            "noopener,noreferrer"
+        );
+
+        /*
+        ONLY show quotation if a package
+        was actually selected.
+        */
+
+        if (selectedPackage) {
+
+            setTimeout(() => {
+
+                showQuotationChoice(customer);
+
+            }, 1200);
+
+        }
+
+        return;
+
+    }
+
+
+    /*==================================================
+      MOBILE / TABLET
+    ==================================================*/
+
+    let whatsappOpened = false;
+
+
+    const handleVisibilityChange = () => {
+
+        if (document.hidden) {
+
+            whatsappOpened = true;
+
+            document.removeEventListener(
+                "visibilitychange",
+                handleVisibilityChange
+            );
+
+        }
+
+    };
+
+
+    document.addEventListener(
+        "visibilitychange",
+        handleVisibilityChange
+    );
+
+
+    /*
+    Try opening WhatsApp app.
+    */
+
+    window.location.href =
+        whatsappAppURL;
+
+
+    /*
+    If WhatsApp does not open,
+    continue after a short delay.
+    */
+
+    setTimeout(() => {
+
+        document.removeEventListener(
+            "visibilitychange",
+            handleVisibilityChange
+        );
+
+
+        if (!whatsappOpened) {
+
+            showToast(
+                "WhatsApp could not be opened."
+            );
+
+        }
+
+
+        /*
+        IMPORTANT:
+        Quotation ONLY appears when
+        package was selected.
+        */
+
+        if (
+            selectedPackage &&
+            !whatsappOpened
+        ) {
+
+            showQuotationChoice(customer);
+
+        }
+
+    }, 1800);
+
+}
+
+
+/*==================================================
+PROPOSAL FORM SUBMIT
+==================================================*/
+
+if (proposalForm) {
+
+    proposalForm.addEventListener(
+        "submit",
+        async function (e) {
+
+            e.preventDefault();
+
+
+            /*========================================
+              EMAILJS CHECK
+            ========================================*/
+
+            if (
+                typeof emailjs === "undefined"
+            ) {
+
+                console.error(
+                    "EmailJS library was not loaded."
+                );
+
+                showToast(
+                    "Email service is currently unavailable."
+                );
+
+                return;
+
+            }
+
+
+            /*========================================
+              EMAILJS CONFIGURATION CHECK
+            ========================================*/
+
+            if (
+                !EMAILJS_SERVICE_ID ||
+                !EMAILJS_TEMPLATE_ID ||
+                !EMAILJS_PUBLIC_KEY
+            ) {
+
+                console.error(
+                    "EmailJS configuration is incomplete."
+                );
+
+                showToast(
+                    "Email service has not been configured."
+                );
+
+                return;
+
+            }
+
+
+            /*========================================
+              FORM ELEMENTS
+            ========================================*/
+
+            const nameInput =
+                proposalForm.querySelector(
+                    '[name="name"]'
+                );
+
+            const emailInput =
+                proposalForm.querySelector(
+                    '[name="email"]'
+                );
+
+            const phoneInput =
+                proposalForm.querySelector(
+                    '[name="phone"]'
+                );
+
+            const companyInput =
+                proposalForm.querySelector(
+                    '[name="company"]'
+                );
+
+            const messageInput =
+                proposalForm.querySelector(
+                    '[name="message"]'
+                );
+
+
+            /*========================================
+              SAFETY CHECK
+            ========================================*/
+
+            if (
+                !nameInput ||
+                !emailInput ||
+                !phoneInput ||
+                !messageInput
+            ) {
+
+                console.error(
+                    "Required form fields are missing."
+                );
+
+                showToast(
+                    "Some required form fields are missing."
+                );
+
+                return;
+
+            }
+
+
+            /*========================================
+              GET VALUES
+            ========================================*/
+
+            const name =
+                nameInput.value.trim();
+
+            const email =
+                emailInput.value.trim();
+
+            const phone =
+                phoneInput.value.trim();
+
+            const company =
+                companyInput
+                    ? companyInput.value.trim()
+                    : "";
+
+            const message =
+                messageInput.value.trim();
+
+
+            /*========================================
+              NAME VALIDATION
+            ========================================*/
+
+            if (!name) {
+
+                showToast(
+                    "Please enter your full name."
+                );
+
+                nameInput.focus();
+
+                return;
+
+            }
+
+
+            /*========================================
+              EMAIL VALIDATION
+            ========================================*/
+
+            if (!email) {
+
+                showToast(
+                    "Please enter your email address."
+                );
+
+                emailInput.focus();
+
+                return;
+
+            }
+
+
+            if (
+                !emailInput.checkValidity()
+            ) {
+
+                showToast(
+                    "Please enter a valid email address."
+                );
+
+                emailInput.focus();
+
+                return;
+
+            }
+
+
+            /*========================================
+              PHONE VALIDATION
+              EXACTLY 10 DIGITS
+            ========================================*/
+
+            if (!phone) {
+
+                showToast(
+                    "Please enter your 10-digit phone number."
+                );
+
+                phoneInput.focus();
+
+                return;
+
+            }
+
+
+            if (!/^\d{10}$/.test(phone)) {
+
+                showToast(
+                    "Phone number must contain exactly 10 digits."
+                );
+
+                phoneInput.focus();
+
+                return;
+
+            }
+
+
+            /*========================================
+              MESSAGE VALIDATION
+            ========================================*/
+
+            if (!message) {
+
+                showToast(
+                    "Please describe your project."
+                );
+
+                messageInput.focus();
+
+                return;
+
+            }
+
+
+            /*========================================
+              8 WORD MINIMUM
+            ========================================*/
+
+            const wordCount =
+                countWords(message);
+
+
+            if (wordCount < 8) {
+
+                showToast(
+                    `Please describe your project using at least 8 words. You currently have ${wordCount}.`
+                );
+
+                messageInput.focus();
+
+                return;
+
+            }
+
+
+            /*========================================
+              ANTI-SPAM COOLDOWN
+            ========================================*/
+
+            const now =
+                Date.now();
+
+
+            if (
+                now - lastSubmit < 10000
+            ) {
+
+                showToast(
+                    "Please wait before sending another request."
+                );
+
+                return;
+
+            }
+
+
+            lastSubmit = now;
+
+
+            /*========================================
+              CALCULATE TOTAL
+            ========================================*/
+
+            currentTotal =
+                calculateTotal();
+
+
+            /*========================================
+              SUBMIT BUTTON
+            ========================================*/
+
+            const submitButton =
+                proposalForm.querySelector(
+                    'button[type="submit"]'
+                );
+
+
+            if (submitButton) {
+
+                submitButton.disabled =
+                    true;
+
+                submitButton.textContent =
+                    "Sending Message...";
+
+            }
+
+
+            /*========================================
+              CUSTOMER DATA
+            ========================================*/
+
+            const customer = {
+
+                name,
+                email,
+                phone,
+                company,
+                message
+
+            };
+
+
+            /*========================================
+              SEND EMAIL WITH EMAILJS
+            ========================================*/
+
+            try {
+
+                const response =
+                    await emailjs.sendForm(
+
+                        EMAILJS_SERVICE_ID,
+
+                        EMAILJS_TEMPLATE_ID,
+
+                        proposalForm
+
+                    );
+
+
+                console.log(
+                    "Message sent successfully:",
+                    response
+                );
+
+
+                /*====================================
+                  EMAIL SUCCESS
+                ====================================*/
+
+                if (submitButton) {
+
+                    submitButton.textContent =
+                        "Message Sent ✓";
+
+                }
+
+
+                showToast(
+                    "Message sent successfully!"
+                );
+
+
+                /*====================================
+                  WHATSAPP
+                ====================================*/
+
+                setTimeout(() => {
+
+                    sendToWhatsApp(
+                        customer
+                    );
+
+                }, 500);
+
+
+            } catch (error) {
+
+                console.error(
+                    "Message sending failed:",
+                    error
+                );
+
+
+                /*====================================
+                  RESTORE BUTTON
+                ====================================*/
+
+                if (submitButton) {
+
+                    submitButton.disabled =
+                        false;
+
+                    submitButton.textContent =
+                        "Send Message";
+
+                }
+
+
+                showToast(
+                    "Failed to send message. Please try again."
+                );
+
+            }
+
+        }
+    );
+
+}
+
+/*==================================================
+KASITU QUOTATION SYSTEM
+==================================================*/
+
+
+/*==================================================
+LOAD jsPDF
+==================================================*/
+
+function loadJsPDF() {
+
+    return new Promise((resolve, reject) => {
+
+        if (window.jspdf) {
+
+            resolve(window.jspdf.jsPDF);
+
+            return;
+
+        }
+
+
+        const script =
+            document.createElement("script");
+
+        script.src =
+            "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+
+        script.onload = () => {
+
+            resolve(window.jspdf.jsPDF);
+
+        };
+
+        script.onerror = () => {
+
+            reject(
+                new Error(
+                    "Unable to load PDF library."
+                )
+            );
+
+        };
+
+        document.head.appendChild(script);
+
+    });
+
+}
+
+
+/*==================================================
+QUOTATION MODAL
+==================================================*/
+
+const quotationModal =
+    document.getElementById(
+        "quotation-modal"
+    );
+
+const quotationClose =
+    document.getElementById(
+        "quotation-close"
+    );
+
+const quotationLater =
+    document.getElementById(
+        "quotation-later"
+    );
+
+const downloadQuotation =
+    document.getElementById(
+        "download-quotation"
+    );
+
+const quotationPackage =
+    document.getElementById(
+        "quotation-package"
+    );
+
+const quotationTotal =
+    document.getElementById(
+        "quotation-total"
+    );
+
+const quotationMessage =
+    document.getElementById(
+        "quotation-message"
+    );
+
+
+/*==================================================
+SHOW QUOTATION CHOICE
+==================================================*/
+
+function showQuotationChoice(customer) {
+
+    /* Never show quotation modal without a package */
+    if (!selectedPackage) {
+        return;
+    }
+
+    if (!quotationModal) return;
+
+    quotationPackage.textContent =
+        selectedPackage;
+
+    quotationTotal.textContent =
+        `R${currentTotal.toLocaleString("en-ZA")}`;
+
+    quotationMessage.textContent =
+        `Thank you, ${customer.name}. Your proposal request has been sent successfully.`;
+
+    quotationModal.classList.add("show");
+
+    document.body.style.overflow =
+        "hidden";
+}
+
+/*==================================================
+CLOSE QUOTATION
+==================================================*/
+
+function closeQuotationModal() {
+
+    quotationModal.classList.remove(
+        "show"
+    );
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+if (quotationClose) {
+
+    quotationClose.addEventListener(
+        "click",
+        closeQuotationModal
+    );
+
+}
+
+
+if (quotationLater) {
+
+    quotationLater.addEventListener(
+        "click",
+        closeQuotationModal
+    );
+
+}
+
+
+/*==================================================
+CLICK OUTSIDE
+==================================================*/
+
+if (quotationModal) {
+
+    quotationModal.addEventListener(
+        "click",
+        e => {
+
+            if (
+                e.target ===
+                quotationModal
+            ) {
+
+                closeQuotationModal();
+
+            }
+
+        }
+    );
+
+}
+
+
+/*==================================================
+GENERATE PDF
+==================================================*/
+
+async function generateQuotationPDF() {
+
+    try {
+
+        downloadQuotation.disabled =
+            true;
+
+        downloadQuotation.innerHTML =
+            `<i class="fas fa-spinner fa-spin"></i> Creating PDF...`;
+
+
+        const jsPDF =
+            await loadJsPDF();
+
+
+        const doc =
+            new jsPDF({
+
+                orientation:"portrait",
+
+                unit:"mm",
+
+                format:"a4"
+
+            });
+
+
+        const data =
+            getQuotationData();
+
+
+        const name =
+            proposalForm
+                .querySelector(
+                    '[name="name"]'
+                )
+                .value
+                .trim();
+
+
+        const email =
+            proposalForm
+                .querySelector(
+                    '[name="email"]'
+                )
+                .value
+                .trim();
+
+
+        const phone =
+            proposalForm
+                .querySelector(
+                    '[name="phone"]'
+                )
+                .value
+                .trim();
+
+
+        const company =
+            proposalForm
+                .querySelector(
+                    '[name="company"]'
+                )
+                .value
+                .trim();
+
+
+        const message =
+            proposalForm
+                .querySelector(
+                    '[name="message"]'
+                )
+                .value
+                .trim();
+
+
+        /* ------------------------------------------
+           COLORS
+        ------------------------------------------ */
+
+        const navy =
+            [7,11,23];
+
+        const purple =
+            [79,70,229];
+
+        const cyan =
+            [6,182,212];
+
+        const light =
+            [245,247,255];
+
+        const muted =
+            [110,120,145];
+
+
+        /* ------------------------------------------
+           BACKGROUND
+        ------------------------------------------ */
+
+        doc.setFillColor(
+            ...navy
+        );
+
+        doc.rect(
+            0,
+            0,
+            210,
+            297,
+            "F"
+        );
+
+
+        /* ------------------------------------------
+           TOP ACCENT
+        ------------------------------------------ */
+
+        doc.setFillColor(
+            ...purple
+        );
+
+        doc.rect(
+            0,
+            0,
+            210,
+            5,
+            "F"
+        );
+
+
+        doc.setFillColor(
+            ...cyan
+        );
+
+        doc.rect(
+            0,
+            5,
+            210,
+            1.5,
+            "F"
+        );
+
+
+        /* ------------------------------------------
+           BRAND
+        ------------------------------------------ */
+
+        doc.setTextColor(
+            ...light
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(25);
+
+        doc.text(
+            "KASITU",
+            20,
+            28
+        );
+
+
+        doc.setTextColor(
+            ...cyan
+        );
+
+        doc.setFontSize(10);
+
+        doc.text(
+            "WEBS",
+            20,
+            35
+        );
+
+
+        doc.setTextColor(
+            ...muted
+        );
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        doc.setFontSize(8);
+
+        doc.text(
+            "Building Digital Excellence",
+            20,
+            41
+        );
+
+
+        /* ------------------------------------------
+           QUOTATION TITLE
+        ------------------------------------------ */
+
+        doc.setTextColor(
+            ...light
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(22);
+
+        doc.text(
+            "PROJECT QUOTATION",
+            190,
+            28,
+            {
+                align:"right"
+            }
+        );
+
+
+        doc.setTextColor(
+            ...muted
+        );
+
+        doc.setFontSize(8);
+
+        doc.text(
+            "PRELIMINARY ESTIMATE",
+            190,
+            35,
+            {
+                align:"right"
+            }
+        );
+
+
+        doc.text(
+            new Date().toLocaleDateString(
+                "en-ZA"
+            ),
+            190,
+            41,
+            {
+                align:"right"
+            }
+        );
+
+
+        /* ------------------------------------------
+           DIVIDER
+        ------------------------------------------ */
+
+        doc.setDrawColor(
+            45,
+            55,
+            80
+        );
+
+        doc.line(
+            20,
+            52,
+            190,
+            52
+        );
+
+
+        /* ------------------------------------------
+           CLIENT INFORMATION
+        ------------------------------------------ */
+
+        doc.setTextColor(
+            ...cyan
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(10);
+
+        doc.text(
+            "CLIENT INFORMATION",
+            20,
+            66
+        );
+
+
+        doc.setTextColor(
+            ...light
+        );
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        doc.setFontSize(10);
+
+        doc.text(
+            `Name: ${name}`,
+            20,
+            76
+        );
+
+
+        doc.text(
+            `Email: ${email}`,
+            20,
+            84
+        );
+
+
+        doc.text(
+            `Phone: ${phone || "Not provided"}`,
+            20,
+            92
+        );
+
+
+        doc.text(
+            `Company: ${company || "Not provided"}`,
+            20,
+            100
+        );
+
+
+        /* ------------------------------------------
+           PACKAGE
+        ------------------------------------------ */
+
+        doc.setFillColor(
+            14,
+            21,
+            42
+        );
+
+        doc.roundedRect(
+            20,
+            112,
+            170,
+            38,
+            5,
+            5,
+            "F"
+        );
+
+
+        doc.setTextColor(
+            ...cyan
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(9);
+
+        doc.text(
+            "SELECTED PACKAGE",
+            28,
+            124
+        );
+
+
+        doc.setTextColor(
+            ...light
+        );
+
+        doc.setFontSize(15);
+
+        doc.text(
+            data.packageName,
+            28,
+            137
+        );
+
+
+        doc.setTextColor(
+            ...muted
+        );
+
+        doc.setFontSize(9);
+
+        doc.text(
+            `Base price: R${data.packagePrice.toLocaleString("en-ZA")}`,
+            28,
+            145
+        );
+
+
+        /* ------------------------------------------
+           EXTRAS
+        ------------------------------------------ */
+
+        doc.setTextColor(
+            ...cyan
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(10);
+
+        doc.text(
+            "ADDITIONAL FEATURES",
+            20,
+            168
+        );
+
+
+        let y =
+            178;
+
+
+        doc.setTextColor(
+            ...light
+        );
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        doc.setFontSize(9);
+
+
+        if (
+            data.extras.length === 0
+        ) {
+
+            doc.text(
+                "No additional features selected.",
+                20,
+                y
+            );
+
+            y += 8;
+
+        } else {
+
+            data.extras.forEach(
+                feature => {
+
+                    const cleanFeature =
+                        feature.replace(
+                            /\s+/g,
+                            " "
+                        );
+
+                    doc.text(
+                        `• ${cleanFeature}`,
+                        22,
+                        y
+                    );
+
+                    y += 8;
+
+                }
+            );
+
+        }
+
+
+        /* ------------------------------------------
+           TOTAL
+        ------------------------------------------ */
+
+        y += 8;
+
+
+        doc.setFillColor(
+            ...purple
+        );
+
+        doc.roundedRect(
+            20,
+            y,
+            170,
+            28,
+            5,
+            5,
+            "F"
+        );
+
+
+        doc.setTextColor(
+            220,
+            225,
+            255
+        );
+
+        doc.setFontSize(9);
+
+        doc.text(
+            "ESTIMATED PROJECT INVESTMENT",
+            28,
+            y + 11
+        );
+
+
+        doc.setTextColor(
+            255,
+            255,
+            255
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(19);
+
+        doc.text(
+            `R${data.total.toLocaleString("en-ZA")}`,
+            182,
+            y + 19,
+            {
+                align:"right"
+            }
+        );
+
+
+        /* ------------------------------------------
+           PROJECT DESCRIPTION
+        ------------------------------------------ */
+
+        y += 43;
+
+
+        doc.setTextColor(
+            ...cyan
+        );
+
+        doc.setFontSize(10);
+
+        doc.text(
+            "PROJECT DESCRIPTION",
+            20,
+            y
+        );
+
+
+        y += 9;
+
+
+        doc.setTextColor(
+            ...light
+        );
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        doc.setFontSize(8.5);
+
+
+        const wrapped =
+            doc.splitTextToSize(
+                message,
+                165
+            );
+
+
+        doc.text(
+            wrapped,
+            20,
+            y
+        );
+
+
+        /* ------------------------------------------
+           FOOTER
+        ------------------------------------------ */
+
+        doc.setDrawColor(
+            45,
+            55,
+            80
+        );
+
+        doc.line(
+            20,
+            270,
+            190,
+            270
+        );
+
+
+        doc.setTextColor(
+            ...muted
+        );
+
+        doc.setFontSize(7.5);
+
+        doc.text(
+            "KASITU Webs • Soshanguve, Pretoria, Gauteng, South Africa",
+            20,
+            280
+        );
+
+
+        doc.text(
+            "info@kasituwebs.co.za • +27 79 438 0103",
+            20,
+            287
+        );
+
+
+        doc.setTextColor(
+            ...cyan
+        );
+
+        doc.text(
+            "This quotation is an estimate and may be adjusted after project consultation.",
+            190,
+            287,
+            {
+                align:"right"
+            }
+        );
+
+
+        /* ------------------------------------------
+           SAVE
+        ------------------------------------------ */
+
+        const safeName =
+            name
+                .replace(
+                    /[^a-z0-9]/gi,
+                    "-"
+                )
+                .toLowerCase();
+
+
+        doc.save(
+            `KASITU-Webs-Quotation-${safeName || "Client"}.pdf`
+        );
+
+
+        showToast(
+            "Quotation downloaded successfully!"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "PDF generation failed:",
+            error
+        );
+
+        showToast(
+            "Unable to create the quotation PDF."
+        );
+
+    } finally {
+
+        downloadQuotation.disabled =
+            false;
+
+        downloadQuotation.innerHTML =
+            `<i class="fas fa-file-pdf"></i> Download Quotation`;
+
+    }
+
+}
+
+
+/*==================================================
+DOWNLOAD BUTTON
+==================================================*/
+
+if (downloadQuotation) {
+
+    downloadQuotation.addEventListener(
+        "click",
+        generateQuotationPDF
+    );
+
+}
+
+/*==================================================
+PAGE PERFORMANCE
+==================================================*/
+
+document.querySelectorAll("img")
+.forEach(img=>{
+
+img.loading="lazy";
+
+});
+
+/*==================================================
+CONSOLE
+==================================================*/
+
+console.log(
+"%cKASITU Premium Portfolio",
+"font-size:28px;color:#06B6D4;font-weight:bold;"
+);
+
+console.log(
+"%cPowered by HTML • CSS • JavaScript",
+"font-size:15px;color:#63ff99;"
+);
+
+/*==================================================
+END PART 4
+==================================================*/
+
+/*==================================================
+PART 5
+KASITU OS
+Interactive Terminal
+Command Palette
+==================================================*/
+
+/*==================================================
+TERMINAL
+==================================================*/
+
+const terminal = document.getElementById("terminal");
+const terminalBody = document.getElementById("terminal-body");
+const terminalInput = document.getElementById("terminal-input");
+const terminalToggle = document.getElementById("terminal-toggle");
+const terminalClose = document.getElementById("terminal-close");
+
+const commands = {
+
+help:`
+
+Available Commands
+
+help
+
+about
+
+services
+
+projects
+
+pricing
+
+skills
+
+contact
+
+clear
+
+github
+
+linkedin
+
+`,
+
+about:`
+
+KASITU WEBS
+
+We build premium websites,
+
+mobile apps,
+
+business systems,
+
+branding,
+
+graphic design,
+
+and cloud solutions.
+
+`,
+
+services:`
+
+Website Development
+
+App Development
+
+Business Registration
+
+Brand Identity
+
+Graphic Design
+
+SEO
+
+Maintenance
+
+`,
+
+pricing:`
+
+Starter Website
+
+Business Website
+
+eCommerce Website
+
+Custom Systems
+
+Request a quotation
+
+`,
+
+projects:`
+
+Portfolio Website
+
+Restaurant Website
+
+Corporate Website
+
+Booking System
+
+Online Store
+
+`,
+
+skills:`
+
+HTML
+
+CSS
+
+JavaScript
+
+Firebase
+
+Node.js
+
+Express
+
+MongoDB
+
+Git
+
+Responsive Design
+
+`,
+
+contact:`
+
+Email:
+
+info@kasituwebs.co.za
+
+Website:
+
+www.kasituwebs.co.za
+
+WhatsApp:
+
++27 79 348 0103 
+
+`,
+
+clear:"CLEAR"
+
+};
+
+function print(text){
+
+const line=document.createElement("div");
+
+line.className="terminal-line";
+
+line.innerHTML=text;
+
+terminalBody.appendChild(line);
+
+terminalBody.scrollTop=terminalBody.scrollHeight;
+
+}
+
+if(terminalToggle){
+
+terminalToggle.addEventListener("click",()=>{
+
+terminal.classList.add("open");
+
+terminalInput.focus();
+
+});
+
+}
+
+if(terminalClose){
+
+terminalClose.addEventListener("click",()=>{
+
+terminal.classList.remove("open");
+
+});
+
+}
+
+if(terminalInput){
+
+terminalInput.addEventListener("keydown",e=>{
+
+if(e.key!=="Enter") return;
+
+const value=terminalInput.value.trim().toLowerCase();
+
+print(`<span style="color:#06B6D4">></span> ${value}`);
+
+terminalInput.value="";
+
+if(value==="") return;
+
+if(commands[value]==="CLEAR"){
+
+terminalBody.innerHTML="";
+
+return;
+
+}
+
+if(commands[value]){
+
+print(commands[value]);
+
+}else{
+
+print("Unknown command. Type <b>help</b>");
+
+}
+
+});
+
+}
+
+/*==================================================
+CTRL + K
+==================================================*/
+
+const commandPalette=document.getElementById("command-palette");
+const commandSearch=document.getElementById("command-search");
+
+document.addEventListener("keydown",e=>{
+
+if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){
+
+e.preventDefault();
+
+commandPalette.classList.add("show");
+
+commandSearch.focus();
+
+}
+
+if(e.key==="Escape"){
+
+commandPalette.classList.remove("show");
+
+}
+
+});
+
+const shortcuts={
+
+home:"#home",
+
+services:"#services",
+
+projects:"#projects",
+
+pricing:"#pricing",
+
+contact:"#contact"
+
+};
+
+if(commandSearch){
+
+commandSearch.addEventListener("keydown",e=>{
+
+if(e.key!=="Enter") return;
+
+const value=commandSearch.value.toLowerCase();
+
+if(shortcuts[value]){
+
+document.querySelector(shortcuts[value]).scrollIntoView({
+
+behavior:"smooth"
+
+});
+
+}
+
+commandPalette.classList.remove("show");
+
+commandSearch.value="";
+
+});
+
+}
+
+/*==================================================
+SYSTEM STATUS
+==================================================*/
+
+const indicators=document.querySelectorAll(".status-indicator");
+
+indicators.forEach((indicator,index)=>{
+
+setTimeout(()=>{
+
+indicator.classList.add("online");
+
+},500*index);
+
+});
+
+/*==================================================
 PAGE TRANSITIONS
+==================================================*/
+
+document.querySelectorAll("a").forEach(link=>{
+
+const href=link.getAttribute("href");
+
+if(!href) return;
+
+if(href.startsWith("#")) return;
+
+link.addEventListener("click",()=>{
+
+document.body.classList.remove("loaded");
+
+});
+
+});
+
+/*==================================================
+END PART 5
+==================================================*/
+
 ==================================================*/
 
 document.querySelectorAll("a").forEach(link=>{
