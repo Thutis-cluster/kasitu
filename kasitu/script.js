@@ -1545,7 +1545,7 @@ EMAIL FORM
 
 /*==================================================
 KASITU PROPOSAL REQUEST SYSTEM
-EmailJS + WhatsApp + Quotation
+EmailJS + WhatsApp + Optional Quotation
 ==================================================*/
 
 const proposalForm =
@@ -1577,51 +1577,42 @@ function getSelectedExtras() {
 
     const selected = [];
 
-    /*
-       Use the existing extraInputs variable
-       from the calculator section.
-    */
+    extraInputs.forEach(extra => {
 
-    if (typeof extraInputs !== "undefined") {
+        if (extra.checked) {
 
-        extraInputs.forEach(extra => {
+            const option =
+                extra.closest(".extra-option");
 
-            if (extra.checked) {
+            let label = "";
 
-                const option =
-                    extra.closest(".extra-option");
+            if (option) {
 
-                let label = "";
+                label =
+                    option.textContent
+                        .replace(/\s+/g, " ")
+                        .trim();
 
-                if (option) {
+            } else {
 
-                    label =
-                        option.textContent
+                label =
+                    extra.parentElement
+                        ? extra.parentElement.textContent
                             .replace(/\s+/g, " ")
-                            .trim();
-
-                } else {
-
-                    label =
-                        extra.parentElement
-                            ? extra.parentElement.textContent
-                                .replace(/\s+/g, " ")
-                                .trim()
-                            : extra.dataset.extra || "";
-
-                }
-
-                if (label) {
-
-                    selected.push(label);
-
-                }
+                            .trim()
+                        : extra.dataset.extra || "";
 
             }
 
-        });
+            if (label) {
 
-    }
+                selected.push(label);
+
+            }
+
+        }
+
+    });
 
     return selected;
 
@@ -1637,9 +1628,17 @@ function buildWhatsAppMessage(customer) {
     const selectedExtras =
         getSelectedExtras();
 
+    const packageText =
+        selectedPackage || "Package not selected";
+
+    const totalText =
+        selectedPackage
+            ? formatCurrency(currentTotal)
+            : "To be discussed";
+
     return `Hello KASITU Webs 👋
 
-I would like to request a quotation.
+I would like to request information about a website/project.
 
 Name:
 ${customer.name}
@@ -1648,19 +1647,19 @@ Email:
 ${customer.email}
 
 Phone:
-${customer.phone || "Not provided"}
+${customer.phone}
 
 Company:
 ${customer.company || "Not provided"}
 
 Package:
-${selectedPackage}
+${packageText}
 
 Extras:
 ${selectedExtras.join(", ") || "None"}
 
 Estimated Total:
-${formatCurrency(currentTotal)}
+${totalText}
 
 Project Details:
 ${customer.message}
@@ -1671,7 +1670,7 @@ Thank you.`;
 
 
 /*==================================================
-BUILD QUOTATION DATA
+GET QUOTATION DATA
 ==================================================*/
 
 function getQuotationData() {
@@ -1699,7 +1698,148 @@ function getQuotationData() {
 
 
 /*==================================================
-PROPOSAL FORM
+SEND TO WHATSAPP
+==================================================*/
+
+function sendToWhatsApp(customer) {
+
+    const whatsappMessage =
+        buildWhatsAppMessage(customer);
+
+    const whatsappPhone =
+        "27794380103";
+
+    const encodedMessage =
+        encodeURIComponent(
+            whatsappMessage
+        );
+
+    const whatsappWebURL =
+        `https://wa.me/${whatsappPhone}?text=${encodedMessage}`;
+
+    const whatsappAppURL =
+        `whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage}`;
+
+
+    const isMobile =
+        /Android|iPhone|iPad|iPod/i.test(
+            navigator.userAgent
+        );
+
+
+    /*==================================================
+      DESKTOP
+    ==================================================*/
+
+    if (!isMobile) {
+
+        window.open(
+            whatsappWebURL,
+            "_blank",
+            "noopener,noreferrer"
+        );
+
+        /*
+        ONLY show quotation if a package
+        was actually selected.
+        */
+
+        if (selectedPackage) {
+
+            setTimeout(() => {
+
+                showQuotationChoice(customer);
+
+            }, 1200);
+
+        }
+
+        return;
+
+    }
+
+
+    /*==================================================
+      MOBILE / TABLET
+    ==================================================*/
+
+    let whatsappOpened = false;
+
+
+    const handleVisibilityChange = () => {
+
+        if (document.hidden) {
+
+            whatsappOpened = true;
+
+            document.removeEventListener(
+                "visibilitychange",
+                handleVisibilityChange
+            );
+
+        }
+
+    };
+
+
+    document.addEventListener(
+        "visibilitychange",
+        handleVisibilityChange
+    );
+
+
+    /*
+    Try opening WhatsApp app.
+    */
+
+    window.location.href =
+        whatsappAppURL;
+
+
+    /*
+    If WhatsApp does not open,
+    continue after a short delay.
+    */
+
+    setTimeout(() => {
+
+        document.removeEventListener(
+            "visibilitychange",
+            handleVisibilityChange
+        );
+
+
+        if (!whatsappOpened) {
+
+            showToast(
+                "WhatsApp could not be opened."
+            );
+
+        }
+
+
+        /*
+        IMPORTANT:
+        Quotation ONLY appears when
+        package was selected.
+        */
+
+        if (
+            selectedPackage &&
+            !whatsappOpened
+        ) {
+
+            showQuotationChoice(customer);
+
+        }
+
+    }, 1800);
+
+}
+
+
+/*==================================================
+PROPOSAL FORM SUBMIT
 ==================================================*/
 
 if (proposalForm) {
@@ -1756,21 +1896,6 @@ if (proposalForm) {
 
 
             /*========================================
-              PACKAGE CHECK
-            ========================================*/
-
-            if (!selectedPackage) {
-
-                showToast(
-                    "Please select a package first."
-                );
-
-                return;
-
-            }
-
-
-            /*========================================
               FORM ELEMENTS
             ========================================*/
 
@@ -1807,6 +1932,7 @@ if (proposalForm) {
             if (
                 !nameInput ||
                 !emailInput ||
+                !phoneInput ||
                 !messageInput
             ) {
 
@@ -1815,7 +1941,7 @@ if (proposalForm) {
                 );
 
                 showToast(
-                    "Some form fields are missing."
+                    "Some required form fields are missing."
                 );
 
                 return;
@@ -1834,9 +1960,7 @@ if (proposalForm) {
                 emailInput.value.trim();
 
             const phone =
-                phoneInput
-                    ? phoneInput.value.trim()
-                    : "";
+                phoneInput.value.trim();
 
             const company =
                 companyInput
@@ -1895,47 +2019,36 @@ if (proposalForm) {
 
             }
 
-           
-                  /*========================================
-                       PHONE VALIDATION
-                       EXACTLY 10 DIGITS
-                   ========================================*/
 
-                        if (!phoneInput) {
+            /*========================================
+              PHONE VALIDATION
+              EXACTLY 10 DIGITS
+            ========================================*/
 
-                            showToast(
-                           "Phone number field is missing."
-                                     );
+            if (!phone) {
 
-                               return;
+                showToast(
+                    "Please enter your 10-digit phone number."
+                );
 
-                              }
+                phoneInput.focus();
 
+                return;
 
-                              if (!phone) {
-
-                               showToast(
-                               "Please enter your phone number."
-                               );
-
-                               phoneInput.focus();
-
-                               return;
-
-                              }
+            }
 
 
-                              if (!/^\d{10}$/.test(phone)) {
+            if (!/^\d{10}$/.test(phone)) {
 
-                               showToast(
-                             "Please enter exactly 10 digits for your phone number."
-                            );
+                showToast(
+                    "Phone number must contain exactly 10 digits."
+                );
 
-                   phoneInput.focus();
+                phoneInput.focus();
 
-                   return;
+                return;
 
-               }
+            }
 
 
             /*========================================
@@ -1997,15 +2110,11 @@ if (proposalForm) {
             }
 
 
-            /*========================================
-              SAVE SUBMISSION TIME
-            ========================================*/
-
             lastSubmit = now;
 
 
             /*========================================
-              CALCULATE FINAL TOTAL
+              CALCULATE TOTAL
             ========================================*/
 
             currentTotal =
@@ -2028,7 +2137,7 @@ if (proposalForm) {
                     true;
 
                 submitButton.textContent =
-                    "Sending Proposal...";
+                    "Sending Message...";
 
             }
 
@@ -2054,13 +2163,6 @@ if (proposalForm) {
 
             try {
 
-                /*
-                   EmailJS was already initialized
-                   at the top of this JavaScript file.
-
-                   DO NOT initialize it again here.
-                */
-
                 const response =
                     await emailjs.sendForm(
 
@@ -2074,165 +2176,45 @@ if (proposalForm) {
 
 
                 console.log(
-                    "Proposal sent successfully:",
+                    "Message sent successfully:",
                     response
                 );
 
 
                 /*====================================
-                  SUCCESS BUTTON
+                  EMAIL SUCCESS
                 ====================================*/
 
                 if (submitButton) {
 
                     submitButton.textContent =
-                        "Proposal Sent ✓";
+                        "Message Sent ✓";
 
                 }
 
-                /*====================================
-                  SUCCESS MESSAGE
-                ====================================*/
 
                 showToast(
-                    "Proposal request sent successfully!"
+                    "Message sent successfully!"
                 );
 
-               /*====================================
-                 WHATSAPP / QUOTATION
-               ====================================*/
 
-               openWhatsAppOrQuotation(customer);
+                /*====================================
+                  WHATSAPP
+                ====================================*/
 
+                setTimeout(() => {
 
-               /*==================================================
-                 WHATSAPP / QUOTATION FALLBACK
-               ==================================================*/
+                    sendToWhatsApp(
+                        customer
+                    );
 
-               async function openWhatsAppOrQuotation(customer) {
-      
-                const whatsappMessage =
-                 buildWhatsAppMessage(customer);
+                }, 500);
 
-                const whatsappPhone =
-                 "27794380103";
-
-                const encodedMessage =
-              encodeURIComponent(whatsappMessage);
-
-             const whatsappWebURL =
-              `https://wa.me/${whatsappPhone}?text=${encodedMessage}`;
-
-                const whatsappAppURL =
-              `whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage}`;
-
-             /*
-             ==================================================
-                DESKTOP
-             ==================================================
-             */
-
-             const isMobile =
-              /Android|iPhone|iPad|iPod/i.test(
-            navigator.userAgent
-           );
-
-          if (!isMobile) {
-
-        /*
-        Desktop browsers cannot reliably detect
-        whether the person has a WhatsApp account.
-
-        Open WhatsApp Web.
-        */
-
-        window.open(
-            whatsappWebURL,
-            "_blank",
-            "noopener,noreferrer"
-        );
-
-        /*
-        Give the user the quotation option too.
-        */
-
-if (selectedPackage) {
-
-    setTimeout(() => {
-        showQuotationChoice(customer);
-    }, 1200);
-
-}
-
-        return;
-    }
-
-
-    /*
-    ==================================================
-    MOBILE / TABLET
-    ==================================================
-    */
-
-    let whatsappOpened = false;
-
-    const handleVisibilityChange = () => {
-
-        if (document.hidden) {
-
-            whatsappOpened = true;
-
-            document.removeEventListener(
-                "visibilitychange",
-                handleVisibilityChange
-            );
-        }
-
-    };
-
-    document.addEventListener(
-        "visibilitychange",
-        handleVisibilityChange
-    );
-
-
-    /*
-    Attempt to open the WhatsApp application.
-    */
-
-    window.location.href =
-        whatsappAppURL;
-
-
-    /*
-    If WhatsApp did not open, show quotation modal.
-    */
-
-    setTimeout(() => {
-
-        document.removeEventListener(
-            "visibilitychange",
-            handleVisibilityChange
-        );
-
-if (!whatsappOpened) {
-
-    showToast(
-        "WhatsApp is unavailable. You can continue without downloading a quotation."
-    );
-
-    if (selectedPackage) {
-        showQuotationChoice(customer);
-    }
-
-}
-
-    }, 1800); }
 
             } catch (error) {
 
                 console.error(
-                    "Proposal sending failed:",
+                    "Message sending failed:",
                     error
                 );
 
@@ -2247,14 +2229,10 @@ if (!whatsappOpened) {
                         false;
 
                     submitButton.textContent =
-                        "Send Proposal Request";
+                        "Send Message";
 
                 }
 
-
-                /*====================================
-                  ERROR MESSAGE
-                ====================================*/
 
                 showToast(
                     "Failed to send message. Please try again."
