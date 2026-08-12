@@ -1,1330 +1,4165 @@
-/* ============================================================
-   KASITU WEBS — OPTIMIZED SCRIPT
-   Performance Pass
-============================================================ */
+/*==================================================
+KASITU WEBS V2
+Premium Portfolio Script
+Version 2.0
+==================================================*/
 
+'use strict';
 
-/* ============================================================
-   BASIC HELPERS
-============================================================ */
+/*==================================================
+KASITU EMAILJS CONFIGURATION
+==================================================*/
 
-function debounce(fn, delay = 150) {
+const EMAILJS_PUBLIC_KEY = "a3wBtn2bKfskDS4Sa";
+const EMAILJS_SERVICE_ID = "service_9a3fush";
+const EMAILJS_TEMPLATE_ID = "template_3lwzm3g";
 
-    let timeout;
+if (typeof emailjs !== "undefined") {
 
-    return function (...args) {
+   emailjs.init({
+    publicKey: EMAILJS_PUBLIC_KEY
+});
 
-        clearTimeout(timeout);
+    console.log("EmailJS initialized ✔");
 
-        timeout = setTimeout(() => {
+} else {
 
-            fn.apply(this, args);
+    console.error(
+        "EmailJS library was not loaded."
+    );
 
+}
+
+/*==================================================
+SELECTORS
+==================================================*/
+
+const header = document.querySelector('.header');
+const navLinks = document.querySelectorAll('.nav-links a');
+const sections = document.querySelectorAll('section');
+const counters = document.querySelectorAll('.counter');
+const scrollTopBtn = document.getElementById('scrollTop');
+const menuBtn = document.querySelector('.menu-btn');
+const mobileMenu = document.querySelector('.nav-links');
+const themeToggle = document.getElementById('theme-toggle');
+
+/*==================================================
+HELPERS
+==================================================*/
+
+const debounce = (callback, delay = 100) => {
+    let timer;
+
+    return (...args) => {
+        clearTimeout(timer);
+
+        timer = setTimeout(() => {
+            callback(...args);
         }, delay);
+    };
+};
+
+const clamp = (value, min, max) => {
+    return Math.min(Math.max(value, min), max);
+};
+
+/*==================================================
+STICKY HEADER
+==================================================*/
+
+function updateHeader() {
+
+    if (window.scrollY > 80) {
+
+        header.classList.add("scrolled");
+
+    } else {
+
+        header.classList.remove("scrolled");
+
+    }
+
+}
+
+window.addEventListener("scroll", debounce(updateHeader));
+
+updateHeader();
+
+/*==================================================
+SMOOTH SCROLL
+==================================================*/
+
+navLinks.forEach(link => {
+
+    link.addEventListener("click", function (e) {
+
+        const href = this.getAttribute("href");
+
+        if (!href.startsWith("#")) return;
+
+        e.preventDefault();
+
+        const target = document.querySelector(href);
+
+        if (!target) return;
+
+        target.scrollIntoView({
+
+            behavior: "smooth",
+
+            block: "start"
+
+        });
+
+    });
+
+});
+
+/*==================================================
+ACTIVE NAVIGATION
+==================================================*/
+
+function highlightNavigation() {
+
+    let current = "";
+
+    sections.forEach(section => {
+
+        const top = window.scrollY;
+
+        const offset = section.offsetTop - 180;
+
+        const height = section.offsetHeight;
+
+        if (top >= offset && top < offset + height) {
+
+            current = section.getAttribute("id");
+
+        }
+
+    });
+
+    navLinks.forEach(link => {
+
+        link.classList.remove("active");
+
+        if (link.getAttribute("href") === "#" + current) {
+
+            link.classList.add("active");
+
+        }
+
+    });
+
+}
+
+window.addEventListener(
+
+    "scroll",
+
+    debounce(highlightNavigation)
+
+);
+
+/*==================================================
+SCROLL TO TOP
+==================================================*/
+
+if (scrollTopBtn) {
+
+    scrollTopBtn.addEventListener("click", () => {
+
+        window.scrollTo({
+
+            top: 0,
+
+            behavior: "smooth"
+
+        });
+
+    });
+
+}
+
+/*==================================================
+SCROLL BUTTON VISIBILITY
+==================================================*/
+
+function updateScrollButton() {
+
+    if (!scrollTopBtn) return;
+
+    scrollTopBtn.style.opacity =
+        window.scrollY > 400 ? "1" : "0";
+
+    scrollTopBtn.style.pointerEvents =
+        window.scrollY > 400 ? "auto" : "none";
+
+}
+
+window.addEventListener(
+
+    "scroll",
+
+    debounce(updateScrollButton)
+
+);
+
+updateScrollButton();
+
+/*==================================================
+COUNTER ANIMATION
+==================================================*/
+
+const counterObserver = new IntersectionObserver(entries => {
+
+    entries.forEach(entry => {
+
+        if (!entry.isIntersecting) return;
+
+        const counter = entry.target;
+
+        const target = Number(counter.dataset.target);
+
+        let value = 0;
+
+        const speed = target / 120;
+
+        const animate = () => {
+
+            value += speed;
+
+            if (value < target) {
+
+                counter.textContent = Math.floor(value);
+
+                requestAnimationFrame(animate);
+
+            } else {
+
+                counter.textContent = target;
+
+            }
+
+        };
+
+        animate();
+
+        counterObserver.unobserve(counter);
+
+    });
+
+}, {
+
+    threshold: 0.4
+
+});
+
+counters.forEach(counter => {
+
+    counterObserver.observe(counter);
+
+});
+
+/*==================================================
+SCROLL REVEAL
+==================================================*/
+
+const revealElements = document.querySelectorAll(
+
+    ".service-card,.project-card,.price-card,.testimonial-card,.tech-card,.feature,.stat-card"
+
+);
+
+const revealObserver = new IntersectionObserver(entries => {
+
+    entries.forEach(entry => {
+
+        if (entry.isIntersecting) {
+
+            entry.target.classList.add("show");
+
+        }
+
+    });
+
+}, {
+
+    threshold: 0.15
+
+});
+
+revealElements.forEach(item => {
+
+    item.classList.add("hidden");
+
+    revealObserver.observe(item);
+
+});
+
+/*==================================================
+END OF PART 1
+==================================================*/
+
+/*==================================================
+PART 2
+Dark Mode
+Mobile Menu
+Typewriter
+Cursor Glow
+Magnetic Buttons
+==================================================*/
+
+/*==================================================
+THEME SYSTEM
+==================================================*/
+
+const THEME_KEY = "kasitu-theme";
+
+function applyTheme(theme) {
+
+    document.documentElement.setAttribute("data-theme", theme);
+
+    if (themeToggle) {
+
+        themeToggle.textContent =
+            theme === "light" ? "☀️" : "🌙";
+
+    }
+
+}
+
+function loadTheme() {
+
+    const savedTheme =
+        localStorage.getItem(THEME_KEY) || "dark";
+
+    applyTheme(savedTheme);
+
+}
+
+function toggleTheme() {
+
+    const currentTheme =
+        document.documentElement.getAttribute("data-theme") || "dark";
+
+    const nextTheme =
+        currentTheme === "dark" ? "light" : "dark";
+
+    applyTheme(nextTheme);
+
+    localStorage.setItem(THEME_KEY, nextTheme);
+
+}
+
+if (themeToggle) {
+
+    themeToggle.addEventListener("click", toggleTheme);
+
+}
+
+loadTheme();
+
+/*==================================================
+MOBILE MENU
+==================================================*/
+
+if (menuBtn && mobileMenu) {
+
+    menuBtn.addEventListener("click", () => {
+
+       const isOpen = mobileMenu.classList.toggle("mobile-open");
+
+menuBtn.setAttribute(
+    "aria-expanded",
+    isOpen
+);
+
+        menuBtn.classList.toggle("open");
+
+    });
+
+    navLinks.forEach(link => {
+
+        link.addEventListener("click", () => {
+
+            mobileMenu.classList.remove("mobile-open");
+
+            menuBtn.classList.remove("open");
+
+        });
+
+    });
+
+}
+
+/*==================================================*
+ * CLOSE MOBILE MENU ON SCROLL
+ *==================================================*/
+
+window.addEventListener("scroll", () => {
+
+    if (!mobileMenu || !menuBtn) return;
+
+    if (mobileMenu.classList.contains("mobile-open")) {
+
+        mobileMenu.classList.remove("mobile-open");
+        menuBtn.classList.remove("open");
+        menuBtn.setAttribute("aria-expanded", "false");
+
+    }
+
+});
+
+/*==================================================*
+ * CLOSE MOBILE MENU ON DESKTOP
+ *==================================================*/
+
+window.addEventListener("resize", () => {
+
+    if (!mobileMenu || !menuBtn) return;
+
+    if (window.innerWidth > 900) {
+
+        mobileMenu.classList.remove("mobile-open");
+        menuBtn.classList.remove("open");
+        menuBtn.setAttribute("aria-expanded", "false");
+
+    }
+
+});
+
+/*==================================================*
+ * CLOSE MOBILE MENU WHEN CLICKING OUTSIDE
+ *==================================================*/
+
+document.addEventListener("click", (e) => {
+
+    if (!mobileMenu || !menuBtn) return;
+
+    if (
+        mobileMenu.classList.contains("mobile-open") &&
+        !mobileMenu.contains(e.target) &&
+        !menuBtn.contains(e.target)
+    ) {
+
+        mobileMenu.classList.remove("mobile-open");
+        menuBtn.classList.remove("open");
+        menuBtn.setAttribute("aria-expanded", "false");
+
+    }
+
+});
+
+/*==================================================
+TYPEWRITER EFFECT
+==================================================*/
+
+const codeWindow =
+document.querySelector(".code");
+
+if (codeWindow) {
+
+const codeLines = [
+
+'const company = "KASITU Webs";',
+
+"",
+
+"buildWebsite(client);",
+
+"deployCloud();",
+
+"optimisePerformance();",
+
+"",
+
+"console.log('Success ✔');"
+
+];
+
+let line = 0;
+
+let character = 0;
+
+let output = "";
+
+function typeCode() {
+
+if (line >= codeLines.length) {
+
+setTimeout(() => {
+
+output = "";
+
+line = 0;
+
+character = 0;
+
+codeWindow.innerHTML = "";
+
+typeCode();
+
+}, 2500);
+
+return;
+
+}
+
+const current = codeLines[line];
+
+if (character < current.length) {
+
+output += current.charAt(character);
+
+codeWindow.innerHTML =
+output.replace(/\n/g, "<br>") +
+'<span class="cursor">|</span>';
+
+character++;
+
+setTimeout(typeCode, 45);
+
+} else {
+
+output += "\n";
+
+line++;
+
+character = 0;
+
+setTimeout(typeCode, 250);
+
+}
+
+}
+
+typeCode();
+
+}
+
+/*==================================================
+CURSOR GLOW
+==================================================*/
+
+const glow = document.createElement("div");
+
+glow.className = "cursor-glow";
+
+document.body.appendChild(glow);
+
+window.addEventListener("mousemove", e => {
+
+glow.style.left = e.clientX + "px";
+
+glow.style.top = e.clientY + "px";
+
+});
+
+/*==================================================
+MAGNETIC BUTTONS
+==================================================*/
+
+const magneticButtons =
+document.querySelectorAll(
+".primary-btn,.secondary-btn"
+);
+
+magneticButtons.forEach(button => {
+
+button.addEventListener("mousemove", e => {
+
+const rect = button.getBoundingClientRect();
+
+const x =
+e.clientX - rect.left - rect.width / 2;
+
+const y =
+e.clientY - rect.top - rect.height / 2;
+
+button.style.transform =
+`translate(${x * .18}px, ${y * .18}px)`;
+
+});
+
+button.addEventListener("mouseleave", () => {
+
+button.style.transform = "";
+
+});
+
+});
+
+/*==================================================
+FLOATING ICONS
+==================================================*/
+
+const floatingIcons =
+document.querySelectorAll(".service-icon");
+
+floatingIcons.forEach(icon => {
+
+const speed =
+Math.random() * 2 + 1;
+
+let angle = Math.random() * 360;
+
+function floatIcon() {
+
+angle += 0.01 * speed;
+
+icon.style.transform =
+`translateY(${Math.sin(angle) * 6}px)`;
+
+requestAnimationFrame(floatIcon);
+
+}
+
+floatIcon();
+
+});
+
+/*==================================================
+PAGE LOADED
+==================================================*/
+
+window.addEventListener("load", () => {
+
+document.body.classList.add("loaded");
+
+});
+
+console.log(
+"%cKASITU Webs",
+"color:#06B6D4;font-size:24px;font-weight:bold;"
+);
+
+console.log(
+"%cPremium Portfolio Loaded Successfully ✔",
+"color:#63ff99;font-size:14px;"
+);
+
+/*==================================================
+END PART 2
+==================================================*/
+
+/*==================================================
+PART 3
+Calculator
+Progress Bar
+Toast
+Validation
+WhatsApp Quote
+==================================================*/
+
+
+/* ==========================================
+   LIVE PRICE CALCULATOR
+========================================== */
+
+/*==================================================
+LIVE PRICE CALCULATOR
+==================================================*/
+
+const packagePrices = {
+    
+"Starter Website": 2999,
+
+"Business Website": 4999,
+
+"Online Store": 5999,
+
+"Online Store PRO": 7999
+
+};
+
+const packageButtons =
+document.querySelectorAll(".select-price");
+
+const packageInput =
+document.getElementById("site-type");
+
+const extraInputs =
+document.querySelectorAll(".extra");
+
+const totalElement =
+document.getElementById("total");
+
+const calculatorForm =
+document.getElementById("price-form");
+
+let selectedPackage = "";
+
+let currentTotal = 0;
+
+/*==================================================
+RECOMMENDED EXTRAS
+
+IMPORTANT:
+These are ONLY highlighted.
+They are NOT automatically selected.
+==================================================*/
+
+const recommendedExtras = {
+
+"Starter Website": [
+
+    "seo",
+    "whatsapp",
+    "blog"
+
+],
+
+"Business Website": [
+
+    "app",
+    "seo",
+    "booking",
+    "dashboard",
+    "login"
+
+],
+
+"Online Store": [
+
+    "app",
+    "login"
+
+],
+
+"Online Store PRO": [
+
+    "app",
+    "dashboard",
+    "login"
+
+]
+
+};
+
+/*==================================================
+FORMAT CURRENCY
+==================================================*/
+
+function formatCurrency(value) {
+
+return "R" +
+    Number(value).toLocaleString("en-ZA");
+
+}
+
+/*==================================================
+CALCULATE TOTAL
+==================================================*/
+
+function calculateTotal() {
+    
+let total =
+    packagePrices[selectedPackage] || 0;
+
+
+extraInputs.forEach(extra => {
+
+    if (extra.checked) {
+
+        const extraPrice =
+            Number(extra.dataset.price) || 0;
+
+        total += extraPrice;
+
+    }
+
+});
+
+
+return total;
+    
+}
+
+/*==================================================
+UPDATE TOTAL
+==================================================*/
+
+function updatePrice() {
+
+const total =
+    calculateTotal();
+
+animatePrice(total);
+
+}
+
+/*==================================================
+ANIMATE PRICE
+==================================================*/
+
+function animatePrice(target) {
+
+if (!totalElement) return;
+
+
+const start =
+    currentTotal;
+
+const difference =
+    target - start;
+
+const duration =
+    400;
+
+const startTime =
+    performance.now();
+
+
+function animate(currentTime) {
+
+    const elapsed =
+        currentTime - startTime;
+
+
+    const progress =
+        Math.min(
+            elapsed / duration,
+            1
+        );
+
+
+    const value =
+        start +
+        difference * progress;
+
+
+    totalElement.textContent =
+        formatCurrency(
+            Math.round(value)
+        );
+
+
+    if (progress < 1) {
+
+        requestAnimationFrame(
+            animate
+        );
+
+    } else {
+
+        currentTotal =
+            target;
+
+    }
+
+}
+
+
+requestAnimationFrame(
+    animate
+);
+
+}
+
+/*==================================================
+HIGHLIGHT RECOMMENDED EXTRAS
+==================================================*/
+
+function updateRecommendedExtras() {
+
+/* Remove old recommendations */
+
+extraInputs.forEach(extra => {
+
+    const option =
+        extra.closest(".extra-option");
+
+    if (!option) return;
+
+    option.classList.remove(
+        "recommended"
+    );
+
+});
+
+
+/* Get recommendations */
+
+const recommendations =
+    recommendedExtras[
+        selectedPackage
+    ] || [];
+
+
+/* Highlight recommendations */
+
+extraInputs.forEach(extra => {
+
+    const extraType =
+        extra.dataset.extra;
+
+
+    if (
+        recommendations.includes(
+            extraType
+        )
+    ) {
+
+        const option =
+            extra.closest(
+                ".extra-option"
+            );
+
+
+        if (!option) return;
+
+
+        option.classList.add(
+            "recommended"
+        );
+
+    }
+
+});
+
+}
+
+/*==================================================
+   SELECT PACKAGE
+==================================================*/
+
+packageButtons.forEach(button => {
+
+    button.addEventListener("click", function () {
+
+        const card = this.closest(".price-card");
+
+        if (!card) return;
+
+        const heading = card.querySelector("h3");
+
+        if (!heading) return;
+
+        /* ------------------------------------------
+           SAVE SELECTED PACKAGE
+        ------------------------------------------ */
+
+        selectedPackage = heading.textContent.trim();
+
+
+        /* ------------------------------------------
+           PUT PACKAGE INTO CALCULATOR
+        ------------------------------------------ */
+
+        if (packageInput) {
+            packageInput.value = selectedPackage;
+        }
+
+
+        /* ------------------------------------------
+           RECALCULATE PRICE
+        ------------------------------------------ */
+
+        updatePrice();
+
+
+        /* ------------------------------------------
+           HIGHLIGHT RECOMMENDED EXTRAS
+        ------------------------------------------ */
+
+        updateRecommendedExtras();
+
+
+        /* ------------------------------------------
+           NOTIFY USER
+        ------------------------------------------ */
+
+        if (typeof showToast === "function") {
+
+            showToast(
+                selectedPackage + " selected ✓"
+            );
+
+        }
+
+
+        /* ------------------------------------------
+           SMOOTH SCROLL TO TOP OF LIVE ESTIMATE
+           This keeps the LIVE ESTIMATE heading at the
+           top while showing the package + extras below.
+        ------------------------------------------ */
+
+/* ------------------------------------------
+   SMOOTH SCROLL TO TOP OF LIVE ESTIMATE
+   ------------------------------------------ */
+
+/* ------------------------------------------
+   SMOOTH SCROLL TO TOP OF LIVE ESTIMATE
+   ------------------------------------------ */
+
+const liveEstimate = document.getElementById("live-estimate");
+
+if (liveEstimate) {
+
+    setTimeout(() => {
+
+        const header = document.querySelector(".header");
+
+        const headerOffset =
+            header ? header.offsetHeight + 15 : 15;
+
+        const targetTop =
+            liveEstimate.getBoundingClientRect().top +
+            window.scrollY -
+            headerOffset;
+
+        window.scrollTo({
+            top: Math.max(0, targetTop),
+            behavior: "smooth"
+        });
+
+    }, 100);
+
+}
+
+    });
+
+});
+
+/*==================================================
+EXTRA FEATURE CHANGES
+==================================================*/
+
+extraInputs.forEach(extra => {
+
+extra.addEventListener(
+    "change",
+    () => {
+
+        updatePrice();
+
+    }
+);
+
+});
+
+/*==================================================
+CONTINUE BUTTON
+==================================================*/
+
+const continueButton =
+document.getElementById(
+"whatsapp-btn"
+);
+
+if (continueButton) {
+
+continueButton.addEventListener(
+    "click",
+    function () {
+
+
+        /* No package selected */
+
+        if (!selectedPackage) {
+
+            if (
+                typeof showToast ===
+                "function"
+            ) {
+
+                showToast(
+                    "Please select a package to proceed."
+                );
+
+            } else {
+
+                alert(
+                    "Please select a package to proceed."
+                );
+
+            }
+
+            return;
+
+        }
+
+        /* Make sure latest price is calculated */
+
+        currentTotal =
+            calculateTotal();
+
+        /* Find contact form */
+
+        const contactSection =
+            document.getElementById(
+                "contact"
+            );
+
+
+        const contactForm =
+            document.getElementById(
+                "contact-form"
+            );
+
+
+        /* Tell user what happened */
+
+        if (
+            typeof showToast ===
+            "function"
+        ) {
+
+            showToast(
+
+                selectedPackage +
+                " selected ✓ Scroll down to complete your proposal."
+
+            );
+
+        }
+
+        /* Smooth scroll */
+
+        if (contactSection) {
+
+            contactSection.scrollIntoView({
+
+                behavior: "smooth",
+
+                block: "start"
+
+            });
+
+        }
+
+        /* Put selected package into form */
+
+        if (packageInput) {
+
+            packageInput.value =
+                selectedPackage;
+
+        }
+
+
+        /* Highlight name field */
+
+        if (contactForm) {
+
+            setTimeout(() => {
+
+                const nameInput =
+                    contactForm.querySelector(
+                        'input[name="name"]'
+                    );
+
+
+                if (nameInput) {
+
+                    nameInput.classList.add(
+                        "form-highlight"
+                    );
+
+
+                    nameInput.focus();
+
+
+                    setTimeout(() => {
+
+                        nameInput.classList.remove(
+                            "form-highlight"
+                        );
+
+                    }, 3000);
+
+                }
+
+            }, 900);
+
+        }
+
+    }
+);
+
+}
+
+/*==================================================
+INITIAL STATE
+==================================================*/
+
+if (totalElement) {
+
+totalElement.textContent =
+    "R0";
+
+}
+
+console.log(
+"KASITU Calculator Loaded ✓"
+);
+
+/*==================================================
+WHATSAPP QUOTE
+==================================================*/
+
+/*==================================================
+CONTINUE → CONTACT FORM
+==================================================*/
+
+const whatsappBtn =
+    document.getElementById("whatsapp-btn");
+
+const contactSection =
+    document.getElementById("contact");
+
+const contactForm =
+    document.getElementById("contact-form");
+
+const nameInput =
+    contactForm?.querySelector('input[name="name"]');
+
+if (whatsappBtn) {
+
+    whatsappBtn.addEventListener("click", function(e) {
+
+        e.preventDefault();
+
+        e.stopPropagation();
+
+        /* ==========================================
+           NO PACKAGE
+        ========================================== */
+
+        if (!selectedPackage) {
+
+            showToast(
+                "Please select a package to proceed."
+            );
+
+            /* Take the user back to packages */
+            const pricingSection =
+                document.getElementById("pricing");
+
+if (pricingSection) {
+
+    const header = document.querySelector(".header");
+
+    const headerOffset =
+        header ? header.offsetHeight + 15 : 15;
+
+    const targetTop =
+        pricingSection.getBoundingClientRect().top +
+        window.scrollY -
+        headerOffset;
+
+    window.scrollTo({
+        top: Math.max(0, targetTop),
+        behavior: "smooth"
+    });
+
+}
+
+            return;
+
+        }
+
+        /* ==========================================
+           PACKAGE SELECTED
+        ========================================== */
+
+        showToast(
+            `${selectedPackage} selected ✓ — Please tell us about your project.`
+        );
+
+        /* ==========================================
+           SCROLL TO CONTACT
+        ========================================== */
+
+        if (contactSection) {
+
+            contactSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        }
+
+        /* ==========================================
+           FOCUS NAME FIELD AFTER SCROLL
+        ========================================== */
+
+        setTimeout(() => {
+
+            if (nameInput) {
+
+                nameInput.focus();
+
+                nameInput.classList.add(
+                    "input-attention"
+                );
+
+                setTimeout(() => {
+
+                    nameInput.classList.remove(
+                        "input-attention"
+                    );
+
+                }, 2500);
+
+            }
+
+        }, 900);
+
+    });
+
+}
+
+/*==================================================
+SCROLL PROGRESS
+==================================================*/
+
+const progress=
+
+document.createElement("div");
+
+progress.id="progress-bar";
+
+document.body.appendChild(progress);
+
+window.addEventListener(
+
+"scroll",
+
+()=>{
+
+const scroll=
+
+window.scrollY;
+
+const height=
+
+document.body.scrollHeight-
+
+window.innerHeight;
+
+const percent=
+
+(scroll/height)*100;
+
+progress.style.width=
+
+percent+"%";
+
+}
+
+);
+
+/*==================================================
+TOAST
+==================================================*/
+
+function showToast(message){
+
+let toast=
+
+document.createElement("div");
+
+toast.className="toast";
+
+toast.textContent=message;
+
+document.body.appendChild(toast);
+
+setTimeout(()=>{
+
+toast.classList.add("show");
+
+},100);
+
+setTimeout(()=>{
+
+toast.classList.remove("show");
+
+setTimeout(()=>{
+
+toast.remove();
+
+},400);
+
+},2500);
+
+}
+
+/*==================================================
+INPUT SANITIZER
+==================================================*/
+
+function sanitizeInput(value) {
+
+    return value.replace(/[<>]/g, "");
+
+}
+
+document
+.querySelectorAll("input, textarea")
+.forEach(input => {
+
+    input.addEventListener("input", () => {
+
+        const cursorPosition = input.selectionStart;
+
+        input.value = sanitizeInput(input.value);
+
+        input.setSelectionRange(
+            cursorPosition,
+            cursorPosition
+        );
+
+    });
+
+});
+
+/*==================================================
+END PART 3
+==================================================*/
+
+/*==================================================
+PART 4
+Premium Interactions
+==================================================*/
+
+/*==================================================
+3D PROJECT CARDS
+==================================================*/
+
+const projectCards = document.querySelectorAll(".project-card");
+
+projectCards.forEach(card => {
+
+    card.addEventListener("mousemove", e => {
+
+        const rect = card.getBoundingClientRect();
+
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const rotateY = ((x / rect.width) - 0.5) * 18;
+        const rotateX = ((y / rect.height) - 0.5) * -18;
+
+        card.style.transform =
+            `
+            perspective(1200px)
+            rotateX(${rotateX}deg)
+            rotateY(${rotateY}deg)
+            translateY(-12px)
+            `;
+    });
+
+    card.addEventListener("mouseleave", () => {
+
+        card.style.transform = "";
+
+    });
+
+});
+
+/*==================================================
+PARTICLE BACKGROUND
+==================================================*/
+
+const particleCanvas = document.createElement("canvas");
+
+particleCanvas.id = "particles";
+
+document.body.prepend(particleCanvas);
+
+const ctx = particleCanvas.getContext("2d");
+
+let particles = [];
+
+function resizeCanvas(){
+
+    particleCanvas.width = window.innerWidth;
+    particleCanvas.height = window.innerHeight;
+
+}
+
+resizeCanvas();
+
+window.addEventListener("resize", resizeCanvas);
+
+class Particle{
+
+    constructor(){
+
+        this.reset();
+
+    }
+
+    reset(){
+
+        this.x = Math.random()*particleCanvas.width;
+        this.y = Math.random()*particleCanvas.height;
+
+        this.radius = Math.random()*2+1;
+
+        this.speedX = (Math.random()-.5)*0.4;
+        this.speedY = (Math.random()-.5)*0.4;
+
+    }
+
+    update(){
+
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if(this.x<0 || this.x>particleCanvas.width)
+            this.speedX *= -1;
+
+        if(this.y<0 || this.y>particleCanvas.height)
+            this.speedY *= -1;
+
+    }
+
+    draw(){
+
+        ctx.beginPath();
+
+        ctx.arc(
+            this.x,
+            this.y,
+            this.radius,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fillStyle="rgba(6,182,212,.45)";
+        ctx.fill();
+
+    }
+
+}
+
+for(let i=0;i<90;i++){
+
+    particles.push(new Particle());
+
+}
+
+function animateParticles(){
+
+    ctx.clearRect(
+        0,
+        0,
+        particleCanvas.width,
+        particleCanvas.height
+    );
+
+    particles.forEach(p=>{
+
+        p.update();
+
+        p.draw();
+
+    });
+
+    requestAnimationFrame(animateParticles);
+
+}
+
+animateParticles();
+
+/*==================================================
+EMAIL FORM
+==================================================*/
+
+/*==================================================
+KASITU PROPOSAL REQUEST SYSTEM
+EmailJS + WhatsApp + Optional Quotation
+==================================================*/
+
+const proposalForm =
+    document.getElementById("contact-form");
+
+let lastSubmit = 0;
+
+
+/*==================================================
+COUNT WORDS
+==================================================*/
+
+function countWords(text) {
+
+    return text
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean)
+        .length;
+
+}
+
+
+/*==================================================
+GET SELECTED EXTRAS
+==================================================*/
+
+function getSelectedExtras() {
+
+    const selected = [];
+
+    extraInputs.forEach(extra => {
+
+        if (extra.checked) {
+
+            const option =
+                extra.closest(".extra-option");
+
+            let label = "";
+
+            if (option) {
+
+                label =
+                    option.textContent
+                        .replace(/\s+/g, " ")
+                        .trim();
+
+            } else {
+
+                label =
+                    extra.parentElement
+                        ? extra.parentElement.textContent
+                            .replace(/\s+/g, " ")
+                            .trim()
+                        : extra.dataset.extra || "";
+
+            }
+
+            if (label) {
+
+                selected.push(label);
+
+            }
+
+        }
+
+    });
+
+    return selected;
+
+}
+
+
+/*==================================================
+BUILD WHATSAPP MESSAGE
+==================================================*/
+
+function buildWhatsAppMessage(customer) {
+
+    const selectedExtras =
+        getSelectedExtras();
+
+    const packageText =
+        selectedPackage || "Package not selected";
+
+    const totalText =
+        selectedPackage
+            ? formatCurrency(currentTotal)
+            : "To be discussed";
+
+    return `Hello KASITU Webs 👋
+
+I would like to request information about a website/project.
+
+Name:
+${customer.name}
+
+Email:
+${customer.email}
+
+Phone:
+${customer.phone}
+
+Company:
+${customer.company || "Not provided"}
+
+Package:
+${packageText}
+
+Extras:
+${selectedExtras.join(", ") || "None"}
+
+Estimated Total:
+${totalText}
+
+Project Details:
+${customer.message}
+
+Thank you.`;
+
+}
+
+
+/*==================================================
+GET QUOTATION DATA
+==================================================*/
+
+function getQuotationData() {
+
+    const selectedExtras =
+        getSelectedExtras();
+
+    return {
+
+        packageName:
+            selectedPackage,
+
+        packagePrice:
+            packagePrices[selectedPackage] || 0,
+
+        extras:
+            selectedExtras,
+
+        total:
+            currentTotal
 
     };
 
 }
 
 
-/* ============================================================
-   DOM READY
-============================================================ */
+/*==================================================
+SEND TO WHATSAPP
+==================================================*/
 
-document.addEventListener("DOMContentLoaded", () => {
+function sendToWhatsApp(customer) {
 
+    const whatsappMessage =
+        buildWhatsAppMessage(customer);
 
-    /* ========================================================
-       MOBILE MENU
-    ======================================================== */
+    const whatsappPhone =
+        "27794380103";
 
-    const menuBtn =
-        document.querySelector(".menu-btn");
-
-    const mobileMenu =
-        document.querySelector(".mobile-menu");
-
-    if (menuBtn && mobileMenu) {
-
-        menuBtn.addEventListener("click", () => {
-
-            const open =
-                mobileMenu.classList.toggle(
-                    "mobile-open"
-                );
-
-            menuBtn.classList.toggle(
-                "open",
-                open
-            );
-
-            menuBtn.setAttribute(
-                "aria-expanded",
-                String(open)
-            );
-
-        });
-
-
-        /* Close menu when clicking a link */
-
-        mobileMenu
-            .querySelectorAll("a")
-            .forEach(link => {
-
-                link.addEventListener(
-                    "click",
-                    () => {
-
-                        mobileMenu.classList.remove(
-                            "mobile-open"
-                        );
-
-                        menuBtn.classList.remove(
-                            "open"
-                        );
-
-                        menuBtn.setAttribute(
-                            "aria-expanded",
-                            "false"
-                        );
-
-                    }
-                );
-
-            });
-
-
-        /* Close menu on scroll, throttled */
-
-        window.addEventListener(
-            "scroll",
-            debounce(() => {
-
-                if (
-                    mobileMenu.classList.contains(
-                        "mobile-open"
-                    )
-                ) {
-
-                    mobileMenu.classList.remove(
-                        "mobile-open"
-                    );
-
-                    menuBtn.classList.remove(
-                        "open"
-                    );
-
-                    menuBtn.setAttribute(
-                        "aria-expanded",
-                        "false"
-                    );
-
-                }
-
-            }, 120),
-            {
-                passive: true
-            }
+    const encodedMessage =
+        encodeURIComponent(
+            whatsappMessage
         );
 
-    }
+    const whatsappWebURL =
+        `https://wa.me/${whatsappPhone}?text=${encodedMessage}`;
+
+    const whatsappAppURL =
+        `whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage}`;
 
 
-    /* ========================================================
-       THEME SWITCHER
-    ======================================================== */
-
-    const themeToggle =
-        document.querySelector(
-            ".theme-toggle"
-        );
-
-    const html =
-        document.documentElement;
-
-    const savedTheme =
-        localStorage.getItem(
-            "kasitu-theme"
+    const isMobile =
+        /Android|iPhone|iPad|iPod/i.test(
+            navigator.userAgent
         );
 
 
-    if (savedTheme) {
+    /*==================================================
+      DESKTOP
+    ==================================================*/
 
-        html.setAttribute(
-            "data-theme",
-            savedTheme
+    if (!isMobile) {
+
+        window.open(
+            whatsappWebURL,
+            "_blank",
+            "noopener,noreferrer"
         );
 
-    }
+        /*
+        ONLY show quotation if a package
+        was actually selected.
+        */
 
+        if (selectedPackage) {
 
-    if (themeToggle) {
+            setTimeout(() => {
 
-        themeToggle.addEventListener(
-            "click",
-            () => {
+                showQuotationChoice(customer);
 
-                const current =
-                    html.getAttribute(
-                        "data-theme"
-                    ) || "dark";
+            }, 1200);
 
-                const next =
-                    current === "dark"
-                        ? "light"
-                        : "dark";
-
-                html.setAttribute(
-                    "data-theme",
-                    next
-                );
-
-                localStorage.setItem(
-                    "kasitu-theme",
-                    next
-                );
-
-            }
-        );
-
-    }
-
-
-    /* ========================================================
-       ACTIVE NAVIGATION
-    ======================================================== */
-
-    const sections =
-        document.querySelectorAll(
-            "section[id]"
-        );
-
-    const navLinks =
-        document.querySelectorAll(
-            ".nav-links a, .mobile-menu a"
-        );
-
-
-    if (
-        sections.length &&
-        navLinks.length
-    ) {
-
-        const navObserver =
-            new IntersectionObserver(
-                entries => {
-
-                    entries.forEach(entry => {
-
-                        if (!entry.isIntersecting) {
-                            return;
-                        }
-
-                        const id =
-                            entry.target.id;
-
-                        navLinks.forEach(link => {
-
-                            const href =
-                                link.getAttribute(
-                                    "href"
-                                );
-
-                            link.classList.toggle(
-                                "active",
-                                href === `#${id}`
-                            );
-
-                        });
-
-                    });
-
-                },
-                {
-                    rootMargin:
-                        "-35% 0px -55% 0px"
-                }
-            );
-
-
-        sections.forEach(section => {
-
-            navObserver.observe(section);
-
-        });
-
-    }
-
-
-    /* ========================================================
-       REVEAL ON SCROLL
-    ======================================================== */
-
-    const revealElements =
-        document.querySelectorAll(
-            ".hidden"
-        );
-
-
-    if (
-        revealElements.length &&
-        !window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches
-    ) {
-
-        const revealObserver =
-            new IntersectionObserver(
-                entries => {
-
-                    entries.forEach(entry => {
-
-                        if (
-                            entry.isIntersecting
-                        ) {
-
-                            entry.target.classList.add(
-                                "show"
-                            );
-
-                            revealObserver.unobserve(
-                                entry.target
-                            );
-
-                        }
-
-                    });
-
-                },
-                {
-                    threshold: .08,
-                    rootMargin:
-                        "0px 0px -40px 0px"
-                }
-            );
-
-
-        revealElements.forEach(element => {
-
-            revealObserver.observe(element);
-
-        });
-
-    } else {
-
-        revealElements.forEach(element => {
-
-            element.classList.add("show");
-
-        });
-
-    }
-
-
-    /* ========================================================
-       IMAGE OPTIMIZATION
-    ======================================================== */
-
-    document
-        .querySelectorAll(
-            "img:not(.site-logo)"
-        )
-        .forEach(img => {
-
-            img.loading = "lazy";
-
-            img.decoding = "async";
-
-        });
-
-
-    /* ========================================================
-       COUNTERS
-    ======================================================== */
-
-    const counters =
-        document.querySelectorAll(
-            "[data-count]"
-        );
-
-
-    if (
-        counters.length &&
-        !window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches
-    ) {
-
-        const counterObserver =
-            new IntersectionObserver(
-                entries => {
-
-                    entries.forEach(entry => {
-
-                        if (
-                            !entry.isIntersecting
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        const counter =
-                            entry.target;
-
-                        const target =
-                            parseInt(
-                                counter.dataset.count,
-                                10
-                            ) || 0;
-
-                        const duration = 1200;
-
-                        const start =
-                            performance.now();
-
-
-                        function update(now) {
-
-                            const progress =
-                                Math.min(
-                                    (now - start) /
-                                    duration,
-                                    1
-                                );
-
-                            const eased =
-                                1 -
-                                Math.pow(
-                                    1 - progress,
-                                    3
-                                );
-
-                            counter.textContent =
-                                Math.floor(
-                                    target * eased
-                                );
-
-
-                            if (
-                                progress < 1
-                            ) {
-
-                                requestAnimationFrame(
-                                    update
-                                );
-
-                            } else {
-
-                                counter.textContent =
-                                    target;
-
-                            }
-
-                        }
-
-
-                        requestAnimationFrame(
-                            update
-                        );
-
-
-                        counterObserver.unobserve(
-                            counter
-                        );
-
-                    });
-
-                },
-                {
-                    threshold: .5
-                }
-            );
-
-
-        counters.forEach(counter => {
-
-            counterObserver.observe(counter);
-
-        });
-
-    }
-
-
-    /* ========================================================
-       PROGRESS BAR
-    ======================================================== */
-
-    const progress =
-        document.createElement(
-            "div"
-        );
-
-    progress.id =
-        "progress-bar";
-
-    progress.style.position =
-        "fixed";
-
-    progress.style.top =
-        "0";
-
-    progress.style.left =
-        "0";
-
-    progress.style.height =
-        "3px";
-
-    progress.style.width =
-        "0%";
-
-    progress.style.zIndex =
-        "99999";
-
-    progress.style.pointerEvents =
-        "none";
-
-    progress.style.background =
-        "linear-gradient(90deg,#4F46E5,#06B6D4,#8B5CF6)";
-
-    progress.style.transformOrigin =
-        "left center";
-
-    document.body.appendChild(
-        progress
-    );
-
-
-    let progressFrame = null;
-
-
-    window.addEventListener(
-        "scroll",
-        () => {
-
-            if (progressFrame) {
-                return;
-            }
-
-
-            progressFrame =
-                requestAnimationFrame(
-                    () => {
-
-                        const scroll =
-                            window.scrollY;
-
-                        const height =
-                            Math.max(
-                                1,
-                                document.body
-                                    .scrollHeight -
-                                window.innerHeight
-                            );
-
-                        const percent =
-                            (
-                                scroll /
-                                height
-                            ) * 100;
-
-
-                        progress.style.width =
-                            percent + "%";
-
-
-                        progressFrame =
-                            null;
-
-                    }
-                );
-
-        },
-        {
-            passive: true
         }
+
+        return;
+
+    }
+
+
+    /*==================================================
+      MOBILE / TABLET
+    ==================================================*/
+
+    let whatsappOpened = false;
+
+
+    const handleVisibilityChange = () => {
+
+        if (document.hidden) {
+
+            whatsappOpened = true;
+
+            document.removeEventListener(
+                "visibilitychange",
+                handleVisibilityChange
+            );
+
+        }
+
+    };
+
+
+    document.addEventListener(
+        "visibilitychange",
+        handleVisibilityChange
     );
 
 
-    /* ========================================================
-       PROJECT CARD 3D EFFECT
-       DESKTOP ONLY
-    ======================================================== */
+    /*
+    Try opening WhatsApp app.
+    */
 
-    if (
-        window.matchMedia(
-            "(pointer: fine)"
-        ).matches &&
-        !window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches
-    ) {
+    window.location.href =
+        whatsappAppURL;
 
-        const projectCards =
-            document.querySelectorAll(
-                ".project-card"
-            );
 
+    /*
+    If WhatsApp does not open,
+    continue after a short delay.
+    */
 
-        projectCards.forEach(card => {
+    setTimeout(() => {
 
-            let frame = null;
-
-            let pointerX = 0;
-            let pointerY = 0;
-
-
-            card.addEventListener(
-                "mousemove",
-                event => {
-
-                    pointerX =
-                        event.clientX;
-
-                    pointerY =
-                        event.clientY;
-
-
-                    if (frame) {
-                        return;
-                    }
-
-
-                    frame =
-                        requestAnimationFrame(
-                            () => {
-
-                                const rect =
-                                    card.getBoundingClientRect();
-
-
-                                const x =
-                                    pointerX -
-                                    rect.left;
-
-
-                                const y =
-                                    pointerY -
-                                    rect.top;
-
-
-                                const rotateY =
-                                    (
-                                        x /
-                                        rect.width -
-                                        .5
-                                    ) * 10;
-
-
-                                const rotateX =
-                                    (
-                                        y /
-                                        rect.height -
-                                        .5
-                                    ) * -10;
-
-
-                                card.style.transform =
-                                    `perspective(1200px)
-                                     rotateX(${rotateX}deg)
-                                     rotateY(${rotateY}deg)
-                                     translateY(-8px)`;
-
-
-                                frame =
-                                    null;
-
-                            }
-                        );
-
-                },
-                {
-                    passive: true
-                }
-            );
-
-
-            card.addEventListener(
-                "mouseleave",
-                () => {
-
-                    card.style.transform =
-                        "";
-
-                }
-            );
-
-        });
-
-    }
-
-
-    /* ========================================================
-       MAGNETIC BUTTONS
-       DESKTOP ONLY
-    ======================================================== */
-
-    if (
-        window.matchMedia(
-            "(pointer: fine)"
-        ).matches &&
-        !window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches
-    ) {
-
-        const magneticButtons =
-            document.querySelectorAll(
-                ".primary-btn,.secondary-btn"
-            );
-
-
-        magneticButtons.forEach(button => {
-
-            let frame = null;
-
-            let x = 0;
-            let y = 0;
-
-
-            button.addEventListener(
-                "mousemove",
-                event => {
-
-                    const rect =
-                        button.getBoundingClientRect();
-
-
-                    x =
-                        (
-                            event.clientX -
-                            rect.left -
-                            rect.width / 2
-                        ) * .12;
-
-
-                    y =
-                        (
-                            event.clientY -
-                            rect.top -
-                            rect.height / 2
-                        ) * .12;
-
-
-                    if (frame) {
-                        return;
-                    }
-
-
-                    frame =
-                        requestAnimationFrame(
-                            () => {
-
-                                button.style.transform =
-                                    `translate3d(${x}px,${y}px,0)`;
-
-
-                                frame =
-                                    null;
-
-                            }
-                        );
-
-                },
-                {
-                    passive: true
-                }
-            );
-
-
-            button.addEventListener(
-                "mouseleave",
-                () => {
-
-                    button.style.transform =
-                        "";
-
-                }
-            );
-
-        });
-
-    }
-
-
-    /* ========================================================
-       FLOATING SERVICE ICONS
-       CSS ANIMATION INSTEAD OF RAF LOOP
-    ======================================================== */
-
-    const floatingIcons =
-        document.querySelectorAll(
-            ".service-icon"
+        document.removeEventListener(
+            "visibilitychange",
+            handleVisibilityChange
         );
 
 
-    if (
-        !window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches &&
-        !window.matchMedia(
-            "(pointer: coarse)"
-        ).matches
-    ) {
+        if (!whatsappOpened) {
 
-        floatingIcons.forEach(
-            (icon, index) => {
+            showToast(
+                "WhatsApp could not be opened."
+            );
 
-                icon.style.animation =
-                    `serviceIconFloat ${4.5 + (index % 3) * .6}s ease-in-out infinite`;
+        }
 
-                icon.style.animationDelay =
-                    `${(index % 4) * -.45}s`;
+
+        /*
+        IMPORTANT:
+        Quotation ONLY appears when
+        package was selected.
+        */
+
+        if (
+            selectedPackage &&
+            !whatsappOpened
+        ) {
+
+            showQuotationChoice(customer);
+
+        }
+
+    }, 1800);
+
+}
+
+
+/*==================================================
+PROPOSAL FORM SUBMIT
+==================================================*/
+
+if (proposalForm) {
+
+    proposalForm.addEventListener(
+        "submit",
+        async function (e) {
+
+            e.preventDefault();
+
+
+            /*========================================
+              EMAILJS CHECK
+            ========================================*/
+
+            if (
+                typeof emailjs === "undefined"
+            ) {
+
+                console.error(
+                    "EmailJS library was not loaded."
+                );
+
+                showToast(
+                    "Email service is currently unavailable."
+                );
+
+                return;
 
             }
-        );
-
-    }
 
 
-    /* ========================================================
-       CURSOR GLOW
-       DESKTOP ONLY
-    ======================================================== */
+            /*========================================
+              EMAILJS CONFIGURATION CHECK
+            ========================================*/
 
-    if (
-        window.matchMedia(
-            "(pointer: fine)"
-        ).matches &&
-        !window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches
-    ) {
+            if (
+                !EMAILJS_SERVICE_ID ||
+                !EMAILJS_TEMPLATE_ID ||
+                !EMAILJS_PUBLIC_KEY
+            ) {
 
-        const glow =
-            document.createElement(
-                "div"
-            );
+                console.error(
+                    "EmailJS configuration is incomplete."
+                );
 
-        glow.className =
-            "cursor-glow";
+                showToast(
+                    "Email service has not been configured."
+                );
 
-        document.body.appendChild(
-            glow
-        );
+                return;
 
-
-        let glowFrame = null;
-
-        let mouseX = 0;
-        let mouseY = 0;
-
-
-        window.addEventListener(
-            "mousemove",
-            event => {
-
-                mouseX =
-                    event.clientX;
-
-                mouseY =
-                    event.clientY;
-
-
-                if (glowFrame) {
-                    return;
-                }
-
-
-                glowFrame =
-                    requestAnimationFrame(
-                        () => {
-
-                            glow.style.transform =
-                                `translate3d(${mouseX}px,${mouseY}px,0)`;
-
-
-                            glowFrame =
-                                null;
-
-                        }
-                    );
-
-            },
-            {
-                passive: true
             }
-        );
-
-    }
 
 
-    /* ========================================================
-       PARTICLE BACKGROUND
-       LIGHTER + PAUSES WHEN TAB IS HIDDEN
-    ======================================================== */
+            /*========================================
+              FORM ELEMENTS
+            ========================================*/
 
-    const particleCanvas =
-        document.getElementById(
-            "particles"
-        );
+            const nameInput =
+                proposalForm.querySelector(
+                    '[name="name"]'
+                );
+
+            const emailInput =
+                proposalForm.querySelector(
+                    '[name="email"]'
+                );
+
+            const phoneInput =
+                proposalForm.querySelector(
+                    '[name="phone"]'
+                );
+
+            const companyInput =
+                proposalForm.querySelector(
+                    '[name="company"]'
+                );
+
+            const messageInput =
+                proposalForm.querySelector(
+                    '[name="message"]'
+                );
 
 
-    if (particleCanvas) {
+            /*========================================
+              SAFETY CHECK
+            ========================================*/
 
-        const ctx =
-            particleCanvas.getContext(
-                "2d",
-                {
-                    alpha: true
-                }
-            );
+            if (
+                !nameInput ||
+                !emailInput ||
+                !phoneInput ||
+                !messageInput
+            ) {
+
+                console.error(
+                    "Required form fields are missing."
+                );
+
+                showToast(
+                    "Some required form fields are missing."
+                );
+
+                return;
+
+            }
 
 
-        let particles = [];
+            /*========================================
+              GET VALUES
+            ========================================*/
 
-        let animationFrame = null;
+            const name =
+                nameInput.value.trim();
 
-        let particleRunning =
-            !document.hidden;
+            const email =
+                emailInput.value.trim();
+
+            const phone =
+                phoneInput.value.trim();
+
+            const company =
+                companyInput
+                    ? companyInput.value.trim()
+                    : "";
+
+            const message =
+                messageInput.value.trim();
 
 
-        function getParticleCount() {
+            /*========================================
+              NAME VALIDATION
+            ========================================*/
 
-            const area =
-                window.innerWidth *
-                window.innerHeight;
+            if (!name) {
+
+                showToast(
+                    "Please enter your full name."
+                );
+
+                nameInput.focus();
+
+                return;
+
+            }
+
+
+            /*========================================
+              EMAIL VALIDATION
+            ========================================*/
+
+            if (!email) {
+
+                showToast(
+                    "Please enter your email address."
+                );
+
+                emailInput.focus();
+
+                return;
+
+            }
 
 
             if (
-                window.matchMedia(
-                    "(max-width: 600px)"
-                ).matches
+                !emailInput.checkValidity()
             ) {
 
-                return 18;
+                showToast(
+                    "Please enter a valid email address."
+                );
+
+                emailInput.focus();
+
+                return;
 
             }
 
 
-            return Math.min(
-                45,
-                Math.max(
-                    24,
-                    Math.round(
-                        area / 45000
-                    )
+            /*========================================
+              PHONE VALIDATION
+              EXACTLY 10 DIGITS
+            ========================================*/
+
+            if (!phone) {
+
+                showToast(
+                    "Please enter your 10-digit phone number."
+                );
+
+                phoneInput.focus();
+
+                return;
+
+            }
+
+
+            if (!/^\d{10}$/.test(phone)) {
+
+                showToast(
+                    "Phone number must contain exactly 10 digits."
+                );
+
+                phoneInput.focus();
+
+                return;
+
+            }
+
+
+            /*========================================
+              MESSAGE VALIDATION
+            ========================================*/
+
+            if (!message) {
+
+                showToast(
+                    "Please describe your project."
+                );
+
+                messageInput.focus();
+
+                return;
+
+            }
+
+
+            /*========================================
+              8 WORD MINIMUM
+            ========================================*/
+
+            const wordCount =
+                countWords(message);
+
+
+            if (wordCount < 8) {
+
+                showToast(
+                    `Please describe your project using at least 8 words. You currently have ${wordCount}.`
+                );
+
+                messageInput.focus();
+
+                return;
+
+            }
+
+
+            /*========================================
+              ANTI-SPAM COOLDOWN
+            ========================================*/
+
+            const now =
+                Date.now();
+
+
+            if (
+                now - lastSubmit < 10000
+            ) {
+
+                showToast(
+                    "Please wait before sending another request."
+                );
+
+                return;
+
+            }
+
+
+            lastSubmit = now;
+
+
+            /*========================================
+              CALCULATE TOTAL
+            ========================================*/
+
+            currentTotal =
+                calculateTotal();
+
+
+            /*========================================
+              SUBMIT BUTTON
+            ========================================*/
+
+            const submitButton =
+                proposalForm.querySelector(
+                    'button[type="submit"]'
+                );
+
+
+            if (submitButton) {
+
+                submitButton.disabled =
+                    true;
+
+                submitButton.textContent =
+                    "Sending Message...";
+
+            }
+
+
+            /*========================================
+              CUSTOMER DATA
+            ========================================*/
+
+            const customer = {
+
+                name,
+                email,
+                phone,
+                company,
+                message
+
+            };
+
+
+            /*========================================
+              SEND EMAIL WITH EMAILJS
+            ========================================*/
+
+            try {
+
+                const response =
+                    await emailjs.sendForm(
+
+                        EMAILJS_SERVICE_ID,
+
+                        EMAILJS_TEMPLATE_ID,
+
+                        proposalForm
+
+                    );
+
+
+                console.log(
+                    "Message sent successfully:",
+                    response
+                );
+
+
+                /*====================================
+                  EMAIL SUCCESS
+                ====================================*/
+
+                if (submitButton) {
+
+                    submitButton.textContent =
+                        "Message Sent ✓";
+
+                }
+
+
+                showToast(
+                    "Message sent successfully!"
+                );
+
+
+                /*====================================
+                  WHATSAPP
+                ====================================*/
+
+                setTimeout(() => {
+
+                    sendToWhatsApp(
+                        customer
+                    );
+
+                }, 500);
+
+
+            } catch (error) {
+
+                console.error(
+                    "Message sending failed:",
+                    error
+                );
+
+
+                /*====================================
+                  RESTORE BUTTON
+                ====================================*/
+
+                if (submitButton) {
+
+                    submitButton.disabled =
+                        false;
+
+                    submitButton.textContent =
+                        "Send Message";
+
+                }
+
+
+                showToast(
+                    "Failed to send message. Please try again."
+                );
+
+            }
+
+        }
+    );
+
+}
+
+/*==================================================
+KASITU QUOTATION SYSTEM
+==================================================*/
+
+
+/*==================================================
+LOAD jsPDF
+==================================================*/
+
+function loadJsPDF() {
+
+    return new Promise((resolve, reject) => {
+
+        if (window.jspdf) {
+
+            resolve(window.jspdf.jsPDF);
+
+            return;
+
+        }
+
+
+        const script =
+            document.createElement("script");
+
+        script.src =
+            "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+
+        script.onload = () => {
+
+            resolve(window.jspdf.jsPDF);
+
+        };
+
+        script.onerror = () => {
+
+            reject(
+                new Error(
+                    "Unable to load PDF library."
                 )
             );
 
-        }
+        };
 
+        document.head.appendChild(script);
 
-        function resizeCanvas() {
+    });
 
-            const dpr =
-                Math.min(
-                    window.devicePixelRatio ||
-                    1,
-                    1.5
-                );
+}
 
 
-            particleCanvas.width =
-                Math.floor(
-                    window.innerWidth *
-                    dpr
-                );
+/*==================================================
+QUOTATION MODAL
+==================================================*/
 
+const quotationModal =
+    document.getElementById(
+        "quotation-modal"
+    );
 
-            particleCanvas.height =
-                Math.floor(
-                    window.innerHeight *
-                    dpr
-                );
+const quotationClose =
+    document.getElementById(
+        "quotation-close"
+    );
 
+const quotationLater =
+    document.getElementById(
+        "quotation-later"
+    );
 
-            particleCanvas.style.width =
-                window.innerWidth +
-                "px";
+const downloadQuotation =
+    document.getElementById(
+        "download-quotation"
+    );
 
+const quotationPackage =
+    document.getElementById(
+        "quotation-package"
+    );
 
-            particleCanvas.style.height =
-                window.innerHeight +
-                "px";
+const quotationTotal =
+    document.getElementById(
+        "quotation-total"
+    );
 
+const quotationMessage =
+    document.getElementById(
+        "quotation-message"
+    );
 
-            ctx.setTransform(
-                dpr,
-                0,
-                0,
-                dpr,
-                0,
-                0
-            );
 
+/*==================================================
+SHOW QUOTATION CHOICE
+==================================================*/
 
-            const count =
-                getParticleCount();
+function showQuotationChoice(customer) {
 
+    /* Never show quotation modal without a package */
+    if (!selectedPackage) {
+        return;
+    }
 
-            particles =
-                Array.from(
-                    {
-                        length: count
-                    },
-                    () => new Particle()
-                );
+    if (!quotationModal) return;
 
-        }
+    quotationPackage.textContent =
+        selectedPackage;
 
+    quotationTotal.textContent =
+        `R${currentTotal.toLocaleString("en-ZA")}`;
 
-        class Particle {
+    quotationMessage.textContent =
+        `Thank you, ${customer.name}. Your proposal request has been sent successfully.`;
 
-            constructor() {
+    quotationModal.classList.add("show");
 
-                this.reset();
+    document.body.style.overflow =
+        "hidden";
+}
 
-            }
+/*==================================================
+CLOSE QUOTATION
+==================================================*/
 
+function closeQuotationModal() {
 
-            reset() {
+    quotationModal.classList.remove(
+        "show"
+    );
 
-                this.x =
-                    Math.random() *
-                    window.innerWidth;
+    document.body.style.overflow =
+        "";
 
+}
 
-                this.y =
-                    Math.random() *
-                    window.innerHeight;
 
+if (quotationClose) {
 
-                this.radius =
-                    Math.random() *
-                    1.4 +
-                    .6;
+    quotationClose.addEventListener(
+        "click",
+        closeQuotationModal
+    );
 
+}
 
-                this.speedX =
-                    (
-                        Math.random() -
-                        .5
-                    ) * .28;
 
+if (quotationLater) {
 
-                this.speedY =
-                    (
-                        Math.random() -
-                        .5
-                    ) * .28;
+    quotationLater.addEventListener(
+        "click",
+        closeQuotationModal
+    );
 
-            }
+}
 
 
-            update() {
+/*==================================================
+CLICK OUTSIDE
+==================================================*/
 
-                this.x +=
-                    this.speedX;
+if (quotationModal) {
 
-                this.y +=
-                    this.speedY;
-
-
-                if (
-                    this.x < 0 ||
-                    this.x >
-                        window.innerWidth
-                ) {
-
-                    this.speedX *= -1;
-
-                }
-
-
-                if (
-                    this.y < 0 ||
-                    this.y >
-                        window.innerHeight
-                ) {
-
-                    this.speedY *= -1;
-
-                }
-
-            }
-
-
-            draw() {
-
-                ctx.beginPath();
-
-
-                ctx.arc(
-                    this.x,
-                    this.y,
-                    this.radius,
-                    0,
-                    Math.PI * 2
-                );
-
-
-                ctx.fillStyle =
-                    "rgba(6,182,212,.38)";
-
-
-                ctx.fill();
-
-            }
-
-        }
-
-
-        function animateParticles() {
-
-            if (!particleRunning) {
-
-                animationFrame =
-                    null;
-
-                return;
-
-            }
-
-
-            ctx.clearRect(
-                0,
-                0,
-                window.innerWidth,
-                window.innerHeight
-            );
-
-
-            particles.forEach(
-                particle => {
-
-                    particle.update();
-
-                    particle.draw();
-
-                }
-            );
-
-
-            animationFrame =
-                requestAnimationFrame(
-                    animateParticles
-                );
-
-        }
-
-
-        function startParticles() {
+    quotationModal.addEventListener(
+        "click",
+        e => {
 
             if (
-                particleRunning &&
-                !animationFrame
+                e.target ===
+                quotationModal
             ) {
 
-                animateParticles();
+                closeQuotationModal();
 
             }
 
         }
+    );
+
+}
 
 
-        function stopParticles() {
+/*==================================================
+GENERATE PDF
+==================================================*/
+/*==================================================
+KASITU QUOTATION PDF
+AUTO LIGHT / DARK MODE
+==================================================*/
 
-            particleRunning =
-                false;
+async function generateQuotationPDF() {
+
+    try {
+
+        downloadQuotation.disabled = true;
+
+        downloadQuotation.innerHTML =
+            `<i class="fas fa-spinner fa-spin"></i> Creating PDF...`;
+
+        /* ==========================================
+           LOAD PDF LIBRARY
+        ========================================== */
+
+        const jsPDF = await loadJsPDF();
+
+        /* ==========================================
+           DETECT CURRENT WEBSITE THEME
+           
+           This checks the theme at the exact
+           moment the user downloads the PDF.
+        ========================================== */
+
+        const currentTheme =
+            document.documentElement.getAttribute("data-theme") || "dark";
+
+        const isLightMode =
+            currentTheme === "light";
+
+        console.log(
+            "Quotation theme:",
+            isLightMode ? "LIGHT" : "DARK"
+        );
+
+        /* ==========================================
+           CREATE PDF
+        ========================================== */
+
+        const doc = new jsPDF({
+
+            orientation: "portrait",
+
+            unit: "mm",
+
+            format: "a4"
+
+        });
+
+        /* ==========================================
+           GET QUOTATION DATA
+        ========================================== */
+
+        const data = getQuotationData();
+
+        /* ==========================================
+           GET CUSTOMER INFORMATION
+        ========================================== */
+
+        const name =
+            proposalForm
+                .querySelector('[name="name"]')
+                .value
+                .trim();
+
+        const email =
+            proposalForm
+                .querySelector('[name="email"]')
+                .value
+                .trim();
+
+        const phone =
+            proposalForm
+                .querySelector('[name="phone"]')
+                .value
+                .trim();
+
+        const company =
+            proposalForm
+                .querySelector('[name="company"]')
+                .value
+                .trim();
+
+        const message =
+            proposalForm
+                .querySelector('[name="message"]')
+                .value
+                .trim();
 
 
-            if (animationFrame) {
+        /* ==================================================
+           THEME COLOURS
+           
+           LIGHT MODE:
+           Elegant white / soft grey / navy / cyan
+   
+           DARK MODE:
+           Premium navy / purple / cyan
+        ================================================== */
 
-                cancelAnimationFrame(
-                    animationFrame
+        let colors;
+
+
+        if (isLightMode) {
+
+            /* ==========================================
+               CLASSY LIGHT MODE
+            ========================================== */
+
+            colors = {
+
+                background: [248, 250, 252],
+
+                surface: [255, 255, 255],
+
+                surfaceAlt: [241, 245, 249],
+
+                primary: [15, 23, 42],
+
+                secondary: [51, 65, 85],
+
+                accent: [8, 145, 178],
+
+                accentLight: [207, 250, 254],
+
+                border: [226, 232, 240],
+
+                text: [15, 23, 42],
+
+                muted: [100, 116, 139],
+
+                white: [255, 255, 255]
+
+            };
+
+        } else {
+
+            /* ==========================================
+               PREMIUM DARK MODE
+            ========================================== */
+
+            colors = {
+
+                background: [7, 11, 23],
+
+                surface: [14, 21, 42],
+
+                surfaceAlt: [17, 23, 34],
+
+                primary: [79, 70, 229],
+
+                secondary: [45, 55, 80],
+
+                accent: [6, 182, 212],
+
+                accentLight: [30, 41, 70],
+
+                border: [45, 55, 80],
+
+                text: [245, 247, 255],
+
+                muted: [148, 163, 184],
+
+                white: [255, 255, 255]
+
+            };
+
+        }
+
+
+        /* ==================================================
+           PAGE BACKGROUND
+        ================================================== */
+
+        doc.setFillColor(
+            ...colors.background
+        );
+
+        doc.rect(
+            0,
+            0,
+            210,
+            297,
+            "F"
+        );
+
+
+        /* ==================================================
+           TOP ACCENT
+        ================================================== */
+
+        doc.setFillColor(
+            ...colors.accent
+        );
+
+        doc.rect(
+            0,
+            0,
+            210,
+            4,
+            "F"
+        );
+
+
+        /* ==================================================
+           BRAND HEADER
+        ================================================== */
+
+        doc.setTextColor(
+            ...colors.primary
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(25);
+
+        doc.text(
+            "KASITU",
+            20,
+            28
+        );
+
+
+        doc.setTextColor(
+            ...colors.accent
+        );
+
+        doc.setFontSize(10);
+
+        doc.text(
+            "WEBS",
+            20,
+            35
+        );
+
+
+        doc.setTextColor(
+            ...colors.muted
+        );
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        doc.setFontSize(8);
+
+        doc.text(
+            "Building Digital Excellence",
+            20,
+            41
+        );
+
+
+        /* ==================================================
+           QUOTATION TITLE
+        ================================================== */
+
+        doc.setTextColor(
+            ...colors.primary
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(22);
+
+        doc.text(
+            "PROJECT QUOTATION",
+            190,
+            28,
+            {
+                align: "right"
+            }
+        );
+
+
+        doc.setTextColor(
+            ...colors.muted
+        );
+
+        doc.setFontSize(8);
+
+        doc.text(
+            "PRELIMINARY ESTIMATE",
+            190,
+            35,
+            {
+                align: "right"
+            }
+        );
+
+
+        doc.text(
+            new Date().toLocaleDateString(
+                "en-ZA"
+            ),
+            190,
+            41,
+            {
+                align: "right"
+            }
+        );
+
+
+        /* ==================================================
+           DIVIDER
+        ================================================== */
+
+        doc.setDrawColor(
+            ...colors.border
+        );
+
+        doc.line(
+            20,
+            52,
+            190,
+            52
+        );
+
+
+        /* ==================================================
+           CLIENT INFORMATION
+        ================================================== */
+
+        doc.setTextColor(
+            ...colors.accent
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(10);
+
+        doc.text(
+            "CLIENT INFORMATION",
+            20,
+            66
+        );
+
+
+        doc.setTextColor(
+            ...colors.text
+        );
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        doc.setFontSize(10);
+
+        doc.text(
+            `Name: ${name}`,
+            20,
+            76
+        );
+
+        doc.text(
+            `Email: ${email}`,
+            20,
+            84
+        );
+
+        doc.text(
+            `Phone: ${phone || "Not provided"}`,
+            20,
+            92
+        );
+
+        doc.text(
+            `Company: ${company || "Not provided"}`,
+            20,
+            100
+        );
+
+
+        /* ==================================================
+           SELECTED PACKAGE CARD
+        ================================================== */
+
+        doc.setFillColor(
+            ...colors.surface
+        );
+
+        doc.setDrawColor(
+            ...colors.border
+        );
+
+        doc.roundedRect(
+            20,
+            112,
+            170,
+            38,
+            5,
+            5,
+            "FD"
+        );
+
+
+        doc.setTextColor(
+            ...colors.accent
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(9);
+
+        doc.text(
+            "SELECTED PACKAGE",
+            28,
+            124
+        );
+
+
+        doc.setTextColor(
+            ...colors.primary
+        );
+
+        doc.setFontSize(15);
+
+        doc.text(
+            data.packageName,
+            28,
+            137
+        );
+
+
+        doc.setTextColor(
+            ...colors.muted
+        );
+
+        doc.setFontSize(9);
+
+        doc.text(
+            `Base price: R${data.packagePrice.toLocaleString("en-ZA")}`,
+            28,
+            145
+        );
+
+
+        /* ==================================================
+           ADDITIONAL FEATURES
+        ================================================== */
+
+        doc.setTextColor(
+            ...colors.accent
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(10);
+
+        doc.text(
+            "ADDITIONAL FEATURES",
+            20,
+            168
+        );
+
+
+        let y = 178;
+
+
+        doc.setTextColor(
+            ...colors.text
+        );
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        doc.setFontSize(9);
+
+
+        if (data.extras.length === 0) {
+
+            doc.text(
+                "No additional features selected.",
+                20,
+                y
+            );
+
+            y += 8;
+
+        } else {
+
+            data.extras.forEach(feature => {
+
+                const cleanFeature =
+                    feature
+                        .replace(/\s+/g, " ")
+                        .trim();
+
+
+                doc.setFillColor(
+                    ...colors.accent
                 );
 
-                animationFrame =
-                    null;
+                doc.circle(
+                    22,
+                    y - 1.5,
+                    1,
+                    "F"
+                );
 
-            }
+
+                doc.setTextColor(
+                    ...colors.text
+                );
+
+                doc.text(
+                    cleanFeature,
+                    27,
+                    y
+                );
+
+
+                y += 8;
+
+            });
 
         }
 
 
-        function handleVisibility() {
+        /* ==================================================
+           TOTAL INVESTMENT
+        ================================================== */
 
-            particleRunning =
-                !document.hidden;
-
-
-            if (particleRunning) {
-
-                startParticles();
-
-            } else {
-
-                stopParticles();
-
-            }
-
-        }
+        y += 8;
 
 
-        resizeCanvas();
+        doc.setFillColor(
+            ...colors.primary
+        );
+
+        doc.roundedRect(
+            20,
+            y,
+            170,
+            28,
+            5,
+            5,
+            "F"
+        );
 
 
-        window.addEventListener(
-            "resize",
-            debounce(
-                resizeCanvas,
-                180
-            ),
+        doc.setTextColor(
+            ...colors.accentLight
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(9);
+
+        doc.text(
+            "ESTIMATED PROJECT INVESTMENT",
+            28,
+            y + 11
+        );
+
+
+        doc.setTextColor(
+            ...colors.white
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(19);
+
+        doc.text(
+            `R${data.total.toLocaleString("en-ZA")}`,
+            182,
+            y + 19,
             {
-                passive: true
+                align: "right"
             }
         );
 
 
-        document.addEventListener(
-            "visibilitychange",
-            handleVisibility
+        /* ==================================================
+           PROJECT DESCRIPTION
+        ================================================== */
+
+        y += 43;
+
+
+        doc.setTextColor(
+            ...colors.accent
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(10);
+
+        doc.text(
+            "PROJECT DESCRIPTION",
+            20,
+            y
         );
 
 
-        startParticles();
+        y += 9;
+
+
+        doc.setTextColor(
+            ...colors.text
+        );
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        doc.setFontSize(8.5);
+
+
+        const wrapped =
+            doc.splitTextToSize(
+                message,
+                165
+            );
+
+
+        doc.text(
+            wrapped,
+            20,
+            y
+        );
+
+
+        /* ==================================================
+           FOOTER
+        ================================================== */
+
+        doc.setDrawColor(
+            ...colors.border
+        );
+
+        doc.line(
+            20,
+            270,
+            190,
+            270
+        );
+
+
+        doc.setTextColor(
+            ...colors.muted
+        );
+
+        doc.setFontSize(7.5);
+
+        doc.text(
+            "KASITU Webs • Soshanguve, Pretoria, Gauteng, South Africa",
+            20,
+            280
+        );
+
+
+        doc.text(
+            "info@kasituwebs.co.za • +27 79 438 0103",
+            20,
+            287
+        );
+
+
+        doc.setTextColor(
+            ...colors.accent
+        );
+
+        doc.text(
+            "This quotation is an estimate and may be adjusted after project consultation.",
+            190,
+            287,
+            {
+                align: "right"
+            }
+        );
+
+
+        /* ==================================================
+           SAVE PDF
+        ================================================== */
+
+        const safeName =
+            name
+                .replace(
+                    /[^a-z0-9]/gi,
+                    "-"
+                )
+                .toLowerCase();
+
+
+        const modeName =
+            isLightMode
+                ? "Light"
+                : "Dark";
+
+
+        doc.save(
+            `KASITU-Webs-Quotation-${safeName || "Client"}-${modeName}.pdf`
+        );
+
+
+        showToast(
+            `Quotation downloaded in ${isLightMode ? "light" : "dark"} mode ✓`
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "PDF generation failed:",
+            error
+        );
+
+        showToast(
+            "Unable to create the quotation PDF."
+        );
+
+    } finally {
+
+        downloadQuotation.disabled =
+            false;
+
+        downloadQuotation.innerHTML =
+            `<i class="fas fa-file-pdf"></i> Download Quotation`;
 
     }
 
+}
 
-    /* ========================================================
-       FAQ ACCORDION
-    ======================================================== */
+/*==================================================
+DOWNLOAD BUTTON
+==================================================*/
 
-    const faqItems =
-        document.querySelectorAll(
-            ".faq-item"
-        );
+if (downloadQuotation) {
+
+    downloadQuotation.addEventListener(
+        "click",
+        generateQuotationPDF
+    );
+
+}
+
+/*==================================================
+PAGE PERFORMANCE
+==================================================*/
+
+document.querySelectorAll("img")
+.forEach(img=>{
+
+img.loading="lazy";
+
+});
+
+/*==================================================
+CONSOLE
+==================================================*/
+
+console.log(
+"%cKASITU Premium Portfolio",
+"font-size:28px;color:#06B6D4;font-weight:bold;"
+);
+
+console.log(
+"%cPowered by HTML • CSS • JavaScript",
+"font-size:15px;color:#63ff99;"
+);
+
+/*==================================================
+END PART 4
+==================================================*/
+
+/*==================================================
+PART 5
+KASITU OS
+Interactive Terminal
+Command Palette
+==================================================*/
+
+/*==================================================
+TERMINAL
+==================================================*/
+
+const terminal = document.getElementById("terminal");
+const terminalBody = document.getElementById("terminal-body");
+const terminalInput = document.getElementById("terminal-input");
+const terminalToggle = document.getElementById("terminal-toggle");
+const terminalClose = document.getElementById("terminal-close");
+
+const commands = {
+
+help:`
+
+Available Commands
+
+help
+
+about
+
+services
+
+projects
+
+pricing
+
+skills
+
+contact
+
+clear
+
+github
+
+linkedin
+
+`,
+
+about:`
+
+KASITU WEBS
+
+We build premium websites,
+
+mobile apps,
+
+business systems,
+
+branding,
+
+graphic design,
+
+and cloud solutions.
+
+`,
+
+services:`
+
+Website Development
+
+App Development
+
+Business Registration
+
+Brand Identity
+
+Graphic Design
+
+SEO
+
+Maintenance
+
+`,
+
+pricing:`
+
+Starter Website
+
+Business Website
+
+eCommerce Website
+
+Custom Systems
+
+Request a quotation
+
+`,
+
+projects:`
+
+Portfolio Website
+
+Restaurant Website
+
+Corporate Website
+
+Booking System
+
+Online Store
+
+`,
+
+skills:`
+
+HTML
+
+CSS
+
+JavaScript
+
+Firebase
+
+Node.js
+
+Express
+
+MongoDB
+
+Git
+
+Responsive Design
+
+`,
+
+contact:`
+
+Email:
+
+info@kasituwebs.co.za
+
+Website:
+
+www.kasituwebs.co.za
+
+WhatsApp:
+
++27 79 348 0103 
+
+`,
+
+clear:"CLEAR"
+
+};
+
+function print(text){
+
+const line=document.createElement("div");
+
+line.className="terminal-line";
+
+line.innerHTML=text;
+
+terminalBody.appendChild(line);
+
+terminalBody.scrollTop=terminalBody.scrollHeight;
+
+}
+
+if(terminalToggle){
+
+terminalToggle.addEventListener("click",()=>{
+
+terminal.classList.add("open");
+
+terminalInput.focus();
+
+});
+
+}
+
+if(terminalClose){
+
+terminalClose.addEventListener("click",()=>{
+
+terminal.classList.remove("open");
+
+});
+
+}
+
+if(terminalInput){
+
+terminalInput.addEventListener("keydown",e=>{
+
+if(e.key!=="Enter") return;
+
+const value=terminalInput.value.trim().toLowerCase();
+
+print(`<span style="color:#06B6D4">></span> ${value}`);
+
+terminalInput.value="";
+
+if(value==="") return;
+
+if(commands[value]==="CLEAR"){
+
+terminalBody.innerHTML="";
+
+return;
+
+}
+
+if(commands[value]){
+
+print(commands[value]);
+
+}else{
+
+print("Unknown command. Type <b>help</b>");
+
+}
+
+});
+
+}
+
+/*==================================================
+CTRL + K
+==================================================*/
+
+const commandPalette=document.getElementById("command-palette");
+const commandSearch=document.getElementById("command-search");
+
+document.addEventListener("keydown",e=>{
+
+if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){
+
+e.preventDefault();
+
+commandPalette.classList.add("show");
+
+commandSearch.focus();
+
+}
+
+if(e.key==="Escape"){
+
+commandPalette.classList.remove("show");
+
+}
+
+});
+
+const shortcuts={
+
+home:"#home",
+
+services:"#services",
+
+projects:"#projects",
+
+pricing:"#pricing",
+
+contact:"#contact"
+
+};
+
+if(commandSearch){
+
+commandSearch.addEventListener("keydown",e=>{
+
+if(e.key!=="Enter") return;
+
+const value=commandSearch.value.toLowerCase();
+
+if(shortcuts[value]){
+
+document.querySelector(shortcuts[value]).scrollIntoView({
+
+behavior:"smooth"
+
+});
+
+}
+
+commandPalette.classList.remove("show");
+
+commandSearch.value="";
+
+});
+
+}
+
+/*==================================================
+SYSTEM STATUS
+==================================================*/
+
+const indicators=document.querySelectorAll(".status-indicator");
+
+indicators.forEach((indicator,index)=>{
+
+setTimeout(()=>{
+
+indicator.classList.add("online");
+
+},500*index);
+
+});
+
+/*==================================================
+PAGE TRANSITIONS
+==================================================*/
+
+document.querySelectorAll("a").forEach(link=>{
+
+const href=link.getAttribute("href");
+
+if(!href) return;
+
+if(href.startsWith("#")) return;
+
+link.addEventListener("click",()=>{
+
+document.body.classList.remove("loaded");
+
+});
+
+});
+
+/*==================================================
+END PART 5
+==================================================*/
+
+/* ==================================================
+   KASITU INFORMATION MINI MODALS
+   Technologies + Why Choose Us
+   ================================================== */
+
+const infoModal =
+    document.getElementById("info-modal");
+
+const infoModalBox =
+    document.querySelector(".info-modal-box");
+
+const infoModalClose =
+    document.getElementById("info-modal-close");
+
+const infoModalOk =
+    document.getElementById("info-modal-ok");
+
+const infoModalTitle =
+    document.getElementById("info-modal-title");
+
+const infoModalText =
+    document.getElementById("info-modal-text");
+
+const infoModalIcon =
+    document.getElementById("info-modal-icon");
 
 
-    faqItems.forEach(item => {
+/* ==================================================
+   OPEN INFORMATION MODAL
+   ================================================== */
 
-        const question =
-            item.querySelector(
-                ".faq-question"
+function openInfoModal(title, icon, text) {
+
+    if (!infoModal) return;
+
+    if (infoModalTitle) {
+        infoModalTitle.textContent = title;
+    }
+
+    if (infoModalText) {
+        infoModalText.textContent = text;
+    }
+
+    if (infoModalIcon) {
+
+        infoModalIcon.className =
+            icon || "fas fa-circle-info";
+
+    }
+
+    infoModal.classList.add("active");
+
+    infoModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    document.body.classList.add(
+        "modal-open"
+    );
+
+    if (infoModalClose) {
+        setTimeout(() => {
+            infoModalClose.focus();
+        }, 100);
+    }
+
+}
+
+
+/* ==================================================
+   CLOSE INFORMATION MODAL
+   ================================================== */
+
+function closeInfoModal() {
+
+    if (!infoModal) return;
+
+    infoModal.classList.remove("active");
+
+    infoModal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    document.body.classList.remove(
+        "modal-open"
+    );
+
+}
+
+
+/* ==================================================
+   TECHNOLOGY MODALS
+   ================================================== */
+
+document
+    .querySelectorAll(".tech-info-card")
+    .forEach(card => {
+
+        card.addEventListener("click", () => {
+
+            openInfoModal(
+
+                card.dataset.modalTitle,
+
+                card.dataset.modalIcon,
+
+                card.dataset.modalText
+
             );
 
-
-        if (!question) {
-            return;
-        }
-
-
-        question.addEventListener(
-            "click",
-            () => {
-
-                const isOpen =
-                    item.classList.contains(
-                        "open"
-                    );
-
-
-                faqItems.forEach(
-                    other => {
-
-                        other.classList.remove(
-                            "open"
-                        );
-
-                    }
-                );
-
-
-                if (!isOpen) {
-
-                    item.classList.add(
-                        "open"
-                    );
-
-                }
-
-            }
-        );
+        });
 
     });
 
 
-    /* ========================================================
-       SMOOTH ANCHOR SCROLL
-    ======================================================== */
+/* ==================================================
+   WHY CHOOSE US MODALS
+   ================================================== */
 
-    document
-        .querySelectorAll(
-            'a[href^="#"]'
-        )
-        .forEach(link => {
+document
+    .querySelectorAll(".why-right .feature")
+    .forEach(feature => {
 
-            link.addEventListener(
-                "click",
-                event => {
+        feature.addEventListener("click", () => {
 
-                    const targetId =
-                        link.getAttribute(
-                            "href"
-                        );
+            openInfoModal(
 
+                feature.dataset.modalTitle,
 
-                    if (
-                        !targetId ||
-                        targetId === "#"
-                    ) {
+                feature.dataset.modalIcon,
 
-                        return;
+                feature.dataset.modalText
 
-                    }
-
-
-                    const target =
-                        document.querySelector(
-                            targetId
-                        );
-
-
-                    if (!target) {
-                        return;
-                    }
-
-
-                    event.preventDefault();
-
-
-                    target.scrollIntoView({
-                        behavior:
-                            window.matchMedia(
-                                "(prefers-reduced-motion: reduce)"
-                            ).matches
-                                ? "auto"
-                                : "smooth",
-                        block: "start"
-                    });
-
-                }
             );
 
         });
 
+    });
 
-    /* ========================================================
-       CONTACT / WHATSAPP HELPERS
-    ======================================================== */
+
+/* ==================================================
+   CLOSE BUTTON
+   ================================================== */
+
+if (infoModalClose) {
+
+    infoModalClose.addEventListener(
+        "click",
+        closeInfoModal
+    );
+
+}
+
+
+/* ==================================================
+   GOT IT BUTTON
+   ================================================== */
+
+if (infoModalOk) {
+
+    infoModalOk.addEventListener(
+        "click",
+        closeInfoModal
+    );
+
+}
+
+
+/* ==================================================
+   CLICK OUTSIDE MODAL
+   ================================================== */
+
+if (infoModal) {
+
+    infoModal.addEventListener(
+        "click",
+        function (e) {
+
+            if (e.target === infoModal) {
+
+                closeInfoModal();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* ==================================================
+   ESC KEY
+   ================================================== */
+
+document.addEventListener(
+    "keydown",
+    function (e) {
+
+        if (
+            e.key === "Escape" &&
+            infoModal &&
+            infoModal.classList.contains("active")
+        ) {
+
+            closeInfoModal();
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   PREVENT BACKGROUND SCROLL WHILE MODAL IS OPEN
+   ================================================== */
+
+const modalStyle =
+    document.createElement("style");
+
+modalStyle.textContent = `
+    body.modal-open {
+        overflow: hidden;
+    }
+`;
+
+document.head.appendChild(modalStyle);
+
+
+/* ==================================================
+   CLEAR SELECTED PACKAGE
+   ================================================== */
+
+const clearPackageButton =
+    document.getElementById(
+        "clear-package"
+    );
+
+
+function clearSelectedPackage() {
+
+    /* ------------------------------------------
+       REMOVE PACKAGE STATE
+       ------------------------------------------ */
+
+    selectedPackage = "";
+
+    currentTotal = 0;
+
+
+    /* ------------------------------------------
+       CLEAR PACKAGE INPUT
+       ------------------------------------------ */
+
+    if (packageInput) {
+
+        packageInput.value = "";
+
+        packageInput.placeholder =
+            "Select a package above";
+
+    }
+
+
+    /* ------------------------------------------
+       UNCHECK ALL EXTRA FEATURES
+       ------------------------------------------ */
+
+    extraInputs.forEach(extra => {
+
+        extra.checked = false;
+
+    });
+
+
+    /* ------------------------------------------
+       REMOVE RECOMMENDED HIGHLIGHTS
+       ------------------------------------------ */
+
+    extraInputs.forEach(extra => {
+
+        const option =
+            extra.closest(
+                ".extra-option"
+            );
+
+        if (option) {
+
+            option.classList.remove(
+                "recommended"
+            );
+
+        }
+
+    });
+
+
+    /* ------------------------------------------
+       RESET PRICE
+       ------------------------------------------ */
+
+    if (totalElement) {
+
+        totalElement.textContent =
+            "R0";
+
+    }
+
+
+    /* ------------------------------------------
+       RESET CALCULATOR TOTAL
+       ------------------------------------------ */
+
+    currentTotal = 0;
+
+
+    /* ------------------------------------------
+       HIDE CLEAR BUTTON
+       ------------------------------------------ */
+
+    if (clearPackageButton) {
+
+        clearPackageButton.classList.remove(
+            "visible"
+        );
+
+    }
+
+
+    /* ------------------------------------------
+       NOTIFY USER
+       ------------------------------------------ */
+
+    if (
+        typeof showToast ===
+        "function"
+    ) {
+
+        showToast(
+            "Package selection cleared."
+        );
+
+    }
+
+}
+
+
+/* ==================================================
+   CLEAR BUTTON CLICK
+   ================================================== */
+
+if (clearPackageButton) {
+
+    clearPackageButton.addEventListener(
+        "click",
+        function (e) {
+
+            e.preventDefault();
+
+            e.stopPropagation();
+
+            clearSelectedPackage();
+
+        }
+    );
+
+}
+
+
+/* ==================================================
+   SHOW / HIDE CLEAR BUTTON
+   ================================================== */
+
+function updateClearPackageButton() {
+
+    if (!clearPackageButton) return;
+
+    if (selectedPackage) {
+
+        clearPackageButton.classList.add(
+            "visible"
+        );
+
+    } else {
+
+        clearPackageButton.classList.remove(
+            "visible"
+        );
+
+    }
+
+}
+
+
+/* ==================================================
+   UPDATE CLEAR BUTTON AFTER PACKAGE SELECTION
+   ================================================== */
+
+packageButtons.forEach(button => {
+
+    button.addEventListener(
+        "click",
+        function () {
+
+            setTimeout(
+                updateClearPackageButton,
+                0
+            );
+
+        }
+    );
+
+});
+
+
+/* ==================================================
+   CONTINUE SAFETY CHECK
+   ==================================================
+   Even if somebody clears the visible input,
+   Continue is ONLY allowed when selectedPackage
+   contains a valid package.
+   ================================================== */
+
+function hasValidPackageSelected() {
+
+    return (
+        selectedPackage &&
+        Object.prototype.hasOwnProperty.call(
+            packagePrices,
+            selectedPackage
+        )
+    );
+
+}
+
+
+/* ==================================================
+   FINAL CONTINUE PROTECTION
+   ================================================== */
+
+if (continueButton) {
+
+    continueButton.addEventListener(
+        "click",
+        function (e) {
+
+            if (!hasValidPackageSelected()) {
+
+                e.preventDefault();
+
+                e.stopImmediatePropagation();
+
+                if (
+                    typeof showToast ===
+                    "function"
+                ) {
+
+                    showToast(
+                        "Please select a package to proceed."
+                    );
+
+                }
+
+                const pricingSection =
+                    document.getElementById(
+                        "pricing"
+                    );
+
+                if (pricingSection) {
+
+                    const header =
+                        document.querySelector(
+                            ".header"
+                        );
+
+                    const headerOffset =
+                        header
+                            ? header.offsetHeight + 15
+                            : 15;
+
+                    const targetTop =
+                        pricingSection
+                            .getBoundingClientRect()
+                            .top +
+                        window.scrollY -
+                        headerOffset;
+
+                    window.scrollTo({
+
+                        top:
+                            Math.max(
+                                0,
+                                targetTop
+                            ),
+
+                        behavior:
+                            "smooth"
+
+                    });
+
+                }
+
+                return false;
+
+            }
+
+        },
+        true
+    );
+
+}
+
+
+/* ==================================================
+   KEEP CLEAR BUTTON STATE IN SYNC
+   ================================================== */
+
+if (packageInput) {
+
+    const packageObserver =
+        new MutationObserver(
+            updateClearPackageButton
+        );
+
+    packageObserver.observe(
+        packageInput,
+        {
+            attributes: true,
+            attributeFilter: [
+                "value"
+            ]
+        }
+    );
+
+}
+
+
+/* ==================================================
+   INITIAL STATE
+   ================================================== */
+
+updateClearPackageButton();
+
+console.log(
+    "KASITU Info Modals + Package Clear Loaded ✓"
+);
+
+   /* ==================================================
+   FLOATING WHATSAPP BUTTON
+   Click = WhatsApp
+   Hold = Drag
+================================================== */
+
+(() => {
+
+    const button =
+        document.getElementById(
+            "floating-whatsapp"
+        );
+
+    if (!button) return;
+
+
+    /* ==========================================
+       YOUR WHATSAPP NUMBER
+       ========================================== */
 
     const WHATSAPP_NUMBER =
         "27794380103";
 
+
+    /* ==========================================
+       PRE-TYPED MESSAGE
+       ========================================== */
 
     const WHATSAPP_MESSAGE =
 `Hi KASITU Webs 👋
@@ -1336,630 +4171,451 @@ I would like some advice on the best digital solution for my business.
 Please let me know how we can get started. Thank you!`;
 
 
-    window.openKasituWhatsApp =
-        function () {
+    /* ==========================================
+       SETTINGS
+       ========================================== */
 
-            const message =
-                encodeURIComponent(
-                    WHATSAPP_MESSAGE
-                );
+    const HOLD_TIME = 450;
 
-
-            const url =
-                `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+    const MOVE_THRESHOLD = 8;
 
 
-            window.open(
-                url,
-                "_blank",
-                "noopener,noreferrer"
+    let holdTimer = null;
+
+    let isHolding = false;
+
+    let isDragging = false;
+
+    let pointerId = null;
+
+    let startX = 0;
+
+    let startY = 0;
+
+    let startLeft = 0;
+
+    let startTop = 0;
+
+
+    /* ==========================================
+       OPEN WHATSAPP
+       ========================================== */
+
+    function openWhatsApp() {
+
+        const message =
+            encodeURIComponent(
+                WHATSAPP_MESSAGE
             );
+
+        const url =
+            `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+
+        window.open(
+            url,
+            "_blank",
+            "noopener,noreferrer"
+        );
+
+    }
+
+
+    /* ==========================================
+       KEEP BUTTON INSIDE SCREEN
+       ========================================== */
+
+    function keepInsideScreen(
+        left,
+        top
+    ) {
+
+        const width =
+            button.offsetWidth;
+
+        const height =
+            button.offsetHeight;
+
+
+        return {
+
+            left: Math.max(
+                8,
+                Math.min(
+                    left,
+                    window.innerWidth -
+                    width -
+                    8
+                )
+            ),
+
+            top: Math.max(
+                8,
+                Math.min(
+                    top,
+                    window.innerHeight -
+                    height -
+                    8
+                )
+            )
 
         };
 
-
-    /* ========================================================
-       FLOATING WHATSAPP BUTTON
-       CLICK = OPEN
-       HOLD = DRAG
-    ======================================================== */
-
-    const whatsappButton =
-        document.getElementById(
-            "floating-whatsapp"
-        );
-
-
-    if (whatsappButton) {
-
-        const HOLD_TIME = 450;
-
-        const MOVE_THRESHOLD = 8;
-
-
-        let holdTimer = null;
-
-        let isHolding = false;
-
-        let isDragging = false;
-
-        let pointerId = null;
-
-        let startX = 0;
-
-        let startY = 0;
-
-        let startLeft = 0;
-
-        let startTop = 0;
-
-
-        function clearHoldTimer() {
-
-            if (holdTimer) {
-
-                clearTimeout(
-                    holdTimer
-                );
-
-                holdTimer = null;
-
-            }
-
-        }
-
-
-        function keepInsideScreen(
-            left,
-            top
-        ) {
-
-            const width =
-                whatsappButton.offsetWidth;
-
-            const height =
-                whatsappButton.offsetHeight;
-
-
-            return {
-
-                left: Math.max(
-                    8,
-                    Math.min(
-                        left,
-                        window.innerWidth -
-                        width -
-                        8
-                    )
-                ),
-
-                top: Math.max(
-                    8,
-                    Math.min(
-                        top,
-                        window.innerHeight -
-                        height -
-                        8
-                    )
-                )
-
-            };
-
-        }
-
-
-        whatsappButton.addEventListener(
-            "pointerdown",
-            event => {
-
-                if (
-                    event.pointerType ===
-                        "mouse" &&
-                    event.button !== 0
-                ) {
-
-                    return;
-
-                }
-
-
-                pointerId =
-                    event.pointerId;
-
-
-                startX =
-                    event.clientX;
-
-                startY =
-                    event.clientY;
-
-
-                const rect =
-                    whatsappButton
-                        .getBoundingClientRect();
-
-
-                startLeft =
-                    rect.left;
-
-                startTop =
-                    rect.top;
-
-
-                isHolding = false;
-
-                isDragging = false;
-
-
-                clearHoldTimer();
-
-
-                holdTimer =
-                    setTimeout(
-                        () => {
-
-                            isHolding = true;
-
-
-                            whatsappButton
-                                .style.left =
-                                startLeft +
-                                "px";
-
-
-                            whatsappButton
-                                .style.top =
-                                startTop +
-                                "px";
-
-
-                            whatsappButton
-                                .style.right =
-                                "auto";
-
-
-                            whatsappButton
-                                .style.bottom =
-                                "auto";
-
-
-                            whatsappButton
-                                .classList.add(
-                                    "is-holding"
-                                );
-
-
-                            if (
-                                whatsappButton
-                                    .setPointerCapture
-                            ) {
-
-                                try {
-
-                                    whatsappButton
-                                        .setPointerCapture(
-                                            pointerId
-                                        );
-
-                                } catch (_) {}
-
-                            }
-
-                        },
-                        HOLD_TIME
-                    );
-
-            }
-        );
-
-
-        whatsappButton.addEventListener(
-            "pointermove",
-            event => {
-
-                if (
-                    pointerId !==
-                    event.pointerId
-                ) {
-
-                    return;
-
-                }
-
-
-                const deltaX =
-                    event.clientX -
-                    startX;
-
-
-                const deltaY =
-                    event.clientY -
-                    startY;
-
-
-                if (
-                    !isHolding &&
-                    (
-                        Math.abs(
-                            deltaX
-                        ) >
-                            MOVE_THRESHOLD ||
-                        Math.abs(
-                            deltaY
-                        ) >
-                            MOVE_THRESHOLD
-                    )
-                ) {
-
-                    clearHoldTimer();
-
-                    return;
-
-                }
-
-
-                if (!isHolding) {
-                    return;
-                }
-
-
-                if (!isDragging) {
-
-                    isDragging = true;
-
-
-                    whatsappButton
-                        .classList.remove(
-                            "is-holding"
-                        );
-
-
-                    whatsappButton
-                        .classList.add(
-                            "is-dragging"
-                        );
-
-                }
-
-
-                const position =
-                    keepInsideScreen(
-                        startLeft +
-                            deltaX,
-                        startTop +
-                            deltaY
-                    );
-
-
-                whatsappButton.style.left =
-                    position.left +
-                    "px";
-
-
-                whatsappButton.style.top =
-                    position.top +
-                    "px";
-
-
-                event.preventDefault();
-
-            },
-            {
-                passive: false
-            }
-        );
-
-
-        whatsappButton.addEventListener(
-            "pointerup",
-            event => {
-
-                if (
-                    pointerId !==
-                    event.pointerId
-                ) {
-
-                    return;
-
-                }
-
-
-                const wasHeld =
-                    isHolding ||
-                    isDragging;
-
-
-                clearHoldTimer();
-
-
-                whatsappButton
-                    .classList.remove(
-                        "is-holding",
-                        "is-dragging"
-                    );
-
-
-                isHolding = false;
-
-                isDragging = false;
-
-                pointerId = null;
-
-
-                if (!wasHeld) {
-
-                    window.openKasituWhatsApp();
-
-                }
-
-            }
-        );
-
-
-        whatsappButton.addEventListener(
-            "pointercancel",
-            () => {
-
-                clearHoldTimer();
-
-
-                whatsappButton
-                    .classList.remove(
-                        "is-holding",
-                        "is-dragging"
-                    );
-
-
-                isHolding = false;
-
-                isDragging = false;
-
-                pointerId = null;
-
-            }
-        );
-
-
-        window.addEventListener(
-            "resize",
-            () => {
-
-                if (
-                    !whatsappButton.style.left
-                ) {
-
-                    return;
-
-                }
-
-
-                const rect =
-                    whatsappButton
-                        .getBoundingClientRect();
-
-
-                const position =
-                    keepInsideScreen(
-                        rect.left,
-                        rect.top
-                    );
-
-
-                whatsappButton.style.left =
-                    position.left +
-                    "px";
-
-
-                whatsappButton.style.top =
-                    position.top +
-                    "px";
-
-            },
-            {
-                passive: true
-            }
-        );
-
-
-        whatsappButton.addEventListener(
-            "keydown",
-            event => {
-
-                if (
-                    event.key === "Enter" ||
-                    event.key === " "
-                ) {
-
-                    event.preventDefault();
-
-                    window.openKasituWhatsApp();
-
-                }
-
-            }
-        );
-
     }
 
 
-    /* ========================================================
-       EMAILJS
-       Keep initialization lightweight
-    ======================================================== */
+    /* ==========================================
+       CLEAR HOLD TIMER
+       ========================================== */
 
-    if (
-        typeof emailjs !== "undefined"
-    ) {
+    function clearHoldTimer() {
 
-        try {
+        if (holdTimer) {
 
-            emailjs.init({
-                publicKey:
-                    "YOUR_EMAILJS_PUBLIC_KEY"
-            });
-
-        } catch (error) {
-
-            console.warn(
-                "EmailJS initialization failed:",
-                error
+            clearTimeout(
+                holdTimer
             );
 
+            holdTimer = null;
+
         }
 
     }
 
 
-    /* ========================================================
-       CONTACT FORM
-    ======================================================== */
+    /* ==========================================
+       POINTER DOWN
+       ========================================== */
 
-    const contactForm =
-        document.querySelector(
-            "#contact-form"
-        );
+    button.addEventListener(
+        "pointerdown",
+        event => {
+
+            if (
+                event.pointerType === "mouse" &&
+                event.button !== 0
+            ) {
+
+                return;
+
+            }
 
 
-    if (contactForm) {
-
-        contactForm.addEventListener(
-            "submit",
-            async event => {
-
-                event.preventDefault();
+            pointerId =
+                event.pointerId;
 
 
-                const submitButton =
-                    contactForm.querySelector(
-                        '[type="submit"]'
+            startX =
+                event.clientX;
+
+            startY =
+                event.clientY;
+
+
+            const rect =
+                button.getBoundingClientRect();
+
+
+            startLeft =
+                rect.left;
+
+            startTop =
+                rect.top;
+
+
+            isHolding = false;
+
+            isDragging = false;
+
+
+            clearHoldTimer();
+
+
+            /* ==================================
+               HOLD ACTIVATION
+            ================================== */
+
+            holdTimer =
+                setTimeout(() => {
+
+                    isHolding = true;
+
+
+                    /* Convert fixed
+                       right/bottom positioning
+                       into left/top */
+
+                    button.style.left =
+                        startLeft + "px";
+
+                    button.style.top =
+                        startTop + "px";
+
+                    button.style.right =
+                        "auto";
+
+                    button.style.bottom =
+                        "auto";
+
+
+                    button.classList.add(
+                        "is-holding"
                     );
 
-
-                const originalText =
-                    submitButton
-                        ? submitButton.innerHTML
-                        : "";
-
-
-                if (submitButton) {
-
-                    submitButton.disabled =
-                        true;
-
-                    submitButton.innerHTML =
-                        `
-                        <i class="fas fa-spinner fa-spin"></i>
-                        Sending...
-                        `;
-
-                }
-
-
-                try {
 
                     if (
-                        typeof emailjs ===
-                        "undefined"
+                        button.setPointerCapture
                     ) {
 
-                        throw new Error(
-                            "Email service unavailable."
-                        );
+                        try {
+
+                            button.setPointerCapture(
+                                pointerId
+                            );
+
+                        } catch (_) {}
 
                     }
 
-
-                    /*
-                       IMPORTANT:
-                       Keep your existing EmailJS
-                       service/template IDs here.
-                    */
-
-                    await emailjs.sendForm(
-                        "YOUR_EMAILJS_SERVICE_ID",
-                        "YOUR_EMAILJS_TEMPLATE_ID",
-                        contactForm
-                    );
-
-
-                    contactForm.reset();
-
-
-                    alert(
-                        "Thank you! Your message has been sent successfully."
-                    );
-
-
-                } catch (error) {
-
-                    console.error(
-                        "Contact form error:",
-                        error
-                    );
-
-
-                    alert(
-                        "Sorry, we could not send your message right now. Please contact us directly via WhatsApp or email."
-                    );
-
-
-                } finally {
-
-                    if (submitButton) {
-
-                        submitButton.disabled =
-                            false;
-
-                        submitButton.innerHTML =
-                            originalText;
-
-                    }
-
-                }
-
-            }
-        );
-
-    }
-
-
-    /* ========================================================
-       PERFORMANCE CLEANUP
-    ======================================================== */
-
-    /*
-       Remove expensive hover animations from touch devices.
-       CSS also handles this, but this prevents unnecessary
-       JavaScript work if other scripts target these elements.
-    */
-
-    if (
-        window.matchMedia(
-            "(pointer: coarse)"
-        ).matches
-    ) {
-
-        document.documentElement
-            .classList.add(
-                "touch-device"
-            );
-
-    }
-
-
-    /* ========================================================
-       PAGE LOAD COMPLETE
-    ======================================================== */
-
-    window.requestAnimationFrame(
-        () => {
-
-            document.documentElement
-                .classList.add(
-                    "page-ready"
-                );
+                }, HOLD_TIME);
 
         }
     );
 
-});
+
+    /* ==========================================
+       POINTER MOVE
+       ========================================== */
+
+    button.addEventListener(
+        "pointermove",
+        event => {
+
+            if (
+                pointerId !==
+                event.pointerId
+            ) {
+
+                return;
+
+            }
+
+
+            const deltaX =
+                event.clientX -
+                startX;
+
+
+            const deltaY =
+                event.clientY -
+                startY;
+
+
+            /* User moved before holding */
+
+            if (
+                !isHolding &&
+                (
+                    Math.abs(deltaX) >
+                        MOVE_THRESHOLD ||
+
+                    Math.abs(deltaY) >
+                        MOVE_THRESHOLD
+                )
+            ) {
+
+                clearHoldTimer();
+
+                return;
+
+            }
+
+
+            if (!isHolding) {
+
+                return;
+
+            }
+
+
+            /* Start dragging */
+
+            if (!isDragging) {
+
+                isDragging = true;
+
+                button.classList.remove(
+                    "is-holding"
+                );
+
+                button.classList.add(
+                    "is-dragging"
+                );
+
+            }
+
+
+            const position =
+                keepInsideScreen(
+                    startLeft + deltaX,
+                    startTop + deltaY
+                );
+
+
+            button.style.left =
+                position.left + "px";
+
+            button.style.top =
+                position.top + "px";
+
+
+            event.preventDefault();
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    /* ==========================================
+       POINTER UP
+       ========================================== */
+
+    button.addEventListener(
+        "pointerup",
+        event => {
+
+            if (
+                pointerId !==
+                event.pointerId
+            ) {
+
+                return;
+
+            }
+
+
+            const wasHeld =
+                isHolding ||
+                isDragging;
+
+
+            clearHoldTimer();
+
+
+            button.classList.remove(
+                "is-holding",
+                "is-dragging"
+            );
+
+
+            isHolding = false;
+
+            isDragging = false;
+
+            pointerId = null;
+
+
+            /* Normal click */
+
+            if (!wasHeld) {
+
+                openWhatsApp();
+
+            }
+
+        }
+    );
+
+
+    /* ==========================================
+       POINTER CANCEL
+       ========================================== */
+
+    button.addEventListener(
+        "pointercancel",
+        () => {
+
+            clearHoldTimer();
+
+            button.classList.remove(
+                "is-holding",
+                "is-dragging"
+            );
+
+            isHolding = false;
+
+            isDragging = false;
+
+            pointerId = null;
+
+        }
+    );
+
+
+    /* ==========================================
+       KEEP POSITION VALID AFTER RESIZE
+       ========================================== */
+
+    window.addEventListener(
+        "resize",
+        () => {
+
+            if (
+                !button.style.left
+            ) {
+
+                return;
+
+            }
+
+
+            const rect =
+                button.getBoundingClientRect();
+
+
+            const position =
+                keepInsideScreen(
+                    rect.left,
+                    rect.top
+                );
+
+
+            button.style.left =
+                position.left + "px";
+
+            button.style.top =
+                position.top + "px";
+
+        }
+    );
+
+
+    /* ==========================================
+       KEYBOARD ACCESS
+       ========================================== */
+
+    button.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter" ||
+                event.key === " "
+            ) {
+
+                event.preventDefault();
+
+                openWhatsApp();
+
+            }
+
+        }
+    );
+
+
+    console.log(
+        "Floating WhatsApp Button Loaded ✓"
+    );
+
+})();
