@@ -989,6 +989,10 @@ packageButtons.forEach(button => {
    SMOOTH SCROLL TO TOP OF LIVE ESTIMATE
    ------------------------------------------ */
 
+/* ------------------------------------------
+   SMOOTH SCROLL TO TOP OF LIVE ESTIMATE
+   ------------------------------------------ */
+
 const liveEstimate = document.getElementById("live-estimate");
 
 if (liveEstimate) {
@@ -1013,6 +1017,10 @@ if (liveEstimate) {
     }, 100);
 
 }
+
+    });
+
+});
 
 /*==================================================
 EXTRA FEATURE CHANGES
