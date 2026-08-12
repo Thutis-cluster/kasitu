@@ -4843,21 +4843,6 @@ select:focus {
     overflow: hidden;
 }
 
-.tech-info-card::after {
-    content: "Click to learn more";
-    display: block;
-    margin-top: 8px;
-    font-size: .68rem;
-    letter-spacing: .5px;
-    color: var(--secondary);
-    opacity: .7;
-    transition: .3s ease;
-}
-
-.tech-info-card:hover::after {
-    opacity: 1;
-}
-
 .tech-info-card:hover,
 .feature:hover {
     transform: translateY(-6px);
@@ -4884,8 +4869,11 @@ select:focus {
     top: 50%;
     transform: translateY(-50%);
 
-    width: 27px;
-    height: 27px;
+    width: 28px;
+    height: 28px;
+
+    padding: 0;
+    margin: 0;
 
     display: flex;
     align-items: center;
@@ -4897,8 +4885,11 @@ select:focus {
     background: rgba(255,255,255,.07);
     color: var(--muted);
 
-    font-size: 18px;
-    line-height: 1;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 28px;
+
+    text-align: center;
 
     cursor: pointer;
 
@@ -4925,7 +4916,6 @@ select:focus {
     color: var(--danger);
     transform: translateY(-50%) scale(1.08);
 }
-
 
 /* ==================================================
    INFORMATION MODAL OVERLAY
