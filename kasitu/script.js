@@ -2439,109 +2439,185 @@ if (quotationModal) {
 /*==================================================
 GENERATE PDF
 ==================================================*/
+/*==================================================
+KASITU QUOTATION PDF
+AUTO LIGHT / DARK MODE
+==================================================*/
 
 async function generateQuotationPDF() {
 
     try {
 
-        downloadQuotation.disabled =
-            true;
+        downloadQuotation.disabled = true;
 
         downloadQuotation.innerHTML =
             `<i class="fas fa-spinner fa-spin"></i> Creating PDF...`;
 
+        /* ==========================================
+           LOAD PDF LIBRARY
+        ========================================== */
 
-        const jsPDF =
-            await loadJsPDF();
+        const jsPDF = await loadJsPDF();
 
+        /* ==========================================
+           DETECT CURRENT WEBSITE THEME
+           
+           This checks the theme at the exact
+           moment the user downloads the PDF.
+        ========================================== */
 
-        const doc =
-            new jsPDF({
+        const currentTheme =
+            document.documentElement.getAttribute("data-theme") || "dark";
 
-                orientation:"portrait",
+        const isLightMode =
+            currentTheme === "light";
 
-                unit:"mm",
+        console.log(
+            "Quotation theme:",
+            isLightMode ? "LIGHT" : "DARK"
+        );
 
-                format:"a4"
+        /* ==========================================
+           CREATE PDF
+        ========================================== */
 
-            });
+        const doc = new jsPDF({
 
+            orientation: "portrait",
 
-        const data =
-            getQuotationData();
+            unit: "mm",
 
+            format: "a4"
+
+        });
+
+        /* ==========================================
+           GET QUOTATION DATA
+        ========================================== */
+
+        const data = getQuotationData();
+
+        /* ==========================================
+           GET CUSTOMER INFORMATION
+        ========================================== */
 
         const name =
             proposalForm
-                .querySelector(
-                    '[name="name"]'
-                )
+                .querySelector('[name="name"]')
                 .value
                 .trim();
-
 
         const email =
             proposalForm
-                .querySelector(
-                    '[name="email"]'
-                )
+                .querySelector('[name="email"]')
                 .value
                 .trim();
-
 
         const phone =
             proposalForm
-                .querySelector(
-                    '[name="phone"]'
-                )
+                .querySelector('[name="phone"]')
                 .value
                 .trim();
-
 
         const company =
             proposalForm
-                .querySelector(
-                    '[name="company"]'
-                )
+                .querySelector('[name="company"]')
                 .value
                 .trim();
-
 
         const message =
             proposalForm
-                .querySelector(
-                    '[name="message"]'
-                )
+                .querySelector('[name="message"]')
                 .value
                 .trim();
 
 
-        /* ------------------------------------------
-           COLORS
-        ------------------------------------------ */
+        /* ==================================================
+           THEME COLOURS
+           
+           LIGHT MODE:
+           Elegant white / soft grey / navy / cyan
+   
+           DARK MODE:
+           Premium navy / purple / cyan
+        ================================================== */
 
-        const navy =
-            [7,11,23];
-
-        const purple =
-            [79,70,229];
-
-        const cyan =
-            [6,182,212];
-
-        const light =
-            [245,247,255];
-
-        const muted =
-            [110,120,145];
+        let colors;
 
 
-        /* ------------------------------------------
-           BACKGROUND
-        ------------------------------------------ */
+        if (isLightMode) {
+
+            /* ==========================================
+               CLASSY LIGHT MODE
+            ========================================== */
+
+            colors = {
+
+                background: [248, 250, 252],
+
+                surface: [255, 255, 255],
+
+                surfaceAlt: [241, 245, 249],
+
+                primary: [15, 23, 42],
+
+                secondary: [51, 65, 85],
+
+                accent: [8, 145, 178],
+
+                accentLight: [207, 250, 254],
+
+                border: [226, 232, 240],
+
+                text: [15, 23, 42],
+
+                muted: [100, 116, 139],
+
+                white: [255, 255, 255]
+
+            };
+
+        } else {
+
+            /* ==========================================
+               PREMIUM DARK MODE
+            ========================================== */
+
+            colors = {
+
+                background: [7, 11, 23],
+
+                surface: [14, 21, 42],
+
+                surfaceAlt: [17, 23, 34],
+
+                primary: [79, 70, 229],
+
+                secondary: [45, 55, 80],
+
+                accent: [6, 182, 212],
+
+                accentLight: [30, 41, 70],
+
+                border: [45, 55, 80],
+
+                text: [245, 247, 255],
+
+                muted: [148, 163, 184],
+
+                white: [255, 255, 255]
+
+            };
+
+        }
+
+
+        /* ==================================================
+           PAGE BACKGROUND
+        ================================================== */
 
         doc.setFillColor(
-            ...navy
+            ...colors.background
         );
 
         doc.rect(
@@ -2553,42 +2629,29 @@ async function generateQuotationPDF() {
         );
 
 
-        /* ------------------------------------------
+        /* ==================================================
            TOP ACCENT
-        ------------------------------------------ */
+        ================================================== */
 
         doc.setFillColor(
-            ...purple
+            ...colors.accent
         );
 
         doc.rect(
             0,
             0,
             210,
-            5,
+            4,
             "F"
         );
 
 
-        doc.setFillColor(
-            ...cyan
-        );
-
-        doc.rect(
-            0,
-            5,
-            210,
-            1.5,
-            "F"
-        );
-
-
-        /* ------------------------------------------
-           BRAND
-        ------------------------------------------ */
+        /* ==================================================
+           BRAND HEADER
+        ================================================== */
 
         doc.setTextColor(
-            ...light
+            ...colors.primary
         );
 
         doc.setFont(
@@ -2606,7 +2669,7 @@ async function generateQuotationPDF() {
 
 
         doc.setTextColor(
-            ...cyan
+            ...colors.accent
         );
 
         doc.setFontSize(10);
@@ -2619,7 +2682,7 @@ async function generateQuotationPDF() {
 
 
         doc.setTextColor(
-            ...muted
+            ...colors.muted
         );
 
         doc.setFont(
@@ -2636,12 +2699,12 @@ async function generateQuotationPDF() {
         );
 
 
-        /* ------------------------------------------
+        /* ==================================================
            QUOTATION TITLE
-        ------------------------------------------ */
+        ================================================== */
 
         doc.setTextColor(
-            ...light
+            ...colors.primary
         );
 
         doc.setFont(
@@ -2656,13 +2719,13 @@ async function generateQuotationPDF() {
             190,
             28,
             {
-                align:"right"
+                align: "right"
             }
         );
 
 
         doc.setTextColor(
-            ...muted
+            ...colors.muted
         );
 
         doc.setFontSize(8);
@@ -2672,7 +2735,7 @@ async function generateQuotationPDF() {
             190,
             35,
             {
-                align:"right"
+                align: "right"
             }
         );
 
@@ -2684,19 +2747,17 @@ async function generateQuotationPDF() {
             190,
             41,
             {
-                align:"right"
+                align: "right"
             }
         );
 
 
-        /* ------------------------------------------
+        /* ==================================================
            DIVIDER
-        ------------------------------------------ */
+        ================================================== */
 
         doc.setDrawColor(
-            45,
-            55,
-            80
+            ...colors.border
         );
 
         doc.line(
@@ -2707,12 +2768,12 @@ async function generateQuotationPDF() {
         );
 
 
-        /* ------------------------------------------
+        /* ==================================================
            CLIENT INFORMATION
-        ------------------------------------------ */
+        ================================================== */
 
         doc.setTextColor(
-            ...cyan
+            ...colors.accent
         );
 
         doc.setFont(
@@ -2730,7 +2791,7 @@ async function generateQuotationPDF() {
 
 
         doc.setTextColor(
-            ...light
+            ...colors.text
         );
 
         doc.setFont(
@@ -2746,20 +2807,17 @@ async function generateQuotationPDF() {
             76
         );
 
-
         doc.text(
             `Email: ${email}`,
             20,
             84
         );
 
-
         doc.text(
             `Phone: ${phone || "Not provided"}`,
             20,
             92
         );
-
 
         doc.text(
             `Company: ${company || "Not provided"}`,
@@ -2768,14 +2826,16 @@ async function generateQuotationPDF() {
         );
 
 
-        /* ------------------------------------------
-           PACKAGE
-        ------------------------------------------ */
+        /* ==================================================
+           SELECTED PACKAGE CARD
+        ================================================== */
 
         doc.setFillColor(
-            14,
-            21,
-            42
+            ...colors.surface
+        );
+
+        doc.setDrawColor(
+            ...colors.border
         );
 
         doc.roundedRect(
@@ -2785,12 +2845,12 @@ async function generateQuotationPDF() {
             38,
             5,
             5,
-            "F"
+            "FD"
         );
 
 
         doc.setTextColor(
-            ...cyan
+            ...colors.accent
         );
 
         doc.setFont(
@@ -2808,7 +2868,7 @@ async function generateQuotationPDF() {
 
 
         doc.setTextColor(
-            ...light
+            ...colors.primary
         );
 
         doc.setFontSize(15);
@@ -2821,7 +2881,7 @@ async function generateQuotationPDF() {
 
 
         doc.setTextColor(
-            ...muted
+            ...colors.muted
         );
 
         doc.setFontSize(9);
@@ -2833,12 +2893,12 @@ async function generateQuotationPDF() {
         );
 
 
-        /* ------------------------------------------
-           EXTRAS
-        ------------------------------------------ */
+        /* ==================================================
+           ADDITIONAL FEATURES
+        ================================================== */
 
         doc.setTextColor(
-            ...cyan
+            ...colors.accent
         );
 
         doc.setFont(
@@ -2855,12 +2915,11 @@ async function generateQuotationPDF() {
         );
 
 
-        let y =
-            178;
+        let y = 178;
 
 
         doc.setTextColor(
-            ...light
+            ...colors.text
         );
 
         doc.setFont(
@@ -2871,9 +2930,7 @@ async function generateQuotationPDF() {
         doc.setFontSize(9);
 
 
-        if (
-            data.extras.length === 0
-        ) {
+        if (data.extras.length === 0) {
 
             doc.text(
                 "No additional features selected.",
@@ -2885,38 +2942,53 @@ async function generateQuotationPDF() {
 
         } else {
 
-            data.extras.forEach(
-                feature => {
+            data.extras.forEach(feature => {
 
-                    const cleanFeature =
-                        feature.replace(
-                            /\s+/g,
-                            " "
-                        );
+                const cleanFeature =
+                    feature
+                        .replace(/\s+/g, " ")
+                        .trim();
 
-                    doc.text(
-                        `• ${cleanFeature}`,
-                        22,
-                        y
-                    );
 
-                    y += 8;
+                doc.setFillColor(
+                    ...colors.accent
+                );
 
-                }
-            );
+                doc.circle(
+                    22,
+                    y - 1.5,
+                    1,
+                    "F"
+                );
+
+
+                doc.setTextColor(
+                    ...colors.text
+                );
+
+                doc.text(
+                    cleanFeature,
+                    27,
+                    y
+                );
+
+
+                y += 8;
+
+            });
 
         }
 
 
-        /* ------------------------------------------
-           TOTAL
-        ------------------------------------------ */
+        /* ==================================================
+           TOTAL INVESTMENT
+        ================================================== */
 
         y += 8;
 
 
         doc.setFillColor(
-            ...purple
+            ...colors.primary
         );
 
         doc.roundedRect(
@@ -2931,9 +3003,12 @@ async function generateQuotationPDF() {
 
 
         doc.setTextColor(
-            220,
-            225,
-            255
+            ...colors.accentLight
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
         );
 
         doc.setFontSize(9);
@@ -2946,9 +3021,7 @@ async function generateQuotationPDF() {
 
 
         doc.setTextColor(
-            255,
-            255,
-            255
+            ...colors.white
         );
 
         doc.setFont(
@@ -2963,20 +3036,25 @@ async function generateQuotationPDF() {
             182,
             y + 19,
             {
-                align:"right"
+                align: "right"
             }
         );
 
 
-        /* ------------------------------------------
+        /* ==================================================
            PROJECT DESCRIPTION
-        ------------------------------------------ */
+        ================================================== */
 
         y += 43;
 
 
         doc.setTextColor(
-            ...cyan
+            ...colors.accent
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
         );
 
         doc.setFontSize(10);
@@ -2992,7 +3070,7 @@ async function generateQuotationPDF() {
 
 
         doc.setTextColor(
-            ...light
+            ...colors.text
         );
 
         doc.setFont(
@@ -3017,14 +3095,12 @@ async function generateQuotationPDF() {
         );
 
 
-        /* ------------------------------------------
+        /* ==================================================
            FOOTER
-        ------------------------------------------ */
+        ================================================== */
 
         doc.setDrawColor(
-            45,
-            55,
-            80
+            ...colors.border
         );
 
         doc.line(
@@ -3036,7 +3112,7 @@ async function generateQuotationPDF() {
 
 
         doc.setTextColor(
-            ...muted
+            ...colors.muted
         );
 
         doc.setFontSize(7.5);
@@ -3056,7 +3132,7 @@ async function generateQuotationPDF() {
 
 
         doc.setTextColor(
-            ...cyan
+            ...colors.accent
         );
 
         doc.text(
@@ -3064,14 +3140,14 @@ async function generateQuotationPDF() {
             190,
             287,
             {
-                align:"right"
+                align: "right"
             }
         );
 
 
-        /* ------------------------------------------
-           SAVE
-        ------------------------------------------ */
+        /* ==================================================
+           SAVE PDF
+        ================================================== */
 
         const safeName =
             name
@@ -3082,13 +3158,19 @@ async function generateQuotationPDF() {
                 .toLowerCase();
 
 
+        const modeName =
+            isLightMode
+                ? "Light"
+                : "Dark";
+
+
         doc.save(
-            `KASITU-Webs-Quotation-${safeName || "Client"}.pdf`
+            `KASITU-Webs-Quotation-${safeName || "Client"}-${modeName}.pdf`
         );
 
 
         showToast(
-            "Quotation downloaded successfully!"
+            `Quotation downloaded in ${isLightMode ? "light" : "dark"} mode ✓`
         );
 
 
@@ -3114,7 +3196,6 @@ async function generateQuotationPDF() {
     }
 
 }
-
 
 /*==================================================
 DOWNLOAD BUTTON
