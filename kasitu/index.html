@@ -691,59 +691,132 @@ TRUSTED TECHNOLOGIES
 
     </div>
 
-    <div class="trusted-grid">
+<!-- ==================================================
+     TRUSTED TECHNOLOGIES
+     ================================================== -->
 
-        <div>
-            <i class="fab fa-html5"></i>
-            <h3>HTML5</h3>
-        </div>
+<div class="trusted-grid">
 
-        <div>
-            <i class="fab fa-css3-alt"></i>
-            <h3>CSS3</h3>
-        </div>
-
-        <div>
-            <i class="fab fa-js-square"></i>
-            <h3>JavaScript</h3>
-        </div>
-
-        <div>
-            <i class="fas fa-credit-card"></i>
-            <h3>PayStack</h3>
-        </div>
-
-        <div>
-            <i class="fas fa-fire"></i>
-            <h3>Firebase</h3>
-        </div>
-
-        <div>
-            <i class="fas fa-database"></i>
-            <h3>MongoDB</h3>
-        </div>
-
-        <div>
-            <i class="fab fa-wordpress"></i>
-            <h3>WordPress</h3>
-        </div>
-
-        <div>
-            <i class="fab fa-github"></i>
-            <h3>GitHub</h3>
-        </div>
-
-        <div>
-            <i class="fas fa-mobile-alt"></i>
-            <h3>Responsive Design</h3>
-        </div>
-
-        <div>
-            <i class="fas fa-cloud"></i>
-            <h3>Cloud Hosting</h3>
-        </div>
-
+    <div
+        class="tech-info-card"
+        data-modal-title="HTML5"
+        data-modal-icon="fab fa-html5"
+        data-modal-text="HTML5 is the structure of a website. It defines the content and layout of pages, such as headings, paragraphs, images, forms and other elements."
+    >
+        <i class="fab fa-html5"></i>
+        <h3>HTML5</h3>
+        <small>Click to learn more</small>
     </div>
+
+
+    <div
+        class="tech-info-card"
+        data-modal-title="CSS3"
+        data-modal-icon="fab fa-css3-alt"
+        data-modal-text="CSS3 controls how a website looks and feels. It handles colours, layouts, animations, spacing, responsiveness and modern visual effects."
+    >
+        <i class="fab fa-css3-alt"></i>
+        <h3>CSS3</h3>
+        <small>Click to learn more</small>
+    </div>
+
+
+    <div
+        class="tech-info-card"
+        data-modal-title="JavaScript"
+        data-modal-icon="fab fa-js-square"
+        data-modal-text="JavaScript adds behaviour and interactivity to websites. It powers things such as calculators, menus, animations, forms, modals and dynamic content."
+    >
+        <i class="fab fa-js-square"></i>
+        <h3>JavaScript</h3>
+        <small>Click to learn more</small>
+    </div>
+
+
+    <div
+        class="tech-info-card"
+        data-modal-title="PayStack"
+        data-modal-icon="fas fa-credit-card"
+        data-modal-text="Paystack is a payment platform that allows websites and applications to securely accept online payments from customers."
+    >
+        <i class="fas fa-credit-card"></i>
+        <h3>PayStack</h3>
+        <small>Click to learn more</small>
+    </div>
+
+
+    <div
+        class="tech-info-card"
+        data-modal-title="Firebase"
+        data-modal-icon="fas fa-fire"
+        data-modal-text="Firebase provides cloud-based services such as databases, authentication, hosting and other backend tools that help applications store and manage data."
+    >
+        <i class="fas fa-fire"></i>
+        <h3>Firebase</h3>
+        <small>Click to learn more</small>
+    </div>
+
+
+    <div
+        class="tech-info-card"
+        data-modal-title="MongoDB"
+        data-modal-icon="fas fa-database"
+        data-modal-text="MongoDB is a database system used to store application data. It is especially useful for applications that need flexible and scalable data storage."
+    >
+        <i class="fas fa-database"></i>
+        <h3>MongoDB</h3>
+        <small>Click to learn more</small>
+    </div>
+
+
+    <div
+        class="tech-info-card"
+        data-modal-title="WordPress"
+        data-modal-icon="fab fa-wordpress"
+        data-modal-text="WordPress is a content management system that makes it easier to create, manage and update websites without having to build every feature from scratch."
+    >
+        <i class="fab fa-wordpress"></i>
+        <h3>WordPress</h3>
+        <small>Click to learn more</small>
+    </div>
+
+
+    <div
+        class="tech-info-card"
+        data-modal-title="GitHub"
+        data-modal-icon="fab fa-github"
+        data-modal-text="GitHub is a platform used to store, manage and collaborate on code. It helps developers track changes, maintain projects and work safely with versions of their code."
+    >
+        <i class="fab fa-github"></i>
+        <h3>GitHub</h3>
+        <small>Click to learn more</small>
+    </div>
+
+
+    <div
+        class="tech-info-card"
+        data-modal-title="Responsive Design"
+        data-modal-icon="fas fa-mobile-alt"
+        data-modal-text="Responsive design makes a website automatically adapt to different screen sizes, including phones, tablets, laptops and desktop computers."
+    >
+        <i class="fas fa-mobile-alt"></i>
+        <h3>Responsive Design</h3>
+        <small>Click to learn more</small>
+    </div>
+
+
+    <div
+        class="tech-info-card"
+        data-modal-title="Cloud Hosting"
+        data-modal-icon="fas fa-cloud"
+        data-modal-text="Cloud hosting allows websites and applications to run using internet-based servers, providing reliable access, scalability and the ability to handle changing traffic."
+    >
+        <i class="fas fa-cloud"></i>
+        <h3>Cloud Hosting</h3>
+        <small>Click to learn more</small>
+    </div>
+
+</div>
 
 </section>
 
@@ -1049,10 +1122,30 @@ PROJECT ESTIMATOR
 
             </label>
 
-            <input
-                id="site-type"
-                readonly
-                placeholder="Select a package above">
+<!-- ==================================================
+     PACKAGE INPUT WITH CLEAR BUTTON
+     ================================================== -->
+
+<div class="package-input-wrap">
+
+    <input
+        id="site-type"
+        readonly
+        placeholder="Select a package above"
+        autocomplete="off"
+    >
+
+    <button
+        type="button"
+        id="clear-package"
+        class="clear-package-btn"
+        aria-label="Clear selected package"
+        title="Clear selected package"
+    >
+        ×
+    </button>
+
+</div>
 
 <fieldset>
 
@@ -1294,45 +1387,127 @@ WHY CHOOSE US
 
     </div>
 
-    <div class="why-right">
+<!-- ==================================================
+     WHY CHOOSE US
+     ================================================== -->
 
-        <div class="feature">
+<div class="why-right">
 
-            🚀 Fast Performance
+    <div
+        class="feature"
+        data-modal-title="Fast Performance"
+        data-modal-icon="fas fa-rocket"
+        data-modal-text="We build websites with performance in mind so pages load quickly and visitors can move through the website smoothly."
+    >
+        🚀 Fast Performance
+    </div>
 
+
+    <div
+        class="feature"
+        data-modal-title="Secure Development"
+        data-modal-icon="fas fa-lock"
+        data-modal-text="We follow security-focused development practices to help protect websites, forms, customer information and application functionality."
+    >
+        🔒 Secure Development
+    </div>
+
+
+    <div
+        class="feature"
+        data-modal-title="Mobile Responsive"
+        data-modal-icon="fas fa-mobile-screen-button"
+        data-modal-text="Your website is designed to adapt to phones, tablets, laptops and desktop screens so customers can use it comfortably on different devices."
+    >
+        📱 Mobile Responsive
+    </div>
+
+
+    <div
+        class="feature"
+        data-modal-title="Cloud Ready"
+        data-modal-icon="fas fa-cloud"
+        data-modal-text="Our solutions can be built with cloud technologies to support online data, scalable services, hosting and modern application functionality."
+    >
+        ☁ Cloud Ready
+    </div>
+
+
+    <div
+        class="feature"
+        data-modal-title="SEO Optimised"
+        data-modal-icon="fas fa-magnifying-glass"
+        data-modal-text="SEO optimisation helps search engines understand your website and can improve how easily potential customers discover your business online."
+    >
+        ⚡ SEO Optimised
+    </div>
+
+
+    <div
+        class="feature"
+        data-modal-title="Ongoing Support"
+        data-modal-icon="fas fa-headset"
+        data-modal-text="We can continue helping after launch with updates, maintenance, improvements, troubleshooting and technical support."
+    >
+        💬 Ongoing Support
+    </div>
+
+</div>
+
+
+<!-- ==================================================
+     UNIVERSAL MINI INFORMATION MODAL
+     ================================================== -->
+
+<div
+    id="info-modal"
+    class="info-modal"
+    aria-hidden="true"
+>
+
+    <div
+        class="info-modal-box"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="info-modal-title"
+    >
+
+        <button
+            type="button"
+            id="info-modal-close"
+            class="info-modal-close"
+            aria-label="Close information"
+        >
+            ×
+        </button>
+
+        <div class="info-modal-icon">
+            <i id="info-modal-icon"></i>
         </div>
 
-        <div class="feature">
+        <span class="info-modal-label">
+            KASITU Webs
+        </span>
 
-            🔒 Secure Development
+        <h3 id="info-modal-title">
+            Technology
+        </h3>
 
-        </div>
+        <p id="info-modal-text">
+            Information about this technology.
+        </p>
 
-        <div class="feature">
-
-            📱 Mobile Responsive
-
-        </div>
-
-        <div class="feature">
-
-            ☁ Cloud Ready
-
-        </div>
-
-        <div class="feature">
-
-            ⚡ SEO Optimised
-
-        </div>
-
-        <div class="feature">
-
-            💬 Ongoing Support
-
-        </div>
+        <button
+            type="button"
+            id="info-modal-ok"
+            class="info-modal-ok"
+        >
+            Got it
+        </button>
 
     </div>
+
+</div>
 
 </section>
 
