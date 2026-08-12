@@ -4828,3 +4828,391 @@ select:focus {
     color:#687386;
 }
 
+/* ==================================================
+   KASITU INFORMATION MINI MODALS
+   ================================================== */
+
+.tech-info-card,
+.feature {
+    cursor: pointer;
+    user-select: none;
+}
+
+.tech-info-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.tech-info-card::after {
+    content: "Click to learn more";
+    display: block;
+    margin-top: 8px;
+    font-size: .68rem;
+    letter-spacing: .5px;
+    color: var(--secondary);
+    opacity: .7;
+    transition: .3s ease;
+}
+
+.tech-info-card:hover::after {
+    opacity: 1;
+}
+
+.tech-info-card:hover,
+.feature:hover {
+    transform: translateY(-6px);
+}
+
+
+/* ==================================================
+   PACKAGE INPUT + CLEAR BUTTON
+   ================================================== */
+
+.package-input-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.package-input-wrap #site-type {
+    width: 100%;
+    padding-right: 48px;
+}
+
+.clear-package-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 27px;
+    height: 27px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.07);
+    color: var(--muted);
+
+    font-size: 18px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity .25s ease,
+        visibility .25s ease,
+        background .25s ease,
+        color .25s ease,
+        transform .25s ease;
+}
+
+.clear-package-btn.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.clear-package-btn:hover {
+    background: rgba(255,79,109,.15);
+    color: var(--danger);
+    transform: translateY(-50%) scale(1.08);
+}
+
+
+/* ==================================================
+   INFORMATION MODAL OVERLAY
+   ================================================== */
+
+.info-modal {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0,0,0,.62);
+    backdrop-filter: blur(10px);
+
+    z-index: 99999;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity .25s ease,
+        visibility .25s ease;
+}
+
+.info-modal.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+
+/* ==================================================
+   MODAL BOX
+   ================================================== */
+
+.info-modal-box {
+    position: relative;
+
+    width: min(440px, 100%);
+
+    padding: 38px 32px 30px;
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20,28,55,.96),
+            rgba(8,14,30,.97)
+        );
+
+    border: 1px solid rgba(255,255,255,.12);
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.55),
+        0 0 50px rgba(6,182,212,.12);
+
+    backdrop-filter: blur(30px);
+
+    transform:
+        translateY(20px)
+        scale(.94);
+
+    transition:
+        transform .3s ease;
+}
+
+.info-modal.active .info-modal-box {
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+
+/* ==================================================
+   MODAL CLOSE BUTTON
+   ================================================== */
+
+.info-modal-close {
+    position: absolute;
+
+    top: 12px;
+    right: 12px;
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255,255,255,.10);
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.06);
+
+    color: var(--muted);
+
+    font-size: 21px;
+    font-weight: 400;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        .25s ease;
+}
+
+.info-modal-close:hover {
+    color: #fff;
+    background: rgba(255,79,109,.18);
+    border-color: rgba(255,79,109,.35);
+    transform: rotate(90deg);
+}
+
+
+/* ==================================================
+   MODAL ICON
+   ================================================== */
+
+.info-modal-icon {
+    width: 62px;
+    height: 62px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 18px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(79,70,229,.25),
+            rgba(6,182,212,.18)
+        );
+
+    border: 1px solid rgba(6,182,212,.20);
+
+    box-shadow:
+        0 0 30px rgba(6,182,212,.12);
+}
+
+.info-modal-icon i {
+    font-size: 1.7rem;
+    color: var(--secondary);
+}
+
+
+/* ==================================================
+   MODAL CONTENT
+   ================================================== */
+
+.info-modal-label {
+    display: inline-block;
+
+    margin-bottom: 8px;
+
+    font-size: .68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    color: var(--secondary);
+}
+
+.info-modal-box h3 {
+    margin-bottom: 12px;
+
+    font-size: 1.65rem;
+    line-height: 1.2;
+}
+
+.info-modal-box p {
+    margin-bottom: 24px;
+
+    color: var(--muted);
+
+    font-size: .96rem;
+    line-height: 1.7;
+}
+
+
+/* ==================================================
+   MODAL BUTTON
+   ================================================== */
+
+.info-modal-ok {
+    width: 100%;
+
+    padding: 12px 20px;
+
+    border: 1px solid rgba(255,255,255,.10);
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #4F46E5,
+            #06B6D4
+        );
+
+    color: #fff;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .3s ease;
+}
+
+.info-modal-ok:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 30px rgba(79,70,229,.30);
+}
+
+
+/* ==================================================
+   MOBILE MODAL
+   ================================================== */
+
+@media (max-width: 600px) {
+
+    .info-modal {
+        padding: 16px;
+    }
+
+    .info-modal-box {
+        padding: 34px 22px 24px;
+        border-radius: 20px;
+    }
+
+    .info-modal-box h3 {
+        font-size: 1.4rem;
+    }
+
+    .info-modal-box p {
+        font-size: .9rem;
+    }
+
+    .info-modal-icon {
+        width: 55px;
+        height: 55px;
+    }
+
+    .info-modal-close {
+        width: 30px;
+        height: 30px;
+    }
+
+}
+
+
+/* ==================================================
+   LIGHT MODE SUPPORT
+   ================================================== */
+
+[data-theme="light"] .info-modal-box {
+    background:
+        rgba(255,255,255,.97);
+
+    border-color:
+        rgba(0,0,0,.10);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.20);
+}
+
+[data-theme="light"] .info-modal-close {
+    background: rgba(0,0,0,.05);
+    color: #555;
+}
+
+[data-theme="light"] .info-modal-box p {
+    color: #5b6475;
+}
+
+[data-theme="light"] .clear-package-btn {
+    background: rgba(0,0,0,.05);
+    color: #555;
+}
