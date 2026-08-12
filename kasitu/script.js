@@ -3584,3 +3584,551 @@ document.body.classList.remove("loaded");
 /*==================================================
 END PART 5
 ==================================================*/
+
+/* ==================================================
+   KASITU INFORMATION MINI MODALS
+   Technologies + Why Choose Us
+   ================================================== */
+
+const infoModal =
+    document.getElementById("info-modal");
+
+const infoModalBox =
+    document.querySelector(".info-modal-box");
+
+const infoModalClose =
+    document.getElementById("info-modal-close");
+
+const infoModalOk =
+    document.getElementById("info-modal-ok");
+
+const infoModalTitle =
+    document.getElementById("info-modal-title");
+
+const infoModalText =
+    document.getElementById("info-modal-text");
+
+const infoModalIcon =
+    document.getElementById("info-modal-icon");
+
+
+/* ==================================================
+   OPEN INFORMATION MODAL
+   ================================================== */
+
+function openInfoModal(title, icon, text) {
+
+    if (!infoModal) return;
+
+    if (infoModalTitle) {
+        infoModalTitle.textContent = title;
+    }
+
+    if (infoModalText) {
+        infoModalText.textContent = text;
+    }
+
+    if (infoModalIcon) {
+
+        infoModalIcon.className =
+            icon || "fas fa-circle-info";
+
+    }
+
+    infoModal.classList.add("active");
+
+    infoModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    document.body.classList.add(
+        "modal-open"
+    );
+
+    if (infoModalClose) {
+        setTimeout(() => {
+            infoModalClose.focus();
+        }, 100);
+    }
+
+}
+
+
+/* ==================================================
+   CLOSE INFORMATION MODAL
+   ================================================== */
+
+function closeInfoModal() {
+
+    if (!infoModal) return;
+
+    infoModal.classList.remove("active");
+
+    infoModal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    document.body.classList.remove(
+        "modal-open"
+    );
+
+}
+
+
+/* ==================================================
+   TECHNOLOGY MODALS
+   ================================================== */
+
+document
+    .querySelectorAll(".tech-info-card")
+    .forEach(card => {
+
+        card.addEventListener("click", () => {
+
+            openInfoModal(
+
+                card.dataset.modalTitle,
+
+                card.dataset.modalIcon,
+
+                card.dataset.modalText
+
+            );
+
+        });
+
+    });
+
+
+/* ==================================================
+   WHY CHOOSE US MODALS
+   ================================================== */
+
+document
+    .querySelectorAll(".why-right .feature")
+    .forEach(feature => {
+
+        feature.addEventListener("click", () => {
+
+            openInfoModal(
+
+                feature.dataset.modalTitle,
+
+                feature.dataset.modalIcon,
+
+                feature.dataset.modalText
+
+            );
+
+        });
+
+    });
+
+
+/* ==================================================
+   CLOSE BUTTON
+   ================================================== */
+
+if (infoModalClose) {
+
+    infoModalClose.addEventListener(
+        "click",
+        closeInfoModal
+    );
+
+}
+
+
+/* ==================================================
+   GOT IT BUTTON
+   ================================================== */
+
+if (infoModalOk) {
+
+    infoModalOk.addEventListener(
+        "click",
+        closeInfoModal
+    );
+
+}
+
+
+/* ==================================================
+   CLICK OUTSIDE MODAL
+   ================================================== */
+
+if (infoModal) {
+
+    infoModal.addEventListener(
+        "click",
+        function (e) {
+
+            if (e.target === infoModal) {
+
+                closeInfoModal();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* ==================================================
+   ESC KEY
+   ================================================== */
+
+document.addEventListener(
+    "keydown",
+    function (e) {
+
+        if (
+            e.key === "Escape" &&
+            infoModal &&
+            infoModal.classList.contains("active")
+        ) {
+
+            closeInfoModal();
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   PREVENT BACKGROUND SCROLL WHILE MODAL IS OPEN
+   ================================================== */
+
+const modalStyle =
+    document.createElement("style");
+
+modalStyle.textContent = `
+    body.modal-open {
+        overflow: hidden;
+    }
+`;
+
+document.head.appendChild(modalStyle);
+
+
+/* ==================================================
+   CLEAR SELECTED PACKAGE
+   ================================================== */
+
+const clearPackageButton =
+    document.getElementById(
+        "clear-package"
+    );
+
+
+function clearSelectedPackage() {
+
+    /* ------------------------------------------
+       REMOVE PACKAGE STATE
+       ------------------------------------------ */
+
+    selectedPackage = "";
+
+    currentTotal = 0;
+
+
+    /* ------------------------------------------
+       CLEAR PACKAGE INPUT
+       ------------------------------------------ */
+
+    if (packageInput) {
+
+        packageInput.value = "";
+
+        packageInput.placeholder =
+            "Select a package above";
+
+    }
+
+
+    /* ------------------------------------------
+       UNCHECK ALL EXTRA FEATURES
+       ------------------------------------------ */
+
+    extraInputs.forEach(extra => {
+
+        extra.checked = false;
+
+    });
+
+
+    /* ------------------------------------------
+       REMOVE RECOMMENDED HIGHLIGHTS
+       ------------------------------------------ */
+
+    extraInputs.forEach(extra => {
+
+        const option =
+            extra.closest(
+                ".extra-option"
+            );
+
+        if (option) {
+
+            option.classList.remove(
+                "recommended"
+            );
+
+        }
+
+    });
+
+
+    /* ------------------------------------------
+       RESET PRICE
+       ------------------------------------------ */
+
+    if (totalElement) {
+
+        totalElement.textContent =
+            "R0";
+
+    }
+
+
+    /* ------------------------------------------
+       RESET CALCULATOR TOTAL
+       ------------------------------------------ */
+
+    currentTotal = 0;
+
+
+    /* ------------------------------------------
+       HIDE CLEAR BUTTON
+       ------------------------------------------ */
+
+    if (clearPackageButton) {
+
+        clearPackageButton.classList.remove(
+            "visible"
+        );
+
+    }
+
+
+    /* ------------------------------------------
+       NOTIFY USER
+       ------------------------------------------ */
+
+    if (
+        typeof showToast ===
+        "function"
+    ) {
+
+        showToast(
+            "Package selection cleared."
+        );
+
+    }
+
+}
+
+
+/* ==================================================
+   CLEAR BUTTON CLICK
+   ================================================== */
+
+if (clearPackageButton) {
+
+    clearPackageButton.addEventListener(
+        "click",
+        function (e) {
+
+            e.preventDefault();
+
+            e.stopPropagation();
+
+            clearSelectedPackage();
+
+        }
+    );
+
+}
+
+
+/* ==================================================
+   SHOW / HIDE CLEAR BUTTON
+   ================================================== */
+
+function updateClearPackageButton() {
+
+    if (!clearPackageButton) return;
+
+    if (selectedPackage) {
+
+        clearPackageButton.classList.add(
+            "visible"
+        );
+
+    } else {
+
+        clearPackageButton.classList.remove(
+            "visible"
+        );
+
+    }
+
+}
+
+
+/* ==================================================
+   UPDATE CLEAR BUTTON AFTER PACKAGE SELECTION
+   ================================================== */
+
+packageButtons.forEach(button => {
+
+    button.addEventListener(
+        "click",
+        function () {
+
+            setTimeout(
+                updateClearPackageButton,
+                0
+            );
+
+        }
+    );
+
+});
+
+
+/* ==================================================
+   CONTINUE SAFETY CHECK
+   ==================================================
+   Even if somebody clears the visible input,
+   Continue is ONLY allowed when selectedPackage
+   contains a valid package.
+   ================================================== */
+
+function hasValidPackageSelected() {
+
+    return (
+        selectedPackage &&
+        Object.prototype.hasOwnProperty.call(
+            packagePrices,
+            selectedPackage
+        )
+    );
+
+}
+
+
+/* ==================================================
+   FINAL CONTINUE PROTECTION
+   ================================================== */
+
+if (continueButton) {
+
+    continueButton.addEventListener(
+        "click",
+        function (e) {
+
+            if (!hasValidPackageSelected()) {
+
+                e.preventDefault();
+
+                e.stopImmediatePropagation();
+
+                if (
+                    typeof showToast ===
+                    "function"
+                ) {
+
+                    showToast(
+                        "Please select a package to proceed."
+                    );
+
+                }
+
+                const pricingSection =
+                    document.getElementById(
+                        "pricing"
+                    );
+
+                if (pricingSection) {
+
+                    const header =
+                        document.querySelector(
+                            ".header"
+                        );
+
+                    const headerOffset =
+                        header
+                            ? header.offsetHeight + 15
+                            : 15;
+
+                    const targetTop =
+                        pricingSection
+                            .getBoundingClientRect()
+                            .top +
+                        window.scrollY -
+                        headerOffset;
+
+                    window.scrollTo({
+
+                        top:
+                            Math.max(
+                                0,
+                                targetTop
+                            ),
+
+                        behavior:
+                            "smooth"
+
+                    });
+
+                }
+
+                return false;
+
+            }
+
+        },
+        true
+    );
+
+}
+
+
+/* ==================================================
+   KEEP CLEAR BUTTON STATE IN SYNC
+   ================================================== */
+
+if (packageInput) {
+
+    const packageObserver =
+        new MutationObserver(
+            updateClearPackageButton
+        );
+
+    packageObserver.observe(
+        packageInput,
+        {
+            attributes: true,
+            attributeFilter: [
+                "value"
+            ]
+        }
+    );
+
+}
+
+
+/* ==================================================
+   INITIAL STATE
+   ================================================== */
+
+updateClearPackageButton();
+
+console.log(
+    "KASITU Info Modals + Package Clear Loaded ✓"
+);
