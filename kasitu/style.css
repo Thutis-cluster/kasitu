@@ -37,6 +37,8 @@ Future Driven Design System
 
 *{
 
+user-select: none;
+
 margin:0;
 
 padding:0;
@@ -5961,9 +5963,9 @@ select:focus {
 
     section {
 
-        padding-top: 55px;
+        padding-top: 20px;
 
-        padding-bottom: 55px;
+        padding-bottom: 20px;
 
     }
 
