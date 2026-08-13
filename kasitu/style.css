@@ -5502,7 +5502,7 @@ select:focus {
     .floating-whatsapp {
 
         right: 16px;
-        bottom: 82px;
+        bottom: 120px;
 
         width: 54px;
         height: 54px;
@@ -6038,11 +6038,11 @@ select:focus {
     }
 
     .price {
-       margin: 10px 0;   
+       margin: 0px;   
     }
 
     .price-card ul {
-        margin: 10px 0; 
+        margin: 5px 0; 
     }
 
     .footer {
