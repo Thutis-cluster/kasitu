@@ -6037,6 +6037,13 @@ select:focus {
 
     }
 
+    .price {
+       margin: 10px 0;   
+    }
+
+    .price-card ul {
+        margin: 10px 0; 
+    }
 
     .footer {
 
