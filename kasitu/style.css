@@ -7123,13 +7123,415 @@ select:focus {
 
 }
 
+/* =========================================================
+   MODAL PAGE LOCK
+   Prevent ANYTHING behind a modal from being seen/clicked
+========================================================= */
+
+/* When project modal is open */
+html.project-modal-open,
+body.project-modal-open {
+    overflow: hidden !important;
+    height: 100% !important;
+    overscroll-behavior: none !important;
+}
+
+
+/* Completely isolate the project modal */
+.project-modal {
+    position: fixed !important;
+    inset: 0 !important;
+
+    width: 100vw !important;
+    height: 100dvh !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    z-index: 2147483647 !important;
+
+    isolation: isolate;
+
+    background: #03050c !important;
+}
+
+
+/* The backdrop itself becomes the complete screen */
+.project-modal .project-modal-backdrop {
+    position: absolute !important;
+
+    inset: 0 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    background: #03050c !important;
+
+    opacity: 1 !important;
+
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+
+    pointer-events: auto !important;
+
+    z-index: 0 !important;
+}
+
+
+/* Modal card sits ABOVE the completely opaque background */
+.project-modal .project-modal-box {
+    position: relative !important;
+
+    z-index: 1 !important;
+
+    pointer-events: auto !important;
+}
+
+
+/* Hide floating elements while project modal is open */
+body.project-modal-open .floating-whatsapp,
+body.project-modal-open #scrollTop,
+body.project-modal-open .cursor-glow {
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+
+/* Mobile */
 @media (max-width: 700px) {
 
-    .project-modal-backdrop {
-        background: #000 !important;
+    .project-modal {
+        background: #03050c !important;
+    }
 
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
+    .project-modal .project-modal-backdrop {
+        background: #03050c !important;
+    }
+
+}
+
+/* =========================================================
+   LIGHT MODE — MOBILE MENU
+========================================================= */
+
+[data-theme="light"] .nav-links {
+
+    background:
+        rgba(255,255,255,.97) !important;
+
+    border:
+        1px solid rgba(15,23,42,.12) !important;
+
+    box-shadow:
+        0 25px 70px rgba(15,23,42,.16) !important;
+
+    backdrop-filter:
+        blur(25px);
+
+    -webkit-backdrop-filter:
+        blur(25px);
+}
+
+
+[data-theme="light"] .nav-links a {
+
+    color:
+        #1F2937 !important;
+
+}
+
+
+[data-theme="light"] .nav-links a:hover {
+
+    color:
+        #4F46E5 !important;
+
+    background:
+        rgba(79,70,229,.07);
+
+}
+
+
+[data-theme="light"] .nav-links a.active {
+
+    color:
+        #4F46E5 !important;
+
+}
+
+
+[data-theme="light"] .menu-btn {
+
+    background:
+        rgba(255,255,255,.9) !important;
+
+    color:
+        #111827 !important;
+
+    border:
+        1px solid rgba(15,23,42,.12) !important;
+
+    box-shadow:
+        0 5px 20px rgba(15,23,42,.08);
+
+}
+
+
+[data-theme="light"] .menu-btn:hover {
+
+    background:
+        #F3F4F6 !important;
+
+    color:
+        #4F46E5 !important;
+
+}
+
+/* =========================================================
+   PROJECT MODAL — LIGHT MODE
+========================================================= */
+
+[data-theme="light"] .project-modal {
+
+    background:
+        #F3F6FB !important;
+
+}
+
+
+[data-theme="light"] .project-modal .project-modal-backdrop {
+
+    background:
+        #F3F6FB !important;
+
+    opacity:
+        1 !important;
+
+}
+
+
+[data-theme="light"] .project-modal-box {
+
+    background:
+        linear-gradient(
+            145deg,
+            #FFFFFF,
+            #F7F9FC
+        ) !important;
+
+    border:
+        1px solid rgba(15,23,42,.12) !important;
+
+    box-shadow:
+        0 30px 90px rgba(15,23,42,.20) !important;
+
+    color:
+        #111827;
+
+}
+
+
+[data-theme="light"] .project-modal-header h2 {
+
+    background:
+        linear-gradient(
+            90deg,
+            #111827,
+            #4F46E5,
+            #0891B2
+        );
+
+    -webkit-background-clip:
+        text;
+
+    -webkit-text-fill-color:
+        transparent;
+
+}
+
+
+[data-theme="light"] .project-modal-header p {
+
+    color:
+        #5B6475 !important;
+
+}
+
+
+[data-theme="light"] .project-modal-section {
+
+    background:
+        rgba(255,255,255,.90) !important;
+
+    border:
+        1px solid rgba(15,23,42,.09) !important;
+
+    box-shadow:
+        0 8px 25px rgba(15,23,42,.05);
+
+}
+
+
+[data-theme="light"]
+.project-modal-section h3 {
+
+    color:
+        #111827 !important;
+
+}
+
+
+[data-theme="light"]
+#project-modal-features li {
+
+    color:
+        #5B6475 !important;
+
+}
+
+
+[data-theme="light"]
+.project-modal-tech span {
+
+    background:
+        rgba(79,70,229,.07) !important;
+
+    border:
+        1px solid rgba(79,70,229,.18) !important;
+
+    color:
+        #4338CA !important;
+
+}
+
+
+[data-theme="light"]
+.project-modal-close {
+
+    background:
+        #FFFFFF !important;
+
+    color:
+        #111827 !important;
+
+    border:
+        1px solid rgba(15,23,42,.12) !important;
+
+    box-shadow:
+        0 5px 20px rgba(15,23,42,.08);
+
+}
+
+
+[data-theme="light"]
+.project-modal-close:hover {
+
+    background:
+        #4F46E5 !important;
+
+    color:
+        #FFFFFF !important;
+
+}
+
+
+[data-theme="light"]
+.project-modal-tag {
+
+    background:
+        rgba(8,145,178,.08) !important;
+
+    border-color:
+        rgba(8,145,178,.20) !important;
+
+    color:
+        #0891B2 !important;
+
+}
+
+[data-theme="light"] .project-details-btn {
+
+    background:
+        rgba(255,255,255,.85) !important;
+
+    color:
+        #374151 !important;
+
+    border:
+        1px solid rgba(15,23,42,.12) !important;
+
+    box-shadow:
+        0 5px 18px rgba(15,23,42,.06);
+
+}
+
+
+[data-theme="light"] .project-details-btn:hover {
+
+    background:
+        #4F46E5 !important;
+
+    color:
+        #FFFFFF !important;
+
+    border-color:
+        #4F46E5 !important;
+
+}
+
+/* =========================================================
+   LIGHT MODE — MOBILE CARDS
+========================================================= */
+
+@media (max-width: 600px) {
+
+    [data-theme="light"] .service-card,
+    [data-theme="light"] .project-card,
+    [data-theme="light"] .tech-info-card,
+    [data-theme="light"] .feature,
+    [data-theme="light"] .price-card,
+    [data-theme="light"] .testimonial-card,
+    [data-theme="light"] .info-card {
+
+        background:
+            linear-gradient(
+                145deg,
+                #FFFFFF,
+                #F8FAFC
+            ) !important;
+
+        border:
+            1px solid rgba(15,23,42,.09) !important;
+
+        box-shadow:
+            0 8px 25px rgba(15,23,42,.06);
+
+    }
+
+
+    [data-theme="light"] .service-card h3,
+    [data-theme="light"] .project-card h3,
+    [data-theme="light"] .tech-info-card h3,
+    [data-theme="light"] .feature h3,
+    [data-theme="light"] .price-card h3,
+    [data-theme="light"] .testimonial-card h3 {
+
+        color:
+            #111827 !important;
+
+    }
+
+
+    [data-theme="light"] .service-card p,
+    [data-theme="light"] .project-card p,
+    [data-theme="light"] .tech-info-card p,
+    [data-theme="light"] .feature p,
+    [data-theme="light"] .price-card p,
+    [data-theme="light"] .testimonial-card p {
+
+        color:
+            #5B6475 !important;
+
     }
 
 }
