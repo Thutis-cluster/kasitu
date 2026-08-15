@@ -2520,6 +2520,94 @@ FOOTER
     </span>
 </button>
 
+    <!-- ==========================================
+PROJECT DETAILS MODAL
+========================================== -->
+
+<div id="project-modal" class="project-modal" aria-hidden="true">
+
+    <div class="project-modal-backdrop"></div>
+
+    <div
+        class="project-modal-box"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="project-modal-title"
+    >
+
+        <button
+            type="button"
+            class="project-modal-close"
+            id="project-modal-close"
+            aria-label="Close project details"
+        >
+            &times;
+        </button>
+
+        <div class="project-modal-header">
+
+            <span id="project-modal-tag" class="project-modal-tag">
+                PROJECT
+            </span>
+
+            <h2 id="project-modal-title">
+                Project Title
+            </h2>
+
+            <p id="project-modal-description">
+                Project description.
+            </p>
+
+        </div>
+
+        <div class="project-modal-content">
+
+            <div class="project-modal-section">
+
+                <h3>
+                    <i class="fas fa-star"></i>
+                    Project Highlights
+                </h3>
+
+                <ul id="project-modal-features"></ul>
+
+            </div>
+
+            <div class="project-modal-section">
+
+                <h3>
+                    <i class="fas fa-code"></i>
+                    Technologies
+                </h3>
+
+                <div
+                    id="project-modal-tech"
+                    class="project-modal-tech">
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="project-modal-footer">
+
+            <a
+                href="#"
+                id="project-modal-link"
+                class="primary-btn"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <i class="fas fa-external-link-alt"></i>
+                Visit Website
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
 <script src="script.js"></script>
 
 </body>
