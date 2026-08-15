@@ -722,6 +722,10 @@ const projectData = {
 
             "Calendar integration",
 
+            "Owner and Customers Notifications and Reminders",
+
+            "Admin Dashboard",
+
             "Responsive mobile-friendly experience"
 
         ],
@@ -733,6 +737,8 @@ const projectData = {
             "CSS3",
 
             "JavaScript",
+
+            "Twilio",
 
             "Paystack"
 
@@ -759,21 +765,13 @@ const projectData = {
 
             "Product showcase",
 
-            "Vegetable products",
-
-            "Chicken products",
-
-            "Chicken feeds",
-
-            "Eggs",
-
-            "Dog food",
-
-            "Tissues",
+            "Product Categories",
 
             "Business information",
 
             "Store location information",
+
+           "Business contact information",
 
             "Customer-friendly navigation",
 
