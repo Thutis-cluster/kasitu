@@ -640,6 +640,351 @@ console.log(
 );
 
 /*==================================================
+PROJECT DETAILS MODAL
+==================================================*/
+
+const projectModal =
+    document.getElementById("project-modal");
+
+const projectModalClose =
+    document.getElementById("project-modal-close");
+
+const projectModalBackdrop =
+    document.querySelector(
+        ".project-modal-backdrop"
+    );
+
+const projectModalTitle =
+    document.getElementById(
+        "project-modal-title"
+    );
+
+const projectModalTag =
+    document.getElementById(
+        "project-modal-tag"
+    );
+
+const projectModalDescription =
+    document.getElementById(
+        "project-modal-description"
+    );
+
+const projectModalFeatures =
+    document.getElementById(
+        "project-modal-features"
+    );
+
+const projectModalTech =
+    document.getElementById(
+        "project-modal-tech"
+    );
+
+const projectModalLink =
+    document.getElementById(
+        "project-modal-link"
+    );
+
+
+/*==================================================
+PROJECT DATA
+==================================================*/
+
+const projectData = {
+
+    mumsy: {
+
+        title:
+            "Mumsy Braids Studio",
+
+        tag:
+            "Online Booking Management System",
+
+        description:
+            "A professional online booking platform developed for Mumsy Braids Studio. The website makes it easier for customers to browse hairstyles, select their preferred hair length, choose an appointment date and time, provide their details and complete their booking.",
+
+        features: [
+
+            "Online appointment booking",
+
+            "Hairstyle selection",
+
+            "Hair-length selection",
+
+            "Appointment date selection",
+
+            "Available time selection",
+
+            "Customer information capture",
+
+            "Booking review and confirmation",
+
+            "Deposit payment",
+
+            "Calendar integration",
+
+            "Responsive mobile-friendly experience"
+
+        ],
+
+        technologies: [
+
+            "HTML5",
+
+            "CSS3",
+
+            "JavaScript",
+
+            "Paystack"
+
+        ],
+
+        url:
+            "https://mumsybraidsstudio.co.za/"
+
+    },
+
+
+    store: {
+
+        title:
+            "Local Store Website",
+
+        tag:
+            "Business Website",
+
+        description:
+            "A simple business website created for a local store selling vegetables, chicken, chicken feeds, eggs, dog food and tissues. The website gives the business an online presence, allows customers to see what is available in the store and helps customers find the physical store.",
+
+        features: [
+
+            "Product showcase",
+
+            "Vegetable products",
+
+            "Chicken products",
+
+            "Chicken feeds",
+
+            "Eggs",
+
+            "Dog food",
+
+            "Tissues",
+
+            "Business information",
+
+            "Store location information",
+
+            "Customer-friendly navigation",
+
+            "Mobile-friendly website"
+
+        ],
+
+        technologies: [
+
+            "HTML5",
+
+            "CSS3",
+
+            "JavaScript",
+
+            "Responsive Design"
+
+        ],
+
+        url:
+            "https://kasitu.free.nf/?i=2"
+
+    }
+
+};
+
+
+/*==================================================
+OPEN MODAL
+==================================================*/
+
+function openProjectModal(projectId) {
+
+    const project =
+        projectData[projectId];
+
+    if (!project) return;
+
+
+    projectModalTitle.textContent =
+        project.title;
+
+    projectModalTag.textContent =
+        project.tag;
+
+    projectModalDescription.textContent =
+        project.description;
+
+
+    /* FEATURES */
+
+    projectModalFeatures.innerHTML = "";
+
+    project.features.forEach(
+        feature => {
+
+            const li =
+                document.createElement("li");
+
+            li.textContent =
+                feature;
+
+            projectModalFeatures.appendChild(li);
+
+        }
+    );
+
+
+    /* TECHNOLOGIES */
+
+    projectModalTech.innerHTML = "";
+
+    project.technologies.forEach(
+        technology => {
+
+            const span =
+                document.createElement("span");
+
+            span.textContent =
+                technology;
+
+            projectModalTech.appendChild(span);
+
+        }
+    );
+
+
+    /* WEBSITE LINK */
+
+    projectModalLink.href =
+        project.url;
+
+
+    /* SHOW */
+
+    projectModal.classList.add("active");
+
+    projectModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    /* PREVENT BACKGROUND SCROLL */
+
+    document.body.style.overflow =
+        "hidden";
+
+
+    /* FOCUS */
+
+    setTimeout(() => {
+
+        projectModalClose.focus();
+
+    }, 100);
+
+}
+
+
+/*==================================================
+CLOSE MODAL
+==================================================*/
+
+function closeProjectModal() {
+
+    projectModal.classList.remove(
+        "active"
+    );
+
+    projectModal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+/*==================================================
+DETAIL BUTTONS
+==================================================*/
+
+document
+    .querySelectorAll(
+        ".project-details-btn"
+    )
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const projectId =
+                    button.dataset.project;
+
+                openProjectModal(
+                    projectId
+                );
+
+            }
+        );
+
+    });
+
+
+/*==================================================
+CLOSE BUTTON
+==================================================*/
+
+projectModalClose.addEventListener(
+    "click",
+    closeProjectModal
+);
+
+
+/*==================================================
+CLICK BACKDROP TO CLOSE
+==================================================*/
+
+projectModalBackdrop.addEventListener(
+    "click",
+    closeProjectModal
+);
+
+
+/*==================================================
+ESCAPE KEY
+==================================================*/
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Escape" &&
+            projectModal.classList.contains(
+                "active"
+            )
+        ) {
+
+            closeProjectModal();
+
+        }
+
+    }
+);
+
+/*==================================================
 END PART 2
 ==================================================*/
 
