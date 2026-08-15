@@ -578,7 +578,7 @@ const y =
 e.clientY - rect.top - rect.height / 2;
 
 button.style.transform =
-`translate(${x * .18}px, ${y * .18}px)`;
+translate(${x * .18}px, ${y * .18}px);
 
 });
 
@@ -609,7 +609,7 @@ function floatIcon() {
 angle += 0.01 * speed;
 
 icon.style.transform =
-`translateY(${Math.sin(angle) * 6}px)`;
+translateY(${Math.sin(angle) * 6}px);
 
 requestAnimationFrame(floatIcon);
 
@@ -897,159 +897,15 @@ document.body.style.overflow = "hidden";
         projectModalClose.focus();
 
     }, 100);
-   
-/*==================================================
-OPEN PROJECT MODAL
-==================================================*/
-
-let projectModalScrollPosition = 0;
-
-function openProjectModal(projectId) {
-
-    const project = projectData[projectId];
-
-    if (!project) return;
-
-
-    /* ==========================================
-       SAVE EXACT PAGE POSITION
-    ========================================== */
-
-    projectModalScrollPosition = window.scrollY;
-
-
-    /* ==========================================
-       LOAD PROJECT DATA
-    ========================================== */
-
-    projectModalTitle.textContent =
-        project.title;
-
-    projectModalTag.textContent =
-        project.tag;
-
-    projectModalDescription.textContent =
-        project.description;
-
-
-    /* ==========================================
-       FEATURES
-    ========================================== */
-
-    projectModalFeatures.innerHTML = "";
-
-    project.features.forEach(feature => {
-
-        const li =
-            document.createElement("li");
-
-        li.textContent = feature;
-
-        projectModalFeatures.appendChild(li);
-
-    });
-
-
-    /* ==========================================
-       TECHNOLOGIES
-    ========================================== */
-
-    projectModalTech.innerHTML = "";
-
-    project.technologies.forEach(technology => {
-
-        const span =
-            document.createElement("span");
-
-        span.textContent = technology;
-
-        projectModalTech.appendChild(span);
-
-    });
-
-
-    /* ==========================================
-       WEBSITE LINK
-    ========================================== */
-
-    projectModalLink.href =
-        project.url;
-
-
-    /* ==========================================
-       SHOW MODAL
-    ========================================== */
-
-    projectModal.classList.add("active");
-
-    projectModal.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-
-    /* ==========================================
-       LOCK PAGE
-    ========================================== */
-
-    document.documentElement.classList.add(
-        "project-modal-open"
-    );
-
-    document.body.classList.add(
-        "project-modal-open"
-    );
-
-
-    /*
-       IMPORTANT:
-       Freeze the body at the exact position.
-    */
-
-    document.body.style.position = "fixed";
-
-    document.body.style.top =
-        `-${projectModalScrollPosition}px`;
-
-    document.body.style.left = "0";
-
-    document.body.style.right = "0";
-
-    document.body.style.width = "100%";
-
-
-    /* ==========================================
-       FOCUS CLOSE BUTTON
-    ========================================== */
-
-    setTimeout(() => {
-
-        if (projectModalClose) {
-
-            projectModalClose.focus({
-                preventScroll: true
-            });
-
-        }
-
-    }, 100);
 
 }
 
-}
 
 /*==================================================
-CLOSE PROJECT MODAL
+CLOSE MODAL
 ==================================================*/
 
 function closeProjectModal() {
-
-    if (!projectModal) return;
-
-
-    /* ==========================================
-       CLOSE MODAL
-    ========================================== */
 
     projectModal.classList.remove("active");
 
@@ -1059,9 +915,7 @@ function closeProjectModal() {
     );
 
 
-    /* ==========================================
-       UNLOCK PAGE
-    ========================================== */
+    /* UNLOCK ENTIRE PAGE */
 
     document.documentElement.classList.remove(
         "project-modal-open"
@@ -1072,30 +926,7 @@ function closeProjectModal() {
     );
 
 
-    /* ==========================================
-       REMOVE FIXED BODY LOCK
-    ========================================== */
-
-    document.body.style.position = "";
-
-    document.body.style.top = "";
-
-    document.body.style.left = "";
-
-    document.body.style.right = "";
-
-    document.body.style.width = "";
-
-
-    /* ==========================================
-       RESTORE EXACT SCROLL POSITION
-    ========================================== */
-
-    window.scrollTo({
-        top: projectModalScrollPosition,
-        left: 0,
-        behavior: "instant"
-    });
+    document.body.style.overflow = "";
 
 }
 
@@ -1794,7 +1625,7 @@ if (pricingSection) {
         ========================================== */
 
         showToast(
-            `${selectedPackage} selected ✓ — Please tell us about your project.`
+            ${selectedPackage} selected ✓ — Please tell us about your project.
         );
 
         /* ==========================================
@@ -1973,12 +1804,12 @@ projectCards.forEach(card => {
         const rotateX = ((y / rect.height) - 0.5) * -18;
 
         card.style.transform =
-            `
+            
             perspective(1200px)
             rotateX(${rotateX}deg)
             rotateY(${rotateY}deg)
             translateY(-12px)
-            `;
+            ;
     });
 
     card.addEventListener("mouseleave", () => {
@@ -2192,7 +2023,7 @@ function buildWhatsAppMessage(customer) {
             ? formatCurrency(currentTotal)
             : "To be discussed";
 
-    return `Hello KASITU Webs 👋
+    return Hello KASITU Webs 👋
 
 I would like to request information about a website/project.
 
@@ -2220,7 +2051,7 @@ ${totalText}
 Project Details:
 ${customer.message}
 
-Thank you.`;
+Thank you.;
 
 }
 
@@ -2271,10 +2102,10 @@ function sendToWhatsApp(customer) {
         );
 
     const whatsappWebURL =
-        `https://wa.me/${whatsappPhone}?text=${encodedMessage}`;
+        https://wa.me/${whatsappPhone}?text=${encodedMessage};
 
     const whatsappAppURL =
-        `whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage}`;
+        whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage};
 
 
     const isMobile =
@@ -2635,7 +2466,7 @@ if (proposalForm) {
             if (wordCount < 8) {
 
                 showToast(
-                    `Please describe your project using at least 8 words. You currently have ${wordCount}.`
+                    Please describe your project using at least 8 words. You currently have ${wordCount}.
                 );
 
                 messageInput.focus();
@@ -2909,10 +2740,10 @@ function showQuotationChoice(customer) {
         selectedPackage;
 
     quotationTotal.textContent =
-        `R${currentTotal.toLocaleString("en-ZA")}`;
+        R${currentTotal.toLocaleString("en-ZA")};
 
     quotationMessage.textContent =
-        `Thank you, ${customer.name}. Your proposal request has been sent successfully.`;
+        Thank you, ${customer.name}. Your proposal request has been sent successfully.;
 
     quotationModal.classList.add("show");
 
@@ -2996,7 +2827,7 @@ async function generateQuotationPDF() {
         downloadQuotation.disabled = true;
 
         downloadQuotation.innerHTML =
-            `<i class="fas fa-spinner fa-spin"></i> Creating PDF...`;
+            <i class="fas fa-spinner fa-spin"></i> Creating PDF...;
 
         /* ==========================================
            LOAD PDF LIBRARY
@@ -3347,25 +3178,25 @@ async function generateQuotationPDF() {
         doc.setFontSize(10);
 
         doc.text(
-            `Name: ${name}`,
+            Name: ${name},
             20,
             76
         );
 
         doc.text(
-            `Email: ${email}`,
+            Email: ${email},
             20,
             84
         );
 
         doc.text(
-            `Phone: ${phone || "Not provided"}`,
+            Phone: ${phone || "Not provided"},
             20,
             92
         );
 
         doc.text(
-            `Company: ${company || "Not provided"}`,
+            Company: ${company || "Not provided"},
             20,
             100
         );
@@ -3432,7 +3263,7 @@ async function generateQuotationPDF() {
         doc.setFontSize(9);
 
         doc.text(
-            `Base price: R${data.packagePrice.toLocaleString("en-ZA")}`,
+            Base price: R${data.packagePrice.toLocaleString("en-ZA")},
             28,
             145
         );
@@ -3577,7 +3408,7 @@ async function generateQuotationPDF() {
         doc.setFontSize(19);
 
         doc.text(
-            `R${data.total.toLocaleString("en-ZA")}`,
+            R${data.total.toLocaleString("en-ZA")},
             182,
             y + 19,
             {
@@ -3710,12 +3541,12 @@ async function generateQuotationPDF() {
 
 
         doc.save(
-            `KASITU-Webs-Quotation-${safeName || "Client"}-${modeName}.pdf`
+            KASITU-Webs-Quotation-${safeName || "Client"}-${modeName}.pdf
         );
 
 
         showToast(
-            `Quotation downloaded in ${isLightMode ? "light" : "dark"} mode ✓`
+            Quotation downloaded in ${isLightMode ? "light" : "dark"} mode ✓
         );
 
 
@@ -3736,7 +3567,7 @@ async function generateQuotationPDF() {
             false;
 
         downloadQuotation.innerHTML =
-            `<i class="fas fa-file-pdf"></i> Download Quotation`;
+            <i class="fas fa-file-pdf"></i> Download Quotation;
 
     }
 
@@ -3803,7 +3634,7 @@ const terminalClose = document.getElementById("terminal-close");
 
 const commands = {
 
-help:`
+help:
 
 Available Commands
 
@@ -3827,9 +3658,9 @@ github
 
 linkedin
 
-`,
+,
 
-about:`
+about:
 
 KASITU WEBS
 
@@ -3845,9 +3676,9 @@ graphic design,
 
 and cloud solutions.
 
-`,
+,
 
-services:`
+services:
 
 Website Development
 
@@ -3863,9 +3694,9 @@ SEO
 
 Maintenance
 
-`,
+,
 
-pricing:`
+pricing:
 
 Starter Website
 
@@ -3877,9 +3708,9 @@ Custom Systems
 
 Request a quotation
 
-`,
+,
 
-projects:`
+projects:
 
 Portfolio Website
 
@@ -3891,9 +3722,9 @@ Booking System
 
 Online Store
 
-`,
+,
 
-skills:`
+skills:
 
 HTML
 
@@ -3913,9 +3744,9 @@ Git
 
 Responsive Design
 
-`,
+,
 
-contact:`
+contact:
 
 Email:
 
@@ -3929,7 +3760,7 @@ WhatsApp:
 
 +27 79 348 0103 
 
-`,
+,
 
 clear:"CLEAR"
 
@@ -3979,7 +3810,7 @@ if(e.key!=="Enter") return;
 
 const value=terminalInput.value.trim().toLowerCase();
 
-print(`<span style="color:#06B6D4">></span> ${value}`);
+print(<span style="color:#06B6D4">></span> ${value});
 
 terminalInput.value="";
 
@@ -4335,11 +4166,11 @@ document.addEventListener(
 const modalStyle =
     document.createElement("style");
 
-modalStyle.textContent = `
+modalStyle.textContent = 
     body.modal-open {
         overflow: hidden;
     }
-`;
+;
 
 document.head.appendChild(modalStyle);
 
@@ -4691,13 +4522,13 @@ console.log(
        ========================================== */
 
     const WHATSAPP_MESSAGE =
-`Hi KASITU Webs 👋
+Hi KASITU Webs 👋
 
 I just visited your website and I would like to discuss a project with you.
 
 I would like some advice on the best digital solution for my business.
 
-Please let me know how we can get started. Thank you!`;
+Please let me know how we can get started. Thank you!;
 
 
     /* ==========================================
@@ -4738,7 +4569,7 @@ Please let me know how we can get started. Thank you!`;
             );
 
         const url =
-            `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+            https://wa.me/${WHATSAPP_NUMBER}?text=${message};
 
         window.open(
             url,
