@@ -7094,3 +7094,31 @@ select:focus {
     }
 
 }
+
+.project-details-btn {
+
+    padding: 12px 24px;
+
+    border-radius: 40px;
+
+    background: rgba(255,255,255,.05);
+
+    border: 1px solid var(--border);
+
+    color: white;
+
+    font: inherit;
+
+    cursor: pointer;
+
+    transition: .35s;
+
+}
+
+.project-details-btn:hover {
+
+    background: #4F46E5;
+
+    transform: translateY(-4px);
+
+}
