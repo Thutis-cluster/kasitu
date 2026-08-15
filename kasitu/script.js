@@ -700,7 +700,7 @@ const projectData = {
             "Online Booking Management System",
 
         description:
-            "A professional online booking platform developed for Mumsy Braids Studio. The website makes it easier for customers to browse hairstyles, select their preferred hair length, choose an appointment date and time, provide their details and complete their booking.",
+            "A professional online booking platform developed for Mumsy Braids Studio. The website makes it easier for customers to browse hairstyles, select their preferred hair length, choose an appointment date and time, provide their details, complete their booking and get notifications and reminders via Sms, WhatsApp and E-Mails.",
 
         features: [
 
@@ -722,7 +722,7 @@ const projectData = {
 
             "Calendar integration",
 
-            "Owner and Customers Notifications and Reminders",
+            "Owner and Customer Notifications and Reminders",
 
             "Admin Dashboard",
 
@@ -737,6 +737,8 @@ const projectData = {
             "CSS3",
 
             "JavaScript",
+
+           "MangoesDB",
 
             "Twilio",
 
@@ -759,7 +761,7 @@ const projectData = {
             "Business Website",
 
         description:
-            "A simple business website created for a local store selling vegetables, chicken, chicken feeds, eggs, dog food and tissues. The website gives the business an online presence, allows customers to see what is available in the store and helps customers find the physical store.",
+            "A simple business website created for a local store selling vegetables, chicken, chicken feeds, eggs, dog food and tissues. The website gives the business an online presence, allows customers to see what is available in the store and helps customers find the physical store and contact details.",
 
         features: [
 
@@ -781,7 +783,7 @@ const projectData = {
 
         technologies: [
 
-            "HTML5",
+            "WordPress",
 
             "CSS3",
 
