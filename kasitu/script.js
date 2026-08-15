@@ -869,19 +869,28 @@ function openProjectModal(projectId) {
 
     /* SHOW */
 
-    projectModal.classList.add("active");
+ projectModal.classList.add("active");
 
-    projectModal.setAttribute(
-        "aria-hidden",
-        "false"
-    );
+projectModal.setAttribute(
+    "aria-hidden",
+    "false"
+);
 
 
-    /* PREVENT BACKGROUND SCROLL */
+/* LOCK THE ENTIRE PAGE */
 
-    document.body.style.overflow =
-        "hidden";
+document.documentElement.classList.add(
+    "project-modal-open"
+);
 
+document.body.classList.add(
+    "project-modal-open"
+);
+
+
+/* Prevent background scrolling */
+
+document.body.style.overflow = "hidden";
 
     /* FOCUS */
 
@@ -900,20 +909,28 @@ CLOSE MODAL
 
 function closeProjectModal() {
 
-    projectModal.classList.remove(
-        "active"
-    );
+    projectModal.classList.remove("active");
 
     projectModal.setAttribute(
         "aria-hidden",
         "true"
     );
 
-    document.body.style.overflow =
-        "";
+
+    /* UNLOCK ENTIRE PAGE */
+
+    document.documentElement.classList.remove(
+        "project-modal-open"
+    );
+
+    document.body.classList.remove(
+        "project-modal-open"
+    );
+
+
+    document.body.style.overflow = "";
 
 }
-
 
 /*==================================================
 DETAIL BUTTONS
