@@ -578,7 +578,7 @@ const y =
 e.clientY - rect.top - rect.height / 2;
 
 button.style.transform =
-translate(${x * .18}px, ${y * .18}px);
+`translate(${x * .18}px, ${y * .18}px)`;
 
 });
 
@@ -609,7 +609,7 @@ function floatIcon() {
 angle += 0.01 * speed;
 
 icon.style.transform =
-translateY(${Math.sin(angle) * 6}px);
+`translateY(${Math.sin(angle) * 6}px)`;
 
 requestAnimationFrame(floatIcon);
 
@@ -700,7 +700,7 @@ const projectData = {
             "Online Booking Management System",
 
         description:
-            "A professional online booking platform developed for Mumsy Braids Studio. The website makes it easier for customers to browse hairstyles, select their preferred hair length, choose an appointment date and time, provide their details, complete their booking, get notifications and reminders.",
+            "A professional online booking platform developed for Mumsy Braids Studio. The website makes it easier for customers to browse hairstyles, select their preferred hair length, choose an appointment date and time, provide their details and complete their booking.",
 
         features: [
 
@@ -722,10 +722,6 @@ const projectData = {
 
             "Calendar integration",
 
-           "Owner and Customers Notifications and Reminders",
-
-            "Admin Dashboard",
-
             "Responsive mobile-friendly experience"
 
         ],
@@ -737,8 +733,6 @@ const projectData = {
             "CSS3",
 
             "JavaScript",
-
-            "Twilio",
 
             "Paystack"
 
@@ -759,20 +753,28 @@ const projectData = {
             "Business Website",
 
         description:
-            "A simple business website created for a local store selling vegetables, all types of chicken, chicken feeds, eggs, dog food and tissues. The website gives the business an online presence, allows customers to see what is available in the store and helps customers find the physical store.",
+            "A simple business website created for a local store selling vegetables, chicken, chicken feeds, eggs, dog food and tissues. The website gives the business an online presence, allows customers to see what is available in the store and helps customers find the physical store.",
 
         features: [
 
             "Product showcase",
 
-            "Product Categories",
-           
+            "Vegetable products",
+
+            "Chicken products",
+
+            "Chicken feeds",
+
+            "Eggs",
+
+            "Dog food",
+
+            "Tissues",
+
             "Business information",
-           
+
             "Store location information",
 
-            "Business contact information",
-           
             "Customer-friendly navigation",
 
             "Mobile-friendly website"
@@ -867,28 +869,19 @@ function openProjectModal(projectId) {
 
     /* SHOW */
 
- projectModal.classList.add("active");
+    projectModal.classList.add("active");
 
-projectModal.setAttribute(
-    "aria-hidden",
-    "false"
-);
-
-
-/* LOCK THE ENTIRE PAGE */
-
-document.documentElement.classList.add(
-    "project-modal-open"
-);
-
-document.body.classList.add(
-    "project-modal-open"
-);
+    projectModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
 
 
-/* Prevent background scrolling */
+    /* PREVENT BACKGROUND SCROLL */
 
-document.body.style.overflow = "hidden";
+    document.body.style.overflow =
+        "hidden";
+
 
     /* FOCUS */
 
@@ -907,28 +900,20 @@ CLOSE MODAL
 
 function closeProjectModal() {
 
-    projectModal.classList.remove("active");
+    projectModal.classList.remove(
+        "active"
+    );
 
     projectModal.setAttribute(
         "aria-hidden",
         "true"
     );
 
-
-    /* UNLOCK ENTIRE PAGE */
-
-    document.documentElement.classList.remove(
-        "project-modal-open"
-    );
-
-    document.body.classList.remove(
-        "project-modal-open"
-    );
-
-
-    document.body.style.overflow = "";
+    document.body.style.overflow =
+        "";
 
 }
+
 
 /*==================================================
 DETAIL BUTTONS
@@ -1625,7 +1610,7 @@ if (pricingSection) {
         ========================================== */
 
         showToast(
-            ${selectedPackage} selected ✓ — Please tell us about your project.
+            `${selectedPackage} selected ✓ — Please tell us about your project.`
         );
 
         /* ==========================================
@@ -1804,12 +1789,12 @@ projectCards.forEach(card => {
         const rotateX = ((y / rect.height) - 0.5) * -18;
 
         card.style.transform =
-            
+            `
             perspective(1200px)
             rotateX(${rotateX}deg)
             rotateY(${rotateY}deg)
             translateY(-12px)
-            ;
+            `;
     });
 
     card.addEventListener("mouseleave", () => {
@@ -2023,7 +2008,7 @@ function buildWhatsAppMessage(customer) {
             ? formatCurrency(currentTotal)
             : "To be discussed";
 
-    return Hello KASITU Webs 👋
+    return `Hello KASITU Webs 👋
 
 I would like to request information about a website/project.
 
@@ -2051,7 +2036,7 @@ ${totalText}
 Project Details:
 ${customer.message}
 
-Thank you.;
+Thank you.`;
 
 }
 
@@ -2102,10 +2087,10 @@ function sendToWhatsApp(customer) {
         );
 
     const whatsappWebURL =
-        https://wa.me/${whatsappPhone}?text=${encodedMessage};
+        `https://wa.me/${whatsappPhone}?text=${encodedMessage}`;
 
     const whatsappAppURL =
-        whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage};
+        `whatsapp://send?phone=${whatsappPhone}&text=${encodedMessage}`;
 
 
     const isMobile =
@@ -2466,7 +2451,7 @@ if (proposalForm) {
             if (wordCount < 8) {
 
                 showToast(
-                    Please describe your project using at least 8 words. You currently have ${wordCount}.
+                    `Please describe your project using at least 8 words. You currently have ${wordCount}.`
                 );
 
                 messageInput.focus();
@@ -2740,10 +2725,10 @@ function showQuotationChoice(customer) {
         selectedPackage;
 
     quotationTotal.textContent =
-        R${currentTotal.toLocaleString("en-ZA")};
+        `R${currentTotal.toLocaleString("en-ZA")}`;
 
     quotationMessage.textContent =
-        Thank you, ${customer.name}. Your proposal request has been sent successfully.;
+        `Thank you, ${customer.name}. Your proposal request has been sent successfully.`;
 
     quotationModal.classList.add("show");
 
@@ -2827,7 +2812,7 @@ async function generateQuotationPDF() {
         downloadQuotation.disabled = true;
 
         downloadQuotation.innerHTML =
-            <i class="fas fa-spinner fa-spin"></i> Creating PDF...;
+            `<i class="fas fa-spinner fa-spin"></i> Creating PDF...`;
 
         /* ==========================================
            LOAD PDF LIBRARY
@@ -3178,25 +3163,25 @@ async function generateQuotationPDF() {
         doc.setFontSize(10);
 
         doc.text(
-            Name: ${name},
+            `Name: ${name}`,
             20,
             76
         );
 
         doc.text(
-            Email: ${email},
+            `Email: ${email}`,
             20,
             84
         );
 
         doc.text(
-            Phone: ${phone || "Not provided"},
+            `Phone: ${phone || "Not provided"}`,
             20,
             92
         );
 
         doc.text(
-            Company: ${company || "Not provided"},
+            `Company: ${company || "Not provided"}`,
             20,
             100
         );
@@ -3263,7 +3248,7 @@ async function generateQuotationPDF() {
         doc.setFontSize(9);
 
         doc.text(
-            Base price: R${data.packagePrice.toLocaleString("en-ZA")},
+            `Base price: R${data.packagePrice.toLocaleString("en-ZA")}`,
             28,
             145
         );
@@ -3408,7 +3393,7 @@ async function generateQuotationPDF() {
         doc.setFontSize(19);
 
         doc.text(
-            R${data.total.toLocaleString("en-ZA")},
+            `R${data.total.toLocaleString("en-ZA")}`,
             182,
             y + 19,
             {
@@ -3541,12 +3526,12 @@ async function generateQuotationPDF() {
 
 
         doc.save(
-            KASITU-Webs-Quotation-${safeName || "Client"}-${modeName}.pdf
+            `KASITU-Webs-Quotation-${safeName || "Client"}-${modeName}.pdf`
         );
 
 
         showToast(
-            Quotation downloaded in ${isLightMode ? "light" : "dark"} mode ✓
+            `Quotation downloaded in ${isLightMode ? "light" : "dark"} mode ✓`
         );
 
 
@@ -3567,7 +3552,7 @@ async function generateQuotationPDF() {
             false;
 
         downloadQuotation.innerHTML =
-            <i class="fas fa-file-pdf"></i> Download Quotation;
+            `<i class="fas fa-file-pdf"></i> Download Quotation`;
 
     }
 
@@ -3634,7 +3619,7 @@ const terminalClose = document.getElementById("terminal-close");
 
 const commands = {
 
-help:
+help:`
 
 Available Commands
 
@@ -3658,9 +3643,9 @@ github
 
 linkedin
 
-,
+`,
 
-about:
+about:`
 
 KASITU WEBS
 
@@ -3676,9 +3661,9 @@ graphic design,
 
 and cloud solutions.
 
-,
+`,
 
-services:
+services:`
 
 Website Development
 
@@ -3694,9 +3679,9 @@ SEO
 
 Maintenance
 
-,
+`,
 
-pricing:
+pricing:`
 
 Starter Website
 
@@ -3708,9 +3693,9 @@ Custom Systems
 
 Request a quotation
 
-,
+`,
 
-projects:
+projects:`
 
 Portfolio Website
 
@@ -3722,9 +3707,9 @@ Booking System
 
 Online Store
 
-,
+`,
 
-skills:
+skills:`
 
 HTML
 
@@ -3744,9 +3729,9 @@ Git
 
 Responsive Design
 
-,
+`,
 
-contact:
+contact:`
 
 Email:
 
@@ -3760,7 +3745,7 @@ WhatsApp:
 
 +27 79 348 0103 
 
-,
+`,
 
 clear:"CLEAR"
 
@@ -3810,7 +3795,7 @@ if(e.key!=="Enter") return;
 
 const value=terminalInput.value.trim().toLowerCase();
 
-print(<span style="color:#06B6D4">></span> ${value});
+print(`<span style="color:#06B6D4">></span> ${value}`);
 
 terminalInput.value="";
 
@@ -4166,11 +4151,11 @@ document.addEventListener(
 const modalStyle =
     document.createElement("style");
 
-modalStyle.textContent = 
+modalStyle.textContent = `
     body.modal-open {
         overflow: hidden;
     }
-;
+`;
 
 document.head.appendChild(modalStyle);
 
@@ -4522,13 +4507,13 @@ console.log(
        ========================================== */
 
     const WHATSAPP_MESSAGE =
-Hi KASITU Webs 👋
+`Hi KASITU Webs 👋
 
 I just visited your website and I would like to discuss a project with you.
 
 I would like some advice on the best digital solution for my business.
 
-Please let me know how we can get started. Thank you!;
+Please let me know how we can get started. Thank you!`;
 
 
     /* ==========================================
@@ -4569,7 +4554,7 @@ Please let me know how we can get started. Thank you!;
             );
 
         const url =
-            https://wa.me/${WHATSAPP_NUMBER}?text=${message};
+            `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
 
         window.open(
             url,
