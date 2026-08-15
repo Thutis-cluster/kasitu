@@ -700,7 +700,7 @@ const projectData = {
             "Online Booking Management System",
 
         description:
-            "A professional online booking platform developed for Mumsy Braids Studio. The website makes it easier for customers to browse hairstyles, select their preferred hair length, choose an appointment date and time, provide their details and complete their booking.",
+            "A professional online booking platform developed for Mumsy Braids Studio. The website makes it easier for customers to browse hairstyles, select their preferred hair length, choose an appointment date and time, provide their details, complete their booking, get notifications and reminders.",
 
         features: [
 
@@ -722,6 +722,10 @@ const projectData = {
 
             "Calendar integration",
 
+           "Owner and Customers Notifications and Reminders",
+
+            "Admin Dashboard",
+
             "Responsive mobile-friendly experience"
 
         ],
@@ -733,6 +737,8 @@ const projectData = {
             "CSS3",
 
             "JavaScript",
+
+            "Twilio",
 
             "Paystack"
 
@@ -753,28 +759,20 @@ const projectData = {
             "Business Website",
 
         description:
-            "A simple business website created for a local store selling vegetables, chicken, chicken feeds, eggs, dog food and tissues. The website gives the business an online presence, allows customers to see what is available in the store and helps customers find the physical store.",
+            "A simple business website created for a local store selling vegetables, all types of chicken, chicken feeds, eggs, dog food and tissues. The website gives the business an online presence, allows customers to see what is available in the store and helps customers find the physical store.",
 
         features: [
 
             "Product showcase",
 
-            "Vegetable products",
-
-            "Chicken products",
-
-            "Chicken feeds",
-
-            "Eggs",
-
-            "Dog food",
-
-            "Tissues",
-
+            "Product Categories",
+           
             "Business information",
-
+           
             "Store location information",
 
+            "Business contact information",
+           
             "Customer-friendly navigation",
 
             "Mobile-friendly website"
@@ -899,15 +897,159 @@ document.body.style.overflow = "hidden";
         projectModalClose.focus();
 
     }, 100);
+   
+/*==================================================
+OPEN PROJECT MODAL
+==================================================*/
+
+let projectModalScrollPosition = 0;
+
+function openProjectModal(projectId) {
+
+    const project = projectData[projectId];
+
+    if (!project) return;
+
+
+    /* ==========================================
+       SAVE EXACT PAGE POSITION
+    ========================================== */
+
+    projectModalScrollPosition = window.scrollY;
+
+
+    /* ==========================================
+       LOAD PROJECT DATA
+    ========================================== */
+
+    projectModalTitle.textContent =
+        project.title;
+
+    projectModalTag.textContent =
+        project.tag;
+
+    projectModalDescription.textContent =
+        project.description;
+
+
+    /* ==========================================
+       FEATURES
+    ========================================== */
+
+    projectModalFeatures.innerHTML = "";
+
+    project.features.forEach(feature => {
+
+        const li =
+            document.createElement("li");
+
+        li.textContent = feature;
+
+        projectModalFeatures.appendChild(li);
+
+    });
+
+
+    /* ==========================================
+       TECHNOLOGIES
+    ========================================== */
+
+    projectModalTech.innerHTML = "";
+
+    project.technologies.forEach(technology => {
+
+        const span =
+            document.createElement("span");
+
+        span.textContent = technology;
+
+        projectModalTech.appendChild(span);
+
+    });
+
+
+    /* ==========================================
+       WEBSITE LINK
+    ========================================== */
+
+    projectModalLink.href =
+        project.url;
+
+
+    /* ==========================================
+       SHOW MODAL
+    ========================================== */
+
+    projectModal.classList.add("active");
+
+    projectModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    /* ==========================================
+       LOCK PAGE
+    ========================================== */
+
+    document.documentElement.classList.add(
+        "project-modal-open"
+    );
+
+    document.body.classList.add(
+        "project-modal-open"
+    );
+
+
+    /*
+       IMPORTANT:
+       Freeze the body at the exact position.
+    */
+
+    document.body.style.position = "fixed";
+
+    document.body.style.top =
+        `-${projectModalScrollPosition}px`;
+
+    document.body.style.left = "0";
+
+    document.body.style.right = "0";
+
+    document.body.style.width = "100%";
+
+
+    /* ==========================================
+       FOCUS CLOSE BUTTON
+    ========================================== */
+
+    setTimeout(() => {
+
+        if (projectModalClose) {
+
+            projectModalClose.focus({
+                preventScroll: true
+            });
+
+        }
+
+    }, 100);
 
 }
 
+}
 
 /*==================================================
-CLOSE MODAL
+CLOSE PROJECT MODAL
 ==================================================*/
 
 function closeProjectModal() {
+
+    if (!projectModal) return;
+
+
+    /* ==========================================
+       CLOSE MODAL
+    ========================================== */
 
     projectModal.classList.remove("active");
 
@@ -917,7 +1059,9 @@ function closeProjectModal() {
     );
 
 
-    /* UNLOCK ENTIRE PAGE */
+    /* ==========================================
+       UNLOCK PAGE
+    ========================================== */
 
     document.documentElement.classList.remove(
         "project-modal-open"
@@ -928,7 +1072,30 @@ function closeProjectModal() {
     );
 
 
-    document.body.style.overflow = "";
+    /* ==========================================
+       REMOVE FIXED BODY LOCK
+    ========================================== */
+
+    document.body.style.position = "";
+
+    document.body.style.top = "";
+
+    document.body.style.left = "";
+
+    document.body.style.right = "";
+
+    document.body.style.width = "";
+
+
+    /* ==========================================
+       RESTORE EXACT SCROLL POSITION
+    ========================================== */
+
+    window.scrollTo({
+        top: projectModalScrollPosition,
+        left: 0,
+        behavior: "instant"
+    });
 
 }
 
