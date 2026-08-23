@@ -15142,3 +15142,329 @@ body.project-modal-open .cursor-glow {
     }
 }
 
+/* ===========================================
+   PROCESS — JOURNEY ROUTE
+=========================================== */
+
+.process-route {
+    position: relative;
+
+    max-width: 1000px;
+
+    margin: 80px auto 0;
+
+    padding: 20px 0;
+}
+
+
+/* ===========================================
+   ROUTE LINE
+=========================================== */
+
+.route-line {
+    position: absolute;
+
+    left: 50%;
+
+    top: 35px;
+    bottom: 35px;
+
+    width: 3px;
+
+    transform: translateX(-50%);
+
+    background:
+        linear-gradient(
+            to bottom,
+            #4F46E5,
+            #06B6D4,
+            #8B5CF6
+        );
+
+    border-radius: 50px;
+
+    box-shadow:
+        0 0 15px rgba(6,182,212,.35);
+}
+
+
+/* ===========================================
+   PROCESS STEP
+=========================================== */
+
+.process-step {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    min-height: 180px;
+
+    margin-bottom: 35px;
+}
+
+
+/* ===========================================
+   MARKER
+=========================================== */
+
+.step-marker {
+
+    position: absolute;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 70px;
+    height: 70px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    z-index: 3;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4F46E5,
+            #06B6D4
+        );
+
+    border: 5px solid var(--bg);
+
+    box-shadow:
+        0 0 0 7px rgba(6,182,212,.08),
+        0 0 30px rgba(6,182,212,.35);
+
+    color: white;
+
+    font-weight: 800;
+
+    font-size: .85rem;
+
+    transition: .4s;
+}
+
+
+/* ===========================================
+   CONTENT
+=========================================== */
+
+.step-content {
+
+    width: 40%;
+
+    padding: 28px;
+
+    border-radius: 22px;
+
+    background: var(--glass);
+
+    border: 1px solid var(--border);
+
+    backdrop-filter: blur(20px);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.12);
+
+    transition: .4s;
+}
+
+
+/* LEFT / RIGHT ALTERNATION */
+
+.process-step:nth-child(odd) .step-content {
+
+    margin-right: auto;
+
+    text-align: right;
+}
+
+
+.process-step:nth-child(even) .step-content {
+
+    margin-left: auto;
+
+    text-align: left;
+}
+
+
+/* ===========================================
+   TEXT
+=========================================== */
+
+.step-number {
+
+    font-size: .7rem;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+
+    color: #06B6D4;
+}
+
+
+.step-content h3 {
+
+    margin: 8px 0 10px;
+
+    font-size: 1.35rem;
+}
+
+
+.step-content p {
+
+    margin: 0;
+
+    color: var(--muted);
+
+    line-height: 1.7;
+}
+
+
+/* ===========================================
+   HOVER
+=========================================== */
+
+.process-step:hover .step-marker {
+
+    transform:
+        translateX(-50%)
+        scale(1.12);
+
+    box-shadow:
+        0 0 0 10px rgba(6,182,212,.10),
+        0 0 45px rgba(6,182,212,.55);
+}
+
+
+.process-step:hover .step-content {
+
+    transform: translateY(-6px);
+
+    border-color:
+        rgba(6,182,212,.45);
+
+    box-shadow:
+        0 20px 55px rgba(6,182,212,.12);
+}
+
+
+/* ===========================================
+   START
+=========================================== */
+
+.process-step.start .step-marker {
+
+    background:
+        linear-gradient(
+            135deg,
+            #4F46E5,
+            #8B5CF6
+        );
+}
+
+
+/* ===========================================
+   DESTINATION
+=========================================== */
+
+.process-step.destination {
+
+    margin-bottom: 0;
+}
+
+
+.process-step.destination .step-marker {
+
+    background:
+        linear-gradient(
+            135deg,
+            #06B6D4,
+            #8B5CF6
+        );
+
+    font-size: 1.2rem;
+}
+
+
+.process-step.destination .step-content {
+
+    border-color:
+        rgba(6,182,212,.35);
+}
+
+
+/* ===========================================
+   MOBILE
+=========================================== */
+
+@media (max-width: 768px) {
+
+    .process-route {
+
+        margin-top: 50px;
+
+        padding-left: 45px;
+    }
+
+
+    .route-line {
+
+        left: 35px;
+
+        transform: none;
+    }
+
+
+    .process-step {
+
+        min-height: auto;
+
+        margin-bottom: 30px;
+
+        padding-left: 55px;
+    }
+
+
+    .step-marker {
+
+        left: 35px;
+
+        width: 58px;
+        height: 58px;
+    }
+
+
+    .step-content {
+
+        width: 100%;
+
+        margin: 0 !important;
+
+        text-align: left !important;
+
+        padding: 22px;
+    }
+
+
+    .step-content h3 {
+
+        font-size: 1.1rem;
+    }
+
+
+    .step-content p {
+
+        font-size: .9rem;
+    }
+
+}
+
