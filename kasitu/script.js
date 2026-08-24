@@ -64,6 +64,23 @@ const clamp = (value, min, max) => {
 };
 
 /*==================================================
+PERFORMANCE HELPERS
+==================================================*/
+
+const rafThrottle = (callback) => {
+    let frame = null;
+    let lastArgs;
+    return (...args) => {
+        lastArgs = args;
+        if (frame !== null) return;
+        frame = requestAnimationFrame(() => {
+            frame = null;
+            callback(...lastArgs);
+        });
+    };
+};
+
+/*==================================================
 STICKY HEADER
 ==================================================*/
 
@@ -80,8 +97,6 @@ function updateHeader() {
     }
 
 }
-
-window.addEventListener("scroll", debounce(updateHeader));
 
 updateHeader();
 
@@ -397,19 +412,7 @@ menuBtn.setAttribute(
  * CLOSE MOBILE MENU ON SCROLL
  *==================================================*/
 
-window.addEventListener("scroll", () => {
 
-    if (!mobileMenu || !menuBtn) return;
-
-    if (mobileMenu.classList.contains("mobile-open")) {
-
-        mobileMenu.classList.remove("mobile-open");
-        menuBtn.classList.remove("open");
-        menuBtn.setAttribute("aria-expanded", "false");
-
-    }
-
-});
 
 /*==================================================*
  * CLOSE MOBILE MENU ON DESKTOP
@@ -542,19 +545,27 @@ typeCode();
 CURSOR GLOW
 ==================================================*/
 
-const glow = document.createElement("div");
+/* Skip the mouse-following glow on touch devices.
+   Position updates are batched to one animation frame. */
+if (window.matchMedia("(pointer: fine)").matches) {
+    const glow = document.createElement("div");
+    glow.className = "cursor-glow";
+    document.body.appendChild(glow);
 
-glow.className = "cursor-glow";
+    let glowX = 0;
+    let glowY = 0;
+    let glowFrame = null;
 
-document.body.appendChild(glow);
-
-window.addEventListener("mousemove", e => {
-
-glow.style.left = e.clientX + "px";
-
-glow.style.top = e.clientY + "px";
-
-});
+    window.addEventListener("mousemove", e => {
+        glowX = e.clientX;
+        glowY = e.clientY;
+        if (glowFrame !== null) return;
+        glowFrame = requestAnimationFrame(() => {
+            glowFrame = null;
+            glow.style.transform = `translate3d(${glowX}px, ${glowY}px, 0)`;
+        });
+    }, { passive: true });
+}
 
 /*==================================================
 MAGNETIC BUTTONS
@@ -594,30 +605,32 @@ button.style.transform = "";
 FLOATING ICONS
 ==================================================*/
 
-const floatingIcons =
-document.querySelectorAll(".service-icon");
+const floatingIcons = document.querySelectorAll(".service-icon");
 
-floatingIcons.forEach(icon => {
+/* One animation loop instead of one requestAnimationFrame loop per icon. */
+if (floatingIcons.length && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const iconData = Array.from(floatingIcons, icon => ({
+        icon,
+        speed: Math.random() * 2 + 1,
+        angle: Math.random() * 360
+    }));
 
-const speed =
-Math.random() * 2 + 1;
+    let iconLastTime = performance.now();
 
-let angle = Math.random() * 360;
+    const animateFloatingIcons = now => {
+        const delta = Math.min(now - iconLastTime, 50);
+        iconLastTime = now;
 
-function floatIcon() {
+        iconData.forEach(item => {
+            item.angle += 0.01 * item.speed * (delta / 16.67);
+            item.icon.style.transform = `translate3d(0, ${Math.sin(item.angle) * 6}px, 0)`;
+        });
 
-angle += 0.01 * speed;
+        requestAnimationFrame(animateFloatingIcons);
+    };
 
-icon.style.transform =
-`translateY(${Math.sin(angle) * 6}px)`;
-
-requestAnimationFrame(floatIcon);
-
+    requestAnimationFrame(animateFloatingIcons);
 }
-
-floatIcon();
-
-});
 
 /*==================================================
 PAGE LOADED
@@ -962,20 +975,18 @@ document
 CLOSE BUTTON
 ==================================================*/
 
-projectModalClose.addEventListener(
-    "click",
-    closeProjectModal
-);
+if (projectModalClose) {
+    projectModalClose.addEventListener("click", closeProjectModal);
+}
 
 
 /*==================================================
 CLICK BACKDROP TO CLOSE
 ==================================================*/
 
-projectModalBackdrop.addEventListener(
-    "click",
-    closeProjectModal
-);
+if (projectModalBackdrop) {
+    projectModalBackdrop.addEventListener("click", closeProjectModal);
+}
 
 
 /*==================================================
@@ -1673,44 +1684,43 @@ if (pricingSection) {
 }
 
 /*==================================================
-SCROLL PROGRESS
+SCROLL PERFORMANCE CONTROLLER
 ==================================================*/
 
-const progress=
-
-document.createElement("div");
-
-progress.id="progress-bar";
-
+const progress = document.createElement("div");
+progress.id = "progress-bar";
 document.body.appendChild(progress);
 
-window.addEventListener(
+let lastScrollY = window.scrollY;
+let scrollFrame = null;
 
-"scroll",
+function updateScrollUI() {
+    scrollFrame = null;
+    lastScrollY = window.scrollY;
 
-()=>{
+    updateHeader();
+    highlightNavigation();
+    updateScrollButton();
 
-const scroll=
+    const height = document.documentElement.scrollHeight - window.innerHeight;
+    const percent = height > 0 ? (lastScrollY / height) * 100 : 0;
+    progress.style.width = `${Math.min(100, Math.max(0, percent))}%`;
 
-window.scrollY;
-
-const height=
-
-document.body.scrollHeight-
-
-window.innerHeight;
-
-const percent=
-
-(scroll/height)*100;
-
-progress.style.width=
-
-percent+"%";
-
+    if (mobileMenu && menuBtn && mobileMenu.classList.contains("mobile-open")) {
+        mobileMenu.classList.remove("mobile-open");
+        menuBtn.classList.remove("open");
+        menuBtn.setAttribute("aria-expanded", "false");
+    }
 }
 
-);
+const requestScrollUpdate = () => {
+    if (scrollFrame !== null) return;
+    scrollFrame = requestAnimationFrame(updateScrollUI);
+};
+
+window.addEventListener("scroll", requestScrollUpdate, { passive: true });
+window.addEventListener("resize", requestScrollUpdate, { passive: true });
+updateScrollUI();
 
 /*==================================================
 TOAST
@@ -1792,140 +1802,114 @@ Premium Interactions
 
 const projectCards = document.querySelectorAll(".project-card");
 
-projectCards.forEach(card => {
+if (window.matchMedia("(pointer: fine)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    projectCards.forEach(card => {
+        let frame = null;
+        let pointerX = 0;
+        let pointerY = 0;
 
-    card.addEventListener("mousemove", e => {
+        card.addEventListener("pointermove", e => {
+            const rect = card.getBoundingClientRect();
+            pointerX = e.clientX - rect.left;
+            pointerY = e.clientY - rect.top;
 
-        const rect = card.getBoundingClientRect();
+            if (frame !== null) return;
+            frame = requestAnimationFrame(() => {
+                frame = null;
+                const rotateY = ((pointerX / rect.width) - 0.5) * 18;
+                const rotateX = ((pointerY / rect.height) - 0.5) * -18;
+                card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-12px)`;
+            });
+        }, { passive: true });
 
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        const rotateY = ((x / rect.width) - 0.5) * 18;
-        const rotateX = ((y / rect.height) - 0.5) * -18;
-
-        card.style.transform =
-            `
-            perspective(1200px)
-            rotateX(${rotateX}deg)
-            rotateY(${rotateY}deg)
-            translateY(-12px)
-            `;
+        card.addEventListener("pointerleave", () => {
+            if (frame !== null) cancelAnimationFrame(frame);
+            frame = null;
+            card.style.transform = "";
+        });
     });
-
-    card.addEventListener("mouseleave", () => {
-
-        card.style.transform = "";
-
-    });
-
-});
+}
 
 /*==================================================
 PARTICLE BACKGROUND
 ==================================================*/
 
 const particleCanvas = document.createElement("canvas");
-
 particleCanvas.id = "particles";
-
 document.body.prepend(particleCanvas);
 
-const ctx = particleCanvas.getContext("2d");
-
+const ctx = particleCanvas.getContext("2d", { alpha: true });
 let particles = [];
+let particleFrame = null;
+let particlesRunning = true;
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const isSmallScreen = window.innerWidth < 768;
+const particleCount = reducedMotion ? 0 : (isSmallScreen ? 35 : 55);
 
-function resizeCanvas(){
-
-    particleCanvas.width = window.innerWidth;
-    particleCanvas.height = window.innerHeight;
-
+function resizeCanvas() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    particleCanvas.style.width = `${width}px`;
+    particleCanvas.style.height = `${height}px`;
+    particleCanvas.width = Math.round(width * dpr);
+    particleCanvas.height = Math.round(height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
 resizeCanvas();
+window.addEventListener("resize", resizeCanvas, { passive: true });
 
-window.addEventListener("resize", resizeCanvas);
-
-class Particle{
-
-    constructor(){
-
-        this.reset();
-
+class Particle {
+    constructor() { this.reset(); }
+    reset() {
+        this.x = Math.random() * window.innerWidth;
+        this.y = Math.random() * window.innerHeight;
+        this.radius = Math.random() * 2 + 1;
+        this.speedX = (Math.random() - 0.5) * 0.4;
+        this.speedY = (Math.random() - 0.5) * 0.4;
     }
-
-    reset(){
-
-        this.x = Math.random()*particleCanvas.width;
-        this.y = Math.random()*particleCanvas.height;
-
-        this.radius = Math.random()*2+1;
-
-        this.speedX = (Math.random()-.5)*0.4;
-        this.speedY = (Math.random()-.5)*0.4;
-
-    }
-
-    update(){
-
+    update() {
         this.x += this.speedX;
         this.y += this.speedY;
-
-        if(this.x<0 || this.x>particleCanvas.width)
-            this.speedX *= -1;
-
-        if(this.y<0 || this.y>particleCanvas.height)
-            this.speedY *= -1;
-
+        if (this.x < 0 || this.x > window.innerWidth) this.speedX *= -1;
+        if (this.y < 0 || this.y > window.innerHeight) this.speedY *= -1;
     }
-
-    draw(){
-
+    draw() {
         ctx.beginPath();
-
-        ctx.arc(
-            this.x,
-            this.y,
-            this.radius,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fillStyle="rgba(6,182,212,.45)";
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(6,182,212,.45)";
         ctx.fill();
-
     }
-
 }
 
-for(let i=0;i<90;i++){
+for (let i = 0; i < particleCount; i++) particles.push(new Particle());
 
-    particles.push(new Particle());
+function animateParticles() {
+    particleFrame = null;
+    if (!particlesRunning || !particles.length) return;
 
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    particles.forEach(p => { p.update(); p.draw(); });
+    particleFrame = requestAnimationFrame(animateParticles);
 }
 
-function animateParticles(){
+const particleObserver = new IntersectionObserver(entries => {
+    particlesRunning = entries[0]?.isIntersecting ?? true;
+    if (particlesRunning && particleFrame === null) {
+        particleFrame = requestAnimationFrame(animateParticles);
+    }
+}, { threshold: 0 });
 
-    ctx.clearRect(
-        0,
-        0,
-        particleCanvas.width,
-        particleCanvas.height
-    );
+particleObserver.observe(particleCanvas);
+if (particleCount) particleFrame = requestAnimationFrame(animateParticles);
 
-    particles.forEach(p=>{
-
-        p.update();
-
-        p.draw();
-
-    });
-
-    requestAnimationFrame(animateParticles);
-
-}
-
-animateParticles();
+document.addEventListener("visibilitychange", () => {
+    particlesRunning = !document.hidden;
+    if (particlesRunning && particleFrame === null && particleCount) {
+        particleFrame = requestAnimationFrame(animateParticles);
+    }
+}, { passive: true });
 
 /*==================================================
 EMAIL FORM
