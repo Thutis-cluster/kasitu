@@ -15468,3 +15468,17 @@ body.project-modal-open .cursor-glow {
 
 }
 
+/* =========================================================
+   BOOKING NAVIGATION — CONTROLLED BY ACTIVE SCREEN
+   ========================================================= */
+
+/* Hidden by default */
+.home-nav.booking-nav {
+    display: none !important;
+}
+
+/* Show ONLY during the first four booking screens */
+body.booking-nav-visible .home-nav.booking-nav {
+    display: flex !important;
+}
+
