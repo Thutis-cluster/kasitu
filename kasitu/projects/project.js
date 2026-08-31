@@ -74,7 +74,7 @@ const projects = {
         type: "Booking Management System",
 
         description:
-            "A professional booking platform designed for Mumsy Braids Studio, allowing customers to explore services, select options, choose dates and times and submit their booking information.",
+            "A professional booking platform designed for Mumsy Braids Studio, allowing customers to explore services, select options, choose dates and times, submit their booking information and pay online.",
 
         url:
             "https://mumsybraidsstudio.co.za/",
@@ -83,7 +83,9 @@ const projects = {
             "HTML",
             "CSS",
             "JavaScript",
-            "Firebase"
+            "Firebase",
+            "PayStack",
+            "twilio"
         ],
 
         features: [
@@ -102,18 +104,19 @@ const projects = {
 
         title: "Thuti's Project",
 
-        category: "eCOMMERCE",
+        category: "Business",
 
-        type: "eCommerce Website",
+        type: "Business Website",
 
         description:
-            "A modern eCommerce project created to provide customers with an online shopping experience featuring product browsing, categories, shopping cart and checkout functionality.",
+            "A modern business website created to showcase the store and its products online, allowing customers to browse products and categories, discover the store’s location, and easily access contact details for enquiries.
+",
 
         url:
             "https://kasitu.free.nf/?i=1",
 
         technologies: [
-            "HTML",
+            "WordPress",
             "CSS",
             "JavaScript"
         ],
@@ -121,10 +124,10 @@ const projects = {
         features: [
             "Product catalogue",
             "Product categories",
-            "Shopping cart",
-            "Checkout workflow",
-            "Responsive design",
-            "Customer shopping experience"
+            "Business information",
+            "Store location & directions",
+            "Contact information",
+            "Responsive design"
         ]
 
     },
