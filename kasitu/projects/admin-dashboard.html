@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mumsy Braids Studio | Admin Dashboard</title>
+<meta name="description" content="Mumsy Braids Studio Admin Dashboard project by KASITU Webs.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+    min-height:100vh;font-family:Inter,sans-serif;color:#fff;
+    background:
+      radial-gradient(circle at 15% 15%,rgba(79,70,229,.22),transparent 35%),
+      radial-gradient(circle at 85% 85%,rgba(6,182,212,.14),transparent 35%),
+      #070b17;
+}
+a{text-decoration:none;color:inherit}
+.page{width:min(1050px,calc(100% - 28px));margin:auto;padding:25px 0 60px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:55px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800}
+.brand-icon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#4f46e5,#06b6d4)}
+.back{padding:11px 16px;border:1px solid rgba(255,255,255,.1);border-radius:50px;color:#b8bfd2;background:rgba(255,255,255,.04)}
+.hero{text-align:center;max-width:800px;margin:auto auto 40px}
+.badge{display:inline-flex;gap:8px;padding:8px 14px;border-radius:50px;color:#06b6d4;background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.2);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:18px}
+h1{font-size:clamp(2.2rem,6vw,4rem);line-height:1.05;margin-bottom:18px}
+h1 span{background:linear-gradient(90deg,#06b6d4,#8b5cf6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero p,.content p{color:#b8bfd2;line-height:1.8}
+.card{display:grid;grid-template-columns:1fr 1fr;gap:28px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:28px;background:rgba(255,255,255,.055);backdrop-filter:blur(18px)}
+.preview{padding:20px;border-radius:20px;background:#0b1120;border:1px solid rgba(255,255,255,.08)}
+.dots{display:flex;gap:6px;margin-bottom:20px}.dots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.25)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{padding:18px;min-height:115px;border-radius:15px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08)}
+.tile i{color:#06b6d4;font-size:1.2rem;margin-bottom:12px}.tile strong{display:block;font-size:.88rem;margin-bottom:5px}.tile small{color:#8f98b0}
+.content{display:flex;flex-direction:column;justify-content:center}.content h2{font-size:1.6rem;margin-bottom:14px}
+.features{list-style:none;display:grid;gap:10px;margin:20px 0 25px}.features li{display:flex;gap:9px;color:#dfe5f5;font-size:.9rem}.features i{color:#21d07a;margin-top:4px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{min-height:50px;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;border-radius:14px;font-weight:700}
+.primary{background:linear-gradient(90deg,#4f46e5,#06b6d4)}.secondary{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1)}
+.note{font-size:.72rem!important;color:#7f889f!important;margin-top:16px}
+footer{text-align:center;color:#707990;font-size:.72rem;margin-top:40px}
+@media(max-width:720px){
+    .page{width:calc(100% - 20px)}
+    .top{margin-bottom:38px}
+    .brand{font-size:.88rem}.back{font-size:.75rem;padding:10px 12px}
+    .card{grid-template-columns:1fr;padding:16px;border-radius:22px}
+    .actions{grid-template-columns:1fr}
+    .btn{width:100%}
+}
+</style>
+</head>
+<body>
+<main class="page">
+
+<div class="top">
+    <a class="brand" href="../index.html">
+        <span class="brand-icon"><i class="fas fa-code"></i></span>
+        <span>KASITU Webs</span>
+    </a>
+    <a class="back" href="../index.html#portfolio">
+        <i class="fas fa-arrow-left"></i> Back to Projects
+    </a>
+</div>
+
+<section class="hero">
+    <div class="badge"><i class="fas fa-chart-line"></i> Admin Management System</div>
+    <h1>Mumsy Braids Studio <span>Admin Dashboard</span></h1>
+    <p>
+        A dedicated management dashboard built to help the studio manage
+        bookings, appointments, customer information, calendar activity
+        and day-to-day business operations.
+    </p>
+</section>
+
+<section class="card">
+    <div class="preview">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="grid">
+            <div class="tile"><i class="fas fa-calendar-check"></i><strong>Bookings</strong><small>Manage appointments</small></div>
+            <div class="tile"><i class="fas fa-users"></i><strong>Customers</strong><small>View customer details</small></div>
+            <div class="tile"><i class="fas fa-calendar-days"></i><strong>Calendar</strong><small>Track schedules</small></div>
+            <div class="tile"><i class="fas fa-chart-pie"></i><strong>Activity</strong><small>Monitor operations</small></div>
+        </div>
+    </div>
+
+    <div class="content">
+        <h2>Business Control Centre</h2>
+        <p>
+            The admin side of the Mumsy Braids Studio platform provides
+            a central place to manage bookings and monitor studio activity.
+        </p>
+
+        <ul class="features">
+            <li><i class="fas fa-check-circle"></i> Online booking management</li>
+            <li><i class="fas fa-check-circle"></i> Appointment and calendar management</li>
+            <li><i class="fas fa-check-circle"></i> Customer information management</li>
+            <li><i class="fas fa-check-circle"></i> Business activity monitoring</li>
+            <li><i class="fas fa-check-circle"></i> Responsive dashboard experience</li>
+        </ul>
+
+        <div class="actions">
+            <a class="btn primary" href="https://mumsybraidsstudio.co.za/admin" target="_blank" rel="noopener noreferrer">
+                <i class="fas fa-arrow-up-right-from-square"></i> Open Admin Dashboard
+            </a>
+            <a class="btn secondary" href="project.html?id=mumsy">
+                <i class="fas fa-globe"></i> View Website
+            </a>
+        </div>
+
+        <p class="note">The live dashboard may require authorised administrator access.</p>
+    </div>
+</section>
+
+<footer>Designed &amp; Developed by KASITU Webs</footer>
+</main>
+</body>
+</html>
