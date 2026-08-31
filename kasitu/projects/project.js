@@ -85,7 +85,7 @@ const projects = {
             "JavaScript",
             "Firebase",
             "PayStack",
-            "twilio"
+            "Twilio"
         ],
 
         features: [
@@ -109,8 +109,7 @@ const projects = {
         type: "Business Website",
 
         description:
-            "A modern business website created to showcase the store and its products online, allowing customers to browse products and categories, discover the store’s location, and easily access contact details for enquiries.
-",
+            "A modern business website created to showcase the store and its products online, allowing customers to browse products and categories, discover the store’s location, and easily access contact details for enquiries.",
 
         url:
             "https://kasitu.free.nf/?i=1",
