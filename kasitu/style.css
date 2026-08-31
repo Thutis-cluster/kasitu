@@ -7124,93 +7124,6 @@ select:focus {
 }
 
 /* =========================================================
-   MODAL PAGE LOCK
-   Prevent ANYTHING behind a modal from being seen/clicked
-========================================================= */
-
-/* When project modal is open */
-html.project-modal-open,
-body.project-modal-open {
-    overflow: hidden !important;
-    height: 100% !important;
-    overscroll-behavior: none !important;
-}
-
-
-/* Completely isolate the project modal */
-.project-modal {
-    position: fixed !important;
-    inset: 0 !important;
-
-    width: 100vw !important;
-    height: 100dvh !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    z-index: 2147483647 !important;
-
-    isolation: isolate;
-
-    background: #03050c !important;
-}
-
-
-/* The backdrop itself becomes the complete screen */
-.project-modal .project-modal-backdrop {
-    position: absolute !important;
-
-    inset: 0 !important;
-
-    width: 100% !important;
-    height: 100% !important;
-
-    background: #03050c !important;
-
-    opacity: 1 !important;
-
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-
-    pointer-events: auto !important;
-
-    z-index: 0 !important;
-}
-
-
-/* Modal card sits ABOVE the completely opaque background */
-.project-modal .project-modal-box {
-    position: relative !important;
-
-    z-index: 1 !important;
-
-    pointer-events: auto !important;
-}
-
-
-/* Hide floating elements while project modal is open */
-body.project-modal-open .floating-whatsapp,
-body.project-modal-open #scrollTop,
-body.project-modal-open .cursor-glow {
-    visibility: hidden !important;
-    pointer-events: none !important;
-}
-
-
-/* Mobile */
-@media (max-width: 700px) {
-
-    .project-modal {
-        background: #03050c !important;
-    }
-
-    .project-modal .project-modal-backdrop {
-        background: #03050c !important;
-    }
-
-}
-
-/* =========================================================
    LIGHT MODE — MOBILE MENU
 ========================================================= */
 
@@ -14662,93 +14575,6 @@ select:focus {
 }
 
 /* =========================================================
-   MODAL PAGE LOCK
-   Prevent ANYTHING behind a modal from being seen/clicked
-========================================================= */
-
-/* When project modal is open */
-html.project-modal-open,
-body.project-modal-open {
-    overflow: hidden !important;
-    height: 100% !important;
-    overscroll-behavior: none !important;
-}
-
-
-/* Completely isolate the project modal */
-.project-modal {
-    position: fixed !important;
-    inset: 0 !important;
-
-    width: 100vw !important;
-    height: 100dvh !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    z-index: 2147483647 !important;
-
-    isolation: isolate;
-
-    background: #03050c !important;
-}
-
-
-/* The backdrop itself becomes the complete screen */
-.project-modal .project-modal-backdrop {
-    position: absolute !important;
-
-    inset: 0 !important;
-
-    width: 100% !important;
-    height: 100% !important;
-
-    background: #03050c !important;
-
-    opacity: 1 !important;
-
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-
-    pointer-events: auto !important;
-
-    z-index: 0 !important;
-}
-
-
-/* Modal card sits ABOVE the completely opaque background */
-.project-modal .project-modal-box {
-    position: relative !important;
-
-    z-index: 1 !important;
-
-    pointer-events: auto !important;
-}
-
-
-/* Hide floating elements while project modal is open */
-body.project-modal-open .floating-whatsapp,
-body.project-modal-open #scrollTop,
-body.project-modal-open .cursor-glow {
-    visibility: hidden !important;
-    pointer-events: none !important;
-}
-
-
-/* Mobile */
-@media (max-width: 700px) {
-
-    .project-modal {
-        background: #03050c !important;
-    }
-
-    .project-modal .project-modal-backdrop {
-        background: #03050c !important;
-    }
-
-}
-
-/* =========================================================
    LIGHT MODE — MOBILE MENU
 ========================================================= */
 
@@ -15482,3 +15308,87 @@ body.booking-nav-visible .home-nav.booking-nav {
     display: flex !important;
 }
 
+
+
+/* =========================================================
+   KASITU FIX — PROJECT MODAL + MOBILE PROJECT ACTIONS
+   ========================================================= */
+
+/* Lock scrolling only; NEVER replace the page with a black layer. */
+html.project-modal-open,
+body.project-modal-open {
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
+/* Modal remains above the page, but its backdrop is translucent. */
+.project-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100dvh !important;
+    z-index: 100000 !important;
+    background: transparent !important;
+}
+
+.project-modal .project-modal-backdrop {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(3, 7, 18, .82) !important;
+    opacity: 1 !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    z-index: 0 !important;
+}
+
+.project-modal .project-modal-box {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Mobile project buttons: one full-width action per row. */
+@media (max-width: 700px) {
+    .project-links {
+        width: 100%;
+        display: grid !important;
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .project-links > a,
+    .project-links > button,
+    .project-links > .project-details-btn {
+        width: 100%;
+        min-width: 0;
+        min-height: 50px;
+        margin: 0;
+        box-sizing: border-box;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+}
+
+@media (max-width: 380px) {
+    .project-links > a,
+    .project-links > button,
+    .project-links > .project-details-btn {
+        min-height: 48px;
+        padding: 12px 10px;
+        font-size: .82rem;
+    }
+}
+
+/* Never apply the desktop magnetic transform to touch screens. */
+@media (hover: none), (pointer: coarse) {
+    .project-links > a:hover,
+    .project-links > button:hover,
+    .project-links > .project-details-btn:hover {
+        transform: none;
+    }
+}
