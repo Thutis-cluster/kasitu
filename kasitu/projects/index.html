@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="KASITU Creative Studio — logo design, posters, flyers and brand visuals created by KASITU Webs.">
+    <meta name="theme-color" content="#07101d">
+    <title>KASITU Creative Studio | Logo Design & Marketing Materials</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <script defer src="js/script.js"></script>
+</head>
+<body>
+    <div class="page-glow glow-one"></div>
+    <div class="page-glow glow-two"></div>
+
+    <header class="site-header" id="top">
+        <div class="container nav-wrap">
+            <a class="brand" href="../../index.html" aria-label="KASITU Webs home">
+                <span class="brand-main">KASITU</span>
+                <span class="brand-sub">WEBS</span>
+            </a>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="main-nav" id="mainNav">
+                <a href="../../index.html">Home</a>
+                <a href="../../index.html#services">Services</a>
+                <a class="active" href="../../index.html#projects">Projects</a>
+                <a href="../../index.html#pricing">Pricing</a>
+                <a href="../../index.html#contact">Contact</a>
+                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">☾</button>
+                <a class="hire-btn" href="../../index.html#contact">Hire Me</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="breadcrumbs">
+                    <a href="../../index.html">Home</a><span>›</span>
+                    <a href="../../index.html#projects">Projects</a><span>›</span>
+                    <span>KASITU Creative Studio</span>
+                </div>
+
+                <div class="hero-grid">
+                    <div class="hero-copy">
+                        <span class="eyebrow"><i></i> PROJECT 03</span>
+                        <h1>KASITU CREATIVE<br><em>STUDIO</em></h1>
+                        <p class="hero-title">Logo Design & Marketing Materials</p>
+                        <p class="hero-text">A collection of professional logos, promotional posters, flyers and brand visuals designed by KASITU Webs for businesses, events and organisations.</p>
+
+                        <div class="hero-stats">
+                            <div><strong>40+</strong><span>Designs</span></div>
+                            <div><strong>10</strong><span>Logo Works</span></div>
+                            <div><strong>30</strong><span>Marketing Designs</span></div>
+                        </div>
+                    </div>
+
+                    <div class="hero-collage" aria-label="Featured KASITU design work">
+                        <div class="collage-card c1"><img src="assets/logos/DeRose logo.png" alt="DeRose Cookies logo"></div>
+                        <div class="collage-card c2"><img src="assets/logos/Kamatla-H.png" alt="Kamatla Holdings logo"></div>
+                        <div class="collage-card c3"><img src="assets/logos/MissBlogo.png" alt="Miss B's logo"></div>
+                        <div class="collage-card c4"><img src="assets/logos/mumsybraidingstudio.webp" alt="Mumsy Braiding Studio logo"></div>
+                        <div class="collage-card c5"><img src="assets/logos/thutisproject.png" alt="Thutis Project logo"></div>
+                        <div class="collage-card c6"><img src="assets/logos/kasitu.webp" alt="KASITU Webs logo"></div>
+                    </div>
+                </div>
+
+                <div class="value-bar">
+                    <div class="value-intro">
+                        <span class="bulb">✦</span>
+                        <div><strong>Good design is good business.</strong><small>Turning your vision into visuals that connect, communicate and build trust.</small></div>
+                    </div>
+                    <div class="value-point"><b>✧</b><span>Creative<br>& Unique</span></div>
+                    <div class="value-point"><b>◇</b><span>High Quality<br>& Professional</span></div>
+                    <div class="value-point"><b>◷</b><span>On-time<br>Delivery</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="portfolio-section" id="work">
+            <div class="container">
+                <div class="filters" role="tablist" aria-label="Filter creative work">
+                    <button class="filter active" data-filter="all">▦ <span>All Works</span></button>
+                    <button class="filter" data-filter="logo">◎ <span>Logos</span></button>
+                    <button class="filter" data-filter="poster">▤ <span>Posters</span></button>
+                    <button class="filter" data-filter="flyer">✎ <span>Flyers</span></button>
+                    <button class="filter" data-filter="branding">◇ <span>Branding</span></button>
+                </div>
+
+                <section class="work-section" data-section="logo">
+                    <div class="section-heading">
+                        <div><span class="section-kicker">LOGO DESIGN</span><h2>Professional identities</h2><p>Distinctive logos and brand marks crafted for unique businesses.</p></div>
+                        <button class="section-action" data-filter-jump="logo">View All Logos <span>→</span></button>
+                    </div>
+                    <div class="logo-grid" id="logoGrid"></div>
+                </section>
+
+                <section class="work-section" data-section="poster">
+                    <div class="section-heading">
+                        <div><span class="section-kicker">POSTER DESIGNS</span><h2>Visuals that grab attention</h2><p>Promotional and event designs built to communicate at a glance.</p></div>
+                        <button class="section-action" data-filter-jump="poster">View All Posters <span>→</span></button>
+                    </div>
+                    <div class="masonry-grid" id="posterGrid"></div>
+                </section>
+
+                <section class="work-section" data-section="flyer">
+                    <div class="section-heading">
+                        <div><span class="section-kicker">FLYER DESIGNS</span><h2>Marketing materials that work</h2><p>Business flyers and promotional artwork designed for real-world use.</p></div>
+                        <button class="section-action" data-filter-jump="flyer">View All Flyers <span>→</span></button>
+                    </div>
+                    <div class="masonry-grid" id="flyerGrid"></div>
+                </section>
+            </div>
+        </section>
+
+        <section class="process-section">
+            <div class="container">
+                <div class="process-head">
+                    <span class="eyebrow"><i></i> OUR CREATIVE PROCESS</span>
+                    <h2>From idea to <em>impact.</em></h2>
+                    <p>A simple process that keeps every design intentional, polished and aligned with the brand.</p>
+                </div>
+                <div class="process-grid">
+                    <article><span>01</span><div class="process-icon">⌁</div><h3>Discover</h3><p>Understand the business, audience, message and visual direction.</p></article>
+                    <article><span>02</span><div class="process-icon">◇</div><h3>Design</h3><p>Develop a clean visual concept that fits the brand personality.</p></article>
+                    <article><span>03</span><div class="process-icon">✦</div><h3>Refine</h3><p>Polish the details, layout and presentation until everything feels right.</p></article>
+                    <article><span>04</span><div class="process-icon">↗</div><h3>Deliver</h3><p>Provide finished visuals ready for digital, print and promotion.</p></article>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container cta-card">
+                <div class="cta-icon">✧</div>
+                <div><h2>Have a project in mind?</h2><p>Let's bring your ideas to life with creativity and purpose.</p></div>
+                <a href="../../index.html#contact" class="cta-btn">Start Your Project <span>→</span></a>
+            </div>
+        </section>
+    </main>
+
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+        <div class="lightbox-backdrop" data-close></div>
+        <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-label="Design preview">
+            <button class="lightbox-close" data-close aria-label="Close preview">×</button>
+            <button class="lightbox-prev" id="prevBtn" aria-label="Previous design">‹</button>
+            <img id="lightboxImage" src="" alt="">
+            <button class="lightbox-next" id="nextBtn" aria-label="Next design">›</button>
+            <div class="lightbox-info"><strong id="lightboxTitle"></strong><span id="lightboxMeta"></span></div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <span>© <span id="year"></span> KASITU Webs</span>
+            <span>Building Digital Excellence</span>
+            <a href="#top">Back to top ↑</a>
+        </div>
+    </footer>
+</body>
+</html>
