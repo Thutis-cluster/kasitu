@@ -15,15 +15,16 @@ function esc(value){
 
 function logoCard(item,index){
     const [title,type,file] = item;
-    return `<article class="logo-card design-item" data-type="logo" data-index="${index}">
-        <div class="logo-image"><img src="assets/logos/${encodeURIComponent(file)}" alt="${esc(title)} logo" loading="lazy"></div>
+return `<article class="logo-card design-item" data-type="logo" data-index="${index}"> 
+    <div class="logo-image"><img src="../assets/logos/${encodeURIComponent(file)}" alt="${esc(title)} logo" loading="lazy"></div>
         <div class="logo-info"><strong>${esc(title)}</strong><span>${esc(type)}</span></div>
     </article>`;
 }
 function designCard(item,index){
     const [title,type,file,category] = item;
     return `<article class="design-card design-item" data-type="${category}" data-index="${index}">
-        <div class="design-image"><img src="assets/designs/${encodeURIComponent(file)}" alt="${esc(title)} — ${esc(type)}" loading="lazy"></div>
+<div class="design-image"><img src="../assets/designs/${encodeURIComponent(file)}"
+ alt="${esc(title)} — ${esc(type)}" loading="lazy"></div>
         <div class="design-info"><strong>${esc(title)}</strong><span>${esc(type)}</span></div>
     </article>`;
 }
@@ -65,8 +66,8 @@ function openLightbox(items,index){
 }
 function updateLightbox(){
     const [title,type,file,category] = gallery[currentIndex];
-    const folder = category === "logo" ? "logos" : "designs";
-    lightboxImage.src = `assets/${folder}/${encodeURIComponent(file)}`;
+const folder = category === "logo" ? "logos" : "designs";
+lightboxImage.src = `../assets/${folder}/${encodeURIComponent(file)}`;
     lightboxImage.alt = `${title} — ${type}`;
     lightboxTitle.textContent = title;
     lightboxMeta.textContent = type;
