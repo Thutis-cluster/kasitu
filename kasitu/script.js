@@ -4964,3 +4964,124 @@ Please let me know how we can get started. Thank you!`;
     );
 
 })();
+
+/* ==================================================
+   KASITU CREATIVE STUDIO PRICE MODAL
+================================================== */
+
+const creativeExploreBtn =
+    document.getElementById("creative-explore-btn");
+
+const creativePriceModal =
+    document.getElementById("creative-price-modal");
+
+const creativePriceClose =
+    document.getElementById("creative-price-close");
+
+const creativePriceBackdrop =
+    document.getElementById("creative-price-backdrop");
+
+const creativePriceContact =
+    document.getElementById("creative-price-contact");
+
+
+/* OPEN */
+
+function openCreativePriceModal() {
+
+    if (!creativePriceModal) return;
+
+    creativePriceModal.classList.add("active");
+
+    creativePriceModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    document.body.style.overflow = "hidden";
+}
+
+
+/* CLOSE */
+
+function closeCreativePriceModal() {
+
+    if (!creativePriceModal) return;
+
+    creativePriceModal.classList.remove("active");
+
+    creativePriceModal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    document.body.style.overflow = "";
+}
+
+
+/* EXPLORE STUDIO */
+
+if (creativeExploreBtn) {
+
+    creativeExploreBtn.addEventListener(
+        "click",
+        openCreativePriceModal
+    );
+
+}
+
+
+/* CLOSE BUTTON */
+
+if (creativePriceClose) {
+
+    creativePriceClose.addEventListener(
+        "click",
+        closeCreativePriceModal
+    );
+
+}
+
+
+/* BACKDROP */
+
+if (creativePriceBackdrop) {
+
+    creativePriceBackdrop.addEventListener(
+        "click",
+        closeCreativePriceModal
+    );
+
+}
+
+
+/* CONTACT BUTTON */
+
+if (creativePriceContact) {
+
+    creativePriceContact.addEventListener(
+        "click",
+        closeCreativePriceModal
+    );
+
+}
+
+
+/* ESCAPE KEY */
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key === "Escape" &&
+            creativePriceModal &&
+            creativePriceModal.classList.contains("active")
+        ) {
+
+            closeCreativePriceModal();
+
+        }
+
+    }
+);
