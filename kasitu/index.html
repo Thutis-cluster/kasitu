@@ -403,19 +403,25 @@ SERVICES
     </button>
 </div>
 
-                <div class="service-card">
+<div class="service-card key-locator-card" id="keyLocatorCard">
 
-            <div class="service-icon">
-                <i class="fab fa-bluetooth-b"></i>
-            </div>
+    <div class="service-icon">
+        <i class="fas fa-map-marker-alt"></i>
+    </div>
 
-            <h3>Bluetooth Key Locators</h3>
+    <h3>Bluetooth Key Locators</h3>
 
-            <p>
-                Never waste time searching for your keys again! Our Bluetooth Key Finders and Alarms help you quickly locate your keys, bags, wallets, and other valuables using your smartphone
-            </p>
+    <p>
+        Smart Bluetooth key locators that help you quickly find
+        your keys, bags and other important belongings.
+    </p>
 
-        </div>
+    <span class="service-learn-btn">
+        View Pricing
+        <i class="fas fa-arrow-right"></i>
+    </span>
+
+</div>
 
                 <div class="service-card">
 
@@ -3324,6 +3330,66 @@ PROJECT DETAILS MODAL
 
 </div>
 
+    <!-- ================= KEY LOCATOR PRICING MODAL ================= -->
+
+<div class="key-locator-modal" id="keyLocatorPricingModal">
+
+    <div class="key-locator-modal-box">
+
+        <button
+            class="key-locator-modal-close"
+            id="closeKeyLocatorModal"
+            aria-label="Close">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <!-- PICTURE PLACEHOLDER -->
+        <div class="key-locator-picture">
+
+            <img
+                src="assets/key-locator.jpg"
+                alt="Bluetooth Key Locator">
+
+        </div>
+
+        <span class="key-locator-label">
+            BLUETOOTH KEY LOCATOR
+        </span>
+
+        <h2>Key Locator</h2>
+
+        <p class="key-locator-intro">
+            Keep track of your important belongings with a
+            compact Bluetooth key locator.
+        </p>
+
+        <div class="key-locator-price">
+
+            <span>PRICE</span>
+
+            <strong>R200.00</strong>
+
+            <small>
+                Bluetooth locator device. Availability and
+                delivery may vary.
+            </small>
+
+        </div>
+
+        <a
+            href="#contact"
+            class="key-locator-quote-btn">
+
+            Get Started
+
+            <i class="fas fa-arrow-right"></i>
+
+        </a>
+
+    </div>
+
+</div>
+
 <script>
     
 /* ==================================================
@@ -3534,6 +3600,106 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+
+    const keyLocatorCard =
+        document.getElementById("keyLocatorCard");
+
+    const keyLocatorModal =
+        document.getElementById("keyLocatorPricingModal");
+
+    const closeKeyLocatorModal =
+        document.getElementById("closeKeyLocatorModal");
+
+
+    if (!keyLocatorCard || !keyLocatorModal) return;
+
+
+    /* OPEN MODAL */
+
+    function openKeyLocatorModal() {
+
+        keyLocatorModal.classList.add("active");
+
+        document.body.style.overflow = "hidden";
+    }
+
+
+    /* CLOSE MODAL */
+
+    function closeKeyLocatorPricing() {
+
+        keyLocatorModal.classList.remove("active");
+
+        document.body.style.overflow = "";
+    }
+
+
+    /* ENTIRE CARD IS CLICKABLE */
+
+    keyLocatorCard.addEventListener(
+        "click",
+        function (e) {
+
+            /*
+             * Prevent accidental opening when clicking
+             * an actual link inside the card.
+             */
+
+            if (e.target.closest("a")) {
+                return;
+            }
+
+            openKeyLocatorModal();
+
+        }
+    );
+
+
+    /* CLOSE BUTTON */
+
+    if (closeKeyLocatorModal) {
+
+        closeKeyLocatorModal.addEventListener(
+            "click",
+            closeKeyLocatorPricing
+        );
+
+    }
+
+
+    /* CLICK OUTSIDE */
+
+    keyLocatorModal.addEventListener(
+        "click",
+        function (e) {
+
+            if (e.target === keyLocatorModal) {
+
+                closeKeyLocatorPricing();
+
+            }
+
+        }
+    );
+
+
+    /* ESCAPE KEY */
+
+    document.addEventListener(
+        "keydown",
+        function (e) {
+
+            if (e.key === "Escape") {
+
+                closeKeyLocatorPricing();
+
+            }
+
+        }
+    );
+
+});
 </script>
 
 <script src="script.js"></script>
