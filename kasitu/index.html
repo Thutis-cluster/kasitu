@@ -3263,133 +3263,148 @@ PROJECT DETAILS MODAL
 </div>
 
 <script>
-    /* ==================================================
+/* ==================================================
    KASITU BUSINESS REGISTRATION PRICE MODAL
 ================================================== */
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    const button = document.getElementById(
-        "business-registration-btn"
-    );
+    const businessRegistrationButton =
+        document.getElementById("business-registration-btn");
 
-    const modal = document.getElementById(
-        "business-price-modal"
-    );
+    const businessPriceModal =
+        document.getElementById("business-price-modal");
 
-    const closeButton = document.getElementById(
-        "business-price-close"
-    );
+    const businessPriceClose =
+        document.getElementById("business-price-close");
 
-    const backdrop = document.getElementById(
-        "business-price-backdrop"
-    );
+    const businessPriceBackdrop =
+        document.getElementById("business-price-backdrop");
 
-    const contactButton = document.getElementById(
-        "business-price-contact"
-    );
+    const businessPriceContact =
+        document.getElementById("business-price-contact");
 
 
-    /* CHECK ELEMENTS */
+    /* ==========================================
+       SAFETY CHECK
+    ========================================== */
 
-    if (!button) {
-        console.error(
-            "KASITU: Business Registration button not found."
+    if (!businessRegistrationButton || !businessPriceModal) {
+
+        console.warn(
+            "Business Registration modal elements not found."
         );
-        return;
-    }
 
-    if (!modal) {
-        console.error(
-            "KASITU: Business Registration modal not found."
-        );
         return;
+
     }
 
 
-    /* OPEN MODAL */
+    /* ==========================================
+       OPEN MODAL
+    ========================================== */
 
-    function openBusinessModal() {
+    function openBusinessPriceModal(event) {
 
-        modal.classList.add("active");
+        if (event) {
+            event.preventDefault();
+        }
 
-        modal.setAttribute(
+        businessPriceModal.classList.add("active");
+
+        businessPriceModal.setAttribute(
             "aria-hidden",
             "false"
         );
 
-        document.body.style.overflow = "hidden";
+        document.body.classList.add(
+            "business-modal-open"
+        );
 
     }
 
 
-    /* CLOSE MODAL */
+    /* ==========================================
+       CLOSE MODAL
+    ========================================== */
 
-    function closeBusinessModal() {
+    function closeBusinessPriceModal() {
 
-        modal.classList.remove("active");
+        businessPriceModal.classList.remove(
+            "active"
+        );
 
-        modal.setAttribute(
+        businessPriceModal.setAttribute(
             "aria-hidden",
             "true"
         );
 
-        document.body.style.overflow = "";
+        document.body.classList.remove(
+            "business-modal-open"
+        );
 
     }
 
 
-    /* OPEN */
+    /* ==========================================
+       VIEW PRICING BUTTON
+    ========================================== */
 
-    button.addEventListener(
+    businessRegistrationButton.addEventListener(
         "click",
-        function (event) {
-
-            event.preventDefault();
-
-            openBusinessModal();
-
-        }
+        openBusinessPriceModal
     );
 
 
-    /* CLOSE BUTTON */
+    /* ==========================================
+       CLOSE BUTTON
+    ========================================== */
 
-    if (closeButton) {
+    if (businessPriceClose) {
 
-        closeButton.addEventListener(
+        businessPriceClose.addEventListener(
             "click",
-            closeBusinessModal
+            closeBusinessPriceModal
         );
 
     }
 
 
-    /* BACKDROP */
+    /* ==========================================
+       BACKDROP
+    ========================================== */
 
-    if (backdrop) {
+    if (businessPriceBackdrop) {
 
-        backdrop.addEventListener(
+        businessPriceBackdrop.addEventListener(
             "click",
-            closeBusinessModal
+            closeBusinessPriceModal
         );
 
     }
 
 
-    /* GET STARTED */
+    /* ==========================================
+       GET STARTED
+    ========================================== */
 
-    if (contactButton) {
+    if (businessPriceContact) {
 
-        contactButton.addEventListener(
+        businessPriceContact.addEventListener(
             "click",
-            closeBusinessModal
+            function () {
+
+                closeBusinessPriceModal();
+
+            }
         );
 
     }
 
 
-    /* ESCAPE */
+    /* ==========================================
+       ESCAPE KEY
+    ========================================== */
 
     document.addEventListener(
         "keydown",
@@ -3397,10 +3412,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (
                 event.key === "Escape" &&
-                modal.classList.contains("active")
+                businessPriceModal.classList.contains("active")
             ) {
 
-                closeBusinessModal();
+                closeBusinessPriceModal();
 
             }
 
@@ -3409,7 +3424,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     console.log(
-        "KASITU Business Registration Modal Loaded ✓"
+        "Business Registration Price Modal Loaded ✓"
     );
 
 });
