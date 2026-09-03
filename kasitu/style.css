@@ -16495,6 +16495,9 @@ body.project-modal-open {
         rgba(96, 165, 250, 0.4);
 }
 
+.business-registration-card {
+    cursor: pointer;
+}
 
 /* MOBILE */
 
