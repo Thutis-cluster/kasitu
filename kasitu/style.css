@@ -15918,3 +15918,637 @@ body.project-modal-open {
     }
 
 }
+
+/* ==================================================
+   KASITU BUSINESS REGISTRATION PRICE MODAL
+================================================== */
+
+.business-price-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+
+    visibility: hidden;
+    opacity: 0;
+
+    transition:
+        opacity 0.35s ease,
+        visibility 0.35s ease;
+}
+
+
+/* ACTIVE */
+
+.business-price-modal.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/* BACKDROP */
+
+.business-price-backdrop {
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 50% 30%,
+            rgba(59, 130, 246, 0.14),
+            transparent 45%
+        ),
+        rgba(3, 7, 18, 0.82);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+
+/* MAIN BOX */
+
+.business-price-box {
+    position: relative;
+
+    width: min(1050px, 100%);
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 42px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15, 23, 42, 0.98),
+            rgba(7, 12, 27, 0.98)
+        );
+
+    box-shadow:
+        0 35px 100px rgba(0, 0, 0, 0.55),
+        0 0 60px rgba(59, 130, 246, 0.08);
+
+    transform:
+        translateY(35px)
+        scale(0.94);
+
+    opacity: 0;
+
+    transition:
+        transform 0.4s cubic-bezier(.16,1,.3,1),
+        opacity 0.3s ease;
+}
+
+
+/* POP OUT */
+
+.business-price-modal.active .business-price-box {
+    transform:
+        translateY(0)
+        scale(1);
+
+    opacity: 1;
+}
+
+
+/* CLOSE BUTTON */
+
+.business-price-close {
+    position: absolute;
+
+    top: 20px;
+    right: 20px;
+
+    width: 44px;
+    height: 44px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    color: #fff;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease;
+}
+
+.business-price-close:hover {
+    transform: rotate(90deg) scale(1.08);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+
+/* HEADER */
+
+.business-price-header {
+    text-align: center;
+
+    max-width: 680px;
+
+    margin: 0 auto 35px;
+}
+
+.business-price-icon {
+    width: 68px;
+    height: 68px;
+
+    margin: 0 auto 18px;
+
+    border-radius: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(59, 130, 246, 0.2),
+            rgba(59, 130, 246, 0.05)
+        );
+
+    border: 1px solid rgba(59, 130, 246, 0.25);
+
+    color: #60a5fa;
+
+    font-size: 27px;
+
+    box-shadow:
+        0 10px 30px rgba(59, 130, 246, 0.12);
+}
+
+
+.business-price-label {
+    display: inline-block;
+
+    margin-bottom: 10px;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    color: #60a5fa;
+}
+
+
+.business-price-header h2 {
+    margin: 0 0 12px;
+
+    color: #fff;
+
+    font-size: clamp(28px, 4vw, 42px);
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+}
+
+
+.business-price-header p {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.62);
+
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+
+/* PRICE GRID */
+
+.business-price-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+/* CARD */
+
+.business-price-card {
+    position: relative;
+
+    padding: 28px 24px;
+
+    border-radius: 22px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.055),
+            rgba(255, 255, 255, 0.025)
+        );
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+.business-price-card:hover {
+    transform: translateY(-6px);
+
+    border-color:
+        rgba(96, 165, 250, 0.3);
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.25);
+}
+
+
+/* FEATURED */
+
+.business-price-card.featured {
+    border-color:
+        rgba(96, 165, 250, 0.4);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(59, 130, 246, 0.13),
+            rgba(255, 255, 255, 0.035)
+        );
+
+    box-shadow:
+        0 15px 50px rgba(59, 130, 246, 0.08);
+}
+
+
+/* POPULAR */
+
+.business-popular {
+    position: absolute;
+
+    top: 0;
+    right: 22px;
+
+    transform: translateY(-50%);
+
+    padding: 7px 12px;
+
+    border-radius: 999px;
+
+    background: #3b82f6;
+
+    color: #fff;
+
+    font-size: 9px;
+    font-weight: 900;
+
+    letter-spacing: 1px;
+}
+
+
+/* CARD ICON */
+
+.business-card-icon {
+    width: 48px;
+    height: 48px;
+
+    margin-bottom: 18px;
+
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(59, 130, 246, 0.1);
+
+    color: #60a5fa;
+
+    font-size: 19px;
+}
+
+
+/* CARD TYPE */
+
+.business-card-type {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #60a5fa;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+}
+
+
+.business-price-card h3 {
+    margin: 0 0 15px;
+
+    color: #fff;
+
+    font-size: 19px;
+    line-height: 1.35;
+}
+
+
+/* PRICE */
+
+.business-price {
+    margin-bottom: 15px;
+
+    color: #fff;
+
+    font-size: 32px;
+    font-weight: 850;
+
+    letter-spacing: -1px;
+}
+
+
+.business-price span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: rgba(255, 255, 255, 0.42);
+
+    font-size: 11px;
+    font-weight: 600;
+
+    letter-spacing: 0.5px;
+}
+
+
+.business-card-description {
+    min-height: 72px;
+
+    margin: 0 0 20px;
+
+    color: rgba(255, 255, 255, 0.58);
+
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+
+/* FEATURES */
+
+.business-price-card ul {
+    list-style: none;
+
+    margin: 0;
+    padding: 0;
+}
+
+
+.business-price-card li {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+
+    margin-bottom: 11px;
+
+    color: rgba(255, 255, 255, 0.72);
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+.business-price-card li i {
+    flex-shrink: 0;
+
+    margin-top: 3px;
+
+    color: #60a5fa;
+
+    font-size: 11px;
+}
+
+
+/* FOOTER */
+
+.business-price-footer {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-top: 25px;
+    padding-top: 25px;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+.business-price-footer strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #fff;
+
+    font-size: 14px;
+}
+
+
+.business-price-footer strong i {
+    color: #60a5fa;
+
+    margin-right: 6px;
+}
+
+
+.business-price-footer span {
+    color: rgba(255, 255, 255, 0.48);
+
+    font-size: 12px;
+}
+
+
+.business-price-contact {
+    display: inline-flex;
+
+    align-items: center;
+    gap: 9px;
+
+    padding: 13px 20px;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #3b82f6,
+            #2563eb
+        );
+
+    color: #fff;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 750;
+
+    white-space: nowrap;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.business-price-contact:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 30px rgba(37, 99, 235, 0.3);
+}
+
+
+/* NOTE */
+
+.business-price-note {
+    display: flex;
+
+    align-items: flex-start;
+    gap: 8px;
+
+    margin-top: 18px;
+
+    color: rgba(255, 255, 255, 0.38);
+
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+
+.business-price-note i {
+    color: #60a5fa;
+
+    margin-top: 2px;
+}
+
+
+/* SERVICE BUTTON */
+
+.service-learn-btn {
+    display: inline-flex;
+
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 15px;
+
+    padding: 10px 16px;
+
+    border: 1px solid rgba(96, 165, 250, 0.2);
+
+    border-radius: 10px;
+
+    background: rgba(59, 130, 246, 0.08);
+
+    color: #60a5fa;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease;
+}
+
+
+.service-learn-btn:hover {
+    transform: translateX(3px);
+
+    background: rgba(59, 130, 246, 0.15);
+
+    border-color:
+        rgba(96, 165, 250, 0.4);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 850px) {
+
+    .business-price-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .business-price-box {
+        padding: 35px 22px;
+
+        max-height: 92vh;
+
+        border-radius: 22px;
+    }
+
+    .business-card-description {
+        min-height: auto;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .business-price-modal {
+        padding: 12px;
+    }
+
+    .business-price-box {
+        padding: 32px 17px 22px;
+    }
+
+    .business-price-header {
+        margin-bottom: 28px;
+    }
+
+    .business-price-header h2 {
+        font-size: 28px;
+    }
+
+    .business-price-header p {
+        font-size: 13px;
+    }
+
+    .business-price-footer {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .business-price-contact {
+        justify-content: center;
+    }
+
+}
