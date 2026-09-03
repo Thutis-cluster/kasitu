@@ -427,30 +427,33 @@ SERVICES
 
 </div>
 
-                <div class="service-card">
+<div class="service-card alarm-service-card" id="alarmServiceCard">
 
-            <div class="service-icon">
-                <i class="fas fa-shield-halved"></i>
-            </div>
+    <div class="service-icon">
+        <i class="fas fa-shield-halved"></i>
+    </div>
 
-            <h3>Security Alarms</h3>
+    <h3>Security Alarms</h3>
 
-            <p>
-                Stay protected with smart, reliable security alarms. Built to deter intruders and give you peace of mind.
-            </p>
+    <p>
+        Stay protected with smart, reliable security alarms.
+        Built to deter intruders and give you peace of mind.
+    </p>
 
-     <a href="#" style="
-        position: relative;
-        z-index: 99999;
-        pointer-events: auto;
-    " class="service-learn-btn" id="alarm-pricing-btn">
-    View Alarm Pricing
-    <i class="fas fa-arrow-right"></i>
-</a>
-                    
-        </div>
+    <button
+        type="button"
+        class="service-learn-btn"
+        id="alarm-pricing-btn">
+
+        View Alarm Pricing
+
+        <i class="fas fa-arrow-right"></i>
+
+    </button>
+
+</div>
         
-<div class="service-card">
+<div class="service-card maintenance-service-card" id="maintenanceServiceCard">
 
     <div class="service-icon">
         <i class="fas fa-tools"></i>
@@ -463,19 +466,14 @@ SERVICES
         with reliable ongoing technical support.
     </p>
 
-<a
-    href="maintenance.html"
-    style="
-        position: relative;
-        z-index: 99999;
-        pointer-events: auto;
-    "
-    class="service-learn-btn">
+    <a
+        href="maintenance.html"
+        class="service-learn-btn">
 
-    Explore Maintenance
-    <i class="fas fa-arrow-right"></i>
+        Explore Maintenance
+        <i class="fas fa-arrow-right"></i>
 
-</a>
+    </a>
 
 </div>
 
@@ -3608,6 +3606,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+        /* ================= KEYLOCATORS MODAL ================= */
 document.addEventListener("DOMContentLoaded", function () {
 
     const keyLocatorCard =
@@ -3708,6 +3707,169 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 });
+
+        /* ================= ALARMS MODAL ================= */
+document.addEventListener("DOMContentLoaded", function () {
+
+    const alarmCard =
+        document.getElementById("alarmServiceCard");
+
+    const alarmButton =
+        document.getElementById("alarm-pricing-btn");
+
+    const alarmModal =
+        document.getElementById("alarmPricingModal");
+
+    const closeAlarmButton =
+        document.getElementById("closeAlarmModal");
+
+
+    /* Check that modal exists */
+
+    if (!alarmModal) {
+        console.error("Alarm pricing modal not found.");
+        return;
+    }
+
+
+    /* ================= OPEN MODAL ================= */
+
+    function openAlarmModal(event) {
+
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        alarmModal.classList.add("active");
+
+        document.body.style.overflow = "hidden";
+    }
+
+
+    /* ================= CLOSE MODAL ================= */
+
+    function closeAlarmModalFunction(event) {
+
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        alarmModal.classList.remove("active");
+
+        document.body.style.overflow = "";
+    }
+
+
+    /* ================= BUTTON ================= */
+
+    if (alarmButton) {
+
+        alarmButton.addEventListener(
+            "click",
+            openAlarmModal
+        );
+
+    }
+
+
+    /* ================= ENTIRE CARD ================= */
+
+    if (alarmCard) {
+
+        alarmCard.addEventListener(
+            "click",
+            function (event) {
+
+                /*
+                 * If the button was clicked,
+                 * don't open the modal twice.
+                 */
+
+                if (event.target.closest("#alarm-pricing-btn")) {
+                    return;
+                }
+
+                openAlarmModal(event);
+
+            }
+        );
+
+    }
+
+
+    /* ================= CLOSE BUTTON ================= */
+
+    if (closeAlarmButton) {
+
+        closeAlarmButton.addEventListener(
+            "click",
+            closeAlarmModalFunction
+        );
+
+    }
+
+
+    /* ================= CLICK OUTSIDE ================= */
+
+    alarmModal.addEventListener(
+        "click",
+        function (event) {
+
+            if (event.target === alarmModal) {
+
+                closeAlarmModalFunction();
+
+            }
+
+        }
+    );
+
+
+    /* ================= ESCAPE KEY ================= */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                closeAlarmModalFunction();
+
+            }
+
+        }
+    );
+
+});
+
+    /* ================= MAINTENANCE CARD ================= */
+document.addEventListener("DOMContentLoaded", function () {
+
+    const maintenanceCard =
+        document.getElementById("maintenanceServiceCard");
+
+    if (!maintenanceCard) return;
+
+
+    maintenanceCard.addEventListener("click", function (event) {
+
+        /*
+         * If the user clicked the actual button,
+         * let the button handle the navigation normally.
+         */
+        if (event.target.closest(".service-learn-btn")) {
+            return;
+        }
+
+        /* Clicking anywhere else on the card */
+        window.location.href = "maintenance.html";
+
+    });
+
+});
+
 </script>
 
 <script src="script.js"></script>
