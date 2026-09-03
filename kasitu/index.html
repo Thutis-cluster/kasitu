@@ -3267,170 +3267,102 @@ PROJECT DETAILS MODAL
    KASITU BUSINESS REGISTRATION PRICE MODAL
 ================================================== */
 
-document.addEventListener("DOMContentLoaded", function () {
+(function () {
 
-    const businessRegistrationButton =
-        document.getElementById("business-registration-btn");
+    const button = document.getElementById("business-registration-btn");
+    const modal = document.getElementById("business-price-modal");
+    const closeButton = document.getElementById("business-price-close");
+    const backdrop = document.getElementById("business-price-backdrop");
+    const contactButton = document.getElementById("business-price-contact");
 
-    const businessPriceModal =
-        document.getElementById("business-price-modal");
+    console.log("KASITU Business Registration Modal:", {
+        button,
+        modal,
+        closeButton,
+        backdrop,
+        contactButton
+    });
 
-    const businessPriceClose =
-        document.getElementById("business-price-close");
-
-    const businessPriceBackdrop =
-        document.getElementById("business-price-backdrop");
-
-    const businessPriceContact =
-        document.getElementById("business-price-contact");
-
-
-    /* ==========================================
-       SAFETY CHECK
-    ========================================== */
-
-    if (!businessRegistrationButton || !businessPriceModal) {
-
-        console.warn(
-            "Business Registration modal elements not found."
-        );
-
+    if (!button || !modal) {
+        console.error("❌ Business Registration modal elements missing.");
         return;
-
     }
 
-
-    /* ==========================================
-       OPEN MODAL
-    ========================================== */
-
-    function openBusinessPriceModal(event) {
+    function openBusinessModal(event) {
 
         if (event) {
             event.preventDefault();
+            event.stopPropagation();
         }
 
-        businessPriceModal.classList.add("active");
+        modal.classList.add("active");
+        modal.setAttribute("aria-hidden", "false");
 
-        businessPriceModal.setAttribute(
-            "aria-hidden",
-            "false"
-        );
+        document.body.classList.add("business-modal-open");
 
-        document.body.classList.add(
-            "business-modal-open"
-        );
-
+        console.log("✅ Business Registration pricing OPENED");
     }
 
+    function closeBusinessModal(event) {
 
-    /* ==========================================
-       CLOSE MODAL
-    ========================================== */
-
-    function closeBusinessPriceModal() {
-
-        businessPriceModal.classList.remove(
-            "active"
-        );
-
-        businessPriceModal.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-        document.body.classList.remove(
-            "business-modal-open"
-        );
-
-    }
-
-
-    /* ==========================================
-       VIEW PRICING BUTTON
-    ========================================== */
-
-    businessRegistrationButton.addEventListener(
-        "click",
-        openBusinessPriceModal
-    );
-
-
-    /* ==========================================
-       CLOSE BUTTON
-    ========================================== */
-
-    if (businessPriceClose) {
-
-        businessPriceClose.addEventListener(
-            "click",
-            closeBusinessPriceModal
-        );
-
-    }
-
-
-    /* ==========================================
-       BACKDROP
-    ========================================== */
-
-    if (businessPriceBackdrop) {
-
-        businessPriceBackdrop.addEventListener(
-            "click",
-            closeBusinessPriceModal
-        );
-
-    }
-
-
-    /* ==========================================
-       GET STARTED
-    ========================================== */
-
-    if (businessPriceContact) {
-
-        businessPriceContact.addEventListener(
-            "click",
-            function () {
-
-                closeBusinessPriceModal();
-
-            }
-        );
-
-    }
-
-
-    /* ==========================================
-       ESCAPE KEY
-    ========================================== */
-
-    document.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (
-                event.key === "Escape" &&
-                businessPriceModal.classList.contains("active")
-            ) {
-
-                closeBusinessPriceModal();
-
-            }
-
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
         }
-    );
 
+        modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
 
-    console.log(
-        "Business Registration Price Modal Loaded ✓"
-    );
+        document.body.classList.remove("business-modal-open");
 
-});
+        console.log("Business Registration pricing CLOSED");
+    }
+
+    /* VIEW PRICING */
+    button.onclick = openBusinessModal;
+
+    /* CLOSE */
+    if (closeButton) {
+        closeButton.onclick = closeBusinessModal;
+    }
+
+    /* BACKDROP */
+    if (backdrop) {
+        backdrop.onclick = closeBusinessModal;
+    }
+
+    /* GET STARTED */
+    if (contactButton) {
+        contactButton.onclick = function () {
+            closeBusinessModal();
+
+            setTimeout(function () {
+                const contact = document.getElementById("contact");
+
+                if (contact) {
+                    contact.scrollIntoView({
+                        behavior: "smooth"
+                    });
+                }
+            }, 100);
+        };
+    }
+
+    /* ESCAPE */
+    document.addEventListener("keydown", function (event) {
+
+        if (
+            event.key === "Escape" &&
+            modal.classList.contains("active")
+        ) {
+            closeBusinessModal();
+        }
+
+    });
+
+})();
 </script>
 
-    
 <script src="script.js"></script>
     
 </body>
