@@ -80,25 +80,6 @@ const rafThrottle = (callback) => {
     };
 };
 
-/*==================================================
-STICKY HEADER
-==================================================*/
-
-function updateHeader() {
-
-    if (window.scrollY > 80) {
-
-        header.classList.add("scrolled");
-
-    } else {
-
-        header.classList.remove("scrolled");
-
-    }
-
-}
-
-updateHeader();
 
 /*==================================================
 SMOOTH SCROLL
@@ -168,14 +149,6 @@ function highlightNavigation() {
 
 }
 
-window.addEventListener(
-
-    "scroll",
-
-    debounce(highlightNavigation)
-
-);
-
 /*==================================================
 SCROLL TO TOP
 ==================================================*/
@@ -211,16 +184,6 @@ function updateScrollButton() {
         window.scrollY > 400 ? "auto" : "none";
 
 }
-
-window.addEventListener(
-
-    "scroll",
-
-    debounce(updateScrollButton)
-
-);
-
-updateScrollButton();
 
 /*==================================================
 COUNTER ANIMATION
@@ -1684,42 +1647,159 @@ if (pricingSection) {
 }
 
 /*==================================================
-SCROLL PERFORMANCE CONTROLLER
+KASITU — FAST SCROLL CONTROLLER
+Maintenance / Performance Version
 ==================================================*/
 
 const progress = document.createElement("div");
+
 progress.id = "progress-bar";
+
 document.body.appendChild(progress);
 
-let lastScrollY = window.scrollY;
 let scrollFrame = null;
+let latestScrollY = window.scrollY;
+
+
+/*==================================================
+UPDATE ALL SCROLL UI
+==================================================*/
 
 function updateScrollUI() {
-    scrollFrame = null;
-    lastScrollY = window.scrollY;
 
-    updateHeader();
+    scrollFrame = null;
+
+    latestScrollY = window.scrollY;
+
+
+    /* ------------------------------------------
+       STICKY HEADER
+    ------------------------------------------ */
+
+    if (header) {
+
+        header.classList.toggle(
+            "scrolled",
+            latestScrollY > 80
+        );
+
+    }
+
+
+    /* ------------------------------------------
+       ACTIVE NAVIGATION
+    ------------------------------------------ */
+
     highlightNavigation();
+
+
+    /* ------------------------------------------
+       SCROLL TO TOP BUTTON
+    ------------------------------------------ */
+
     updateScrollButton();
 
-    const height = document.documentElement.scrollHeight - window.innerHeight;
-    const percent = height > 0 ? (lastScrollY / height) * 100 : 0;
-    progress.style.width = `${Math.min(100, Math.max(0, percent))}%`;
 
-    if (mobileMenu && menuBtn && mobileMenu.classList.contains("mobile-open")) {
-        mobileMenu.classList.remove("mobile-open");
-        menuBtn.classList.remove("open");
-        menuBtn.setAttribute("aria-expanded", "false");
+    /* ------------------------------------------
+       PROGRESS BAR
+    ------------------------------------------ */
+
+    const height =
+        Math.max(
+            1,
+            document.documentElement.scrollHeight -
+            window.innerHeight
+        );
+
+    const percent =
+        (latestScrollY / height) * 100;
+
+    progress.style.width =
+        Math.min(
+            100,
+            Math.max(0, percent)
+        ) + "%";
+
+
+    /* ------------------------------------------
+       CLOSE MOBILE MENU WHILE SCROLLING
+    ------------------------------------------ */
+
+    if (
+        mobileMenu &&
+        menuBtn &&
+        mobileMenu.classList.contains("mobile-open")
+    ) {
+
+        mobileMenu.classList.remove(
+            "mobile-open"
+        );
+
+        menuBtn.classList.remove(
+            "open"
+        );
+
+        menuBtn.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
     }
+
 }
 
-const requestScrollUpdate = () => {
-    if (scrollFrame !== null) return;
-    scrollFrame = requestAnimationFrame(updateScrollUI);
-};
 
-window.addEventListener("scroll", requestScrollUpdate, { passive: true });
-window.addEventListener("resize", requestScrollUpdate, { passive: true });
+/*==================================================
+REQUEST ONE ANIMATION FRAME
+==================================================*/
+
+function requestScrollUpdate() {
+
+    latestScrollY =
+        window.scrollY;
+
+    if (scrollFrame !== null) {
+        return;
+    }
+
+    scrollFrame =
+        requestAnimationFrame(
+            updateScrollUI
+        );
+
+}
+
+
+/*==================================================
+FAST PASSIVE SCROLL
+==================================================*/
+
+window.addEventListener(
+    "scroll",
+    requestScrollUpdate,
+    {
+        passive: true
+    }
+);
+
+
+/*==================================================
+RESIZE
+==================================================*/
+
+window.addEventListener(
+    "resize",
+    requestScrollUpdate,
+    {
+        passive: true
+    }
+);
+
+
+/*==================================================
+INITIAL UPDATE
+==================================================*/
+
 updateScrollUI();
 
 /*==================================================
