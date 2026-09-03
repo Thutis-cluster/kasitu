@@ -16554,4 +16554,31 @@ body.project-modal-open {
         justify-content: center;
     }
 
+} 
+
+/* ==================================================
+   BUSINESS REGISTRATION CARD
+   MAKE WHOLE CARD CLICKABLE
+================================================== */
+
+.business-registration-card {
+    cursor: pointer;
+}
+
+
+/* Keep the actual button looking like a button */
+
+.business-registration-card
+.service-learn-btn {
+    position: relative;
+    z-index: 5;
+    cursor: pointer;
+}
+
+
+/* Make sure the card's decorative overlay
+   never blocks mouse clicks */
+
+.business-registration-card::before {
+    pointer-events: none;
 }
