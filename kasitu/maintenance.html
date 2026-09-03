@@ -1,0 +1,4156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="KASITU Webs Maintenance & Support — reliable website maintenance, security, backups, performance optimisation and technical support for South African businesses.">
+
+    <meta
+        name="keywords"
+        content="website maintenance South Africa, website support Pretoria, website maintenance KASITU Webs, website security, website updates, technical support">
+
+    <meta
+        name="author"
+        content="KASITU Webs">
+
+    <meta
+        name="theme-color"
+        content="#0B1120">
+
+    <title>Maintenance & Support | KASITU Webs</title>
+
+
+    <!-- ==========================================
+         GOOGLE FONTS
+    =========================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+
+    <!-- ==========================================
+         FONT AWESOME
+    =========================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+
+    <style>
+
+        /* ==========================================
+           ROOT VARIABLES
+        =========================================== */
+
+        :root {
+
+            --primary: #0B1120;
+            --primary-soft: #111a2e;
+
+            --accent: #00d4ff;
+            --accent-2: #7c3aed;
+
+            --text: #0f172a;
+            --text-soft: #64748b;
+
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --surface-2: #f1f5f9;
+
+            --border: rgba(15, 23, 42, 0.09);
+
+            --shadow:
+                0 20px 60px rgba(15, 23, 42, 0.08);
+
+            --shadow-hover:
+                0 30px 80px rgba(15, 23, 42, 0.14);
+
+            --radius: 20px;
+
+            --transition:
+                all 0.35s cubic-bezier(.16,1,.3,1);
+        }
+
+
+        /* ==========================================
+           DARK MODE
+        =========================================== */
+
+        body.dark {
+
+            --text: #f8fafc;
+            --text-soft: #94a3b8;
+
+            --background: #060b16;
+            --surface: #0d1424;
+            --surface-2: #111a2e;
+
+            --border: rgba(255,255,255,0.08);
+
+            --shadow:
+                0 20px 60px rgba(0,0,0,0.35);
+
+            --shadow-hover:
+                0 30px 80px rgba(0,0,0,0.5);
+        }
+
+
+        /* ==========================================
+           RESET
+        =========================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            font-family: "Inter", sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(0,212,255,0.06),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(124,58,237,0.06),
+                    transparent 30%
+                ),
+
+                var(--background);
+
+            color: var(--text);
+
+            line-height: 1.7;
+
+            overflow-x: hidden;
+
+            transition:
+                background .35s ease,
+                color .35s ease;
+        }
+
+
+        body.menu-open {
+            overflow: hidden;
+        }
+
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+
+        button {
+            font-family: inherit;
+        }
+
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+
+        .container {
+
+            width: min(1180px, calc(100% - 40px));
+
+            margin: auto;
+        }
+
+
+        /* ==========================================
+           HEADER
+        =========================================== */
+
+        .header {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+            right: 0;
+
+            z-index: 9999;
+
+            background:
+                rgba(11,17,32,0.88);
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.08);
+        }
+
+
+        .nav {
+
+            min-height: 78px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+
+        /* LOGO */
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            font-size: 1.25rem;
+
+            font-weight: 800;
+
+            color: white;
+
+            letter-spacing: -0.5px;
+        }
+
+
+        .logo-mark {
+
+            width: 38px;
+            height: 38px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--accent),
+                    var(--accent-2)
+                );
+
+            color: white;
+
+            box-shadow:
+                0 10px 30px rgba(0,212,255,0.2);
+        }
+
+
+        .logo span {
+            color: var(--accent);
+        }
+
+
+        /* NAV LINKS */
+
+        .nav-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 30px;
+
+            list-style: none;
+        }
+
+
+        .nav-links a {
+
+            color: rgba(255,255,255,0.76);
+
+            font-size: .92rem;
+
+            font-weight: 500;
+
+            transition: var(--transition);
+
+            position: relative;
+        }
+
+
+        .nav-links a::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            bottom: -7px;
+
+            width: 0;
+
+            height: 2px;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--accent),
+                    var(--accent-2)
+                );
+
+            transition: var(--transition);
+        }
+
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+
+        /* NAV ACTIONS */
+
+        .nav-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .theme-toggle,
+        .menu-toggle {
+
+            width: 42px;
+            height: 42px;
+
+            border: 1px solid rgba(255,255,255,0.1);
+
+            background:
+                rgba(255,255,255,0.05);
+
+            color: white;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            display: grid;
+
+            place-items: center;
+
+            transition: var(--transition);
+        }
+
+
+        .theme-toggle:hover,
+        .menu-toggle:hover {
+
+            background:
+                rgba(0,212,255,0.12);
+
+            border-color:
+                rgba(0,212,255,0.35);
+
+            transform: translateY(-2px);
+        }
+
+
+        .menu-toggle {
+            display: none;
+        }
+
+
+        /* ==========================================
+           BUTTONS
+        =========================================== */
+
+        .btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            padding: 14px 22px;
+
+            border-radius: 12px;
+
+            font-size: .9rem;
+
+            font-weight: 700;
+
+            border: 1px solid transparent;
+
+            cursor: pointer;
+
+            transition: var(--transition);
+        }
+
+
+        .btn-primary {
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--accent),
+                    #0891b2
+                );
+
+            box-shadow:
+                0 12px 30px rgba(0,212,255,0.18);
+        }
+
+
+        .btn-primary:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 18px 40px rgba(0,212,255,0.28);
+        }
+
+
+        .btn-secondary {
+
+            color: var(--text);
+
+            border-color: var(--border);
+
+            background: var(--surface);
+        }
+
+
+        .btn-secondary:hover {
+
+            transform: translateY(-3px);
+
+            border-color:
+                rgba(0,212,255,.4);
+        }
+
+
+        /* ==========================================
+           HERO
+        =========================================== */
+
+        .hero {
+
+            min-height: 720px;
+
+            padding-top: 160px;
+            padding-bottom: 100px;
+
+            display: flex;
+
+            align-items: center;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 500px;
+            height: 500px;
+
+            right: -180px;
+            top: 120px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(0,212,255,.16),
+                    transparent 70%
+                );
+
+            pointer-events: none;
+        }
+
+
+        .hero::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 450px;
+            height: 450px;
+
+            left: -220px;
+            bottom: -100px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(124,58,237,.13),
+                    transparent 70%
+                );
+
+            pointer-events: none;
+        }
+
+
+        .hero-content {
+
+            max-width: 850px;
+
+            margin: auto;
+
+            text-align: center;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .eyebrow {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 8px 14px;
+
+            border-radius: 50px;
+
+            border:
+                1px solid rgba(0,212,255,.2);
+
+            background:
+                rgba(0,212,255,.06);
+
+            color:
+                #06b6d4;
+
+            font-size: .78rem;
+
+            font-weight: 700;
+
+            letter-spacing: .08em;
+
+            text-transform: uppercase;
+
+            margin-bottom: 24px;
+        }
+
+
+        .eyebrow i {
+            font-size: .65rem;
+        }
+
+
+        .hero h1 {
+
+            font-size:
+                clamp(2.6rem, 6vw, 5rem);
+
+            line-height: 1.05;
+
+            letter-spacing: -0.06em;
+
+            margin-bottom: 24px;
+
+            font-weight: 800;
+        }
+
+
+        .gradient-text {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--accent),
+                    #38bdf8,
+                    #a78bfa
+                );
+
+            -webkit-background-clip: text;
+
+            background-clip: text;
+
+            color: transparent;
+        }
+
+
+        .hero-description {
+
+            max-width: 720px;
+
+            margin: auto;
+
+            color: var(--text-soft);
+
+            font-size:
+                clamp(1rem, 2vw, 1.18rem);
+
+            line-height: 1.8;
+
+            margin-bottom: 34px;
+        }
+
+
+        .hero-actions {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 14px;
+
+            flex-wrap: wrap;
+        }
+
+
+        /* ==========================================
+           TRUST BAR
+        =========================================== */
+
+        .trust-bar {
+
+            border-top:
+                1px solid var(--border);
+
+            border-bottom:
+                1px solid var(--border);
+
+            background:
+                var(--surface);
+        }
+
+
+        .trust-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+        }
+
+
+        .trust-item {
+
+            padding: 26px 20px;
+
+            text-align: center;
+
+            border-right:
+                1px solid var(--border);
+        }
+
+
+        .trust-item:last-child {
+            border-right: none;
+        }
+
+
+        .trust-item i {
+
+            color: var(--accent);
+
+            font-size: 1.3rem;
+
+            margin-bottom: 7px;
+        }
+
+
+        .trust-item strong {
+
+            display: block;
+
+            font-size: .95rem;
+        }
+
+
+        .trust-item span {
+
+            color: var(--text-soft);
+
+            font-size: .75rem;
+        }
+
+
+        /* ==========================================
+           SECTION
+        =========================================== */
+
+        section {
+            padding: 100px 0;
+        }
+
+
+        .section-heading {
+
+            max-width: 720px;
+
+            margin: 0 auto 55px;
+
+            text-align: center;
+        }
+
+
+        .section-label {
+
+            color: var(--accent);
+
+            font-size: .75rem;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: .12em;
+
+            margin-bottom: 12px;
+        }
+
+
+        .section-heading h2 {
+
+            font-size:
+                clamp(2rem, 4vw, 3.1rem);
+
+            line-height: 1.15;
+
+            letter-spacing: -.045em;
+
+            margin-bottom: 16px;
+        }
+
+
+        .section-heading p {
+
+            color: var(--text-soft);
+
+            font-size: 1rem;
+        }
+
+
+        /* ==========================================
+           BENEFITS
+        =========================================== */
+
+        .benefits-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 22px;
+        }
+
+
+        .benefit-card {
+
+            padding: 32px;
+
+            border:
+                1px solid var(--border);
+
+            background: var(--surface);
+
+            border-radius: var(--radius);
+
+            box-shadow: var(--shadow);
+
+            transition: var(--transition);
+        }
+
+
+        .benefit-card:hover {
+
+            transform: translateY(-8px);
+
+            box-shadow: var(--shadow-hover);
+
+            border-color:
+                rgba(0,212,255,.22);
+        }
+
+
+        .benefit-icon {
+
+            width: 54px;
+            height: 54px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 15px;
+
+            color: var(--accent);
+
+            background:
+                rgba(0,212,255,.08);
+
+            border:
+                1px solid rgba(0,212,255,.12);
+
+            font-size: 1.2rem;
+
+            margin-bottom: 22px;
+        }
+
+
+        .benefit-card h3 {
+
+            font-size: 1.1rem;
+
+            margin-bottom: 9px;
+        }
+
+
+        .benefit-card p {
+
+            color: var(--text-soft);
+
+            font-size: .9rem;
+        }
+
+
+        /* ==========================================
+           INCLUDED SERVICES
+        =========================================== */
+
+        .included-section {
+
+            background:
+                var(--surface);
+        }
+
+
+        .included-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 16px;
+        }
+
+
+        .included-item {
+
+            padding: 25px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 16px;
+
+            background:
+                var(--background);
+
+            transition: var(--transition);
+        }
+
+
+        .included-item:hover {
+
+            transform: translateY(-5px);
+
+            border-color:
+                rgba(0,212,255,.25);
+        }
+
+
+        .included-item i {
+
+            color: var(--accent);
+
+            font-size: 1.1rem;
+
+            margin-bottom: 13px;
+        }
+
+
+        .included-item h3 {
+
+            font-size: .95rem;
+
+            margin-bottom: 5px;
+        }
+
+
+        .included-item p {
+
+            color: var(--text-soft);
+
+            font-size: .78rem;
+
+            line-height: 1.6;
+        }
+
+
+        /* ==========================================
+           PRICING
+        =========================================== */
+
+        .pricing-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 20px;
+
+            align-items: stretch;
+        }
+
+
+        .pricing-card {
+
+            position: relative;
+
+            padding: 32px 25px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 22px;
+
+            background: var(--surface);
+
+            box-shadow: var(--shadow);
+
+            transition: var(--transition);
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        .pricing-card:hover {
+
+            transform: translateY(-8px);
+
+            box-shadow: var(--shadow-hover);
+        }
+
+
+        .pricing-card.popular {
+
+            border:
+                1px solid rgba(0,212,255,.45);
+
+            box-shadow:
+                0 25px 70px rgba(0,212,255,.12);
+
+            transform: scale(1.025);
+        }
+
+
+        .pricing-card.popular:hover {
+
+            transform:
+                scale(1.025)
+                translateY(-8px);
+        }
+
+
+        .popular-badge {
+
+            position: absolute;
+
+            top: -13px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            padding: 6px 14px;
+
+            border-radius: 50px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--accent),
+                    var(--accent-2)
+                );
+
+            color: white;
+
+            font-size: .65rem;
+
+            font-weight: 800;
+
+            letter-spacing: .07em;
+
+            white-space: nowrap;
+        }
+
+
+        .pricing-icon {
+
+            width: 52px;
+            height: 52px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 15px;
+
+            background:
+                rgba(0,212,255,.08);
+
+            color: var(--accent);
+
+            margin-bottom: 20px;
+
+            font-size: 1.1rem;
+        }
+
+
+        .pricing-card h3 {
+
+            font-size: 1.15rem;
+
+            margin-bottom: 8px;
+        }
+
+
+        .pricing-description {
+
+            min-height: 72px;
+
+            color: var(--text-soft);
+
+            font-size: .78rem;
+
+            line-height: 1.6;
+
+            margin-bottom: 18px;
+        }
+
+
+        .price {
+
+            display: flex;
+
+            align-items: baseline;
+
+            gap: 3px;
+
+            margin-bottom: 3px;
+        }
+
+
+        .currency {
+
+            font-size: 1rem;
+
+            font-weight: 700;
+        }
+
+
+        .amount {
+
+            font-size: 2.5rem;
+
+            line-height: 1;
+
+            font-weight: 800;
+
+            letter-spacing: -.05em;
+        }
+
+
+        .period {
+
+            color: var(--text-soft);
+
+            font-size: .8rem;
+        }
+
+
+        .price-note {
+
+            color: var(--accent);
+
+            font-size: .7rem;
+
+            font-weight: 700;
+
+            margin-bottom: 24px;
+        }
+
+
+        .features {
+
+            list-style: none;
+
+            margin-bottom: 28px;
+
+            flex: 1;
+        }
+
+
+        .features li {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 9px;
+
+            color: var(--text-soft);
+
+            font-size: .78rem;
+
+            line-height: 1.5;
+
+            margin-bottom: 11px;
+        }
+
+
+        .features i {
+
+            color: #22c55e;
+
+            margin-top: 3px;
+
+            font-size: .7rem;
+        }
+
+
+        .pricing-btn {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 9px;
+
+            width: 100%;
+
+            padding: 13px;
+
+            border-radius: 11px;
+
+            background:
+                var(--surface-2);
+
+            border:
+                1px solid var(--border);
+
+            font-size: .8rem;
+
+            font-weight: 700;
+
+            transition: var(--transition);
+        }
+
+
+        .pricing-btn:hover {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--accent),
+                    #0891b2
+                );
+
+            color: white;
+
+            transform: translateY(-2px);
+        }
+
+
+        .popular .pricing-btn {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--accent),
+                    #0891b2
+                );
+
+            color: white;
+
+            border-color: transparent;
+        }
+
+
+        .pricing-footer {
+
+            margin-top: 13px;
+
+            text-align: center;
+
+            color: var(--text-soft);
+
+            font-size: .65rem;
+
+            line-height: 1.5;
+        }
+
+
+        /* ==========================================
+           DISCLAIMER
+        =========================================== */
+
+        .pricing-note {
+
+            max-width: 850px;
+
+            margin: 35px auto 0;
+
+            padding: 18px 20px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 14px;
+
+            background:
+                var(--surface);
+
+            color: var(--text-soft);
+
+            font-size: .78rem;
+
+            text-align: center;
+        }
+
+
+        .pricing-note i {
+
+            color: var(--accent);
+
+            margin-right: 6px;
+        }
+
+
+        /* ==========================================
+           PROCESS
+        =========================================== */
+
+        .process {
+
+            background:
+                var(--surface);
+        }
+
+
+        .process-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 25px;
+
+            position: relative;
+        }
+
+
+        .process-grid::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 32px;
+            left: 12%;
+            right: 12%;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(0,212,255,.35),
+                    transparent
+                );
+        }
+
+
+        .process-step {
+
+            text-align: center;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .process-number {
+
+            width: 64px;
+            height: 64px;
+
+            margin: 0 auto 20px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 50%;
+
+            background:
+                var(--surface);
+
+            border:
+                1px solid rgba(0,212,255,.3);
+
+            color: var(--accent);
+
+            font-weight: 800;
+
+            box-shadow:
+                0 0 0 8px var(--surface);
+        }
+
+
+        .process-step h3 {
+
+            font-size: 1rem;
+
+            margin-bottom: 7px;
+        }
+
+
+        .process-step p {
+
+            color: var(--text-soft);
+
+            font-size: .78rem;
+
+            max-width: 220px;
+
+            margin: auto;
+        }
+
+
+        /* ==========================================
+           NOT INCLUDED
+        =========================================== */
+
+        .not-included {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 25px;
+        }
+
+
+        .included-box,
+        .excluded-box {
+
+            padding: 35px;
+
+            border-radius: 20px;
+
+            border:
+                1px solid var(--border);
+
+            background: var(--surface);
+        }
+
+
+        .box-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .box-title i {
+
+            width: 38px;
+            height: 38px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 10px;
+
+            background:
+                rgba(34,197,94,.1);
+
+            color: #22c55e;
+        }
+
+
+        .excluded-box .box-title i {
+
+            background:
+                rgba(239,68,68,.1);
+
+            color: #ef4444;
+        }
+
+
+        .box-title h3 {
+            font-size: 1.1rem;
+        }
+
+
+        .box-list {
+
+            list-style: none;
+        }
+
+
+        .box-list li {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            color: var(--text-soft);
+
+            font-size: .84rem;
+
+            margin-bottom: 13px;
+        }
+
+
+        .box-list li i {
+
+            color: #22c55e;
+
+            margin-top: 5px;
+
+            font-size: .65rem;
+        }
+
+
+        .excluded-box li i {
+            color: #ef4444;
+        }
+
+
+        /* ==========================================
+           FAQ
+        =========================================== */
+
+        .faq-container {
+
+            max-width: 850px;
+
+            margin: auto;
+        }
+
+
+        .faq-item {
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 14px;
+
+            background: var(--surface);
+
+            margin-bottom: 12px;
+
+            overflow: hidden;
+        }
+
+
+        .faq-question {
+
+            width: 100%;
+
+            border: none;
+
+            background: transparent;
+
+            color: var(--text);
+
+            padding: 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            font-weight: 700;
+
+            font-size: .9rem;
+        }
+
+
+        .faq-question i {
+
+            color: var(--accent);
+
+            transition: var(--transition);
+
+            flex-shrink: 0;
+        }
+
+
+        .faq-answer {
+
+            max-height: 0;
+
+            overflow: hidden;
+
+            transition:
+                max-height .4s ease;
+        }
+
+
+        .faq-answer-inner {
+
+            padding:
+                0 20px 20px;
+
+            color: var(--text-soft);
+
+            font-size: .82rem;
+
+            line-height: 1.7;
+        }
+
+
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+        }
+
+
+        .faq-item.active .faq-question i {
+
+            transform:
+                rotate(180deg);
+        }
+
+
+        /* ==========================================
+           CTA
+        =========================================== */
+
+        .cta-section {
+            padding-top: 40px;
+        }
+
+
+        .cta-box {
+
+            position: relative;
+
+            overflow: hidden;
+
+            padding: 70px 40px;
+
+            text-align: center;
+
+            border-radius: 28px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0B1120,
+                    #111a2e
+                );
+
+            color: white;
+
+            box-shadow:
+                0 30px 80px rgba(11,17,32,.2);
+        }
+
+
+        .cta-box::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 400px;
+            height: 400px;
+
+            right: -180px;
+            top: -200px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(0,212,255,.25),
+                    transparent 70%
+                );
+        }
+
+
+        .cta-box::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 350px;
+            height: 350px;
+
+            left: -180px;
+            bottom: -200px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(124,58,237,.2),
+                    transparent 70%
+                );
+        }
+
+
+        .cta-content {
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .cta-box h2 {
+
+            font-size:
+                clamp(2rem, 4vw, 3rem);
+
+            line-height: 1.1;
+
+            letter-spacing: -.04em;
+
+            margin-bottom: 15px;
+        }
+
+
+        .cta-box p {
+
+            max-width: 650px;
+
+            margin:
+                0 auto 28px;
+
+            color:
+                rgba(255,255,255,.68);
+        }
+
+
+        /* ==========================================
+           FOOTER
+        =========================================== */
+
+        footer {
+
+            padding: 45px 0 25px;
+
+            border-top:
+                1px solid var(--border);
+        }
+
+
+        .footer-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1.5fr 1fr 1fr 1fr;
+
+            gap: 40px;
+
+            padding-bottom: 35px;
+        }
+
+
+        .footer-brand p {
+
+            color: var(--text-soft);
+
+            font-size: .8rem;
+
+            max-width: 330px;
+
+            margin-top: 15px;
+        }
+
+
+        .footer-column h4 {
+
+            font-size: .82rem;
+
+            margin-bottom: 15px;
+        }
+
+
+        .footer-column a {
+
+            display: block;
+
+            color: var(--text-soft);
+
+            font-size: .78rem;
+
+            margin-bottom: 9px;
+
+            transition: var(--transition);
+        }
+
+
+        .footer-column a:hover {
+
+            color: var(--accent);
+
+            transform: translateX(3px);
+        }
+
+
+        .footer-bottom {
+
+            border-top:
+                1px solid var(--border);
+
+            padding-top: 20px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            color: var(--text-soft);
+
+            font-size: .7rem;
+        }
+
+
+        /* ==========================================
+           BACK TO TOP
+        =========================================== */
+
+        .back-to-top {
+
+            position: fixed;
+
+            right: 22px;
+            bottom: 22px;
+
+            width: 46px;
+            height: 46px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 13px;
+
+            background: var(--surface);
+
+            color: var(--text);
+
+            display: grid;
+
+            place-items: center;
+
+            cursor: pointer;
+
+            box-shadow: var(--shadow);
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transform:
+                translateY(15px);
+
+            transition: var(--transition);
+
+            z-index: 999;
+        }
+
+
+        .back-to-top.visible {
+
+            opacity: 1;
+
+            visibility: visible;
+
+            transform:
+                translateY(0);
+        }
+
+
+        .back-to-top:hover {
+
+            color: white;
+
+            background:
+                var(--accent);
+
+            border-color:
+                var(--accent);
+        }
+
+
+        /* ==========================================
+           SCROLL ANIMATION
+        =========================================== */
+
+        .reveal {
+
+            opacity: 0;
+
+            transform:
+                translateY(30px);
+
+            transition:
+                opacity .7s ease,
+                transform .7s ease;
+        }
+
+
+        .reveal.visible {
+
+            opacity: 1;
+
+            transform:
+                translateY(0);
+        }
+
+
+        /* ==========================================
+           MOBILE
+        =========================================== */
+
+        @media (max-width: 1050px) {
+
+            .pricing-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .included-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+
+
+        @media (max-width: 850px) {
+
+            .nav-links {
+
+                position: fixed;
+
+                top: 78px;
+                left: 0;
+                right: 0;
+
+                padding: 25px;
+
+                background:
+                    rgba(11,17,32,.98);
+
+                backdrop-filter:
+                    blur(20px);
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                gap: 5px;
+
+                transform:
+                    translateY(-120%);
+
+                opacity: 0;
+
+                visibility: hidden;
+
+                transition: var(--transition);
+
+                border-bottom:
+                    1px solid rgba(255,255,255,.08);
+            }
+
+
+            .nav-links.active {
+
+                transform:
+                    translateY(0);
+
+                opacity: 1;
+
+                visibility: visible;
+            }
+
+
+            .nav-links a {
+
+                display: block;
+
+                padding: 13px;
+
+                border-radius: 10px;
+            }
+
+
+            .nav-links a:hover {
+
+                background:
+                    rgba(255,255,255,.05);
+            }
+
+
+            .menu-toggle {
+                display: grid;
+            }
+
+
+            .nav-actions .btn {
+                display: none;
+            }
+
+
+            .benefits-grid {
+
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+
+            .process-grid {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+                gap: 40px;
+            }
+
+
+            .process-grid::before {
+                display: none;
+            }
+
+
+            .footer-grid {
+
+                grid-template-columns:
+                    1fr 1fr;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .container {
+
+                width:
+                    min(100% - 28px, 1180px);
+            }
+
+
+            section {
+
+                padding: 75px 0;
+            }
+
+
+            .hero {
+
+                min-height: auto;
+
+                padding-top: 135px;
+
+                padding-bottom: 75px;
+            }
+
+
+            .hero h1 {
+
+                font-size:
+                    clamp(2.25rem, 12vw, 3.4rem);
+            }
+
+
+            .hero-actions {
+
+                flex-direction: column;
+
+                width: 100%;
+            }
+
+
+            .hero-actions .btn {
+
+                width: 100%;
+            }
+
+
+            .trust-grid {
+
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+
+            .trust-item {
+
+                border-bottom:
+                    1px solid var(--border);
+            }
+
+
+            .trust-item:nth-child(2) {
+
+                border-right: none;
+            }
+
+
+            .benefits-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .included-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .pricing-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 35px;
+            }
+
+
+            .pricing-card.popular {
+
+                transform: none;
+            }
+
+
+            .pricing-card.popular:hover {
+
+                transform:
+                    translateY(-8px);
+            }
+
+
+            .not-included {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .process-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .footer-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 25px;
+            }
+
+
+            .footer-bottom {
+
+                flex-direction: column;
+
+                text-align: center;
+            }
+
+
+            .cta-box {
+
+                padding:
+                    55px 22px;
+            }
+
+
+            .cta-box .btn {
+
+                width: 100%;
+            }
+        }
+
+
+        /* ==========================================
+           REDUCED MOTION
+        =========================================== */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+
+                scroll-behavior: auto !important;
+
+                transition-duration:
+                    0.01ms !important;
+
+                animation-duration:
+                    0.01ms !important;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ==========================================
+         HEADER
+    =========================================== -->
+
+    <header class="header">
+
+        <div class="container">
+
+            <nav class="nav">
+
+                <a
+                    href="index.html"
+                    class="logo">
+
+                    <div class="logo-mark">
+                        <i class="fas fa-code"></i>
+                    </div>
+
+                    KASITU <span>Webs</span>
+
+                </a>
+
+
+                <ul class="nav-links" id="navLinks">
+
+                    <li>
+                        <a href="index.html">
+                            Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="index.html#services">
+                            Services
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="index.html#projects">
+                            Projects
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#pricing">
+                            Pricing
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#faq">
+                            FAQ
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#contact">
+                            Contact
+                        </a>
+                    </li>
+
+                </ul>
+
+
+                <div class="nav-actions">
+
+                    <button
+                        type="button"
+                        class="theme-toggle"
+                        id="themeToggle"
+                        aria-label="Toggle theme">
+
+                        <i class="fas fa-moon"></i>
+
+                    </button>
+
+
+                    <a
+                        href="#contact"
+                        class="btn btn-primary">
+
+                        Get Support
+
+                    </a>
+
+
+                    <button
+                        type="button"
+                        class="menu-toggle"
+                        id="menuToggle"
+                        aria-label="Open menu">
+
+                        <i class="fas fa-bars"></i>
+
+                    </button>
+
+                </div>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ==========================================
+         HERO
+    =========================================== -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="container">
+
+                <div class="hero-content reveal">
+
+                    <div class="eyebrow">
+
+                        <i class="fas fa-shield-halved"></i>
+
+                        KASITU Webs Maintenance &amp; Support
+
+                    </div>
+
+
+                    <h1>
+
+                        Keep Your Website
+
+                        <span class="gradient-text">
+                            Running at Its Best.
+                        </span>
+
+                    </h1>
+
+
+                    <p class="hero-description">
+
+                        Your website should work for your business —
+                        not become another problem to manage.
+                        KASITU Webs provides reliable maintenance,
+                        security, backups, performance optimisation
+                        and technical support to keep your digital
+                        presence running smoothly.
+
+                    </p>
+
+
+                    <div class="hero-actions">
+
+                        <a
+                            href="#pricing"
+                            class="btn btn-primary">
+
+                            View Maintenance Plans
+
+                            <i class="fas fa-arrow-down"></i>
+
+                        </a>
+
+
+                        <a
+                            href="#contact"
+                            class="btn btn-secondary">
+
+                            Talk to KASITU
+
+                            <i class="fas fa-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==========================================
+             TRUST BAR
+        =========================================== -->
+
+        <div class="trust-bar">
+
+            <div class="container">
+
+                <div class="trust-grid">
+
+                    <div class="trust-item">
+
+                        <i class="fas fa-shield-halved"></i>
+
+                        <strong>
+                            Security
+                        </strong>
+
+                        <span>
+                            Keep your site protected
+                        </span>
+
+                    </div>
+
+
+                    <div class="trust-item">
+
+                        <i class="fas fa-gauge-high"></i>
+
+                        <strong>
+                            Performance
+                        </strong>
+
+                        <span>
+                            Keep your site fast
+                        </span>
+
+                    </div>
+
+
+                    <div class="trust-item">
+
+                        <i class="fas fa-database"></i>
+
+                        <strong>
+                            Backups
+                        </strong>
+
+                        <span>
+                            Protect important data
+                        </span>
+
+                    </div>
+
+
+                    <div class="trust-item">
+
+                        <i class="fas fa-headset"></i>
+
+                        <strong>
+                            Support
+                        </strong>
+
+                        <span>
+                            Technical help when needed
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ==========================================
+             WHY MAINTENANCE
+        =========================================== -->
+
+        <section>
+
+            <div class="container">
+
+                <div class="section-heading reveal">
+
+                    <div class="section-label">
+                        Why Maintenance?
+                    </div>
+
+                    <h2>
+                        Your website needs
+                        ongoing care.
+                    </h2>
+
+                    <p>
+                        Launching your website is only the beginning.
+                        Regular maintenance helps protect your investment
+                        and keeps your business online.
+                    </p>
+
+                </div>
+
+
+                <div class="benefits-grid">
+
+                    <div class="benefit-card reveal">
+
+                        <div class="benefit-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+
+                        <h3>
+                            Stay Secure
+                        </h3>
+
+                        <p>
+                            Regular security checks and maintenance
+                            help reduce technical vulnerabilities and
+                            keep your website protected.
+                        </p>
+
+                    </div>
+
+
+                    <div class="benefit-card reveal">
+
+                        <div class="benefit-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+
+                        <h3>
+                            Stay Fast
+                        </h3>
+
+                        <p>
+                            Performance monitoring and optimisation
+                            help your website remain fast and provide
+                            a better customer experience.
+                        </p>
+
+                    </div>
+
+
+                    <div class="benefit-card reveal">
+
+                        <div class="benefit-icon">
+                            <i class="fas fa-circle-check"></i>
+                        </div>
+
+                        <h3>
+                            Stay Reliable
+                        </h3>
+
+                        <p>
+                            We help monitor your website and troubleshoot
+                            technical problems before they become bigger
+                            interruptions.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==========================================
+             INCLUDED SERVICES
+        =========================================== -->
+
+        <section class="included-section">
+
+            <div class="container">
+
+                <div class="section-heading reveal">
+
+                    <div class="section-label">
+                        What's Included
+                    </div>
+
+                    <h2>
+                        Everything your website
+                        needs to stay healthy.
+                    </h2>
+
+                    <p>
+                        Choose a plan based on the level of support
+                        your business requires.
+                    </p>
+
+                </div>
+
+
+                <div class="included-grid">
+
+                    <div class="included-item reveal">
+
+                        <i class="fas fa-rotate"></i>
+
+                        <h3>
+                            Website Updates
+                        </h3>
+
+                        <p>
+                            Keep website content and supported
+                            components up to date.
+                        </p>
+
+                    </div>
+
+
+                    <div class="included-item reveal">
+
+                        <i class="fas fa-shield-halved"></i>
+
+                        <h3>
+                            Security Maintenance
+                        </h3>
+
+                        <p>
+                            Routine checks to help keep your
+                            website secure.
+                        </p>
+
+                    </div>
+
+
+                    <div class="included-item reveal">
+
+                        <i class="fas fa-cloud-arrow-up"></i>
+
+                        <h3>
+                            Backups
+                        </h3>
+
+                        <p>
+                            Backup management to help protect
+                            important website data.
+                        </p>
+
+                    </div>
+
+
+                    <div class="included-item reveal">
+
+                        <i class="fas fa-gauge-high"></i>
+
+                        <h3>
+                            Performance
+                        </h3>
+
+                        <p>
+                            Monitor and optimise website
+                            performance where required.
+                        </p>
+
+                    </div>
+
+
+                    <div class="included-item reveal">
+
+                        <i class="fas fa-bug"></i>
+
+                        <h3>
+                            Bug Fixes
+                        </h3>
+
+                        <p>
+                            Troubleshooting for supported
+                            website functionality.
+                        </p>
+
+                    </div>
+
+
+                    <div class="included-item reveal">
+
+                        <i class="fas fa-pen-to-square"></i>
+
+                        <h3>
+                            Content Updates
+                        </h3>
+
+                        <p>
+                            Minor text, image and information
+                            updates depending on your plan.
+                        </p>
+
+                    </div>
+
+
+                    <div class="included-item reveal">
+
+                        <i class="fas fa-database"></i>
+
+                        <h3>
+                            Database Checks
+                        </h3>
+
+                        <p>
+                            Database monitoring and maintenance
+                            for supported systems.
+                        </p>
+
+                    </div>
+
+
+                    <div class="included-item reveal">
+
+                        <i class="fas fa-headset"></i>
+
+                        <h3>
+                            Technical Support
+                        </h3>
+
+                        <p>
+                            Get assistance when you encounter
+                            website-related problems.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==========================================
+             PRICING
+        =========================================== -->
+
+        <section id="pricing">
+
+            <div class="container">
+
+                <div class="section-heading reveal">
+
+                    <div class="section-label">
+                        Maintenance Plans
+                    </div>
+
+                    <h2>
+                        Choose the right level
+                        of support.
+                    </h2>
+
+                    <p>
+                        Flexible monthly plans designed for
+                        South African businesses of different sizes.
+                    </p>
+
+                </div>
+
+
+                <div class="pricing-grid">
+
+
+                    <!-- BASIC -->
+
+                    <div class="pricing-card reveal">
+
+                        <div class="pricing-icon">
+                            <i class="fas fa-wrench"></i>
+                        </div>
+
+                        <h3>
+                            Basic Care
+                        </h3>
+
+                        <p class="pricing-description">
+                            Essential maintenance for small
+                            business websites.
+                        </p>
+
+                        <div class="price">
+
+                            <span class="currency">
+                                R
+                            </span>
+
+                            <span class="amount">
+                                299
+                            </span>
+
+                            <span class="period">
+                                /month
+                            </span>
+
+                        </div>
+
+                        <span class="price-note">
+                            Monthly Support
+                        </span>
+
+
+                        <ul class="features">
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Website monitoring
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Security checks
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Monthly backups
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Minor text &amp; image updates
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Broken-link checks
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Basic technical support
+                            </li>
+
+                        </ul>
+
+
+                        <a
+                            href="#contact"
+                            class="pricing-btn">
+
+                            Get Started
+
+                            <i class="fas fa-arrow-right"></i>
+
+                        </a>
+
+
+                        <p class="pricing-footer">
+                            Larger changes and new features
+                            quoted separately.
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- BUSINESS -->
+
+                    <div class="pricing-card popular reveal">
+
+                        <div class="popular-badge">
+                            MOST POPULAR
+                        </div>
+
+                        <div class="pricing-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+
+                        <h3>
+                            Business Care
+                        </h3>
+
+                        <p class="pricing-description">
+                            Complete ongoing support for businesses
+                            that depend on their website.
+                        </p>
+
+                        <div class="price">
+
+                            <span class="currency">
+                                R
+                            </span>
+
+                            <span class="amount">
+                                599
+                            </span>
+
+                            <span class="period">
+                                /month
+                            </span>
+
+                        </div>
+
+                        <span class="price-note">
+                            Monthly Support
+                        </span>
+
+
+                        <ul class="features">
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Everything in Basic Care
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Security maintenance
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Performance monitoring
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Backup management
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Database checks
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                WhatsApp &amp; contact-form troubleshooting
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Minor content updates
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Priority technical support
+                            </li>
+
+                        </ul>
+
+
+                        <a
+                            href="#contact"
+                            class="pricing-btn">
+
+                            Get Started
+
+                            <i class="fas fa-arrow-right"></i>
+
+                        </a>
+
+
+                        <p class="pricing-footer">
+                            Larger changes and new features
+                            quoted separately.
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- PREMIUM -->
+
+                    <div class="pricing-card reveal">
+
+                        <div class="pricing-icon">
+                            <i class="fas fa-shield-halved"></i>
+                        </div>
+
+                        <h3>
+                            Premium Care
+                        </h3>
+
+                        <p class="pricing-description">
+                            Advanced maintenance and priority
+                            support for growing businesses.
+                        </p>
+
+                        <div class="price">
+
+                            <span class="currency">
+                                R
+                            </span>
+
+                            <span class="amount">
+                                999
+                            </span>
+
+                            <span class="period">
+                                /month
+                            </span>
+
+                        </div>
+
+                        <span class="price-note">
+                            Premium Support
+                        </span>
+
+
+                        <ul class="features">
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Everything in Business Care
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Priority technical support
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Advanced performance optimisation
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Advanced security maintenance
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Frequent backups
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Larger content updates
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Website health monitoring
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Monthly website health report
+                            </li>
+
+                        </ul>
+
+
+                        <a
+                            href="#contact"
+                            class="pricing-btn">
+
+                            Get Started
+
+                            <i class="fas fa-arrow-right"></i>
+
+                        </a>
+
+
+                        <p class="pricing-footer">
+                            New features and major development
+                            quoted separately.
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- CUSTOM -->
+
+                    <div class="pricing-card reveal">
+
+                        <div class="pricing-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+
+                        <h3>
+                            Custom Support
+                        </h3>
+
+                        <p class="pricing-description">
+                            Dedicated support for advanced websites,
+                            systems and web applications.
+                        </p>
+
+                        <div class="price">
+
+                            <span class="currency">
+                                R
+                            </span>
+
+                            <span class="amount">
+                                1,499
+                            </span>
+
+                            <span class="period">
+                                /month
+                            </span>
+
+                        </div>
+
+                        <span class="price-note">
+                            Starting at
+                        </span>
+
+
+                        <ul class="features">
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Web application maintenance
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Admin dashboard support
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Booking system maintenance
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                eCommerce system support
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Firebase &amp; database maintenance
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                API &amp; integration support
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Advanced troubleshooting
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Custom development support
+                            </li>
+
+                        </ul>
+
+
+                        <a
+                            href="#contact"
+                            class="pricing-btn">
+
+                            Contact Us
+
+                            <i class="fas fa-arrow-right"></i>
+
+                        </a>
+
+
+                        <p class="pricing-footer">
+                            Final pricing depends on system
+                            complexity and requirements.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="pricing-note reveal">
+
+                    <i class="fas fa-circle-info"></i>
+
+                    Monthly maintenance covers the services
+                    listed in your selected plan. Major redesigns,
+                    new features, new pages and custom development
+                    are quoted separately.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==========================================
+             PROCESS
+        =========================================== -->
+
+        <section class="process">
+
+            <div class="container">
+
+                <div class="section-heading reveal">
+
+                    <div class="section-label">
+                        Our Process
+                    </div>
+
+                    <h2>
+                        Simple. Reliable. Professional.
+                    </h2>
+
+                    <p>
+                        We handle the technical side while
+                        you focus on your business.
+                    </p>
+
+                </div>
+
+
+                <div class="process-grid">
+
+                    <div class="process-step reveal">
+
+                        <div class="process-number">
+                            01
+                        </div>
+
+                        <h3>
+                            Monitor
+                        </h3>
+
+                        <p>
+                            We monitor your website and
+                            identify technical issues.
+                        </p>
+
+                    </div>
+
+
+                    <div class="process-step reveal">
+
+                        <div class="process-number">
+                            02
+                        </div>
+
+                        <h3>
+                            Maintain
+                        </h3>
+
+                        <p>
+                            We perform routine updates,
+                            checks and maintenance.
+                        </p>
+
+                    </div>
+
+
+                    <div class="process-step reveal">
+
+                        <div class="process-number">
+                            03
+                        </div>
+
+                        <h3>
+                            Optimise
+                        </h3>
+
+                        <p>
+                            We help keep your website
+                            secure and performing well.
+                        </p>
+
+                    </div>
+
+
+                    <div class="process-step reveal">
+
+                        <div class="process-number">
+                            04
+                        </div>
+
+                        <h3>
+                            Support
+                        </h3>
+
+                        <p>
+                            When something goes wrong,
+                            KASITU is there to help.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==========================================
+             INCLUDED / NOT INCLUDED
+        =========================================== -->
+
+        <section>
+
+            <div class="container">
+
+                <div class="section-heading reveal">
+
+                    <div class="section-label">
+                        Clear &amp; Transparent
+                    </div>
+
+                    <h2>
+                        Know exactly what you're getting.
+                    </h2>
+
+                    <p>
+                        We keep our maintenance plans straightforward
+                        so there are no surprises.
+                    </p>
+
+                </div>
+
+
+                <div class="not-included">
+
+
+                    <div class="included-box reveal">
+
+                        <div class="box-title">
+
+                            <i class="fas fa-check"></i>
+
+                            <h3>
+                                Included
+                            </h3>
+
+                        </div>
+
+
+                        <ul class="box-list">
+
+                            <li>
+                                <i class="fas fa-check"></i>
+                                Routine website maintenance
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check"></i>
+                                Security checks
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check"></i>
+                                Website backups
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check"></i>
+                                Performance monitoring
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check"></i>
+                                Minor content updates
+                            </li>
+
+                            <li>
+                                <i class="fas fa-check"></i>
+                                Technical support according to plan
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+
+
+                    <div class="excluded-box reveal">
+
+                        <div class="box-title">
+
+                            <i class="fas fa-xmark"></i>
+
+                            <h3>
+                                Quoted Separately
+                            </h3>
+
+                        </div>
+
+
+                        <ul class="box-list">
+
+                            <li>
+                                <i class="fas fa-xmark"></i>
+                                Complete website redesigns
+                            </li>
+
+                            <li>
+                                <i class="fas fa-xmark"></i>
+                                New website pages beyond the plan
+                            </li>
+
+                            <li>
+                                <i class="fas fa-xmark"></i>
+                                New features and functionality
+                            </li>
+
+                            <li>
+                                <i class="fas fa-xmark"></i>
+                                Major development work
+                            </li>
+
+                            <li>
+                                <i class="fas fa-xmark"></i>
+                                New integrations
+                            </li>
+
+                            <li>
+                                <i class="fas fa-xmark"></i>
+                                Large content projects
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==========================================
+             FAQ
+        =========================================== -->
+
+        <section
+            id="faq"
+            class="included-section">
+
+            <div class="container">
+
+                <div class="section-heading reveal">
+
+                    <div class="section-label">
+                        FAQ
+                    </div>
+
+                    <h2>
+                        Maintenance questions,
+                        answered.
+                    </h2>
+
+                    <p>
+                        Everything you need to know before
+                        choosing a maintenance plan.
+                    </p>
+
+                </div>
+
+
+                <div class="faq-container">
+
+
+                    <div class="faq-item reveal">
+
+                        <button
+                            type="button"
+                            class="faq-question">
+
+                            Do I need maintenance if KASITU built my website?
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </button>
+
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                Yes. A website is an ongoing digital
+                                asset. Maintenance helps keep it secure,
+                                updated, backed up and functioning properly
+                                after launch.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="faq-item reveal">
+
+                        <button
+                            type="button"
+                            class="faq-question">
+
+                            Can I choose a different plan later?
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </button>
+
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                Yes. Your maintenance requirements may
+                                change as your business grows. You can
+                                contact KASITU Webs to discuss upgrading
+                                or changing your support plan.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="faq-item reveal">
+
+                        <button
+                            type="button"
+                            class="faq-question">
+
+                            Are hosting and domain fees included?
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </button>
+
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                Hosting, domain registration and third-party
+                                service fees are separate unless specifically
+                                stated in your agreement or quotation.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="faq-item reveal">
+
+                        <button
+                            type="button"
+                            class="faq-question">
+
+                            Are new website features included?
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </button>
+
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                No. New features, major functionality,
+                                new integrations and custom development
+                                are quoted separately so your monthly
+                                maintenance plan remains predictable.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="faq-item reveal">
+
+                        <button
+                            type="button"
+                            class="faq-question">
+
+                            Can you maintain websites built by someone else?
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </button>
+
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                Yes, in many cases. KASITU Webs can assess
+                                the website and its technology first to
+                                determine whether we can provide ongoing
+                                maintenance and support.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="faq-item reveal">
+
+                        <button
+                            type="button"
+                            class="faq-question">
+
+                            What happens if my website goes down?
+
+                            <i class="fas fa-chevron-down"></i>
+
+                        </button>
+
+
+                        <div class="faq-answer">
+
+                            <div class="faq-answer-inner">
+
+                                Contact KASITU Webs and we will investigate
+                                the issue based on your support plan.
+                                Emergency or extensive recovery work may
+                                be quoted separately depending on the cause.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==========================================
+             CTA / CONTACT
+        =========================================== -->
+
+        <section
+            id="contact"
+            class="cta-section">
+
+            <div class="container">
+
+                <div class="cta-box reveal">
+
+                    <div class="cta-content">
+
+                        <div class="eyebrow">
+                            <i class="fas fa-headset"></i>
+                            KASITU Webs Support
+                        </div>
+
+
+                        <h2>
+                            Let us take care
+                            of your website.
+                        </h2>
+
+
+                        <p>
+                            Choose a maintenance plan or contact KASITU
+                            Webs for a custom support solution tailored
+                            to your website or business system.
+                        </p>
+
+
+                        <div class="hero-actions">
+
+                            <a
+                                href="index.html#contact"
+                                class="btn btn-primary">
+
+                                Get Started
+
+                                <i class="fas fa-arrow-right"></i>
+
+                            </a>
+
+
+                            <a
+                                href="index.html"
+                                class="btn btn-secondary">
+
+                                Back to KASITU Webs
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ==========================================
+         FOOTER
+    =========================================== -->
+
+    <footer>
+
+        <div class="container">
+
+            <div class="footer-grid">
+
+
+                <div class="footer-brand">
+
+                    <a
+                        href="index.html"
+                        class="logo">
+
+                        <div class="logo-mark">
+                            <i class="fas fa-code"></i>
+                        </div>
+
+                        KASITU <span>Webs</span>
+
+                    </a>
+
+
+                    <p>
+                        Building premium digital solutions,
+                        websites, business systems and digital
+                        experiences for businesses across South Africa.
+                    </p>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h4>
+                        Quick Links
+                    </h4>
+
+                    <a href="index.html">
+                        Home
+                    </a>
+
+                    <a href="index.html#services">
+                        Services
+                    </a>
+
+                    <a href="index.html#projects">
+                        Projects
+                    </a>
+
+                    <a href="#pricing">
+                        Maintenance Pricing
+                    </a>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h4>
+                        Support
+                    </h4>
+
+                    <a href="#faq">
+                        FAQ
+                    </a>
+
+                    <a href="#contact">
+                        Contact KASITU
+                    </a>
+
+                    <a href="#pricing">
+                        Maintenance Plans
+                    </a>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h4>
+                        KASITU Webs
+                    </h4>
+
+                    <a href="index.html#services">
+                        Web Development
+                    </a>
+
+                    <a href="index.html#services">
+                        Mobile Applications
+                    </a>
+
+                    <a href="index.html#services">
+                        eCommerce
+                    </a>
+
+                    <a href="index.html#services">
+                        Graphic Design
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <span>
+                    © <span id="currentYear"></span>
+                    KASITU Webs. All rights reserved.
+                </span>
+
+                <span>
+                    Building Digital Excellence.
+                </span>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- ==========================================
+         BACK TO TOP
+    =========================================== -->
+
+    <button
+        type="button"
+        class="back-to-top"
+        id="backToTop"
+        aria-label="Back to top">
+
+        <i class="fas fa-arrow-up"></i>
+
+    </button>
+
+
+
+    <!-- ==========================================
+         JAVASCRIPT
+    =========================================== -->
+
+    <script>
+
+        /* ==========================================
+           ELEMENTS
+        =========================================== */
+
+        const body =
+            document.body;
+
+        const themeToggle =
+            document.getElementById("themeToggle");
+
+        const menuToggle =
+            document.getElementById("menuToggle");
+
+        const navLinks =
+            document.getElementById("navLinks");
+
+        const backToTop =
+            document.getElementById("backToTop");
+
+
+        /* ==========================================
+           THEME
+        =========================================== */
+
+        const savedTheme =
+            localStorage.getItem("kasitu-theme");
+
+
+        if (savedTheme === "dark") {
+
+            body.classList.add("dark");
+
+        }
+
+
+        function updateThemeIcon() {
+
+            const icon =
+                themeToggle.querySelector("i");
+
+            if (body.classList.contains("dark")) {
+
+                icon.className =
+                    "fas fa-sun";
+
+            } else {
+
+                icon.className =
+                    "fas fa-moon";
+
+            }
+
+        }
+
+
+        updateThemeIcon();
+
+
+        themeToggle.addEventListener(
+            "click",
+            function () {
+
+                body.classList.toggle("dark");
+
+                localStorage.setItem(
+                    "kasitu-theme",
+                    body.classList.contains("dark")
+                        ? "dark"
+                        : "light"
+                );
+
+                updateThemeIcon();
+
+            }
+        );
+
+
+        /* ==========================================
+           MOBILE MENU
+        =========================================== */
+
+        menuToggle.addEventListener(
+            "click",
+            function () {
+
+                navLinks.classList.toggle("active");
+
+                body.classList.toggle(
+                    "menu-open",
+                    navLinks.classList.contains("active")
+                );
+
+
+                const icon =
+                    menuToggle.querySelector("i");
+
+
+                if (
+                    navLinks.classList.contains("active")
+                ) {
+
+                    icon.className =
+                        "fas fa-xmark";
+
+                } else {
+
+                    icon.className =
+                        "fas fa-bars";
+
+                }
+
+            }
+        );
+
+
+        /* CLOSE MENU WHEN LINK IS CLICKED */
+
+        document
+            .querySelectorAll(".nav-links a")
+            .forEach(function (link) {
+
+                link.addEventListener(
+                    "click",
+                    function () {
+
+                        navLinks.classList.remove("active");
+
+                        body.classList.remove("menu-open");
+
+                        menuToggle
+                            .querySelector("i")
+                            .className =
+                            "fas fa-bars";
+
+                    }
+                );
+
+            });
+
+
+        /* CLOSE MENU ON SCROLL */
+
+        window.addEventListener(
+            "scroll",
+            function () {
+
+                if (
+                    navLinks.classList.contains("active")
+                ) {
+
+                    navLinks.classList.remove("active");
+
+                    body.classList.remove("menu-open");
+
+                    menuToggle
+                        .querySelector("i")
+                        .className =
+                        "fas fa-bars";
+
+                }
+
+            },
+            { passive: true }
+        );
+
+
+        /* ==========================================
+           FAQ ACCORDION
+        =========================================== */
+
+        const faqItems =
+            document.querySelectorAll(".faq-item");
+
+
+        faqItems.forEach(function (item) {
+
+            const question =
+                item.querySelector(".faq-question");
+
+
+            question.addEventListener(
+                "click",
+                function () {
+
+                    const isActive =
+                        item.classList.contains("active");
+
+
+                    faqItems.forEach(function (otherItem) {
+
+                        otherItem.classList.remove("active");
+
+                    });
+
+
+                    if (!isActive) {
+
+                        item.classList.add("active");
+
+                    }
+
+                }
+            );
+
+        });
+
+
+        /* ==========================================
+           REVEAL ON SCROLL
+        =========================================== */
+
+        const revealElements =
+            document.querySelectorAll(".reveal");
+
+
+        const revealObserver =
+            new IntersectionObserver(
+                function (entries, observer) {
+
+                    entries.forEach(function (entry) {
+
+                        if (entry.isIntersecting) {
+
+                            entry.target.classList.add("visible");
+
+                            observer.unobserve(
+                                entry.target
+                            );
+
+                        }
+
+                    });
+
+                },
+                {
+                    threshold: 0.12
+                }
+            );
+
+
+        revealElements.forEach(function (element) {
+
+            revealObserver.observe(element);
+
+        });
+
+
+        /* ==========================================
+           BACK TO TOP
+        =========================================== */
+
+        window.addEventListener(
+            "scroll",
+            function () {
+
+                if (window.scrollY > 500) {
+
+                    backToTop.classList.add("visible");
+
+                } else {
+
+                    backToTop.classList.remove("visible");
+
+                }
+
+            },
+            { passive: true }
+        );
+
+
+        backToTop.addEventListener(
+            "click",
+            function () {
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+
+            }
+        );
+
+
+        /* ==========================================
+           CURRENT YEAR
+        =========================================== */
+
+        document.getElementById(
+            "currentYear"
+        ).textContent =
+            new Date().getFullYear();
+
+
+        /* ==========================================
+           ESCAPE KEY
+        =========================================== */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Escape") {
+
+                    navLinks.classList.remove("active");
+
+                    body.classList.remove("menu-open");
+
+                    menuToggle
+                        .querySelector("i")
+                        .className =
+                        "fas fa-bars";
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
