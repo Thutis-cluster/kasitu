@@ -3263,225 +3263,245 @@ PROJECT DETAILS MODAL
 </div>
 
 <script>
+    
 /* ==================================================
-   KASITU BUSINESS REGISTRATION PRICE MODAL
-   ROBUST VERSION
+   KASITU WEBS
+   BUSINESS REGISTRATION PRICE MODAL
+   Card + Button Click Support
 ================================================== */
 
-(function () {
+document.addEventListener("DOMContentLoaded", function () {
 
-    function initBusinessRegistrationModal() {
+    const businessCard =
+        document.querySelector(".business-registration-card");
 
-        const button = document.getElementById(
-            "business-registration-btn"
+    const businessRegistrationButton =
+        document.getElementById("business-registration-btn");
+
+    const businessPriceModal =
+        document.getElementById("business-price-modal");
+
+    const businessPriceClose =
+        document.getElementById("business-price-close");
+
+    const businessPriceBackdrop =
+        document.getElementById("business-price-backdrop");
+
+    const businessPriceContact =
+        document.getElementById("business-price-contact");
+
+
+    /* ----------------------------------------------
+       CHECK REQUIRED ELEMENTS
+    ---------------------------------------------- */
+
+    if (!businessCard || !businessPriceModal) {
+        console.warn(
+            "KASITU: Business Registration modal elements missing."
         );
-
-        const modal = document.getElementById(
-            "business-price-modal"
-        );
-
-        const closeButton = document.getElementById(
-            "business-price-close"
-        );
-
-        const backdrop = document.getElementById(
-            "business-price-backdrop"
-        );
-
-        const contactButton = document.getElementById(
-            "business-price-contact"
-        );
+        return;
+    }
 
 
-        /* ==========================================
-           CHECK ELEMENTS
-        ========================================== */
+    /* ----------------------------------------------
+       OPEN MODAL
+    ---------------------------------------------- */
 
-        if (!button) {
-            console.error(
-                "KASITU: #business-registration-btn was not found."
-            );
-            return;
+    function openBusinessPriceModal(event) {
+
+        if (event) {
+            event.preventDefault();
         }
-
-        if (!modal) {
-            console.error(
-                "KASITU: #business-price-modal was not found."
-            );
-            return;
-        }
-
-
-        /* ==========================================
-           OPEN
-        ========================================== */
-
-        function openModal(event) {
-
-            if (event) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-
-            console.log(
-                "KASITU: Opening Business Registration modal..."
-            );
-
-            modal.classList.add("active");
-
-            modal.setAttribute(
-                "aria-hidden",
-                "false"
-            );
-
-            document.body.classList.add(
-                "business-modal-open"
-            );
-
-            /*
-             * Force the modal above every other
-             * section/modal on the website.
-             */
-            modal.style.zIndex = "999999";
-
-            document.body.style.overflow = "hidden";
-        }
-
-
-        /* ==========================================
-           CLOSE
-        ========================================== */
-
-        function closeModal(event) {
-
-            if (event) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-
-            modal.classList.remove("active");
-
-            modal.setAttribute(
-                "aria-hidden",
-                "true"
-            );
-
-            document.body.classList.remove(
-                "business-modal-open"
-            );
-
-            document.body.style.overflow = "";
-        }
-
-
-        /* ==========================================
-           VIEW PRICING BUTTON
-        ========================================== */
-
-        button.addEventListener(
-            "click",
-            openModal
-        );
-
-
-        /* ==========================================
-           CLOSE BUTTON
-        ========================================== */
-
-        if (closeButton) {
-
-            closeButton.addEventListener(
-                "click",
-                closeModal
-            );
-
-        }
-
-
-        /* ==========================================
-           BACKDROP
-        ========================================== */
-
-        if (backdrop) {
-
-            backdrop.addEventListener(
-                "click",
-                closeModal
-            );
-
-        }
-
-
-        /* ==========================================
-           GET STARTED
-        ========================================== */
-
-        if (contactButton) {
-
-            contactButton.addEventListener(
-                "click",
-                function () {
-
-                    closeModal();
-
-                }
-            );
-
-        }
-
-
-        /* ==========================================
-           ESCAPE KEY
-        ========================================== */
-
-        document.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (
-                    event.key === "Escape" &&
-                    modal.classList.contains("active")
-                ) {
-
-                    closeModal();
-
-                }
-
-            }
-        );
-
-
-        /* ==========================================
-           DEBUG
-        ========================================== */
 
         console.log(
-            "KASITU: Business Registration Price Modal initialized ✓"
+            "KASITU: Opening Business Registration modal..."
         );
 
+        businessPriceModal.classList.add("active");
+
+        businessPriceModal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        document.body.classList.add(
+            "business-modal-open"
+        );
     }
 
 
-    /* ==========================================
-       INITIALIZE
-    ========================================== */
+    /* ----------------------------------------------
+       CLOSE MODAL
+    ---------------------------------------------- */
 
-    if (
-        document.readyState === "loading"
-    ) {
+    function closeBusinessPriceModal() {
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            initBusinessRegistrationModal
+        businessPriceModal.classList.remove(
+            "active"
         );
 
-    } else {
+        businessPriceModal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
 
-        initBusinessRegistrationModal();
-
+        document.body.classList.remove(
+            "business-modal-open"
+        );
     }
 
-})();
+
+    /* ----------------------------------------------
+       WHOLE CARD CLICK
+    ---------------------------------------------- */
+
+    businessCard.addEventListener(
+        "click",
+        function (event) {
+
+            /*
+             * If the user clicked the button,
+             * the button's own click handler will
+             * handle it.
+             */
+            if (
+                event.target.closest(
+                    "#business-registration-btn"
+                )
+            ) {
+                return;
+            }
+
+            openBusinessPriceModal(event);
+        }
+    );
+
+
+    /* ----------------------------------------------
+       BUTTON CLICK
+    ---------------------------------------------- */
+
+    if (businessRegistrationButton) {
+
+        businessRegistrationButton.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                openBusinessPriceModal(event);
+            }
+        );
+    }
+
+
+    /* ----------------------------------------------
+       CLOSE BUTTON
+    ---------------------------------------------- */
+
+    if (businessPriceClose) {
+
+        businessPriceClose.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                closeBusinessPriceModal();
+            }
+        );
+    }
+
+
+    /* ----------------------------------------------
+       BACKDROP CLICK
+    ---------------------------------------------- */
+
+    if (businessPriceBackdrop) {
+
+        businessPriceBackdrop.addEventListener(
+            "click",
+            function () {
+
+                closeBusinessPriceModal();
+            }
+        );
+    }
+
+
+    /* ----------------------------------------------
+       CONTACT BUTTON
+    ---------------------------------------------- */
+
+    if (businessPriceContact) {
+
+        businessPriceContact.addEventListener(
+            "click",
+            function () {
+
+                closeBusinessPriceModal();
+            }
+        );
+    }
+
+
+    /* ----------------------------------------------
+       ESC KEY
+    ---------------------------------------------- */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape" &&
+                businessPriceModal.classList.contains("active")
+            ) {
+                closeBusinessPriceModal();
+            }
+
+        }
+    );
+
+
+    console.log(
+        "KASITU: Business Registration Price Modal initialized ✓"
+    );
+
+});
+```
+
+### Then add this CSS
+
+```css
+/* ==================================================
+   BUSINESS REGISTRATION CARD
+   MAKE WHOLE CARD CLICKABLE
+================================================== */
+
+.business-registration-card {
+    cursor: pointer;
+}
+
+
+/* Keep the actual button looking like a button */
+
+.business-registration-card
+.service-learn-btn {
+    position: relative;
+    z-index: 5;
+    cursor: pointer;
+}
+
+
+/* Make sure the card's decorative overlay
+   never blocks mouse clicks */
+
+.business-registration-card::before {
+    pointer-events: none;
+}
 </script>
 
 <script src="script.js"></script>
