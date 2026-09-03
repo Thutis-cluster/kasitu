@@ -1004,7 +1004,7 @@ const packagePrices = {
 
 "Online Store": 5999,
 
-"Online Store PRO": 7999
+"Online Store Premium": 7999
 
 };
 
@@ -1062,7 +1062,7 @@ const recommendedExtras = {
 
 ],
 
-"Online Store PRO": [
+"Online Store Premium": [
 
     "app",
     "dashboard",
