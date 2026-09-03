@@ -2,129 +2,149 @@
    KASITU BUSINESS REGISTRATION PRICE MODAL
 ================================================== */
 
-const businessRegistrationBtn =
-    document.getElementById(
+document.addEventListener("DOMContentLoaded", function () {
+
+    const button = document.getElementById(
         "business-registration-btn"
     );
 
-const businessPriceModal =
-    document.getElementById(
+    const modal = document.getElementById(
         "business-price-modal"
     );
 
-const businessPriceClose =
-    document.getElementById(
+    const closeButton = document.getElementById(
         "business-price-close"
     );
 
-const businessPriceBackdrop =
-    document.getElementById(
+    const backdrop = document.getElementById(
         "business-price-backdrop"
     );
 
-const businessPriceContact =
-    document.getElementById(
+    const contactButton = document.getElementById(
         "business-price-contact"
     );
 
 
-/* OPEN */
+    /* CHECK ELEMENTS */
 
-function openBusinessPriceModal() {
+    if (!button) {
+        console.error(
+            "KASITU: Business Registration button not found."
+        );
+        return;
+    }
 
-    if (!businessPriceModal) return;
-
-    businessPriceModal.classList.add("active");
-
-    businessPriceModal.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-    document.body.style.overflow = "hidden";
-}
-
-
-/* CLOSE */
-
-function closeBusinessPriceModal() {
-
-    if (!businessPriceModal) return;
-
-    businessPriceModal.classList.remove("active");
-
-    businessPriceModal.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-    document.body.style.overflow = "";
-}
+    if (!modal) {
+        console.error(
+            "KASITU: Business Registration modal not found."
+        );
+        return;
+    }
 
 
-/* SERVICE CARD BUTTON */
+    /* OPEN MODAL */
 
-if (businessRegistrationBtn) {
+    function openBusinessModal() {
 
-    businessRegistrationBtn.addEventListener(
-        "click",
-        openBusinessPriceModal
-    );
+        modal.classList.add("active");
 
-}
+        modal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
 
-
-/* CLOSE BUTTON */
-
-if (businessPriceClose) {
-
-    businessPriceClose.addEventListener(
-        "click",
-        closeBusinessPriceModal
-    );
-
-}
-
-
-/* BACKDROP */
-
-if (businessPriceBackdrop) {
-
-    businessPriceBackdrop.addEventListener(
-        "click",
-        closeBusinessPriceModal
-    );
-
-}
-
-
-/* CONTACT BUTTON */
-
-if (businessPriceContact) {
-
-    businessPriceContact.addEventListener(
-        "click",
-        closeBusinessPriceModal
-    );
-
-}
-
-
-/* ESCAPE KEY */
-
-document.addEventListener(
-    "keydown",
-    function (event) {
-
-        if (
-            event.key === "Escape" &&
-            businessPriceModal &&
-            businessPriceModal.classList.contains("active")
-        ) {
-
-            closeBusinessPriceModal();
-
-        }
+        document.body.style.overflow = "hidden";
 
     }
-);
+
+
+    /* CLOSE MODAL */
+
+    function closeBusinessModal() {
+
+        modal.classList.remove("active");
+
+        modal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        document.body.style.overflow = "";
+
+    }
+
+
+    /* OPEN */
+
+    button.addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
+
+            openBusinessModal();
+
+        }
+    );
+
+
+    /* CLOSE BUTTON */
+
+    if (closeButton) {
+
+        closeButton.addEventListener(
+            "click",
+            closeBusinessModal
+        );
+
+    }
+
+
+    /* BACKDROP */
+
+    if (backdrop) {
+
+        backdrop.addEventListener(
+            "click",
+            closeBusinessModal
+        );
+
+    }
+
+
+    /* GET STARTED */
+
+    if (contactButton) {
+
+        contactButton.addEventListener(
+            "click",
+            closeBusinessModal
+        );
+
+    }
+
+
+    /* ESCAPE */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape" &&
+                modal.classList.contains("active")
+            ) {
+
+                closeBusinessModal();
+
+            }
+
+        }
+    );
+
+
+    console.log(
+        "KASITU Business Registration Modal Loaded ✓"
+    );
+
+});
