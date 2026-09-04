@@ -505,30 +505,362 @@ typeCode();
 }
 
 /*==================================================
-CURSOR GLOW
+KASITU WEBS — PERFORMANCE OPTIMIZED JS
 ==================================================*/
 
-/* Skip the mouse-following glow on touch devices.
-   Position updates are batched to one animation frame. */
-if (window.matchMedia("(pointer: fine)").matches) {
-    const glow = document.createElement("div");
-    glow.className = "cursor-glow";
-    document.body.appendChild(glow);
+(() => {
+    "use strict";
 
-    let glowX = 0;
-    let glowY = 0;
-    let glowFrame = null;
+    const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    ).matches;
 
-    window.addEventListener("mousemove", e => {
-        glowX = e.clientX;
-        glowY = e.clientY;
-        if (glowFrame !== null) return;
-        glowFrame = requestAnimationFrame(() => {
-            glowFrame = null;
-            glow.style.transform = `translate3d(${glowX}px, ${glowY}px, 0)`;
+    const smallScreen = window.matchMedia(
+        "(max-width: 768px)"
+    ).matches;
+
+    /*==================================================
+    1. FLOATING SERVICE ICONS
+    Lightweight CSS-style motion
+    No permanent JavaScript animation loop
+    ==================================================*/
+
+    const serviceIcons = document.querySelectorAll(".service-icon");
+
+    if (!reducedMotion) {
+        serviceIcons.forEach((icon, index) => {
+            icon.style.setProperty(
+                "--float-delay",
+                `${index * 0.15}s`
+            );
         });
-    }, { passive: true });
-}
+    }
+
+
+    /*==================================================
+    2. PARTICLES
+    Reduced count + automatically pauses while scrolling
+    ==================================================*/
+
+    const canvas = document.getElementById("particles");
+
+    if (canvas && !reducedMotion) {
+
+        const ctx = canvas.getContext("2d", {
+            alpha: true
+        });
+
+        let particles = [];
+        let particleFrame = null;
+        let scrolling = false;
+        let scrollTimer = null;
+
+        const particleCount = smallScreen ? 12 : 25;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function createParticles() {
+
+            particles = [];
+
+            for (let i = 0; i < particleCount; i++) {
+
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 0.5,
+                    speedX: (Math.random() - 0.5) * 0.25,
+                    speedY: (Math.random() - 0.5) * 0.25
+                });
+            }
+        }
+
+        function drawParticles() {
+
+            if (scrolling) {
+                particleFrame = null;
+                return;
+            }
+
+            ctx.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+            particles.forEach(p => {
+
+                p.x += p.speedX;
+                p.y += p.speedY;
+
+                if (p.x < 0) p.x = canvas.width;
+                if (p.x > canvas.width) p.x = 0;
+
+                if (p.y < 0) p.y = canvas.height;
+                if (p.y > canvas.height) p.y = 0;
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    p.x,
+                    p.y,
+                    p.size,
+                    0,
+                    Math.PI * 2
+                );
+
+                ctx.fill();
+            });
+
+            particleFrame = requestAnimationFrame(drawParticles);
+        }
+
+        function startParticles() {
+
+            if (
+                particleFrame === null &&
+                !scrolling
+            ) {
+                particleFrame =
+                    requestAnimationFrame(drawParticles);
+            }
+        }
+
+        function stopParticles() {
+
+            if (particleFrame !== null) {
+
+                cancelAnimationFrame(
+                    particleFrame
+                );
+
+                particleFrame = null;
+            }
+        }
+
+        function handleScroll() {
+
+            scrolling = true;
+
+            stopParticles();
+
+            clearTimeout(scrollTimer);
+
+            scrollTimer = setTimeout(() => {
+
+                scrolling = false;
+
+                startParticles();
+
+            }, 180);
+        }
+
+        resizeCanvas();
+        createParticles();
+
+        window.addEventListener(
+            "resize",
+            () => {
+                resizeCanvas();
+                createParticles();
+            },
+            { passive: true }
+        );
+
+        window.addEventListener(
+            "scroll",
+            handleScroll,
+            { passive: true }
+        );
+
+        startParticles();
+    }
+
+
+    /*==================================================
+    3. CURSOR GLOW
+    Disabled on touch devices and small screens
+    ==================================================*/
+
+    if (
+        !reducedMotion &&
+        !smallScreen &&
+        window.matchMedia("(pointer: fine)").matches
+    ) {
+
+        const glow = document.querySelector(
+            ".cursor-glow"
+        );
+
+        if (glow) {
+
+            let mouseX = 0;
+            let mouseY = 0;
+            let glowX = 0;
+            let glowY = 0;
+            let glowFrame = null;
+
+            window.addEventListener(
+                "mousemove",
+                e => {
+
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+
+                    if (!glowFrame) {
+
+                        glowFrame =
+                            requestAnimationFrame(() => {
+
+                                glowX +=
+                                    (mouseX - glowX) * 0.18;
+
+                                glowY +=
+                                    (mouseY - glowY) * 0.18;
+
+                                glow.style.transform =
+                                    `translate3d(
+                                        ${glowX}px,
+                                        ${glowY}px,
+                                        0
+                                    )`;
+
+                                glowFrame = null;
+                            });
+                    }
+
+                },
+                { passive: true }
+            );
+        }
+    }
+
+
+    /*==================================================
+    4. OPTIMIZED SCROLL UI
+    Only ONE scroll listener
+    ==================================================*/
+
+    let scrollFrame = null;
+
+    function updateScrollUI() {
+
+        scrollFrame = null;
+
+        const scrollY = window.scrollY;
+
+        /* Header */
+
+        const header =
+            document.querySelector("header");
+
+        if (header) {
+
+            header.classList.toggle(
+                "scrolled",
+                scrollY > 50
+            );
+        }
+
+
+        /* Progress bar */
+
+        const progress =
+            document.querySelector(
+                ".scroll-progress"
+            );
+
+        if (progress) {
+
+            const maxScroll =
+                document.documentElement.scrollHeight -
+                window.innerHeight;
+
+            const percentage =
+                maxScroll > 0
+                    ? (scrollY / maxScroll) * 100
+                    : 0;
+
+            progress.style.width =
+                `${percentage}%`;
+        }
+
+
+        /* Back-to-top button */
+
+        const scrollButton =
+            document.querySelector(
+                "#scrollTop, .scroll-top"
+            );
+
+        if (scrollButton) {
+
+            scrollButton.classList.toggle(
+                "show",
+                scrollY > 500
+            );
+        }
+    }
+
+    window.addEventListener(
+        "scroll",
+        () => {
+
+            if (!scrollFrame) {
+
+                scrollFrame =
+                    requestAnimationFrame(
+                        updateScrollUI
+                    );
+            }
+        },
+        { passive: true }
+    );
+
+
+    /*==================================================
+    5. DISABLE HEAVY 3D EFFECTS ON TOUCH DEVICES
+    ==================================================*/
+
+    if (
+        smallScreen ||
+        !window.matchMedia("(pointer: fine)").matches
+    ) {
+
+        document
+            .querySelectorAll(".project-card")
+            .forEach(card => {
+
+                card.style.transform = "none";
+            });
+    }
+
+
+    /*==================================================
+    6. PAUSE EXPENSIVE EFFECTS WHEN TAB IS HIDDEN
+    ==================================================*/
+
+    document.addEventListener(
+        "visibilitychange",
+        () => {
+
+            if (
+                document.hidden &&
+                typeof particleFrame !== "undefined" &&
+                particleFrame
+            ) {
+                cancelAnimationFrame(
+                    particleFrame
+                );
+            }
+        }
+    );
+
+})();
 
 /*==================================================
 MAGNETIC BUTTONS
@@ -564,36 +896,6 @@ button.style.transform = "";
 
 });
 
-/*==================================================
-FLOATING ICONS
-==================================================*/
-
-const floatingIcons = document.querySelectorAll(".service-icon");
-
-/* One animation loop instead of one requestAnimationFrame loop per icon. */
-if (floatingIcons.length && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    const iconData = Array.from(floatingIcons, icon => ({
-        icon,
-        speed: Math.random() * 2 + 1,
-        angle: Math.random() * 360
-    }));
-
-    let iconLastTime = performance.now();
-
-    const animateFloatingIcons = now => {
-        const delta = Math.min(now - iconLastTime, 50);
-        iconLastTime = now;
-
-        iconData.forEach(item => {
-            item.angle += 0.01 * item.speed * (delta / 16.67);
-            item.icon.style.transform = `translate3d(0, ${Math.sin(item.angle) * 6}px, 0)`;
-        });
-
-        requestAnimationFrame(animateFloatingIcons);
-    };
-
-    requestAnimationFrame(animateFloatingIcons);
-}
 
 /*==================================================
 PAGE LOADED
@@ -1646,161 +1948,6 @@ if (pricingSection) {
 
 }
 
-/*==================================================
-KASITU — FAST SCROLL CONTROLLER
-Maintenance / Performance Version
-==================================================*/
-
-const progress = document.createElement("div");
-
-progress.id = "progress-bar";
-
-document.body.appendChild(progress);
-
-let scrollFrame = null;
-let latestScrollY = window.scrollY;
-
-
-/*==================================================
-UPDATE ALL SCROLL UI
-==================================================*/
-
-function updateScrollUI() {
-
-    scrollFrame = null;
-
-    latestScrollY = window.scrollY;
-
-
-    /* ------------------------------------------
-       STICKY HEADER
-    ------------------------------------------ */
-
-    if (header) {
-
-        header.classList.toggle(
-            "scrolled",
-            latestScrollY > 80
-        );
-
-    }
-
-
-    /* ------------------------------------------
-       ACTIVE NAVIGATION
-    ------------------------------------------ */
-
-    highlightNavigation();
-
-
-    /* ------------------------------------------
-       SCROLL TO TOP BUTTON
-    ------------------------------------------ */
-
-    updateScrollButton();
-
-
-    /* ------------------------------------------
-       PROGRESS BAR
-    ------------------------------------------ */
-
-    const height =
-        Math.max(
-            1,
-            document.documentElement.scrollHeight -
-            window.innerHeight
-        );
-
-    const percent =
-        (latestScrollY / height) * 100;
-
-    progress.style.width =
-        Math.min(
-            100,
-            Math.max(0, percent)
-        ) + "%";
-
-
-    /* ------------------------------------------
-       CLOSE MOBILE MENU WHILE SCROLLING
-    ------------------------------------------ */
-
-    if (
-        mobileMenu &&
-        menuBtn &&
-        mobileMenu.classList.contains("mobile-open")
-    ) {
-
-        mobileMenu.classList.remove(
-            "mobile-open"
-        );
-
-        menuBtn.classList.remove(
-            "open"
-        );
-
-        menuBtn.setAttribute(
-            "aria-expanded",
-            "false"
-        );
-
-    }
-
-}
-
-
-/*==================================================
-REQUEST ONE ANIMATION FRAME
-==================================================*/
-
-function requestScrollUpdate() {
-
-    latestScrollY =
-        window.scrollY;
-
-    if (scrollFrame !== null) {
-        return;
-    }
-
-    scrollFrame =
-        requestAnimationFrame(
-            updateScrollUI
-        );
-
-}
-
-
-/*==================================================
-FAST PASSIVE SCROLL
-==================================================*/
-
-window.addEventListener(
-    "scroll",
-    requestScrollUpdate,
-    {
-        passive: true
-    }
-);
-
-
-/*==================================================
-RESIZE
-==================================================*/
-
-window.addEventListener(
-    "resize",
-    requestScrollUpdate,
-    {
-        passive: true
-    }
-);
-
-
-/*==================================================
-INITIAL UPDATE
-==================================================*/
-
-updateScrollUI();
 
 /*==================================================
 TOAST
@@ -1877,119 +2024,35 @@ Premium Interactions
 ==================================================*/
 
 /*==================================================
-3D PROJECT CARDS
+KASITU — LIGHTWEIGHT PROJECT CARD EFFECT
 ==================================================*/
 
-const projectCards = document.querySelectorAll(".project-card");
+const projectCards =
+    document.querySelectorAll(".project-card");
 
-if (window.matchMedia("(pointer: fine)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+if (
+    window.matchMedia("(pointer: fine)").matches &&
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+) {
     projectCards.forEach(card => {
-        let frame = null;
-        let pointerX = 0;
-        let pointerY = 0;
 
-        card.addEventListener("pointermove", e => {
-            const rect = card.getBoundingClientRect();
-            pointerX = e.clientX - rect.left;
-            pointerY = e.clientY - rect.top;
+        card.addEventListener(
+            "mouseenter",
+            () => {
+                card.classList.add("card-hover");
+            }
+        );
 
-            if (frame !== null) return;
-            frame = requestAnimationFrame(() => {
-                frame = null;
-                const rotateY = ((pointerX / rect.width) - 0.5) * 18;
-                const rotateX = ((pointerY / rect.height) - 0.5) * -18;
-                card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-12px)`;
-            });
-        }, { passive: true });
+        card.addEventListener(
+            "mouseleave",
+            () => {
+                card.classList.remove("card-hover");
+            }
+        );
 
-        card.addEventListener("pointerleave", () => {
-            if (frame !== null) cancelAnimationFrame(frame);
-            frame = null;
-            card.style.transform = "";
-        });
     });
 }
 
-/*==================================================
-PARTICLE BACKGROUND
-==================================================*/
-
-const particleCanvas = document.createElement("canvas");
-particleCanvas.id = "particles";
-document.body.prepend(particleCanvas);
-
-const ctx = particleCanvas.getContext("2d", { alpha: true });
-let particles = [];
-let particleFrame = null;
-let particlesRunning = true;
-const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const isSmallScreen = window.innerWidth < 768;
-const particleCount = reducedMotion ? 0 : (isSmallScreen ? 35 : 55);
-
-function resizeCanvas() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    particleCanvas.style.width = `${width}px`;
-    particleCanvas.style.height = `${height}px`;
-    particleCanvas.width = Math.round(width * dpr);
-    particleCanvas.height = Math.round(height * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-}
-
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas, { passive: true });
-
-class Particle {
-    constructor() { this.reset(); }
-    reset() {
-        this.x = Math.random() * window.innerWidth;
-        this.y = Math.random() * window.innerHeight;
-        this.radius = Math.random() * 2 + 1;
-        this.speedX = (Math.random() - 0.5) * 0.4;
-        this.speedY = (Math.random() - 0.5) * 0.4;
-    }
-    update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.x < 0 || this.x > window.innerWidth) this.speedX *= -1;
-        if (this.y < 0 || this.y > window.innerHeight) this.speedY *= -1;
-    }
-    draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(6,182,212,.45)";
-        ctx.fill();
-    }
-}
-
-for (let i = 0; i < particleCount; i++) particles.push(new Particle());
-
-function animateParticles() {
-    particleFrame = null;
-    if (!particlesRunning || !particles.length) return;
-
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    particles.forEach(p => { p.update(); p.draw(); });
-    particleFrame = requestAnimationFrame(animateParticles);
-}
-
-const particleObserver = new IntersectionObserver(entries => {
-    particlesRunning = entries[0]?.isIntersecting ?? true;
-    if (particlesRunning && particleFrame === null) {
-        particleFrame = requestAnimationFrame(animateParticles);
-    }
-}, { threshold: 0 });
-
-particleObserver.observe(particleCanvas);
-if (particleCount) particleFrame = requestAnimationFrame(animateParticles);
-
-document.addEventListener("visibilitychange", () => {
-    particlesRunning = !document.hidden;
-    if (particlesRunning && particleFrame === null && particleCount) {
-        particleFrame = requestAnimationFrame(animateParticles);
-    }
-}, { passive: true });
 
 /*==================================================
 EMAIL FORM
