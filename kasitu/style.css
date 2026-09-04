@@ -9101,3 +9101,37 @@ body.project-modal-open {
     }
 
 }
+
+/* =========================================================
+   KASITU SERVICE PRICING MODALS
+========================================================= */
+
+body.kasitu-service-modal-open {
+    overflow: hidden;
+}
+
+
+/* Make sure pricing buttons behave like real buttons */
+
+#key-locator-pricing-btn,
+#alarm-pricing-btn {
+    position: relative;
+    z-index: 5;
+    cursor: pointer;
+}
+
+
+/* Prevent hidden modal from blocking the website */
+
+.key-locator-modal,
+.alarm-pricing-modal {
+    pointer-events: none;
+}
+
+
+/* Allow clicks only when visible */
+
+.key-locator-modal.active,
+.alarm-pricing-modal.active {
+    pointer-events: auto;
+}
