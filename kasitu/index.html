@@ -3607,113 +3607,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-        /* ================= KEYLOCATORS MODAL ================= */
+/* =========================================================
+   KASITU WEBS
+   LOCATOR + SECURITY ALARM PRICING MODALS
+   CLEAN SINGLE-CLICK SYSTEM
+========================================================= */
+
 document.addEventListener("DOMContentLoaded", function () {
 
-    const keyLocatorCard =
-        document.getElementById("keyLocatorCard");
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
 
-    const keyLocatorModal =
+    const locatorButton =
+        document.getElementById("key-locator-pricing-btn");
+
+    const locatorModal =
         document.getElementById("keyLocatorPricingModal");
 
-    const closeKeyLocatorModal =
+    const locatorClose =
         document.getElementById("closeKeyLocatorModal");
 
-
-    if (!keyLocatorCard || !keyLocatorModal) return;
-
-
-    /* OPEN MODAL */
-
-    function openKeyLocatorModal() {
-
-        keyLocatorModal.classList.add("active");
-
-        document.body.style.overflow = "hidden";
-    }
-
-
-    /* CLOSE MODAL */
-
-    function closeKeyLocatorPricing() {
-
-        keyLocatorModal.classList.remove("active");
-
-        document.body.style.overflow = "";
-    }
-
-
-    /* ENTIRE CARD IS CLICKABLE */
-
-    keyLocatorCard.addEventListener(
-        "click",
-        function (e) {
-
-            /*
-             * Prevent accidental opening when clicking
-             * an actual link inside the card.
-             */
-
-            if (e.target.closest("a")) {
-                return;
-            }
-
-            openKeyLocatorModal();
-
-        }
-    );
-
-
-    /* CLOSE BUTTON */
-
-    if (closeKeyLocatorModal) {
-
-        closeKeyLocatorModal.addEventListener(
-            "click",
-            closeKeyLocatorPricing
-        );
-
-    }
-
-
-    /* CLICK OUTSIDE */
-
-    keyLocatorModal.addEventListener(
-        "click",
-        function (e) {
-
-            if (e.target === keyLocatorModal) {
-
-                closeKeyLocatorPricing();
-
-            }
-
-        }
-    );
-
-
-    /* ESCAPE KEY */
-
-    document.addEventListener(
-        "keydown",
-        function (e) {
-
-            if (e.key === "Escape") {
-
-                closeKeyLocatorPricing();
-
-            }
-
-        }
-    );
-
-});
-
-        /* ================= ALARMS MODAL ================= */
-document.addEventListener("DOMContentLoaded", function () {
-
-    const alarmCard =
-        document.getElementById("alarmServiceCard");
 
     const alarmButton =
         document.getElementById("alarm-pricing-btn");
@@ -3721,78 +3635,80 @@ document.addEventListener("DOMContentLoaded", function () {
     const alarmModal =
         document.getElementById("alarmPricingModal");
 
-    const closeAlarmButton =
+    const alarmClose =
         document.getElementById("closeAlarmModal");
 
 
-    /* Check that modal exists */
+    /* =====================================================
+       OPEN MODAL
+    ===================================================== */
 
-    if (!alarmModal) {
-        console.error("Alarm pricing modal not found.");
-        return;
-    }
+    function openModal(modal) {
 
+        if (!modal) return;
 
-    /* ================= OPEN MODAL ================= */
+        modal.classList.add("active");
 
-    function openAlarmModal(event) {
-
-        if (event) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        alarmModal.classList.add("active");
-
-        document.body.style.overflow = "hidden";
-    }
-
-
-    /* ================= CLOSE MODAL ================= */
-
-    function closeAlarmModalFunction(event) {
-
-        if (event) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        alarmModal.classList.remove("active");
-
-        document.body.style.overflow = "";
-    }
-
-
-    /* ================= BUTTON ================= */
-
-    if (alarmButton) {
-
-        alarmButton.addEventListener(
-            "click",
-            openAlarmModal
+        modal.setAttribute(
+            "aria-hidden",
+            "false"
         );
 
+        document.body.classList.add(
+            "kasitu-service-modal-open"
+        );
     }
 
 
-    /* ================= ENTIRE CARD ================= */
+    /* =====================================================
+       CLOSE MODAL
+    ===================================================== */
 
-    if (alarmCard) {
+    function closeModal(modal) {
 
-        alarmCard.addEventListener(
+        if (!modal) return;
+
+        modal.classList.remove("active");
+
+        modal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        /*
+         * Only unlock the page when
+         * no pricing modal is open.
+         */
+
+        const anotherModalOpen =
+            document.querySelector(
+                ".key-locator-modal.active, .alarm-pricing-modal.active"
+            );
+
+        if (!anotherModalOpen) {
+
+            document.body.classList.remove(
+                "kasitu-service-modal-open"
+            );
+
+        }
+    }
+
+
+    /* =====================================================
+       LOCATOR BUTTON
+    ===================================================== */
+
+    if (locatorButton && locatorModal) {
+
+        locatorButton.addEventListener(
             "click",
             function (event) {
 
-                /*
-                 * If the button was clicked,
-                 * don't open the modal twice.
-                 */
+                event.preventDefault();
+                event.stopPropagation();
 
-                if (event.target.closest("#alarm-pricing-btn")) {
-                    return;
-                }
-
-                openAlarmModal(event);
+                openModal(locatorModal);
 
             }
         );
@@ -3800,27 +3716,144 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* ================= CLOSE BUTTON ================= */
+    /* =====================================================
+       LOCATOR CLOSE
+    ===================================================== */
 
-    if (closeAlarmButton) {
+    if (locatorClose && locatorModal) {
 
-        closeAlarmButton.addEventListener(
+        locatorClose.addEventListener(
             "click",
-            closeAlarmModalFunction
+            function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                closeModal(locatorModal);
+
+            }
         );
 
     }
 
 
-    /* ================= CLICK OUTSIDE ================= */
+    /* =====================================================
+       ALARM BUTTON
+    ===================================================== */
 
-    alarmModal.addEventListener(
-        "click",
+    if (alarmButton && alarmModal) {
+
+        alarmButton.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                openModal(alarmModal);
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       ALARM CLOSE
+    ===================================================== */
+
+    if (alarmClose && alarmModal) {
+
+        alarmClose.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                closeModal(alarmModal);
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       CLICK OUTSIDE — LOCATOR
+    ===================================================== */
+
+    if (locatorModal) {
+
+        locatorModal.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target === locatorModal
+                ) {
+
+                    closeModal(locatorModal);
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       CLICK OUTSIDE — ALARM
+    ===================================================== */
+
+    if (alarmModal) {
+
+        alarmModal.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target === alarmModal
+                ) {
+
+                    closeModal(alarmModal);
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       ESCAPE KEY
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
         function (event) {
 
-            if (event.target === alarmModal) {
+            if (event.key !== "Escape") return;
 
-                closeAlarmModalFunction();
+
+            if (
+                locatorModal &&
+                locatorModal.classList.contains("active")
+            ) {
+
+                closeModal(locatorModal);
+
+            }
+
+
+            if (
+                alarmModal &&
+                alarmModal.classList.contains("active")
+            ) {
+
+                closeModal(alarmModal);
 
             }
 
@@ -3828,19 +3861,8 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
-    /* ================= ESCAPE KEY ================= */
-
-    document.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (event.key === "Escape") {
-
-                closeAlarmModalFunction();
-
-            }
-
-        }
+    console.log(
+        "KASITU: Locator + Alarm pricing modals initialized ✓"
     );
 
 });
