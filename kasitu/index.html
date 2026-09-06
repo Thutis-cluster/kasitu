@@ -2649,25 +2649,29 @@ FOOTER
 
 </div>
 
-    <!-- FLOATING WHATSAPP BUTTON -->
+<!-- FLOATING WHATSAPP BUSINESS BUTTON -->
+
 <button
     id="floating-whatsapp"
     class="floating-whatsapp"
     type="button"
-    aria-label="Chat with KASITU Webs on WhatsApp"
-    title="Click to chat • Hold to move"
+    aria-label="Chat with KASITU Webs on WhatsApp Business"
+    title="Chat with KASITU Webs"
 >
+
     <span class="floating-whatsapp-ring"></span>
 
     <span class="floating-whatsapp-icon">
+
         <i class="fab fa-whatsapp"></i>
+
     </span>
 
     <span class="floating-whatsapp-label">
-        Chat with us
+        WhatsApp Business
     </span>
 
-    <span class="floating-whatsapp-hint">
+        <span class="floating-whatsapp-hint">
         Hold & drag
     </span>
 </button>
@@ -3867,6 +3871,92 @@ const anotherModalOpen =
     console.log(
         "KASITU: Locator + Alarm pricing modals initialized ✓"
     );
+
+/* =====================================================
+   GET STARTED BUTTONS
+   Close modal + go to Contact
+   ===================================================== */
+
+const locatorQuote =
+    document.querySelector(".key-locator-quote-btn");
+
+const alarmQuote =
+    document.querySelector(".alarm-quote-btn");
+
+
+/* KEY LOCATOR GET STARTED */
+
+if (locatorQuote && locatorModal) {
+
+    locatorQuote.addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            closeModal(locatorModal);
+
+            /*
+             * Give the closing animation a moment,
+             * then move to Contact.
+             */
+
+            setTimeout(function () {
+
+                const contact =
+                    document.getElementById("contact");
+
+                if (contact) {
+
+                    contact.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                }
+
+            }, 120);
+
+        }
+    );
+
+}
+
+
+/* SECURITY ALARM GET STARTED */
+
+if (alarmQuote && alarmModal) {
+
+    alarmQuote.addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            closeModal(alarmModal);
+
+            setTimeout(function () {
+
+                const contact =
+                    document.getElementById("contact");
+
+                if (contact) {
+
+                    contact.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                }
+
+            }, 120);
+
+        }
+    );
+
+}
 
 });
 
