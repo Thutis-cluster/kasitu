@@ -10672,3 +10672,208 @@ body.kasitu-service-modal-open {
 [data-theme="light"] .alarm-modal-box .features li {
     color: #334155;
 }
+
+/* =========================================================
+   KASITU — SEPARATE PRICE FROM DESCRIPTION
+   ========================================================= */
+
+
+/* =========================================================
+   🚨 SECURITY ALARM PRICE
+   ========================================================= */
+
+.alarm-price-box {
+    margin-top: 28px;
+    padding: 22px 24px;
+
+    text-align: center;
+
+    border-top: 1px solid rgba(239, 68, 68, 0.25);
+    border-bottom: 1px solid rgba(239, 68, 68, 0.15);
+
+    border-radius: 18px;
+
+    background: rgba(239, 68, 68, 0.06);
+
+    box-shadow:
+        inset 0 0 25px rgba(239, 68, 68, 0.03);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* PRICE label */
+
+.alarm-price-box > span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+    color: #fca5a5;
+}
+
+
+/* Actual price */
+
+.alarm-price-box > strong {
+    display: block;
+
+    margin: 0;
+
+    font-size: 36px;
+    line-height: 1.1;
+
+    font-weight: 800;
+
+    color: #f87171;
+
+    text-shadow:
+        0 0 20px rgba(239, 68, 68, 0.25);
+}
+
+
+/* Price explanation */
+
+.alarm-price-box > small {
+    display: block;
+
+    max-width: 380px;
+
+    margin-top: 10px;
+
+    font-size: 12px;
+    line-height: 1.5;
+
+    color: rgba(255, 220, 220, 0.58);
+}
+
+
+/* =========================================================
+   📍 KEY LOCATOR PRICE
+   ========================================================= */
+
+.key-locator-price {
+    margin-top: 28px;
+    padding: 22px 24px;
+
+    text-align: center;
+
+    border-top: 1px solid rgba(6, 182, 212, 0.25);
+    border-bottom: 1px solid rgba(6, 182, 212, 0.15);
+
+    border-radius: 18px;
+
+    background: rgba(6, 182, 212, 0.06);
+
+    box-shadow:
+        inset 0 0 25px rgba(6, 182, 212, 0.03);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* PRICE label */
+
+.key-locator-price > span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+    color: #67e8f9;
+}
+
+
+/* Actual price */
+
+.key-locator-price > strong {
+    display: block;
+
+    margin: 0;
+
+    font-size: 36px;
+    line-height: 1.1;
+
+    font-weight: 800;
+
+    color: #22d3ee;
+
+    text-shadow:
+        0 0 20px rgba(6, 182, 212, 0.25);
+}
+
+
+/* Price explanation */
+
+.key-locator-price > small {
+    display: block;
+
+    max-width: 380px;
+
+    margin-top: 10px;
+
+    font-size: 12px;
+    line-height: 1.5;
+
+    color: rgba(210, 250, 255, 0.58);
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   Keep description visually separate from price
+   ========================================================= */
+
+.alarm-modal-intro,
+.key-locator-intro {
+    margin-bottom: 0;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   BUTTON SPACING
+   ========================================================= */
+
+.alarm-price-box + .alarm-quote-btn,
+.key-locator-price + .key-locator-quote-btn {
+    margin-top: 22px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .alarm-price-box,
+    .key-locator-price {
+        margin-top: 22px;
+        padding: 20px 16px;
+    }
+
+    .alarm-price-box > strong,
+    .key-locator-price > strong {
+        font-size: 32px;
+    }
+
+}
