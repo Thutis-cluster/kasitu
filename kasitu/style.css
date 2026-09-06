@@ -10719,3 +10719,1071 @@ body.kasitu-service-modal-open {
     }
 
 }
+
+/* =========================================================
+   KASITU WEBS
+   FINAL ALARM + KEY LOCATOR MODAL POLISH
+   ========================================================= */
+
+
+/* =========================================================
+   MODAL BACKDROP
+   ========================================================= */
+
+.key-locator-modal,
+.alarm-modal {
+    position: fixed;
+    inset: 0;
+
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 18px;
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(79,70,229,.10),
+            transparent 35%
+        ),
+        rgba(3,7,18,.84);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    overflow: hidden;
+
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity .28s ease,
+        visibility .28s ease;
+}
+
+
+/* OPEN */
+
+.key-locator-modal.active,
+.alarm-modal.active {
+    pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* =========================================================
+   SHARED MODAL BOX
+   ========================================================= */
+
+.key-locator-modal-box,
+.alarm-modal-box {
+
+    position: relative;
+
+    width: min(520px, 100%);
+
+    /*
+       Important:
+       The modal should fit on screen instead of
+       creating an unnecessary internal scrollbar.
+    */
+
+    max-height: calc(100vh - 36px);
+
+    padding: 24px;
+
+    border-radius: 26px;
+
+    overflow: hidden;
+
+    transform:
+        translateY(18px)
+        scale(.97);
+
+    transition:
+        transform .35s cubic-bezier(.22,1,.36,1);
+
+    isolation: isolate;
+}
+
+
+/* OPEN ANIMATION */
+
+.key-locator-modal.active .key-locator-modal-box,
+.alarm-modal.active .alarm-modal-box {
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+
+/* =========================================================
+   📍 KEY LOCATOR
+   ========================================================= */
+
+.key-locator-modal-box {
+
+    background:
+        radial-gradient(
+            circle at 10% 0%,
+            rgba(6,182,212,.16),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 100% 100%,
+            rgba(79,70,229,.15),
+            transparent 38%
+        ),
+        linear-gradient(
+            145deg,
+            #07131f,
+            #0b1120 65%,
+            #081522
+        );
+
+    border:
+        1px solid rgba(6,182,212,.30);
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.60),
+        0 0 45px rgba(6,182,212,.12);
+}
+
+
+/* =========================================================
+   🚨 SECURITY ALARM
+   ========================================================= */
+
+.alarm-modal-box {
+
+    background:
+        radial-gradient(
+            circle at 90% 0%,
+            rgba(239,68,68,.17),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 0% 100%,
+            rgba(245,158,11,.12),
+            transparent 38%
+        ),
+        linear-gradient(
+            145deg,
+            #1a0b0b,
+            #101018 65%,
+            #17100a
+        );
+
+    border:
+        1px solid rgba(239,68,68,.30);
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.60),
+        0 0 45px rgba(239,68,68,.12);
+}
+
+
+/* =========================================================
+   IMAGE
+   Bigger height without making modal huge
+   ========================================================= */
+
+.key-locator-picture,
+.alarm-picture {
+
+    width: 100%;
+
+    height: 245px;
+
+    margin-bottom: 18px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    position: relative;
+}
+
+
+/* Key Locator image frame */
+
+.key-locator-picture {
+
+    border:
+        1px solid rgba(6,182,212,.28);
+
+    background:
+        rgba(6,182,212,.05);
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.35),
+        0 0 25px rgba(6,182,212,.08);
+}
+
+
+/* Alarm image frame */
+
+.alarm-picture {
+
+    border:
+        1px solid rgba(239,68,68,.28);
+
+    background:
+        rgba(239,68,68,.05);
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.35),
+        0 0 25px rgba(239,68,68,.08);
+}
+
+
+/* Images */
+
+.key-locator-picture img,
+.alarm-picture img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition:
+        transform .5s ease;
+}
+
+
+.key-locator-picture:hover img,
+.alarm-picture:hover img {
+    transform: scale(1.035);
+}
+
+
+/* =========================================================
+   LABELS
+   ========================================================= */
+
+.key-locator-label,
+.alarm-modal-label {
+
+    display: inline-block;
+
+    margin-bottom: 7px;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+/* Locator */
+
+.key-locator-label {
+    color: #22d3ee;
+
+    text-shadow:
+        0 0 12px rgba(34,211,238,.35);
+}
+
+
+/* Alarm */
+
+.alarm-modal-label {
+    color: #f87171;
+
+    text-shadow:
+        0 0 12px rgba(239,68,68,.35);
+}
+
+
+/* =========================================================
+   HEADINGS
+   ========================================================= */
+
+.key-locator-modal-box h2,
+.alarm-modal-box h2 {
+
+    margin: 0 0 9px;
+
+    font-size: clamp(1.7rem, 4vw, 2.1rem);
+
+    line-height: 1.15;
+
+    font-weight: 800;
+}
+
+
+/* Locator heading */
+
+.key-locator-modal-box h2 {
+
+    background:
+        linear-gradient(
+            90deg,
+            #22d3ee,
+            #06b6d4,
+            #818cf8
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+}
+
+
+/* Alarm heading */
+
+.alarm-modal-box h2 {
+
+    background:
+        linear-gradient(
+            90deg,
+            #f87171,
+            #ef4444,
+            #f59e0b
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.key-locator-intro,
+.alarm-modal-intro {
+
+    margin: 0;
+
+    font-size: .94rem;
+
+    line-height: 1.55;
+
+    color: rgba(226,232,240,.72);
+}
+
+
+/* =========================================================
+   PRICE BOX
+   ========================================================= */
+
+.key-locator-price,
+.alarm-price-box {
+
+    margin-top: 18px;
+
+    padding: 16px 18px;
+
+    border-radius: 16px;
+
+    text-align: center;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 2px;
+}
+
+
+/* Locator price */
+
+.key-locator-price {
+
+    background:
+        rgba(6,182,212,.055);
+
+    border:
+        1px solid rgba(6,182,212,.18);
+}
+
+
+/* Alarm price */
+
+.alarm-price-box {
+
+    background:
+        rgba(239,68,68,.055);
+
+    border:
+        1px solid rgba(239,68,68,.18);
+}
+
+
+/* Price label */
+
+.key-locator-price > span,
+.alarm-price-box > span {
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+.key-locator-price > span {
+    color: #67e8f9;
+}
+
+
+.alarm-price-box > span {
+    color: #fca5a5;
+}
+
+
+/* Price */
+
+.key-locator-price > strong,
+.alarm-price-box > strong {
+
+    font-size: 30px;
+
+    line-height: 1.15;
+
+    font-weight: 800;
+
+    margin: 2px 0;
+}
+
+
+.key-locator-price > strong {
+
+    color: #22d3ee;
+
+    text-shadow:
+        0 0 18px rgba(6,182,212,.25);
+}
+
+
+.alarm-price-box > strong {
+
+    color: #f87171;
+
+    text-shadow:
+        0 0 18px rgba(239,68,68,.25);
+}
+
+
+/* Price note */
+
+.key-locator-price > small,
+.alarm-price-box > small {
+
+    max-width: 400px;
+
+    margin-top: 4px;
+
+    font-size: 11px;
+
+    line-height: 1.4;
+
+    color: rgba(255,255,255,.48);
+}
+
+
+/* =========================================================
+   GET STARTED BUTTONS
+   ========================================================= */
+
+.alarm-quote-btn,
+.key-locator-quote-btn {
+
+    width: 100%;
+
+    min-height: 50px;
+
+    margin-top: 16px;
+
+    padding: 13px 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    border-radius: 14px;
+
+    text-decoration: none;
+
+    font-size: .9rem;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        filter .25s ease;
+}
+
+
+/* Alarm */
+
+.alarm-quote-btn {
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #dc2626,
+            #ef4444,
+            #f59e0b
+        );
+
+    border:
+        1px solid rgba(248,113,113,.35);
+
+    box-shadow:
+        0 10px 25px rgba(239,68,68,.20);
+}
+
+
+.alarm-quote-btn:hover {
+
+    transform: translateY(-3px);
+
+    filter: brightness(1.08);
+
+    box-shadow:
+        0 14px 35px rgba(239,68,68,.34);
+}
+
+
+/* Locator */
+
+.key-locator-quote-btn {
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0891b2,
+            #06b6d4,
+            #4f46e5
+        );
+
+    border:
+        1px solid rgba(34,211,238,.35);
+
+    box-shadow:
+        0 10px 25px rgba(6,182,212,.20);
+}
+
+
+.key-locator-quote-btn:hover {
+
+    transform: translateY(-3px);
+
+    filter: brightness(1.08);
+
+    box-shadow:
+        0 14px 35px rgba(6,182,212,.34);
+}
+
+
+/* Arrow */
+
+.alarm-quote-btn i,
+.key-locator-quote-btn i {
+
+    transition:
+        transform .25s ease;
+}
+
+
+.alarm-quote-btn:hover i,
+.key-locator-quote-btn:hover i {
+
+    transform:
+        translateX(4px);
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+   ========================================================= */
+
+.alarm-modal-close,
+.key-locator-modal-close {
+
+    position: absolute;
+
+    top: 12px;
+    right: 12px;
+
+    width: 40px;
+    height: 40px;
+
+    z-index: 10;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    transition:
+        transform .25s ease,
+        background .25s ease,
+        box-shadow .25s ease;
+}
+
+
+/* Alarm */
+
+.alarm-modal-close {
+
+    color: #fecaca;
+
+    background:
+        rgba(239,68,68,.12);
+
+    border:
+        1px solid rgba(239,68,68,.28);
+}
+
+
+.alarm-modal-close:hover {
+
+    transform: rotate(90deg);
+
+    background:
+        rgba(239,68,68,.22);
+
+    box-shadow:
+        0 0 20px rgba(239,68,68,.25);
+}
+
+
+/* Locator */
+
+.key-locator-modal-close {
+
+    color: #a5f3fc;
+
+    background:
+        rgba(6,182,212,.12);
+
+    border:
+        1px solid rgba(6,182,212,.28);
+}
+
+
+.key-locator-modal-close:hover {
+
+    transform: rotate(90deg);
+
+    background:
+        rgba(6,182,212,.22);
+
+    box-shadow:
+        0 0 20px rgba(6,182,212,.25);
+}
+
+
+/* =========================================================
+   MOBILE — TIGHT SCREEN
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .key-locator-modal,
+    .alarm-modal {
+
+        padding: 10px;
+    }
+
+
+    .key-locator-modal-box,
+    .alarm-modal-box {
+
+        width: 100%;
+
+        max-height: calc(100vh - 20px);
+
+        padding: 18px;
+
+        border-radius: 21px;
+    }
+
+
+    .key-locator-picture,
+    .alarm-picture {
+
+        height: 210px;
+
+        margin-bottom: 15px;
+
+        border-radius: 17px;
+    }
+
+
+    .key-locator-picture img,
+    .alarm-picture img {
+
+        border-radius: 17px;
+    }
+
+
+    .key-locator-modal-box h2,
+    .alarm-modal-box h2 {
+
+        font-size: 1.65rem;
+    }
+
+
+    .key-locator-intro,
+    .alarm-modal-intro {
+
+        font-size: .88rem;
+
+        line-height: 1.5;
+    }
+
+
+    .key-locator-price,
+    .alarm-price-box {
+
+        margin-top: 15px;
+
+        padding: 14px 12px;
+    }
+
+
+    .key-locator-price > strong,
+    .alarm-price-box > strong {
+
+        font-size: 28px;
+    }
+
+
+    .alarm-quote-btn,
+    .key-locator-quote-btn {
+
+        min-height: 48px;
+
+        margin-top: 14px;
+
+        border-radius: 13px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .key-locator-modal,
+    .alarm-modal {
+
+        padding: 7px;
+    }
+
+
+    .key-locator-modal-box,
+    .alarm-modal-box {
+
+        padding: 15px;
+
+        border-radius: 18px;
+    }
+
+
+    .key-locator-picture,
+    .alarm-picture {
+
+        height: 175px;
+    }
+
+
+    .key-locator-modal-box h2,
+    .alarm-modal-box h2 {
+
+        font-size: 1.45rem;
+    }
+
+
+    .key-locator-price > strong,
+    .alarm-price-box > strong {
+
+        font-size: 25px;
+    }
+
+
+    .key-locator-price > small,
+    .alarm-price-box > small {
+
+        font-size: 10px;
+    }
+}
+
+
+/* =========================================================
+   LIGHT MODE
+   ========================================================= */
+
+[data-theme="light"] .key-locator-modal,
+[data-theme="light"] .alarm-modal {
+
+    background:
+        rgba(15,23,42,.48);
+}
+
+
+[data-theme="light"] .key-locator-modal-box {
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #f4fbfd
+        );
+
+    color: #111827;
+}
+
+
+[data-theme="light"] .alarm-modal-box {
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #fff7f5
+        );
+
+    color: #111827;
+}
+
+
+[data-theme="light"] .key-locator-intro,
+[data-theme="light"] .alarm-modal-intro {
+
+    color: #475569;
+}
+
+
+[data-theme="light"] .key-locator-price > small,
+[data-theme="light"] .alarm-price-box > small {
+
+    color: #64748b;
+}
+
+
+/* =========================================================
+   KASITU WEBS — TIGHT SMALL-SCREEN LAYOUT
+   ========================================================= */
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+
+/* Prevent accidental horizontal expansion */
+
+*,
+*::before,
+*::after {
+    max-width: 100%;
+}
+
+
+/* =========================================================
+   TABLETS
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    section {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .header {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+}
+
+
+/* =========================================================
+   PHONES
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    section {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+
+    .header {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+
+    .trusted {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+
+    .section-header {
+        margin-bottom: 42px;
+    }
+
+
+    .section-header p {
+        font-size: .94rem;
+    }
+
+
+    .hero {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+
+    .hero-buttons {
+        gap: 12px;
+    }
+
+
+    .hero-buttons .primary-btn,
+    .hero-buttons .secondary-btn {
+        width: 100%;
+    }
+
+
+    .services-grid,
+    .portfolio-grid,
+    .trusted-grid {
+        width: 100%;
+    }
+
+
+    .service-card {
+        padding: 25px 20px;
+    }
+
+
+    .project-content {
+        padding: 22px 18px;
+    }
+
+
+    .calculator-right {
+        padding: 24px 18px;
+    }
+
+
+    .why-right {
+        gap: 12px;
+    }
+
+
+    .feature {
+        padding: 17px;
+    }
+
+
+    .pricing-grid {
+        gap: 16px;
+    }
+
+
+    .price-card {
+        padding: 25px 20px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    section {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+
+    .header {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+
+    .trusted {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+
+    .service-card {
+        padding: 22px 17px;
+    }
+
+
+    .project-content {
+        padding: 20px 16px;
+    }
+
+
+    .calculator-right {
+        padding: 20px 15px;
+    }
+
+
+    .price-card {
+        padding: 22px 17px;
+    }
+
+
+    .why-right {
+        grid-template-columns: 1fr;
+    }
+
+}
