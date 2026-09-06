@@ -9258,3 +9258,898 @@ body.kasitu-service-modal-open {
     }
 
 }
+
+
+/* =========================================================
+   KASITU PREMIUM SERVICE MODALS
+   KEY LOCATOR + SECURITY ALARM
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   PAGE LOCK
+--------------------------------------------------------- */
+
+body.kasitu-service-modal-open {
+    overflow: hidden;
+}
+
+
+/* ---------------------------------------------------------
+   PRICING BUTTONS
+--------------------------------------------------------- */
+
+#key-locator-pricing-btn,
+#alarm-pricing-btn {
+    position: relative;
+    z-index: 5;
+
+    cursor: pointer;
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease,
+        background .3s ease;
+}
+
+#key-locator-pricing-btn:hover,
+#alarm-pricing-btn:hover {
+    transform: translateY(-3px);
+}
+
+
+/* =========================================================
+   MODAL BACKDROP
+========================================================= */
+
+.key-locator-modal,
+.alarm-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100dvh;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(79,70,229,.15),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(6,182,212,.12),
+            transparent 35%
+        ),
+        rgba(3,7,18,.82);
+
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    z-index: 99999;
+
+    transition:
+        opacity .35s ease,
+        visibility .35s ease;
+}
+
+
+/* ---------------------------------------------------------
+   ACTIVE MODAL
+--------------------------------------------------------- */
+
+.key-locator-modal.active,
+.alarm-modal.active {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+
+/* =========================================================
+   MODAL CARD
+========================================================= */
+
+.key-locator-modal-box,
+.alarm-modal-box {
+
+    position: relative;
+
+    width: min(560px, 100%);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 34px;
+
+    border-radius: 28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15,23,42,.98),
+            rgba(7,11,23,.98)
+        );
+
+    border:
+        1px solid rgba(255,255,255,.12);
+
+    box-shadow:
+        0 40px 100px rgba(0,0,0,.60),
+        0 0 70px rgba(79,70,229,.18),
+        inset 0 1px 0 rgba(255,255,255,.06);
+
+    transform:
+        translateY(30px)
+        scale(.94);
+
+    opacity: 0;
+
+    transition:
+        transform .4s cubic-bezier(.2,.8,.2,1),
+        opacity .3s ease;
+
+    overflow-x: hidden;
+}
+
+
+/* ---------------------------------------------------------
+   MODAL OPEN ANIMATION
+--------------------------------------------------------- */
+
+.key-locator-modal.active .key-locator-modal-box,
+.alarm-modal.active .alarm-modal-box {
+
+    transform:
+        translateY(0)
+        scale(1);
+
+    opacity: 1;
+}
+
+
+/* =========================================================
+   DECORATIVE GLOW
+========================================================= */
+
+.key-locator-modal-box::before,
+.alarm-modal-box::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: -120px;
+    left: -120px;
+
+    width: 260px;
+    height: 260px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(79,70,229,.20),
+            transparent 70%
+        );
+
+    pointer-events: none;
+}
+
+
+.key-locator-modal-box::after,
+.alarm-modal-box::after {
+
+    content: "";
+
+    position: absolute;
+
+    right: -120px;
+    bottom: -120px;
+
+    width: 260px;
+    height: 260px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(6,182,212,.15),
+            transparent 70%
+        );
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+.key-locator-modal-close,
+.alarm-modal-close {
+
+    position: absolute;
+
+    top: 18px;
+    right: 18px;
+
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    border:
+        1px solid rgba(255,255,255,.12);
+
+    background:
+        rgba(255,255,255,.06);
+
+    color: #ffffff;
+
+    font-size: 1rem;
+
+    cursor: pointer;
+
+    z-index: 20;
+
+    backdrop-filter: blur(15px);
+
+    transition:
+        transform .3s ease,
+        background .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
+}
+
+
+.key-locator-modal-close:hover,
+.alarm-modal-close:hover {
+
+    transform:
+        rotate(90deg)
+        scale(1.08);
+
+    background:
+        rgba(79,70,229,.85);
+
+    border-color:
+        rgba(6,182,212,.65);
+
+    box-shadow:
+        0 0 25px rgba(79,70,229,.45);
+}
+
+
+/* =========================================================
+   MODAL IMAGE
+========================================================= */
+
+.key-locator-picture,
+.alarm-picture {
+
+    position: relative;
+
+    width: 100%;
+
+    margin-bottom: 25px;
+
+    border-radius: 22px;
+
+    overflow: hidden;
+
+    border:
+        1px solid rgba(255,255,255,.10);
+
+    background:
+        rgba(255,255,255,.04);
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.30);
+}
+
+
+.key-locator-picture::after,
+.alarm-picture::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            transparent 45%,
+            rgba(7,11,23,.45)
+        );
+
+    pointer-events: none;
+}
+
+
+.key-locator-picture img,
+.alarm-picture img {
+
+    width: 100%;
+
+    height: 240px;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition:
+        transform .6s ease;
+}
+
+
+.key-locator-picture:hover img,
+.alarm-picture:hover img {
+
+    transform: scale(1.04);
+}
+
+
+/* =========================================================
+   MODAL HEADINGS
+========================================================= */
+
+.key-locator-modal-box h2,
+.alarm-modal-box h2 {
+
+    position: relative;
+
+    margin: 0 50px 10px 0;
+
+    font-size: clamp(
+        1.7rem,
+        4vw,
+        2.3rem
+    );
+
+    line-height: 1.2;
+
+    font-weight: 800;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff,
+            #06B6D4,
+            #8B5CF6
+        );
+
+    -webkit-background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================================
+   MODAL DESCRIPTION
+========================================================= */
+
+.key-locator-modal-box > p,
+.alarm-modal-box > p {
+
+    position: relative;
+
+    color:
+        #b6bdd3;
+
+    font-size: .98rem;
+
+    line-height: 1.75;
+
+    margin-bottom: 25px;
+}
+
+
+/* =========================================================
+   MODAL CONTENT SECTIONS
+========================================================= */
+
+.key-locator-modal-box h3,
+.alarm-modal-box h3 {
+
+    margin:
+        25px 0 12px;
+
+    font-size: 1.05rem;
+
+    font-weight: 700;
+
+    color:
+        #ffffff;
+}
+
+
+.key-locator-modal-box ul,
+.alarm-modal-box ul {
+
+    margin: 0;
+
+    padding: 0;
+
+    list-style: none;
+
+    display: grid;
+
+    gap: 10px;
+}
+
+
+.key-locator-modal-box li,
+.alarm-modal-box li {
+
+    position: relative;
+
+    padding:
+        12px
+        14px
+        12px
+        40px;
+
+    border-radius: 14px;
+
+    background:
+        rgba(255,255,255,.035);
+
+    border:
+        1px solid rgba(255,255,255,.07);
+
+    color:
+        #b6bdd3;
+
+    font-size: .9rem;
+
+    transition:
+        transform .25s ease,
+        background .25s ease,
+        border-color .25s ease;
+}
+
+
+.key-locator-modal-box li::before,
+.alarm-modal-box li::before {
+
+    content: "✓";
+
+    position: absolute;
+
+    left: 14px;
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    width: 18px;
+    height: 18px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4F46E5,
+            #06B6D4
+        );
+
+    color: #ffffff;
+
+    font-size: .65rem;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 0 12px rgba(6,182,212,.35);
+}
+
+
+.key-locator-modal-box li:hover,
+.alarm-modal-box li:hover {
+
+    transform:
+        translateX(5px);
+
+    background:
+        rgba(79,70,229,.08);
+
+    border-color:
+        rgba(6,182,212,.30);
+}
+
+
+/* =========================================================
+   PRICE / PACKAGE AREA
+========================================================= */
+
+.key-locator-modal-box .price,
+.alarm-modal-box .price {
+
+    margin:
+        20px 0;
+
+    font-size: 2.2rem;
+
+    font-weight: 800;
+
+    background:
+        linear-gradient(
+            90deg,
+            #06B6D4,
+            #8B5CF6
+        );
+
+    -webkit-background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.key-locator-modal-box .primary-btn,
+.alarm-modal-box .primary-btn {
+
+    width: 100%;
+
+    margin-top: 20px;
+
+    min-height: 52px;
+
+    border-radius: 16px;
+
+    font-size: .95rem;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 10px 30px rgba(79,70,229,.25);
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease;
+}
+
+
+.key-locator-modal-box .primary-btn:hover,
+.alarm-modal-box .primary-btn:hover {
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 15px 40px rgba(79,70,229,.45);
+}
+
+
+/* =========================================================
+   MODAL SCROLLBAR
+========================================================= */
+
+.key-locator-modal-box::-webkit-scrollbar,
+.alarm-modal-box::-webkit-scrollbar {
+
+    width: 7px;
+}
+
+
+.key-locator-modal-box::-webkit-scrollbar-track,
+.alarm-modal-box::-webkit-scrollbar-track {
+
+    background:
+        transparent;
+}
+
+
+.key-locator-modal-box::-webkit-scrollbar-thumb,
+.alarm-modal-box::-webkit-scrollbar-thumb {
+
+    background:
+        linear-gradient(
+            #4F46E5,
+            #06B6D4
+        );
+
+    border-radius: 20px;
+}
+
+
+/* =========================================================
+   LIGHT MODE
+========================================================= */
+
+[data-theme="light"] .key-locator-modal,
+[data-theme="light"] .alarm-modal {
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(79,70,229,.08),
+            transparent 35%
+        ),
+        rgba(15,23,42,.42);
+
+    backdrop-filter:
+        blur(20px);
+}
+
+
+[data-theme="light"] .key-locator-modal-box,
+[data-theme="light"] .alarm-modal-box {
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #f7f9fc
+        );
+
+    border:
+        1px solid rgba(15,23,42,.12);
+
+    box-shadow:
+        0 35px 90px rgba(15,23,42,.25);
+
+    color:
+        #111827;
+}
+
+
+[data-theme="light"] .key-locator-modal-box h2,
+[data-theme="light"] .alarm-modal-box h2 {
+
+    background:
+        linear-gradient(
+            90deg,
+            #111827,
+            #4F46E5,
+            #0891B2
+        );
+
+    -webkit-background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+}
+
+
+[data-theme="light"] .key-locator-modal-box h3,
+[data-theme="light"] .alarm-modal-box h3 {
+
+    color:
+        #111827;
+}
+
+
+[data-theme="light"] .key-locator-modal-box > p,
+[data-theme="light"] .alarm-modal-box > p {
+
+    color:
+        #5B6475;
+}
+
+
+[data-theme="light"] .key-locator-modal-box li,
+[data-theme="light"] .alarm-modal-box li {
+
+    background:
+        rgba(15,23,42,.035);
+
+    border:
+        1px solid rgba(15,23,42,.08);
+
+    color:
+        #5B6475;
+}
+
+
+[data-theme="light"] .key-locator-modal-close,
+[data-theme="light"] .alarm-modal-close {
+
+    background:
+        #ffffff;
+
+    color:
+        #111827;
+
+    border:
+        1px solid rgba(15,23,42,.12);
+
+    box-shadow:
+        0 5px 20px rgba(15,23,42,.08);
+}
+
+
+[data-theme="light"] .key-locator-modal-close:hover,
+[data-theme="light"] .alarm-modal-close:hover {
+
+    background:
+        #4F46E5;
+
+    color:
+        #ffffff;
+
+    border-color:
+        #4F46E5;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .key-locator-modal,
+    .alarm-modal {
+
+        padding:
+            12px;
+    }
+
+
+    .key-locator-modal-box,
+    .alarm-modal-box {
+
+        width: 100%;
+
+        max-height:
+            92vh;
+
+        padding:
+            28px 18px 22px;
+
+        border-radius:
+            22px;
+    }
+
+
+    .key-locator-modal-close,
+    .alarm-modal-close {
+
+        width: 40px;
+        height: 40px;
+
+        top: 12px;
+        right: 12px;
+    }
+
+
+    .key-locator-picture img,
+    .alarm-picture img {
+
+        height:
+            190px;
+    }
+
+
+    .key-locator-modal-box h2,
+    .alarm-modal-box h2 {
+
+        font-size:
+            1.55rem;
+
+        margin-right:
+            45px;
+    }
+
+
+    .key-locator-modal-box > p,
+    .alarm-modal-box > p {
+
+        font-size:
+            .88rem;
+
+        line-height:
+            1.65;
+    }
+
+
+    .key-locator-modal-box li,
+    .alarm-modal-box li {
+
+        font-size:
+            .82rem;
+
+        padding:
+            11px
+            12px
+            11px
+            36px;
+    }
+
+
+    .key-locator-modal-box li::before,
+    .alarm-modal-box li::before {
+
+        left:
+            11px;
+    }
+
+
+    .key-locator-modal-box .price,
+    .alarm-modal-box .price {
+
+        font-size:
+            1.9rem;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .key-locator-modal,
+    .alarm-modal {
+
+        padding:
+            8px;
+    }
+
+
+    .key-locator-modal-box,
+    .alarm-modal-box {
+
+        padding:
+            25px 15px 18px;
+
+        border-radius:
+            19px;
+    }
+
+
+    .key-locator-picture img,
+    .alarm-picture img {
+
+        height:
+            165px;
+    }
+
+
+    .key-locator-modal-box h2,
+    .alarm-modal-box h2 {
+
+        font-size:
+            1.35rem;
+    }
+
+}
