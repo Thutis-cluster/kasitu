@@ -714,7 +714,7 @@ const projectData = {
 
             "JavaScript",
 
-           "MangoesDB",
+           "MongoDB",
 
             "Twilio",
 
@@ -782,6 +782,8 @@ OPEN MODAL
 ==================================================*/
 
 function openProjectModal(projectId) {
+
+    if (!projectModal) return;
 
     const project =
         projectData[projectId];
@@ -883,6 +885,8 @@ CLOSE MODAL
 ==================================================*/
 
 function closeProjectModal() {
+
+    if (!projectModal) return;
 
     projectModal.classList.remove("active");
 
@@ -1683,27 +1687,7 @@ CALCULATE TOTAL
 ==================================================*/
 
 function calculateTotal() {
-    
-let total =
-    packagePrices[selectedPackage] || 0;
-
-
-extraInputs.forEach(extra => {
-
-    if (extra.checked) {
-
-        const extraPrice =
-            Number(extra.dataset.price) || 0;
-
-        total += extraPrice;
-
-    }
-
-});
-
-
-return total;
-    
+    return calculateUnifiedTotal();
 }
 
 /*==================================================
@@ -1975,158 +1959,6 @@ extraInputs.forEach(extra => {
 });
 
 /*==================================================
-CONTINUE BUTTON
-==================================================*/
-
-const continueButton =
-document.getElementById(
-"whatsapp-btn"
-);
-
-if (continueButton) {
-
-continueButton.addEventListener(
-    "click",
-    function () {
-
-
-        /* No package selected */
-
-        if (!selectedPackage) {
-
-            if (
-                typeof showToast ===
-                "function"
-            ) {
-
-                showToast(
-                    "Please select a package to proceed."
-                );
-
-            } else {
-
-                alert(
-                    "Please select a package to proceed."
-                );
-
-            }
-
-            return;
-
-        }
-
-        /* Make sure latest price is calculated */
-
-        currentTotal =
-            calculateTotal();
-
-        /* Find contact form */
-
-        const contactSection =
-            document.getElementById(
-                "contact"
-            );
-
-
-        const contactForm =
-            document.getElementById(
-                "contact-form"
-            );
-
-
-        /* Tell user what happened */
-
-        if (
-            typeof showToast ===
-            "function"
-        ) {
-
-let selectionMessage =
-    "Your selection is ready ✓ Please fill in the contact form.";
-
-if (selectedPackage) {
-
-    selectionMessage =
-        `${selectedPackage} selected ✓ Please fill in the contact form.`;
-
-} else if (selectedServices.length) {
-
-    selectionMessage =
-        `${selectedServices[0].name} selected ✓ Please fill in the contact form.`;
-
-}
-
-
-showToast(selectionMessage);
-
-        }
-
-        /* Smooth scroll */
-
-        if (contactSection) {
-
-            contactSection.scrollIntoView({
-
-                behavior: "smooth",
-
-                block: "start"
-
-            });
-
-        }
-
-        /* Put selected package into form */
-
-        if (packageInput) {
-
-            packageInput.value =
-                selectedPackage;
-
-        }
-
-
-        /* Highlight name field */
-
-        if (contactForm) {
-
-            setTimeout(() => {
-
-                const nameInput =
-                    contactForm.querySelector(
-                        'input[name="name"]'
-                    );
-
-
-                if (nameInput) {
-
-                    nameInput.classList.add(
-                        "form-highlight"
-                    );
-
-
-                    nameInput.focus();
-
-
-                    setTimeout(() => {
-
-                        nameInput.classList.remove(
-                            "form-highlight"
-                        );
-
-                    }, 3000);
-
-                }
-
-            }, 900);
-
-        }
-
-    }
-);
-
-}
-
-/*==================================================
 INITIAL STATE
 ==================================================*/
 
@@ -2142,119 +1974,72 @@ console.log(
 );
 
 /*==================================================
-WHATSAPP QUOTE
-==================================================*/
-
-/*==================================================
 CONTINUE → CONTACT FORM
+Single handler for website packages, extras,
+standalone services, products and custom design.
 ==================================================*/
 
-const whatsappBtn =
-    document.getElementById("whatsapp-btn");
+const whatsappBtn = document.getElementById("whatsapp-btn");
 
-const contactSection =
-    document.getElementById("contact");
-
-const contactForm =
-    document.getElementById("contact-form");
-
-const nameInput =
-    contactForm?.querySelector('input[name="name"]');
-
-if (whatsappBtn) {
-
-    whatsappBtn.addEventListener("click", function(e) {
-
-        e.preventDefault();
-
-        e.stopPropagation();
-
-        /* ==========================================
-           NO PACKAGE
-        ========================================== */
-
-        if (!selectedPackage) {
-
-            showToast(
-                "Please select a package to proceed."
-            );
-
-            /* Take the user back to packages */
-            const pricingSection =
-                document.getElementById("pricing");
-
-if (pricingSection) {
-
-   const hasWebsitePackage =
-    Boolean(selectedPackage);
-
-const hasStandaloneSelection =
-    selectedServices.length > 0;
-
-const hasSelection =
-    hasWebsitePackage ||
-    hasStandaloneSelection;
-
-
-if (!hasSelection) {
-
-    showToast(
-        "Please select a service, product or website package first."
-    );
-
-    return;
-
+function hasAnySelection() {
+    return Boolean(selectedPackage) ||
+        selectedServices.length > 0 ||
+        getSelectedExtraData().length > 0 ||
+        Boolean(primarySelection);
 }
 
-        /* ==========================================
-           PACKAGE SELECTED
-        ========================================== */
+function goToContact(instruction = "Please fill in your contact details and tell us about your project.") {
+    const contactSection = document.getElementById("contact");
+    const contactForm = document.getElementById("contact-form");
 
-        showToast(
-            `${selectedPackage} selected ✓ — Please tell us about your project.`
-        );
+    if (typeof updateContactSelectionSummary === "function") {
+        updateContactSelectionSummary();
+    }
 
-        /* ==========================================
-           SCROLL TO CONTACT
-        ========================================== */
+    if (typeof showSelectionInstruction === "function") {
+        showSelectionInstruction(instruction);
+    }
 
-        if (contactSection) {
+    if (contactSection) {
+        contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
 
-            contactSection.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
+    setTimeout(() => {
+        const nameInput = contactForm?.querySelector('input[name="name"]');
+        if (!nameInput) return;
+        nameInput.focus();
+        nameInput.classList.add("input-attention", "form-highlight");
+        setTimeout(() => {
+            nameInput.classList.remove("input-attention", "form-highlight");
+        }, 2500);
+    }, 900);
+}
 
+if (whatsappBtn) {
+    whatsappBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (!hasAnySelection()) {
+            showToast("Please select a service, product or website package first.");
+            const pricingSection = document.getElementById("pricing");
+            if (pricingSection) {
+                const headerEl = document.querySelector(".header");
+                const headerOffset = headerEl ? headerEl.offsetHeight + 15 : 15;
+                const targetTop = pricingSection.getBoundingClientRect().top + window.scrollY - headerOffset;
+                window.scrollTo({ top: Math.max(0, targetTop), behavior: "smooth" });
+            }
+            return;
         }
 
-        /* ==========================================
-           FOCUS NAME FIELD AFTER SCROLL
-        ========================================== */
+        currentTotal = calculateUnifiedTotal();
 
-        setTimeout(() => {
+        const selectedNames = getAllSelectedItems().map(item => item.name);
+        const selectionLabel = selectedNames.length ? selectedNames.join(", ") : "your selected service";
 
-            if (nameInput) {
-
-                nameInput.focus();
-
-                nameInput.classList.add(
-                    "input-attention"
-                );
-
-                setTimeout(() => {
-
-                    nameInput.classList.remove(
-                        "input-attention"
-                    );
-
-                }, 2500);
-
-            }
-
-        }, 900);
-
+        showToast(`${selectionLabel} selected ✓ — Please tell us about your project.`);
+        goToContact("Please fill in your contact details and tell us about your project.");
     });
-
 }
 
 /*==================================================
@@ -2538,6 +2323,7 @@ const isSmallScreen = window.innerWidth < 768;
 const particleCount = reducedMotion ? 0 : (isSmallScreen ? 35 : 55);
 
 function resizeCanvas() {
+    if (!ctx) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const width = window.innerWidth;
     const height = window.innerHeight;
@@ -2578,6 +2364,7 @@ for (let i = 0; i < particleCount; i++) particles.push(new Particle());
 
 function animateParticles() {
     particleFrame = null;
+    if (!ctx) return;
     if (!particlesRunning || !particles.length) return;
 
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
@@ -2592,8 +2379,10 @@ const particleObserver = new IntersectionObserver(entries => {
     }
 }, { threshold: 0 });
 
-particleObserver.observe(particleCanvas);
-if (particleCount) particleFrame = requestAnimationFrame(animateParticles);
+if (particleCanvas && particleCount) {
+    particleObserver.observe(particleCanvas);
+    particleFrame = requestAnimationFrame(animateParticles);
+}
 
 document.addEventListener("visibilitychange", () => {
     particlesRunning = !document.hidden;
@@ -3601,13 +3390,10 @@ function showQuotationChoice(customer) {
             )
             .join(" • ");
 
-    quotationPackage.textContent =
-        itemSummary;
+    if (quotationPackage) quotationPackage.textContent = itemSummary;
+    if (quotationTotal) quotationTotal.textContent = formatCurrency(data.total);
 
-    quotationTotal.textContent =
-        formatCurrency(data.total);
-
-    quotationMessage.textContent =
+    if (quotationMessage) quotationMessage.textContent =
         `Thank you, ${customer.name}. Your request has been sent successfully.`;
 
     quotationModal.classList.add(
@@ -3624,6 +3410,8 @@ CLOSE QUOTATION
 ==================================================*/
 
 function closeQuotationModal() {
+
+    if (!quotationModal) return;
 
     quotationModal.classList.remove(
         "show"
@@ -3746,34 +3534,19 @@ async function generateQuotationPDF() {
         ========================================== */
 
         const name =
-            proposalForm
-                .querySelector('[name="name"]')
-                .value
-                .trim();
+            proposalForm?.querySelector('[name="name"]')?.value.trim() || "Client";
 
         const email =
-            proposalForm
-                .querySelector('[name="email"]')
-                .value
-                .trim();
+            proposalForm?.querySelector('[name="email"]')?.value.trim() || "";
 
         const phone =
-            proposalForm
-                .querySelector('[name="phone"]')
-                .value
-                .trim();
+            proposalForm?.querySelector('[name="phone"]')?.value.trim() || "";
 
         const company =
-            proposalForm
-                .querySelector('[name="company"]')
-                .value
-                .trim();
+            proposalForm?.querySelector('[name="company"]')?.value.trim() || "";
 
         const message =
-            proposalForm
-                .querySelector('[name="message"]')
-                .value
-                .trim();
+            proposalForm?.querySelector('[name="message"]')?.value.trim() || "";
 
 
         /* ==================================================
@@ -4189,7 +3962,7 @@ async function generateQuotationPDF() {
             data.extras.forEach(feature => {
 
                 const cleanFeature =
-                    feature
+                    String(feature?.name || feature || "")
                         .replace(/\s+/g, " ")
                         .trim();
 
