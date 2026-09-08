@@ -48,6 +48,55 @@
 
     <link rel="stylesheet" href="style.css">
 
+
+<style id="kasitu-service-modal-fix">
+/* =========================================================
+   KASITU SERVICE MODAL FUNCTIONALITY FIX
+   ========================================================= */
+
+.alarm-modal,
+.key-locator-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .25s ease, visibility .25s ease;
+}
+
+.alarm-modal.active,
+.key-locator-modal.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.alarm-modal-box,
+.key-locator-modal-box {
+    position: relative;
+    z-index: 10001;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+}
+
+.alarm-modal-close,
+.key-locator-modal-close {
+    position: absolute;
+    z-index: 10002;
+    cursor: pointer;
+}
+
+body.kasitu-service-modal-open,
+html.kasitu-service-modal-open {
+    overflow: hidden;
+}
+</style>
+
 </head>
 <body>
 
@@ -3653,367 +3702,226 @@ document.addEventListener("DOMContentLoaded", function () {
 /* =========================================================
    KASITU WEBS
    LOCATOR + SECURITY ALARM PRICING MODALS
-   CLEAN SINGLE-CLICK SYSTEM
+   FIXED SINGLE-CONTROLLER SYSTEM
 ========================================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    /* =====================================================
-       ELEMENTS
-    ===================================================== */
+    const locatorButton = document.getElementById("key-locator-pricing-btn");
+    const locatorModal = document.getElementById("keyLocatorPricingModal");
+    const locatorClose = document.getElementById("closeKeyLocatorModal");
+    const locatorQuote = document.querySelector(".key-locator-quote-btn");
 
-    const locatorButton =
-        document.getElementById("key-locator-pricing-btn");
+    const alarmButton = document.getElementById("alarm-pricing-btn");
+    const alarmModal = document.getElementById("alarmPricingModal");
+    const alarmClose = document.getElementById("closeAlarmModal");
+    const alarmQuote = document.querySelector(".alarm-quote-btn");
 
-    const locatorModal =
-        document.getElementById("keyLocatorPricingModal");
-
-    const locatorClose =
-        document.getElementById("closeKeyLocatorModal");
-
-
-    const alarmButton =
-        document.getElementById("alarm-pricing-btn");
-
-    const alarmModal =
-        document.getElementById("alarmPricingModal");
-
-    const alarmClose =
-        document.getElementById("closeAlarmModal");
-
-
-    /* =====================================================
-       OPEN MODAL
-    ===================================================== */
-
-    function openModal(modal) {
-
+    /* -----------------------------------------------------
+       OPEN
+    ----------------------------------------------------- */
+    function openServiceModal(modal) {
         if (!modal) return;
 
+        /* Close the other service modal first */
+        if (modal !== locatorModal && locatorModal) {
+            locatorModal.classList.remove("active");
+            locatorModal.setAttribute("aria-hidden", "true");
+        }
+
+        if (modal !== alarmModal && alarmModal) {
+            alarmModal.classList.remove("active");
+            alarmModal.setAttribute("aria-hidden", "true");
+        }
+
         modal.classList.add("active");
+        modal.setAttribute("aria-hidden", "false");
 
-        modal.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-        document.body.classList.add(
-            "kasitu-service-modal-open"
-        );
+        document.body.classList.add("kasitu-service-modal-open");
+        document.documentElement.classList.add("kasitu-service-modal-open");
     }
 
-
-    /* =====================================================
-       CLOSE MODAL
-    ===================================================== */
-
-    function closeModal(modal) {
-
+    /* -----------------------------------------------------
+       CLOSE
+    ----------------------------------------------------- */
+    function closeServiceModal(modal) {
         if (!modal) return;
 
         modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
 
-        modal.setAttribute(
-            "aria-hidden",
-            "true"
-        );
+        const anyServiceModalOpen =
+            (locatorModal && locatorModal.classList.contains("active")) ||
+            (alarmModal && alarmModal.classList.contains("active"));
 
-        /*
-         * Only unlock the page when
-         * no pricing modal is open.
-         */
-
-const anotherModalOpen =
-    document.querySelector(
-        ".key-locator-modal.active, .alarm-modal.active"
-    );
-
-        if (!anotherModalOpen) {
-
-            document.body.classList.remove(
-                "kasitu-service-modal-open"
-            );
-
+        if (!anyServiceModalOpen) {
+            document.body.classList.remove("kasitu-service-modal-open");
+            document.documentElement.classList.remove("kasitu-service-modal-open");
         }
     }
 
-
-    /* =====================================================
-       LOCATOR BUTTON
-    ===================================================== */
-
+    /* -----------------------------------------------------
+       LOCATOR OPEN
+    ----------------------------------------------------- */
     if (locatorButton && locatorModal) {
-
-        locatorButton.addEventListener(
-            "click",
-            function (event) {
-
-                event.preventDefault();
-                event.stopPropagation();
-
-                openModal(locatorModal);
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       LOCATOR CLOSE
-    ===================================================== */
-
-if (locatorQuote && locatorModal) {
-
-    locatorQuote.addEventListener(
-        "click",
-        function(event) {
-
+        locatorButton.addEventListener("click", function (event) {
             event.preventDefault();
             event.stopPropagation();
+            openServiceModal(locatorModal);
+        });
+    }
 
-            addSelectedService(
-                "Bluetooth Key Locator",
-                209.99,
-                "Product"
-            );
+    /* -----------------------------------------------------
+       LOCATOR CLOSE BUTTON
+       This was missing in the previous code.
+    ----------------------------------------------------- */
+    if (locatorClose && locatorModal) {
+        locatorClose.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            closeServiceModal(locatorModal);
+        });
+    }
 
-            closeModal(locatorModal);
-
-            goToContactWithSelection(
-                "You selected a Bluetooth Key Locator. Please fill in your name, email, phone number and tell us how many units you need and any delivery requirements."
-            );
-
-        }
-    );
-
-}
-
-
-    /* =====================================================
-       ALARM BUTTON
-    ===================================================== */
-
+    /* -----------------------------------------------------
+       ALARM OPEN
+    ----------------------------------------------------- */
     if (alarmButton && alarmModal) {
-
-        alarmButton.addEventListener(
-            "click",
-            function (event) {
-
-                event.preventDefault();
-                event.stopPropagation();
-
-                openModal(alarmModal);
-
-            }
-        );
-
+        alarmButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            openServiceModal(alarmModal);
+        });
     }
 
+    /* -----------------------------------------------------
+       ALARM CLOSE BUTTON
+       This was missing in the previous code.
+    ----------------------------------------------------- */
+    if (alarmClose && alarmModal) {
+        alarmClose.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            closeServiceModal(alarmModal);
+        });
+    }
 
-    /* =====================================================
-       ALARM CLOSE
-    ===================================================== */
-
-if (alarmQuote && alarmModal) {
-
-    alarmQuote.addEventListener(
-        "click",
-        function(event) {
-
+    /* -----------------------------------------------------
+       LOCATOR GET STARTED
+    ----------------------------------------------------- */
+    if (locatorQuote && locatorModal) {
+        locatorQuote.addEventListener("click", function (event) {
             event.preventDefault();
             event.stopPropagation();
 
-            addSelectedService(
-                "Security Alarm",
-                229.99,
-                "Product"
-            );
-
-            closeModal(alarmModal);
-
-            goToContactWithSelection(
-                "You selected a Security Alarm. Please fill in your name, email, phone number and tell us whether the alarm is for a home, office or business, plus any installation requirements."
-            );
-
-        }
-    );
-
-}
-
-
-    /* =====================================================
-       CLICK OUTSIDE — LOCATOR
-    ===================================================== */
-
-    if (locatorModal) {
-
-        locatorModal.addEventListener(
-            "click",
-            function (event) {
-
-                if (
-                    event.target === locatorModal
-                ) {
-
-                    closeModal(locatorModal);
-
-                }
-
+            if (typeof addSelectedService === "function") {
+                addSelectedService(
+                    "Bluetooth Key Locator",
+                    209.99,
+                    "Product"
+                );
             }
-        );
 
+            closeServiceModal(locatorModal);
+
+            if (typeof goToContactWithSelection === "function") {
+                goToContactWithSelection(
+                    "You selected a Bluetooth Key Locator. Please fill in your name, email, phone number and tell us how many units you need and any delivery requirements."
+                );
+            } else {
+                const contact = document.getElementById("contact");
+                if (contact) {
+                    setTimeout(function () {
+                        contact.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+                    }, 120);
+                }
+            }
+        });
     }
 
+    /* -----------------------------------------------------
+       ALARM GET STARTED
+    ----------------------------------------------------- */
+    if (alarmQuote && alarmModal) {
+        alarmQuote.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
 
-    /* =====================================================
-       CLICK OUTSIDE — ALARM
-    ===================================================== */
+            if (typeof addSelectedService === "function") {
+                addSelectedService(
+                    "Security Alarm",
+                    229.99,
+                    "Product"
+                );
+            }
+
+            closeServiceModal(alarmModal);
+
+            if (typeof goToContactWithSelection === "function") {
+                goToContactWithSelection(
+                    "You selected a Security Alarm. Please fill in your name, email, phone number and tell us whether the alarm is for a home, office or business, plus any installation requirements."
+                );
+            } else {
+                const contact = document.getElementById("contact");
+                if (contact) {
+                    setTimeout(function () {
+                        contact.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+                    }, 120);
+                }
+            }
+        });
+    }
+
+    /* -----------------------------------------------------
+       CLICK BACKDROP TO CLOSE
+    ----------------------------------------------------- */
+    [locatorModal, alarmModal].forEach(function (modal) {
+        if (!modal) return;
+
+        modal.addEventListener("click", function (event) {
+            if (event.target === modal) {
+                closeServiceModal(modal);
+            }
+        });
+    });
+
+    /* -----------------------------------------------------
+       ESCAPE KEY
+    ----------------------------------------------------- */
+    document.addEventListener("keydown", function (event) {
+        if (event.key !== "Escape") return;
+
+        if (locatorModal && locatorModal.classList.contains("active")) {
+            closeServiceModal(locatorModal);
+        }
+
+        if (alarmModal && alarmModal.classList.contains("active")) {
+            closeServiceModal(alarmModal);
+        }
+    });
+
+    /* -----------------------------------------------------
+       INITIAL STATE
+    ----------------------------------------------------- */
+    if (locatorModal) {
+        locatorModal.classList.remove("active");
+        locatorModal.setAttribute("aria-hidden", "true");
+    }
 
     if (alarmModal) {
-
-        alarmModal.addEventListener(
-            "click",
-            function (event) {
-
-                if (
-                    event.target === alarmModal
-                ) {
-
-                    closeModal(alarmModal);
-
-                }
-
-            }
-        );
-
+        alarmModal.classList.remove("active");
+        alarmModal.setAttribute("aria-hidden", "true");
     }
 
-
-    /* =====================================================
-       ESCAPE KEY
-    ===================================================== */
-
-    document.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (event.key !== "Escape") return;
-
-
-            if (
-                locatorModal &&
-                locatorModal.classList.contains("active")
-            ) {
-
-                closeModal(locatorModal);
-
-            }
-
-
-            if (
-                alarmModal &&
-                alarmModal.classList.contains("active")
-            ) {
-
-                closeModal(alarmModal);
-
-            }
-
-        }
-    );
-
-
     console.log(
-        "KASITU: Locator + Alarm pricing modals initialized ✓"
+        "KASITU: Locator + Alarm pricing modals fixed and initialized ✓"
     );
-
-/* =====================================================
-   GET STARTED BUTTONS
-   Close modal + go to Contact
-   ===================================================== */
-
-const locatorQuote =
-    document.querySelector(".key-locator-quote-btn");
-
-const alarmQuote =
-    document.querySelector(".alarm-quote-btn");
-
-
-/* KEY LOCATOR GET STARTED */
-
-if (locatorQuote && locatorModal) {
-
-    locatorQuote.addEventListener(
-        "click",
-        function (event) {
-
-            event.preventDefault();
-            event.stopPropagation();
-
-            closeModal(locatorModal);
-
-            /*
-             * Give the closing animation a moment,
-             * then move to Contact.
-             */
-
-            setTimeout(function () {
-
-                const contact =
-                    document.getElementById("contact");
-
-                if (contact) {
-
-                    contact.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                    });
-
-                }
-
-            }, 120);
-
-        }
-    );
-
-}
-
-
-/* SECURITY ALARM GET STARTED */
-
-if (alarmQuote && alarmModal) {
-
-    alarmQuote.addEventListener(
-        "click",
-        function (event) {
-
-            event.preventDefault();
-            event.stopPropagation();
-
-            closeModal(alarmModal);
-
-            setTimeout(function () {
-
-                const contact =
-                    document.getElementById("contact");
-
-                if (contact) {
-
-                    contact.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                    });
-
-                }
-
-            }, 120);
-
-        }
-    );
-
-}
-
 });
 
     /* ================= MAINTENANCE CARD ================= */
@@ -4246,5 +4154,3 @@ function updateContactSelectionSummary() {
 </body>
 
 </html>  
-
-
