@@ -4237,7 +4237,61 @@ function updateContactSelectionSummary() {
         instruction.textContent = text;
     }
 
-}  
+} 
+
+    /* ==================================================
+   BUSINESS REGISTRATION CARDS
+================================================== */
+
+document
+    .querySelectorAll(".business-price-card")
+    .forEach(card => {
+
+        card.addEventListener(
+            "click",
+            function(event) {
+
+                event.preventDefault();
+
+
+                const name =
+                    this.querySelector("h3")
+                        ?.textContent
+                        .trim();
+
+
+                const priceText =
+                    this.querySelector(".business-price")
+                        ?.textContent || "";
+
+
+                const price =
+                    Number(
+                        priceText
+                            .replace(/[^0-9.]/g, "")
+                    ) || 0;
+
+
+                if (!name) return;
+
+
+                addSelectedService(
+                    name,
+                    price,
+                    "Business Registration"
+                );
+
+
+                goToContactWithSelection(
+
+                    `You selected ${name}. Please fill in your name, email, phone number and tell us any additional information you would like us to know about your business registration.`
+
+                );
+
+            }
+        );
+
+    });
 
 </script>
 
