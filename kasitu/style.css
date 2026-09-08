@@ -11787,3 +11787,220 @@ body {
     }
 
 }
+
+/* ==================================================
+   ALL SELECTED CALCULATOR
+================================================== */
+
+#all-selected-calculator {
+
+    display: none;
+
+    width: 100%;
+
+    padding: 80px 20px;
+
+    margin-top: 40px;
+
+}
+
+
+#all-selected-calculator.active {
+
+    display: block;
+
+}
+
+
+.all-selected-inner {
+
+    width: min(100%, 950px);
+
+    margin: 0 auto;
+
+    padding: 35px;
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.08),
+            rgba(255,255,255,.03)
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.18);
+
+}
+
+
+.all-selected-heading {
+
+    text-align: center;
+
+    margin-bottom: 30px;
+
+}
+
+
+.all-selected-label {
+
+    display: inline-block;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.all-selected-heading h2 {
+
+    margin: 0 0 10px;
+
+}
+
+
+.all-selected-heading p {
+
+    margin: 0 auto;
+
+    max-width: 650px;
+
+    opacity: .7;
+
+}
+
+
+.all-selected-items {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+}
+
+
+.all-selected-item {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    padding: 15px 18px;
+
+    border-radius: 14px;
+
+    background:
+        rgba(255,255,255,.04);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+}
+
+
+.all-selected-item strong {
+
+    white-space: nowrap;
+
+}
+
+
+.all-selected-total-box {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    margin-top: 25px;
+
+    padding: 22px;
+
+    border-radius: 18px;
+
+    background:
+        rgba(6,182,212,.10);
+
+    border:
+        1px solid
+        rgba(6,182,212,.25);
+
+}
+
+
+.all-selected-total-box span {
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+}
+
+
+.all-selected-total-box strong {
+
+    font-size: 28px;
+
+}
+
+
+@media (max-width: 600px) {
+
+    .all-selected-inner {
+
+        padding: 22px;
+
+    }
+
+
+    .all-selected-item {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 5px;
+
+    }
+
+
+    .all-selected-total-box {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .all-selected-total-box strong {
+
+        font-size: 24px;
+
+    }
+
+}
