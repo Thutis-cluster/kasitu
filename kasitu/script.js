@@ -714,7 +714,7 @@ const projectData = {
 
             "JavaScript",
 
-           "MongoDB",
+           "MangoesDB",
 
             "Twilio",
 
@@ -782,8 +782,6 @@ OPEN MODAL
 ==================================================*/
 
 function openProjectModal(projectId) {
-
-    if (!projectModal) return;
 
     const project =
         projectData[projectId];
@@ -885,8 +883,6 @@ CLOSE MODAL
 ==================================================*/
 
 function closeProjectModal() {
-
-    if (!projectModal) return;
 
     projectModal.classList.remove("active");
 
@@ -1027,604 +1023,9 @@ document.getElementById("total");
 const calculatorForm =
 document.getElementById("price-form");
 
-/* ==================================================
-   KASITU UNIFIED SERVICE SELECTION SYSTEM
-   Handles:
-   - Website Packages
-   - Business Registration
-   - Creative Design Packages
-   - Bluetooth Key Locator
-   - Security Alarm
-   - Website Extras
-================================================== */
-
 let selectedPackage = "";
+
 let currentTotal = 0;
-
-/*
- * Additional non-website services selected by the customer.
- */
-let selectedServices = [];
-
-/*
- * Current primary service selection.
- * Used for showing the customer what they selected.
- */
-let primarySelection = null;
-
-
-/* ==================================================
-   STANDALONE SERVICE PRICES
-================================================== */
-
-const standaloneServices = {
-    "Business Registration": {
-        price: 650,
-        type: "Business Registration"
-    },
-
-    "Registration + Google Business Profile setup": {
-        price: 950,
-        type: "Business Registration"
-    },
-
-    "Business Registration Premium": {
-        price: 1500,
-        type: "Business Registration"
-    },
-
-    "Logo Design": {
-        price: 270,
-        type: "Creative Design"
-    },
-
-    "Premium Logo Package": {
-        price: 390,
-        type: "Creative Design"
-    },
-
-    "Flyer Design": {
-        price: 399,
-        type: "Creative Design"
-    },
-
-    "Poster Design": {
-        price: 449,
-        type: "Creative Design"
-    },
-
-    "KASITU Brand Starter": {
-        price: 1899,
-        type: "Creative Design"
-    },
-
-    "Bluetooth Key Locator": {
-        price: 209.99,
-        type: "Product"
-    },
-
-    "Security Alarm": {
-        price: 229.99,
-        type: "Product"
-    }
-};
-
-
-/* ==================================================
-   ADD SERVICE
-================================================== */
-
-function addSelectedService(name, price, type = "Service") {
-
-    /*
-     * Prevent the same service from being added twice.
-     */
-    const alreadySelected =
-        selectedServices.some(
-            service => service.name === name
-        );
-
-    if (!alreadySelected) {
-
-        selectedServices.push({
-            name,
-            price: Number(price) || 0,
-            type
-        });
-
-    }
-
-    primarySelection = {
-        name,
-        price: Number(price) || 0,
-        type
-    };
-
-    updateAllSelectedCalculator();
-
-    updateContactSelectionSummary();
-
-}
-
-
-/* ==================================================
-   REMOVE SERVICE
-================================================== */
-
-function removeSelectedService(name) {
-
-    selectedServices =
-        selectedServices.filter(
-            service =>
-                service.name !== name
-        );
-
-
-    if (
-        primarySelection &&
-        primarySelection.name === name
-    ) {
-
-        primarySelection = null;
-
-    }
-
-
-    updateAllSelectedCalculator();
-
-    updateContactSelectionSummary();
-
-}
-
-
-/* ==================================================
-   GET SELECTED SERVICES
-================================================== */
-
-function getSelectedServices() {
-
-    return selectedServices.map(service => ({
-        name: service.name,
-        price: service.price,
-        type: service.type
-    }));
-
-}
-
-
-/* ==================================================
-   CALCULATE COMPLETE TOTAL
-================================================== */
-
-function calculateUnifiedTotal() {
-
-    let total = 0;
-
-    /*
-     * Website package
-     */
-    if (selectedPackage) {
-        total +=
-            packagePrices[selectedPackage] || 0;
-    }
-
-    /*
-     * Website extras
-     */
-    extraInputs.forEach(extra => {
-
-        if (extra.checked) {
-
-            total +=
-                Number(extra.dataset.price) || 0;
-
-        }
-
-    });
-
-    /*
-     * Business / Creative / Products
-     */
-    selectedServices.forEach(service => {
-
-        total +=
-            Number(service.price) || 0;
-
-    });
-
-    return total;
-}
-
-
-/* ==================================================
-   ALL SELECTED CALCULATOR
-   IMPORTANT:
-   This is SEPARATE from LIVE ESTIMATE.
-================================================== */
-
-function calculateAllSelectedTotal() {
-
-    let total = 0;
-
-    /* Website package */
-    if (selectedPackage) {
-
-        total +=
-            packagePrices[selectedPackage] || 0;
-
-    }
-
-    /* Website extras */
-    extraInputs.forEach(extra => {
-
-        if (extra.checked) {
-
-            total +=
-                Number(extra.dataset.price) || 0;
-
-        }
-
-    });
-
-    /* Business / Creative / Products */
-    selectedServices.forEach(service => {
-
-        total +=
-            Number(service.price) || 0;
-
-    });
-
-    return total;
-}
-
-
-/* ==================================================
-   UPDATE ALL SELECTED CALCULATOR
-================================================== */
-
-function updateAllSelectedCalculator() {
-
-    const calculator =
-        document.getElementById(
-            "all-selected-calculator"
-        );
-
-    if (!calculator) return;
-
-
-    const items =
-        getAllSelectedItems();
-
-
-    const total =
-        calculateAllSelectedTotal();
-
-
-    const list =
-        calculator.querySelector(
-            "#all-selected-items"
-        );
-
-
-    const totalElement =
-        calculator.querySelector(
-            "#all-selected-total"
-        );
-
-
-    if (!items.length) {
-
-        calculator.classList.remove("active");
-
-        return;
-
-    }
-
-
-    calculator.classList.add("active");
-
-
-    if (list) {
-
-        list.innerHTML =
-            items.map(item => `
-
-                <div class="all-selected-item">
-
-                    <span>
-                        ${item.name}
-                    </span>
-
-                    <strong>
-                        ${formatCurrency(item.price)}
-                    </strong>
-
-                </div>
-
-            `).join("");
-
-    }
-
-
-    if (totalElement) {
-
-        totalElement.textContent =
-            formatCurrency(total);
-
-    }
-
-}
-
-
-/* ==================================================
-   GET EVERYTHING SELECTED
-================================================== */
-
-function getAllSelectedItems() {
-
-    const items = [];
-
-
-    /* Website package */
-
-    if (selectedPackage) {
-
-        items.push({
-
-            name: selectedPackage,
-
-            price:
-                packagePrices[selectedPackage] || 0,
-
-            type:
-                "Website Package"
-
-        });
-
-    }
-
-
-    /* Website extras */
-
-    extraInputs.forEach(extra => {
-
-        if (!extra.checked) return;
-
-
-        const option =
-            extra.closest(".extra-option");
-
-
-        const name =
-            option
-                ? option.textContent
-                    .replace(/\s+/g, " ")
-                    .trim()
-                : extra.dataset.extra;
-
-
-        items.push({
-
-            name,
-
-            price:
-                Number(extra.dataset.price) || 0,
-
-            type:
-                "Website Extra"
-
-        });
-
-    });
-
-
-    /* Standalone services */
-
-    selectedServices.forEach(service => {
-
-        items.push({
-
-            name: service.name,
-
-            price:
-                Number(service.price) || 0,
-
-            type: service.type
-
-        });
-
-    });
-
-
-    return items;
-
-}
-
-/* ==================================================
-   CREATE ALL SELECTED CALCULATOR
-================================================== */
-
-function createAllSelectedCalculator() {
-
-    if (
-        document.getElementById(
-            "all-selected-calculator"
-        )
-    ) {
-        return;
-    }
-
-
-    const calculator =
-        document.createElement("section");
-
-
-    calculator.id =
-        "all-selected-calculator";
-
-
-    calculator.innerHTML = `
-
-        <div class="all-selected-inner">
-
-            <div class="all-selected-heading">
-
-                <span class="all-selected-label">
-                    ALL SELECTED
-                </span>
-
-                <h2>
-                    Your Complete Selection
-                </h2>
-
-                <p>
-                    Everything you have selected across
-                    our website packages, extras, services
-                    and products.
-                </p>
-
-            </div>
-
-
-            <div
-                id="all-selected-items"
-                class="all-selected-items">
-            </div>
-
-
-            <div class="all-selected-total-box">
-
-                <span>
-                    TOTAL ESTIMATED INVESTMENT
-                </span>
-
-                <strong
-                    id="all-selected-total">
-                    R0
-                </strong>
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    const contact =
-        document.getElementById("contact");
-
-
-    if (contact) {
-
-        contact.insertAdjacentElement(
-            "afterend",
-            calculator
-        );
-
-    } else {
-
-        document.body.appendChild(
-            calculator
-        );
-
-    }
-
-}
-
-
-/* Create immediately */
-
-createAllSelectedCalculator();
-
-
-/* ==================================================
-   SELECTION SUMMARY
-================================================== */
-
-function getSelectionSummaryText() {
-
-    const services =
-        getSelectedServices();
-
-
-    const lines = [];
-
-
-    /* Custom / primary enquiry */
-
-    if (
-        primarySelection &&
-        primarySelection.name ===
-            "Custom Creative Design"
-    ) {
-
-        lines.push(
-            "Creative Design: Custom Design Enquiry"
-        );
-
-    }
-
-
-    /* Website package */
-
-    if (selectedPackage) {
-
-        lines.push(
-            `Website Package: ${selectedPackage} — ${formatCurrency(
-                packagePrices[selectedPackage] || 0
-            )}`
-        );
-
-    }
-
-
-    /* Standalone services */
-
-    if (services.length) {
-
-        lines.push(
-            "Selected Services:"
-        );
-
-
-        services.forEach(service => {
-
-            lines.push(
-                `• ${service.name} — ${formatCurrency(service.price)}`
-            );
-
-        });
-
-    }
-
-
-    /* Website extras */
-
-    const extras =
-        getSelectedExtraData();
-
-
-    if (extras.length) {
-
-        lines.push(
-            "Website Extras:"
-        );
-
-
-        extras.forEach(extra => {
-
-            lines.push(
-                `• ${extra.name} — ${formatCurrency(extra.price)}`
-            );
-
-        });
-
-    }
-
-
-    return lines.join("\n");
-
-}
 
 /*==================================================
 RECOMMENDED EXTRAS
@@ -1687,7 +1088,27 @@ CALCULATE TOTAL
 ==================================================*/
 
 function calculateTotal() {
-    return calculateUnifiedTotal();
+    
+let total =
+    packagePrices[selectedPackage] || 0;
+
+
+extraInputs.forEach(extra => {
+
+    if (extra.checked) {
+
+        const extraPrice =
+            Number(extra.dataset.price) || 0;
+
+        total += extraPrice;
+
+    }
+
+});
+
+
+return total;
+    
 }
 
 /*==================================================
@@ -1870,13 +1291,15 @@ packageButtons.forEach(button => {
            RECALCULATE PRICE
         ------------------------------------------ */
 
-updatePrice();
+        updatePrice();
 
-updateRecommendedExtras();
 
-updateAllSelectedCalculator();
+        /* ------------------------------------------
+           HIGHLIGHT RECOMMENDED EXTRAS
+        ------------------------------------------ */
 
-updateContactSelectionSummary();
+        updateRecommendedExtras();
+
 
         /* ------------------------------------------
            NOTIFY USER
@@ -1940,23 +1363,157 @@ EXTRA FEATURE CHANGES
 
 extraInputs.forEach(extra => {
 
-    extra.addEventListener(
-        "change",
-        () => {
+extra.addEventListener(
+    "change",
+    () => {
 
-            /* LIVE ESTIMATE */
-            updatePrice();
+        updatePrice();
 
-            /* ALL SELECTED */
-            updateAllSelectedCalculator();
-
-            /* CONTACT SUMMARY */
-            updateContactSelectionSummary();
-
-        }
-    );
+    }
+);
 
 });
+
+/*==================================================
+CONTINUE BUTTON
+==================================================*/
+
+const continueButton =
+document.getElementById(
+"whatsapp-btn"
+);
+
+if (continueButton) {
+
+continueButton.addEventListener(
+    "click",
+    function () {
+
+
+        /* No package selected */
+
+        if (!selectedPackage) {
+
+            if (
+                typeof showToast ===
+                "function"
+            ) {
+
+                showToast(
+                    "Please select a package to proceed."
+                );
+
+            } else {
+
+                alert(
+                    "Please select a package to proceed."
+                );
+
+            }
+
+            return;
+
+        }
+
+        /* Make sure latest price is calculated */
+
+        currentTotal =
+            calculateTotal();
+
+        /* Find contact form */
+
+        const contactSection =
+            document.getElementById(
+                "contact"
+            );
+
+
+        const contactForm =
+            document.getElementById(
+                "contact-form"
+            );
+
+
+        /* Tell user what happened */
+
+        if (
+            typeof showToast ===
+            "function"
+        ) {
+
+            showToast(
+
+                selectedPackage +
+                " selected ✓ Scroll down to complete your proposal."
+
+            );
+
+        }
+
+        /* Smooth scroll */
+
+        if (contactSection) {
+
+            contactSection.scrollIntoView({
+
+                behavior: "smooth",
+
+                block: "start"
+
+            });
+
+        }
+
+        /* Put selected package into form */
+
+        if (packageInput) {
+
+            packageInput.value =
+                selectedPackage;
+
+        }
+
+
+        /* Highlight name field */
+
+        if (contactForm) {
+
+            setTimeout(() => {
+
+                const nameInput =
+                    contactForm.querySelector(
+                        'input[name="name"]'
+                    );
+
+
+                if (nameInput) {
+
+                    nameInput.classList.add(
+                        "form-highlight"
+                    );
+
+
+                    nameInput.focus();
+
+
+                    setTimeout(() => {
+
+                        nameInput.classList.remove(
+                            "form-highlight"
+                        );
+
+                    }, 3000);
+
+                }
+
+            }, 900);
+
+        }
+
+    }
+);
+
+}
 
 /*==================================================
 INITIAL STATE
@@ -1974,72 +1531,119 @@ console.log(
 );
 
 /*==================================================
-CONTINUE → CONTACT FORM
-Single handler for website packages, extras,
-standalone services, products and custom design.
+WHATSAPP QUOTE
 ==================================================*/
 
-const whatsappBtn = document.getElementById("whatsapp-btn");
+/*==================================================
+CONTINUE → CONTACT FORM
+==================================================*/
 
-function hasAnySelection() {
-    return Boolean(selectedPackage) ||
-        selectedServices.length > 0 ||
-        getSelectedExtraData().length > 0 ||
-        Boolean(primarySelection);
-}
+const whatsappBtn =
+    document.getElementById("whatsapp-btn");
 
-function goToContact(instruction = "Please fill in your contact details and tell us about your project.") {
-    const contactSection = document.getElementById("contact");
-    const contactForm = document.getElementById("contact-form");
+const contactSection =
+    document.getElementById("contact");
 
-    if (typeof updateContactSelectionSummary === "function") {
-        updateContactSelectionSummary();
-    }
+const contactForm =
+    document.getElementById("contact-form");
 
-    if (typeof showSelectionInstruction === "function") {
-        showSelectionInstruction(instruction);
-    }
-
-    if (contactSection) {
-        contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-
-    setTimeout(() => {
-        const nameInput = contactForm?.querySelector('input[name="name"]');
-        if (!nameInput) return;
-        nameInput.focus();
-        nameInput.classList.add("input-attention", "form-highlight");
-        setTimeout(() => {
-            nameInput.classList.remove("input-attention", "form-highlight");
-        }, 2500);
-    }, 900);
-}
+const nameInput =
+    contactForm?.querySelector('input[name="name"]');
 
 if (whatsappBtn) {
-    whatsappBtn.addEventListener("click", function (e) {
+
+    whatsappBtn.addEventListener("click", function(e) {
+
         e.preventDefault();
+
         e.stopPropagation();
 
-        if (!hasAnySelection()) {
-            showToast("Please select a service, product or website package first.");
-            const pricingSection = document.getElementById("pricing");
-            if (pricingSection) {
-                const headerEl = document.querySelector(".header");
-                const headerOffset = headerEl ? headerEl.offsetHeight + 15 : 15;
-                const targetTop = pricingSection.getBoundingClientRect().top + window.scrollY - headerOffset;
-                window.scrollTo({ top: Math.max(0, targetTop), behavior: "smooth" });
-            }
+        /* ==========================================
+           NO PACKAGE
+        ========================================== */
+
+        if (!selectedPackage) {
+
+            showToast(
+                "Please select a package to proceed."
+            );
+
+            /* Take the user back to packages */
+            const pricingSection =
+                document.getElementById("pricing");
+
+if (pricingSection) {
+
+    const header = document.querySelector(".header");
+
+    const headerOffset =
+        header ? header.offsetHeight + 15 : 15;
+
+    const targetTop =
+        pricingSection.getBoundingClientRect().top +
+        window.scrollY -
+        headerOffset;
+
+    window.scrollTo({
+        top: Math.max(0, targetTop),
+        behavior: "smooth"
+    });
+
+}
+
             return;
+
         }
 
-        currentTotal = calculateUnifiedTotal();
+        /* ==========================================
+           PACKAGE SELECTED
+        ========================================== */
 
-        const selectedNames = getAllSelectedItems().map(item => item.name);
-        const selectionLabel = selectedNames.length ? selectedNames.join(", ") : "your selected service";
+        showToast(
+            `${selectedPackage} selected ✓ — Please tell us about your project.`
+        );
 
-        showToast(`${selectionLabel} selected ✓ — Please tell us about your project.`);
-        goToContact("Please fill in your contact details and tell us about your project.");
+        /* ==========================================
+           SCROLL TO CONTACT
+        ========================================== */
+
+        if (contactSection) {
+
+            contactSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        }
+
+        /* ==========================================
+           FOCUS NAME FIELD AFTER SCROLL
+        ========================================== */
+
+        setTimeout(() => {
+
+            if (nameInput) {
+
+                nameInput.focus();
+
+                nameInput.classList.add(
+                    "input-attention"
+                );
+
+                setTimeout(() => {
+
+                    nameInput.classList.remove(
+                        "input-attention"
+                    );
+
+                }, 2500);
+
+            }
+
+        }, 900);
+
     });
+
 }
 
 /*==================================================
@@ -2323,7 +1927,6 @@ const isSmallScreen = window.innerWidth < 768;
 const particleCount = reducedMotion ? 0 : (isSmallScreen ? 35 : 55);
 
 function resizeCanvas() {
-    if (!ctx) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const width = window.innerWidth;
     const height = window.innerHeight;
@@ -2364,7 +1967,6 @@ for (let i = 0; i < particleCount; i++) particles.push(new Particle());
 
 function animateParticles() {
     particleFrame = null;
-    if (!ctx) return;
     if (!particlesRunning || !particles.length) return;
 
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
@@ -2379,10 +1981,8 @@ const particleObserver = new IntersectionObserver(entries => {
     }
 }, { threshold: 0 });
 
-if (particleCanvas && particleCount) {
-    particleObserver.observe(particleCanvas);
-    particleFrame = requestAnimationFrame(animateParticles);
-}
+particleObserver.observe(particleCanvas);
+if (particleCount) particleFrame = requestAnimationFrame(animateParticles);
 
 document.addEventListener("visibilitychange", () => {
     particlesRunning = !document.hidden;
@@ -2425,32 +2025,44 @@ function countWords(text) {
 GET SELECTED EXTRAS
 ==================================================*/
 
-function getSelectedExtraData() {
+function getSelectedExtras() {
 
     const selected = [];
 
     extraInputs.forEach(extra => {
 
-        if (!extra.checked) {
-            return;
+        if (extra.checked) {
+
+            const option =
+                extra.closest(".extra-option");
+
+            let label = "";
+
+            if (option) {
+
+                label =
+                    option.textContent
+                        .replace(/\s+/g, " ")
+                        .trim();
+
+            } else {
+
+                label =
+                    extra.parentElement
+                        ? extra.parentElement.textContent
+                            .replace(/\s+/g, " ")
+                            .trim()
+                        : extra.dataset.extra || "";
+
+            }
+
+            if (label) {
+
+                selected.push(label);
+
+            }
+
         }
-
-        const option =
-            extra.closest(".extra-option");
-
-        const label =
-            option
-                ? option.textContent
-                    .replace(/\s+/g, " ")
-                    .trim()
-                : extra.dataset.extra;
-
-        selected.push({
-            name: label,
-            price:
-                Number(extra.dataset.price) || 0,
-            type: "Website Extra"
-        });
 
     });
 
@@ -2465,78 +2077,20 @@ BUILD WHATSAPP MESSAGE
 
 function buildWhatsAppMessage(customer) {
 
-    const data =
-        getQuotationData();
-
-    const serviceText =
-        data.services.length
-            ? data.services
-                .map(service =>
-                    `• ${service.name} — ${formatCurrency(service.price)}`
-                )
-                .join("\n")
-            : "None";
+    const selectedExtras =
+        getSelectedExtras();
 
     const packageText =
-        data.packageName
-            ? `${data.packageName} — ${formatCurrency(data.packagePrice)}`
-            : "None";
-
-    const extrasText =
-        data.extras.length
-            ? data.extras
-                .map(extra =>
-                    `• ${extra.name} — ${formatCurrency(extra.price)}`
-                )
-                .join("\n")
-            : "None";
+        selectedPackage || "Package not selected";
 
     const totalText =
-        data.items.length
-            ? formatCurrency(data.total)
+        selectedPackage
+            ? formatCurrency(currentTotal)
             : "To be discussed";
-
-let requestSummary =
-    "No specific service selected.";
-
-
-if (
-    data.items.length
-) {
-
-    requestSummary =
-        data.items
-            .map(item =>
-                `${item.name}`
-            )
-            .join(", ");
-
-}
-
-
-if (
-    primarySelection &&
-    primarySelection.name ===
-        "Custom Creative Design"
-) {
-
-    requestSummary =
-        requestSummary ===
-            "No specific service selected."
-
-            ? "Custom Creative Design enquiry"
-
-            : `${requestSummary}, plus a Custom Creative Design enquiry`;
-
-}
 
     return `Hello KASITU Webs 👋
 
-I would like to request information about:
-
-${requestSummary}
-
-CUSTOMER INFORMATION
+I would like to request information about a website/project.
 
 Name:
 ${customer.name}
@@ -2550,84 +2104,45 @@ ${customer.phone}
 Company:
 ${customer.company || "Not provided"}
 
-
-SELECTED SERVICES
-
-${serviceText}
-
-
-WEBSITE PACKAGE
-
+Package:
 ${packageText}
 
+Extras:
+${selectedExtras.join(", ") || "None"}
 
-WEBSITE EXTRAS
-
-${extrasText}
-
-
-ESTIMATED TOTAL
-
+Estimated Total:
 ${totalText}
 
-
-PROJECT DETAILS
-
+Project Details:
 ${customer.message}
-
-
-Please contact me regarding the selected services and next steps.
 
 Thank you.`;
 
 }
 
-/* ==================================================
-   COMPLETE QUOTATION DATA
-================================================== */
+
+/*==================================================
+GET QUOTATION DATA
+==================================================*/
 
 function getQuotationData() {
 
-    const websiteExtras =
-        getSelectedExtraData();
-
-    const services =
-        getSelectedServices();
-
-    const websitePackage =
-        selectedPackage
-            ? [{
-                name: selectedPackage,
-                price:
-                    packagePrices[selectedPackage] || 0,
-                type: "Website Package"
-            }]
-            : [];
-
-    const allItems = [
-        ...services,
-        ...websitePackage,
-        ...websiteExtras
-    ];
+    const selectedExtras =
+        getSelectedExtras();
 
     return {
 
         packageName:
-            selectedPackage || "",
+            selectedPackage,
 
         packagePrice:
             packagePrices[selectedPackage] || 0,
 
-        services,
-
         extras:
-            websiteExtras,
-
-        items:
-            allItems,
+            selectedExtras,
 
         total:
-            calculateUnifiedTotal()
+            currentTotal
 
     };
 
@@ -3100,97 +2615,6 @@ if (proposalForm) {
 
             try {
 
-/* ==================================================
-   PREPARE EMAILJS SELECTION DATA
-================================================== */
-
-const emailServices =
-    document.getElementById(
-        "email-selected-services"
-    );
-
-const emailPackage =
-    document.getElementById(
-        "email-selected-package"
-    );
-
-const emailExtras =
-    document.getElementById(
-        "email-selected-extras"
-    );
-
-const emailTotal =
-    document.getElementById(
-        "email-estimated-total"
-    );
-
-const emailSummary =
-    document.getElementById(
-        "email-quotation-summary"
-    );
-
-
-const quotationData =
-    getQuotationData();
-
-
-if (emailServices) {
-
-    emailServices.value =
-        quotationData.services.length
-            ? quotationData.services
-                .map(service =>
-                    `${service.name} (${formatCurrency(service.price)})`
-                )
-                .join("\n")
-            : "None";
-
-}
-
-
-if (emailPackage) {
-
-    emailPackage.value =
-        quotationData.packageName
-            ? `${quotationData.packageName} (${formatCurrency(quotationData.packagePrice)})`
-            : "None";
-
-}
-
-
-if (emailExtras) {
-
-    emailExtras.value =
-        quotationData.extras.length
-            ? quotationData.extras
-                .map(extra =>
-                    `${extra.name} (${formatCurrency(extra.price)})`
-                )
-                .join("\n")
-            : "None";
-
-}
-
-
-if (emailTotal) {
-
-    emailTotal.value =
-        quotationData.items.length
-            ? formatCurrency(
-                quotationData.total
-            )
-            : "To be discussed";
-
-}
-
-
-if (emailSummary) {
-
-    emailSummary.value =
-        getSelectionSummaryText();
-
-}
-
                 const response =
                     await emailjs.sendForm(
 
@@ -3370,39 +2794,26 @@ SHOW QUOTATION CHOICE
 
 function showQuotationChoice(customer) {
 
-    const data =
-        getQuotationData();
-
-    if (
-        !data.items.length
-    ) {
+    /* Never show quotation modal without a package */
+    if (!selectedPackage) {
         return;
     }
 
-    if (!quotationModal) {
-        return;
-    }
+    if (!quotationModal) return;
 
-    const itemSummary =
-        data.items
-            .map(item =>
-                `${item.name} — ${formatCurrency(item.price)}`
-            )
-            .join(" • ");
+    quotationPackage.textContent =
+        selectedPackage;
 
-    if (quotationPackage) quotationPackage.textContent = itemSummary;
-    if (quotationTotal) quotationTotal.textContent = formatCurrency(data.total);
+    quotationTotal.textContent =
+        `R${currentTotal.toLocaleString("en-ZA")}`;
 
-    if (quotationMessage) quotationMessage.textContent =
-        `Thank you, ${customer.name}. Your request has been sent successfully.`;
+    quotationMessage.textContent =
+        `Thank you, ${customer.name}. Your proposal request has been sent successfully.`;
 
-    quotationModal.classList.add(
-        "show"
-    );
+    quotationModal.classList.add("show");
 
     document.body.style.overflow =
         "hidden";
-
 }
 
 /*==================================================
@@ -3410,8 +2821,6 @@ CLOSE QUOTATION
 ==================================================*/
 
 function closeQuotationModal() {
-
-    if (!quotationModal) return;
 
     quotationModal.classList.remove(
         "show"
@@ -3534,19 +2943,34 @@ async function generateQuotationPDF() {
         ========================================== */
 
         const name =
-            proposalForm?.querySelector('[name="name"]')?.value.trim() || "Client";
+            proposalForm
+                .querySelector('[name="name"]')
+                .value
+                .trim();
 
         const email =
-            proposalForm?.querySelector('[name="email"]')?.value.trim() || "";
+            proposalForm
+                .querySelector('[name="email"]')
+                .value
+                .trim();
 
         const phone =
-            proposalForm?.querySelector('[name="phone"]')?.value.trim() || "";
+            proposalForm
+                .querySelector('[name="phone"]')
+                .value
+                .trim();
 
         const company =
-            proposalForm?.querySelector('[name="company"]')?.value.trim() || "";
+            proposalForm
+                .querySelector('[name="company"]')
+                .value
+                .trim();
 
         const message =
-            proposalForm?.querySelector('[name="message"]')?.value.trim() || "";
+            proposalForm
+                .querySelector('[name="message"]')
+                .value
+                .trim();
 
 
         /* ==================================================
@@ -3878,7 +3302,7 @@ async function generateQuotationPDF() {
         doc.setFontSize(9);
 
         doc.text(
-            "SELECTED SERVICES",
+            "SELECTED PACKAGE",
             28,
             124
         );
@@ -3962,7 +3386,7 @@ async function generateQuotationPDF() {
             data.extras.forEach(feature => {
 
                 const cleanFeature =
-                    String(feature?.name || feature || "")
+                    feature
                         .replace(/\s+/g, " ")
                         .trim();
 
@@ -5741,134 +5165,3 @@ document.addEventListener(
 
     }
 );
-
-const creativeStart =
-    document.getElementById(
-        "creative-price-contact"
-    );
-
-if (creativeStart) {
-
-    creativeStart.addEventListener(
-        "click",
-        function(event) {
-
-            event.preventDefault();
-
-            /*
-             * This is a CUSTOM DESIGN enquiry,
-             * not a fixed-price package.
-             */
-            primarySelection = {
-                name: "Custom Creative Design",
-                price: 0,
-                type: "Creative Design"
-            };
-
-            /*
-             * Don't add R0 to the quotation.
-             */
-            selectedServices =
-                selectedServices.filter(
-                    service =>
-                        service.name !==
-                        "Custom Creative Design"
-                );
-
-            updateAllSelectedCalculator();
-	    updateContactSelectionSummary();
-
-            const creativeModal =
-                document.getElementById(
-                    "creative-price-modal"
-                );
-
-            if (creativeModal) {
-
-                creativeModal.classList.remove(
-                    "active"
-                );
-
-                creativeModal.setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
-
-            }
-
-            goToContactWithSelection(
-                "You want a custom creative design package. Please fill in your name, email, phone number and explain what you would like designed."
-            );
-
-        }
-    );
-
-}
-
-/* ==================================================
-   GO TO CONTACT WITH SELECTION
-================================================== */
-
-function goToContactWithSelection(instruction) {
-
-    const contactSection =
-        document.getElementById("contact");
-
-    const contactForm =
-        document.getElementById("contact-form");
-
-    if (!contactSection) {
-        return;
-    }
-
-    /*
-     * Update the visible selection panel.
-     */
-    updateContactSelectionSummary();
-
-    /*
-     * Show customer instruction.
-     */
-    showSelectionInstruction(instruction);
-
-    /*
-     * Scroll to Contact.
-     */
-    contactSection.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
-
-    /*
-     * Focus name field after scrolling.
-     */
-    setTimeout(() => {
-
-        const nameInput =
-            contactForm?.querySelector(
-                'input[name="name"]'
-            );
-
-        if (nameInput) {
-
-            nameInput.focus();
-
-            nameInput.classList.add(
-                "input-attention"
-            );
-
-            setTimeout(() => {
-
-                nameInput.classList.remove(
-                    "input-attention"
-                );
-
-            }, 2500);
-
-        }
-
-    }, 900);
-
-}
-
-
