@@ -3815,51 +3815,32 @@ if (locatorQuote && locatorModal) {
        ALARM CLOSE
     ===================================================== */
 
-document
-    .querySelectorAll(".key-locator-quote-btn")
-    .forEach(button => {
+if (alarmQuote && alarmModal) {
 
-        button.addEventListener(
-            "click",
-            function(event) {
+    alarmQuote.addEventListener(
+        "click",
+        function(event) {
 
-                event.preventDefault();
+            event.preventDefault();
+            event.stopPropagation();
 
-                event.stopPropagation();
+            addSelectedService(
+                "Security Alarm",
+                229.99,
+                "Product"
+            );
 
+            closeModal(alarmModal);
 
-                addSelectedService(
-                    "Bluetooth Key Locator",
-                    209.99,
-                    "Product"
-                );
+            goToContactWithSelection(
+                "You selected a Security Alarm. Please fill in your name, email, phone number and tell us whether the alarm is for a home, office or business, plus any installation requirements."
+            );
 
+        }
+    );
 
-                const modal =
-                    document.getElementById(
-                        "keyLocatorPricingModal"
-                    );
+}
 
-
-                if (modal) {
-
-                    modal.classList.remove(
-                        "active"
-                    );
-
-                }
-
-
-                goToContactWithSelection(
-
-                    "You selected a Bluetooth Key Locator. Please fill in your name, email, phone number and tell us how many units you need or any questions you have about the product."
-
-                );
-
-            }
-        );
-
-    });
 
     /* =====================================================
        CLICK OUTSIDE — LOCATOR
@@ -3946,53 +3927,6 @@ document
     console.log(
         "KASITU: Locator + Alarm pricing modals initialized ✓"
     );
-
-
-document
-    .querySelectorAll(".alarm-quote-btn")
-    .forEach(button => {
-
-        button.addEventListener(
-            "click",
-            function(event) {
-
-                event.preventDefault();
-
-                event.stopPropagation();
-
-
-                addSelectedService(
-                    "Security Alarm",
-                    229.99,
-                    "Product"
-                );
-
-
-                const modal =
-                    document.getElementById(
-                        "alarmPricingModal"
-                    );
-
-
-                if (modal) {
-
-                    modal.classList.remove(
-                        "active"
-                    );
-
-                }
-
-
-                goToContactWithSelection(
-
-                    "You selected a Security Alarm. Please fill in your name, email, phone number and tell us how many alarms you need or provide any requirements or questions you have."
-
-                );
-
-            }
-        );
-
-    });
 
 /* =====================================================
    GET STARTED BUTTONS
@@ -4108,114 +4042,139 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-/* ==================================================
-   BUSINESS REGISTRATION CARDS
+    /* ==================================================
+   BUSINESS REGISTRATION PACKAGE CARDS
+   Click card → save selection → Contact
 ================================================== */
 
 document
     .querySelectorAll(".business-price-card")
     .forEach(card => {
 
-        card.addEventListener(
-            "click",
-            function(event) {
+        card.addEventListener("click", function(event) {
 
-                event.preventDefault();
-
-
-                const name =
-                    this.querySelector("h3")
-                        ?.textContent
-                        .trim();
-
-
-                const priceText =
-                    this.querySelector(".business-price")
-                        ?.textContent || "";
-
-
-                const price =
-                    Number(
-                        priceText
-                            .replace(/[^0-9.]/g, "")
-                    ) || 0;
-
-
-                if (!name) return;
-
-
-                addSelectedService(
-                    name,
-                    price,
-                    "Business Registration"
-                );
-
-
-                goToContactWithSelection(
-
-                    `You selected ${name}. Please fill in your name, email, phone number and tell us any additional information you would like us to know about your business registration.`
-
-                );
-
+            /*
+             * Don't trigger twice if a future button
+             * is added inside the card.
+             */
+            if (
+                event.target.closest("a, button")
+            ) {
+                return;
             }
-        );
+
+            const heading =
+                card.querySelector("h3");
+
+            const priceElement =
+                card.querySelector(".business-price");
+
+            if (!heading || !priceElement) {
+                return;
+            }
+
+            const name =
+                heading.textContent
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+            const priceText =
+                priceElement.textContent
+                    .replace(/[^\d.]/g, "");
+
+            const price =
+                Number(priceText);
+
+            addSelectedService(
+                name,
+                price,
+                "Business Registration"
+            );
+
+            closeBusinessPriceModal();
+
+            goToContactWithSelection(
+                `You selected ${name}. Please fill in your name, email, phone number and tell us any important details about your business registration needs.`
+            );
+
+        });
 
     });
 
 /* ==================================================
    CREATIVE DESIGN PACKAGE CARDS
+   Click card → save selection → Contact
 ================================================== */
 
 document
     .querySelectorAll(".creative-price-card")
     .forEach(card => {
 
-        card.addEventListener(
-            "click",
-            function(event) {
+        card.addEventListener("click", function(event) {
 
-                event.preventDefault();
+            if (
+                event.target.closest("a, button")
+            ) {
+                return;
+            }
 
+            const heading =
+                card.querySelector("h3");
 
-                const name =
-                    this.querySelector("h3")
-                        ?.textContent
-                        .trim();
+            const priceElement =
+                card.querySelector(".creative-price");
 
+            if (!heading || !priceElement) {
+                return;
+            }
 
-                const priceText =
-                    this.querySelector(".creative-price")
-                        ?.textContent || "";
+            const name =
+                heading.textContent
+                    .replace(/\s+/g, " ")
+                    .trim();
 
+            const priceText =
+                priceElement.textContent
+                    .replace(/[^\d.]/g, "");
 
-                const price =
-                    Number(
-                        priceText
-                            .replace(/[^0-9.]/g, "")
-                    ) || 0;
+            const price =
+                Number(priceText);
 
+            addSelectedService(
+                name,
+                price,
+                "Creative Design"
+            );
 
-                if (!name) return;
-
-
-                addSelectedService(
-                    name,
-                    price,
-                    "Creative Design"
+            /*
+             * Close Creative Studio modal.
+             * Use your existing close function if available.
+             */
+            const creativeModal =
+                document.getElementById(
+                    "creative-price-modal"
                 );
 
+            if (creativeModal) {
 
-                goToContactWithSelection(
+                creativeModal.classList.remove(
+                    "active"
+                );
 
-                    `You selected ${name}. Please fill in your name, email, phone number and tell us what you would like us to create or any design requirements you have.`
-
+                creativeModal.setAttribute(
+                    "aria-hidden",
+                    "true"
                 );
 
             }
-        );
+
+            goToContactWithSelection(
+                `You selected ${name}. Please fill in your name, email, phone number and describe what you would like us to design.`
+            );
+
+        });
 
     });
-
 
   /* ==================================================
    CONTACT SELECTION SUMMARY
