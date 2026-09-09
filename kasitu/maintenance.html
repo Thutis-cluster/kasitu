@@ -2732,7 +2732,10 @@
 
                     <!-- BASIC -->
 
-                    <div class="pricing-card reveal">
+                    <div class="pricing-card maintenance-card reveal"
+                            data-maintenance-plan="Basic Care"
+                            data-price="299"
+                            data-period="/month">
 
                         <div class="pricing-icon">
                             <i class="fas fa-wrench"></i>
@@ -2805,7 +2808,7 @@
 
                         <a
                             href="#contact"
-                            class="pricing-btn">
+                            class="pricing-btn maintenance-select-btn">
 
                             Get Started
 
@@ -2825,7 +2828,10 @@
 
                     <!-- BUSINESS -->
 
-                    <div class="pricing-card popular reveal">
+                    <div class="pricing-card maintenance-card popular reveal"
+                         data-maintenance-plan="Business Care"
+                         data-price="599"
+                         data-period="/month">
 
                         <div class="popular-badge">
                             MOST POPULAR
@@ -2912,7 +2918,7 @@
 
                         <a
                             href="#contact"
-                            class="pricing-btn">
+                            class="pricing-btn maintenance-select-btn">
 
                             Get Started
 
@@ -2932,7 +2938,10 @@
 
                     <!-- PREMIUM -->
 
-                    <div class="pricing-card reveal">
+                    <div class="pricing-card maintenance-card reveal"
+                             data-maintenance-plan="Premium Care"
+                             data-price="999"
+                             data-period="/month">
 
                         <div class="pricing-icon">
                             <i class="fas fa-shield-halved"></i>
@@ -3015,7 +3024,7 @@
 
                         <a
                             href="#contact"
-                            class="pricing-btn">
+                            class="pricing-btn maintenance-select-btn">
 
                             Get Started
 
@@ -3035,7 +3044,10 @@
 
                     <!-- CUSTOM -->
 
-                    <div class="pricing-card reveal">
+                    <div class="pricing-card maintenance-card reveal"
+                             data-maintenance-plan="Custom Support"
+                             data-price="1499"
+                             data-period="/month">
 
                         <div class="pricing-icon">
                             <i class="fas fa-code"></i>
@@ -3118,7 +3130,7 @@
 
                         <a
                             href="#contact"
-                            class="pricing-btn">
+                            class="pricing-btn maintenance-select-btn">
 
                             Contact Us
 
@@ -4148,6 +4160,167 @@
 
             }
         );
+
+                /* ==========================================
+           MAINTENANCE PLAN SELECTION
+        =========================================== */
+
+        const maintenanceButtons =
+            document.querySelectorAll(
+                ".maintenance-select-btn"
+            );
+
+
+        maintenanceButtons.forEach(function (button) {
+
+            button.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+
+
+                    const card =
+                        button.closest(".maintenance-card");
+
+
+                    if (!card) {
+                        return;
+                    }
+
+
+                    const planName =
+                        card.dataset.maintenancePlan;
+
+
+                    const price =
+                        parseFloat(card.dataset.price);
+
+
+                    const maintenanceSelection = {
+
+                        name:
+                            "Website Maintenance — " +
+                            planName,
+
+                        price:
+                            price,
+
+                        category:
+                            "Maintenance & Support",
+
+                        period:
+                            "/month"
+
+                    };
+
+
+                    localStorage.setItem(
+                        "kasitu-selected-maintenance",
+                        JSON.stringify(
+                            maintenanceSelection
+                        )
+                    );
+
+
+                    /*
+                     * If the main calculator functions
+                     * are available on this page, add the
+                     * maintenance plan directly.
+                     */
+
+                    if (
+                        typeof selectedServices !== "undefined" &&
+                        typeof addSelectedService === "function"
+                    ) {
+
+                        /*
+                         * Remove any previously selected
+                         * maintenance plan.
+                         */
+
+                        for (
+                            let i = selectedServices.length - 1;
+                            i >= 0;
+                            i--
+                        ) {
+
+                            const service =
+                                selectedServices[i];
+
+
+                            if (
+                                service &&
+                                (
+                                    service.category ===
+                                    "Maintenance & Support"
+                                    ||
+                                    (
+                                        service.name &&
+                                        service.name.includes(
+                                            "Website Maintenance"
+                                        )
+                                    )
+                                )
+                            ) {
+
+                                selectedServices.splice(
+                                    i,
+                                    1
+                                );
+
+                            }
+
+                        }
+
+
+                        /*
+                         * Add the selected maintenance
+                         * plan with its real price.
+                         */
+
+                        addSelectedService(
+                            "Website Maintenance — " +
+                            planName,
+                            price,
+                            "Maintenance & Support"
+                        );
+
+
+                        if (
+                            typeof calculateUnifiedTotal ===
+                            "function"
+                        ) {
+
+                            calculateUnifiedTotal();
+
+                        }
+
+
+                        if (
+                            typeof getSelectionSummaryText ===
+                            "function"
+                        ) {
+
+                            getSelectionSummaryText();
+
+                        }
+
+                    }
+
+
+                    /*
+                     * Send the customer to the
+                     * main contact/calculator page.
+                     */
+
+                    window.location.href =
+                        "index.html#contact";
+
+                }
+            );
+
+        });
 
     </script>
 
