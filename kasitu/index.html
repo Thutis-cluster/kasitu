@@ -3177,7 +3177,7 @@ PROJECT DETAILS MODAL
 
             <!-- BASIC -->
 
-           <div class="business-price-card" data-price="650">
+            <div class="business-price-card">
 
                 <div class="business-card-icon">
                     <i class="fas fa-file-signature"></i>
@@ -3228,7 +3228,7 @@ PROJECT DETAILS MODAL
 
             <!-- COMPLETE SETUP -->
 
-            <div class="business-price-card featured" data-price="950">
+            <div class="business-price-card featured">
 
                 <div class="business-popular">
                     MOST POPULAR
@@ -3289,7 +3289,7 @@ PROJECT DETAILS MODAL
 
             <!-- PREMIUM -->
 
-            <div class="business-price-card"  data-price="1500">
+            <div class="business-price-card">
 
                 <div class="business-card-icon">
                     <i class="fas fa-crown"></i>
@@ -3952,7 +3952,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /* ==================================================
    BUSINESS REGISTRATION PACKAGE CARDS
-   Click card → save package + actual price → Contact
+   Click card → save selection → Contact
 ================================================== */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -4016,107 +4016,91 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-
-        /* ----------------------------------------------
-           GET PACKAGE NAME
-        ---------------------------------------------- */
-
         const selectedPackage =
             heading.textContent
                 .replace(/\s+/g, " ")
                 .trim();
 
 
-        /* ----------------------------------------------
-           GET ACTUAL PACKAGE PRICE
-           
-           First use data-price.
-           This is safer than trying to parse
-           formatted text such as "R1 500".
-        ---------------------------------------------- */
+        /*
+         * IMPORTANT:
+         *
+         * The quotation should say only:
+         * "Business Registration"
+         *
+         * The actual package selected is kept
+         * separately so the owner can still see
+         * which package the customer clicked.
+         */
 
-        const packagePrice =
-            Number(card.dataset.price);
+        if (typeof addSelectedService === "function") {
 
+            /*
+             * Remove an existing Business Registration
+             * selection first so the user can change
+             * between Basic / Complete / Premium.
+             */
 
-        /* ----------------------------------------------
-           SAFETY CHECK
-        ---------------------------------------------- */
-
-        if (
-            !Number.isFinite(packagePrice) ||
-            packagePrice <= 0
-        ) {
-
-            console.error(
-                "KASITU: Invalid Business Registration price:",
-                packagePrice,
-                selectedPackage
-            );
-
-            return;
-        }
-
-
-        /* ----------------------------------------------
-           REMOVE PREVIOUS BUSINESS REGISTRATION
-           SELECTION
-        ---------------------------------------------- */
-
-        if (
-            typeof selectedServices !== "undefined" &&
-            Array.isArray(selectedServices)
-        ) {
-
-            for (
-                let i = selectedServices.length - 1;
-                i >= 0;
-                i--
+            if (
+                typeof selectedServices !== "undefined" &&
+                Array.isArray(selectedServices)
             ) {
 
-                if (
-                    selectedServices[i].type ===
-                    "Business Registration"
+                for (
+                    let i = selectedServices.length - 1;
+                    i >= 0;
+                    i--
                 ) {
 
-                    selectedServices.splice(i, 1);
+                    if (
+                        selectedServices[i].type ===
+                        "Business Registration"
+                    ) {
+
+                        selectedServices.splice(i, 1);
+
+                    }
 
                 }
 
             }
 
-        }
 
-
-        /* ----------------------------------------------
-           ADD BUSINESS REGISTRATION WITH ACTUAL PRICE
-        ---------------------------------------------- */
-
-        if (typeof addSelectedService === "function") {
+            /*
+             * Add generic Business Registration.
+             *
+             * Price = 0 because quotation should say
+             * "To be discussed".
+             */
 
             addSelectedService(
                 "Business Registration",
-                packagePrice,
+                0,
                 "Business Registration"
             );
 
         }
 
 
-        /* ----------------------------------------------
-           SAVE SELECTED PACKAGE
-        ---------------------------------------------- */
+        /*
+         * Save the actual package selected.
+         * This allows the owner message to say:
+         *
+         * Business Registration
+         * Selected package: Complete Setup
+         *
+         * while the quotation line remains:
+         *
+         * Business Registration
+         */
 
         window.selectedBusinessRegistrationPackage =
             selectedPackage;
 
-        window.selectedBusinessRegistrationPrice =
-            packagePrice;
 
-
-        /* ----------------------------------------------
-           CLOSE PRICING MODAL
-        ---------------------------------------------- */
+        /*
+         * Close the pricing modal.
+         */
 
         if (
             typeof closeBusinessPriceModal ===
@@ -4146,9 +4130,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /* ----------------------------------------------
-           GO TO CONTACT
-        ---------------------------------------------- */
+        /*
+         * Go to Contact Us.
+         */
 
         if (
             typeof goToContactWithSelection ===
@@ -4157,10 +4141,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             goToContactWithSelection(
 
-                "You selected " +
+                "You selected Business Registration (" +
                 selectedPackage +
-                " (R" +
-                packagePrice.toLocaleString("en-ZA") +
                 "). Please fill in your name, email, phone number and tell us any important details about your business registration needs."
 
             );
@@ -4181,21 +4163,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
 
-
-        /* ----------------------------------------------
-           REFRESH CONTACT SUMMARY
-        ---------------------------------------------- */
-
-        if (
-            typeof updateContactSelectionSummary ===
-            "function"
-        ) {
-
-            updateContactSelectionSummary();
-
-        }
-
-    });
+    }
 
 });
     
