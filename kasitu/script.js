@@ -1690,11 +1690,38 @@ return "R" +
 }
 
 /*==================================================
-CALCULATE TOTAL
+LIVE ESTIMATE TOTAL
+IMPORTANT:
+The LIVE ESTIMATE calculator is intentionally isolated.
+It calculates ONLY website packages + website extras.
+It does NOT include Business Registration, Creative Design,
+Maintenance & Support, Products, or any other standalone service.
+The All Selected Calculator remains separate and untouched.
 ==================================================*/
 
+function calculateEstimateTotal() {
+
+    let total = 0;
+
+    /* Website package ONLY */
+    if (selectedPackage) {
+        total += Number(packagePrices[selectedPackage]) || 0;
+    }
+
+    /* Website extras ONLY */
+    extraInputs.forEach(extra => {
+        if (extra.checked) {
+            total += Number(extra.dataset.price) || 0;
+        }
+    });
+
+    return total;
+}
+
+/* Keep the existing estimate-calculator API, but point it
+   exclusively at the website package + extras total. */
 function calculateTotal() {
-    return calculateUnifiedTotal();
+    return calculateEstimateTotal();
 }
 
 /*==================================================
@@ -5356,3 +5383,99 @@ function goToContactWithSelection(instruction) {
         refreshSelectionUI();
     });
 })();
+
+/* ==================================================
+   MAINTENANCE & SUPPORT PLAN SELECTION
+================================================== */
+
+/* ==================================================
+   MAINTENANCE & SUPPORT PLAN SELECTION
+   Uses the same unified calculator as Business Registration.
+================================================== */
+
+function restoreMaintenanceSelection() {
+    const storageKey = "kasitu-selected-maintenance";
+    const raw = localStorage.getItem(storageKey);
+
+    if (!raw) return;
+
+    try {
+        const selection = JSON.parse(raw);
+        const name = String(selection.name || "").trim();
+        const price = Number(selection.price) || 0;
+        const type = selection.type || "Maintenance & Support";
+
+        if (!name) return;
+
+        /* Replace any earlier maintenance selection. */
+        selectedServices = selectedServices.filter(service =>
+            service.type !== "Maintenance & Support" &&
+            !(service.name && service.name.indexOf("Website Maintenance") === 0)
+        );
+
+        addSelectedService(name, price, type);
+
+        if (typeof showSelectionInstruction === "function") {
+            showSelectionInstruction(
+                `${name} selected at ${formatCurrency(price)} per month. Please complete your contact details.`
+            );
+        }
+
+        localStorage.removeItem(storageKey);
+    } catch (error) {
+        console.error("Unable to restore maintenance selection:", error);
+        localStorage.removeItem(storageKey);
+    }
+}
+
+function setupMaintenancePlanButtons() {
+    document.querySelectorAll(".maintenance-select-btn").forEach(button => {
+        button.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const card = button.closest(".maintenance-card") || button.closest(".pricing-card");
+            if (!card) return;
+
+            const planName =
+                card.dataset.maintenancePlan ||
+                card.querySelector("h3")?.textContent.trim();
+
+            const priceFromData = card.dataset.price;
+            const priceText =
+                card.querySelector(".price")?.textContent ||
+                card.querySelector(".pricing-price")?.textContent ||
+                priceFromData || "0";
+
+            const price = Number(priceFromData || priceText.replace(/[^0-9.]/g, "")) || 0;
+
+            if (!planName) return;
+
+            const selection = {
+                name: `Website Maintenance — ${planName}`,
+                price,
+                type: "Maintenance & Support",
+                period: card.dataset.period || "/month"
+            };
+
+            localStorage.setItem(
+                "kasitu-selected-maintenance",
+                JSON.stringify(selection)
+            );
+
+            window.location.href = "index.html#contact";
+        });
+    });
+}
+
+/* Maintenance page: wait for its cards/buttons to exist. */
+document.addEventListener("DOMContentLoaded", function () {
+    setupMaintenancePlanButtons();
+});
+
+/* Index page: restore a maintenance selection after the page redirect. */
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", restoreMaintenanceSelection);
+} else {
+    restoreMaintenanceSelection();
+}
