@@ -1056,6 +1056,9 @@ let primarySelection = null;
    while the customer quotation intentionally stays generic. */
 let selectedBusinessRegistrationPackage = "";
 
+/* True only when Business Registration was started via the enquiry button. */
+let businessRegistrationPriceDiscussed = false;
+
 
 /* ==================================================
    STANDALONE SERVICE PRICES
@@ -3184,6 +3187,7 @@ if (emailExtras) {
 if (emailTotal) {
 
     const businessOnly =
+        businessRegistrationPriceDiscussed &&
         selectedBusinessRegistrationPackage &&
         !quotationData.packageName &&
         !quotationData.extras.length &&
@@ -5275,15 +5279,24 @@ function goToContactWithSelection(instruction) {
 
         document.querySelectorAll("#business-price-modal .business-price-card").forEach(card=>card.addEventListener("click",()=>{
             const packageName = card.dataset.name || "Business Registration";
-            selectedBusinessRegistrationPackage = packageName;
+            const priceElement = card.querySelector(".business-price");
+            const priceText = priceElement ? priceElement.textContent : "";
+            const price = Number(priceText.replace(/[^0-9.]/g, "")) || 0;
 
-            /* Keep the quotation item generic and price-free. The package detail
-               is retained separately so the owner still knows what was chosen. */
+            selectedBusinessRegistrationPackage = packageName;
+            businessRegistrationPriceDiscussed = false;
+
+            /* Replace any earlier Business Registration selection so that
+               changing packages always updates the quotation price. */
+            selectedServices = selectedServices.filter(
+                service => service.type !== "Business Registration"
+            );
+
             selectService(
                 "Business Registration",
-                0,
+                price,
                 "Business Registration",
-                `You selected Business Registration (${packageName}). Please complete your name, email, phone number and company details. You can also tell us anything else you would like included.`
+                `You selected Business Registration (${packageName}) at ${formatCurrency(price)}. Please complete your name, email, phone number and company details. You can also tell us anything else you would like included.`
             );
 
             closeModal("business-price-modal");
@@ -5292,12 +5305,20 @@ function goToContactWithSelection(instruction) {
         document.getElementById("business-price-contact")?.addEventListener("click",e=>{
             e.preventDefault();
             e.stopPropagation();
-            selectedBusinessRegistrationPackage = "Business Registration";
+            selectedBusinessRegistrationPackage = "Price to be discussed";
+            businessRegistrationPriceDiscussed = true;
+
+            /* Replace any earlier Business Registration selection and keep
+               this enquiry out of the numeric total. */
+            selectedServices = selectedServices.filter(
+                service => service.type !== "Business Registration"
+            );
+
             selectService(
                 "Business Registration",
                 0,
                 "Business Registration",
-                "Business Registration selected. Please fill in your name, email, phone number and company details so we can review your requirements and get back to you."
+                "Business Registration selected. Please fill in your name, email, phone number and company details so we can review your requirements and provide a suitable quotation."
             );
             closeModal("business-price-modal");
         });
