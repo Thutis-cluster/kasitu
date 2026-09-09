@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -48,55 +48,6 @@
 
     <link rel="stylesheet" href="style.css">
 
-
-<style id="kasitu-service-modal-fix">
-/* =========================================================
-   KASITU SERVICE MODAL FUNCTIONALITY FIX
-   ========================================================= */
-
-.alarm-modal,
-.key-locator-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity .25s ease, visibility .25s ease;
-}
-
-.alarm-modal.active,
-.key-locator-modal.active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
-.alarm-modal-box,
-.key-locator-modal-box {
-    position: relative;
-    z-index: 10001;
-    max-height: calc(100vh - 40px);
-    overflow-y: auto;
-}
-
-.alarm-modal-close,
-.key-locator-modal-close {
-    position: absolute;
-    z-index: 10002;
-    cursor: pointer;
-}
-
-body.kasitu-service-modal-open,
-html.kasitu-service-modal-open {
-    overflow: hidden;
-}
-</style>
-
 </head>
 <body>
 
@@ -114,7 +65,7 @@ html.kasitu-service-modal-open {
 
 <div class="logo-circle">
 
-<img src="images/kasitu.webp" alt="KASITU Webs Logo" class="site-logo">
+<img src="images/kasitu.png" alt="KASITU Webs Logo" class="site-logo">
 
 </div>
 
@@ -431,101 +382,55 @@ SERVICES
 
         </div>
 
-<div class="service-card business-registration-card">
-    <div class="service-icon">
-        <i class="fas fa-building"></i>
-    </div>
+        <div class="service-card business-registration-card" id="businessRegistrationCard">
+            <div class="service-icon"><i class="fas fa-building"></i></div>
+            <h3>Business Registration</h3>
+            <p>Company registration and business setup services to help you get your business started professionally.</p>
+            <button type="button" class="service-learn-btn" id="business-registration-btn">View Pricing <i class="fas fa-arrow-right"></i></button>
+        </div>
 
-    <h3>Business Registration</h3>
+        <div class="service-card creative-design-service-card" id="creativeDesignServiceCard">
+            <div class="service-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+            <h3>Creative Design</h3>
+            <p>Professional logos, flyers, posters and branding materials designed for your business.</p>
+            <button type="button" class="service-learn-btn" id="creative-explore-btn">View Pricing <i class="fas fa-arrow-right"></i></button>
+        </div>
 
-    <p>
-        Company registration and business setup services to help you
-        get your business started professionally.
-    </p>
+        <div class="service-card key-locator-card" id="keyLocatorCard">
+            <div class="service-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <h3>Bluetooth Key Locators</h3>
+            <p>Smart Bluetooth key locators that help you quickly find your keys, bags and other important belongings.</p>
+            <button type="button" class="service-learn-btn" id="key-locator-pricing-btn">View Pricing <i class="fas fa-arrow-right"></i></button>
+        </div>
 
-    <button
-        type="button"
-        class="service-learn-btn"
-        id="business-registration-btn">
-        <i class="fas fa-arrow-right"></i>
-        View Pricing
-    </button>
-</div>
+        <div class="service-card alarm-service-card" id="alarmServiceCard">
+            <div class="service-icon"><i class="fas fa-shield-halved"></i></div>
+            <h3>Security Alarms</h3>
+            <p>Stay protected with smart, reliable security alarms. Built to deter intruders and give you peace of mind.</p>
+            <button type="button" class="service-learn-btn" id="alarm-pricing-btn">View Alarm Pricing <i class="fas fa-arrow-right"></i></button>
+        </div>
 
-<div class="service-card key-locator-card" id="keyLocatorCard">
+            <h3>Security Alarms</h3>
 
-    <div class="service-icon">
-        <i class="fas fa-map-marker-alt"></i>
-    </div>
-
-    <h3>Bluetooth Key Locators</h3>
-
-    <p>
-        Smart Bluetooth key locators that help you quickly find
-        your keys, bags and other important belongings.
-    </p>
-
-    <button
-        type="button"
-        class="service-learn-btn"
-        id="key-locator-pricing-btn">
-
-        View Pricing
-        <i class="fas fa-arrow-right"></i>
-
-    </button>
-
-</div>
+            <p>
+                Stay protected with smart, reliable security alarms. Built to deter intruders and give you peace of mind.
+            </p>
+                    
+        </div>
         
-<div class="service-card alarm-service-card" id="alarmServiceCard">
+        <div class="service-card">
 
-    <div class="service-icon">
-        <i class="fas fa-shield-halved"></i>
-    </div>
+            <div class="service-icon">
+                <i class="fas fa-headset"></i>
+            </div>
 
-    <h3>Security Alarms</h3>
+            <h3>Maintenance & Support</h3>
 
-    <p>
-        Stay protected with smart, reliable security alarms.
-        Built to deter intruders and give you peace of mind.
-    </p>
+            <p>
+                Ongoing updates, security monitoring, backups and technical support to keep your website running smoothly.
+            </p>
 
-    <button
-        type="button"
-        class="service-learn-btn"
-        id="alarm-pricing-btn">
-
-        View Alarm Pricing
-
-        <i class="fas fa-arrow-right"></i>
-
-    </button>
-
-</div>
-        
-<div class="service-card maintenance-service-card" id="maintenanceServiceCard">
-
-    <div class="service-icon">
-        <i class="fas fa-tools"></i>
-    </div>
-
-    <h3>Maintenance &amp; Support</h3>
-
-    <p>
-        Keep your website secure, updated, fast and running smoothly
-        with reliable ongoing technical support.
-    </p>
-
-    <a
-        href="maintenance.html"
-        class="service-learn-btn">
-
-        Explore Maintenance
-        <i class="fas fa-arrow-right"></i>
-
-    </a>
-
-</div>
+        </div>
 
     </div>
 
@@ -563,110 +468,68 @@ PORTFOLIO
 
         <!-- PROJECT 1 -->
 
-<!-- PROJECT 1 -->
+        <article class="project-card">
 
-<article class="project-card">
+            <div class="project-image">
 
-    <div class="project-image">
+                <img
+                    src="images/mumsybraidingstudio.png"
+                    alt="Corporate Website">
 
-        <img
-            src="images/mumsybraidingstudio.webp"
-            loading="lazy"
-            alt="Mumsy Braids Studio Booking and Admin Management System">
+            </div>
 
-    </div>
+            <div class="project-content">
 
-    <div class="project-content">
+                <span class="project-tag">
 
-        <span class="project-tag">
+                    Booking Management System
 
-            Booking & Admin Management System
+                </span>
 
-        </span>
+                <h3>
 
-        <h3>
+                    Mumsy Braiding Studio
 
-            Mumsy Braids Studio
+                </h3>
 
-        </h3>
+                <p>
 
-        <p>
+                Professional booking platform allowing
+                customers to select hairstyles, choose
+                dates and times, provide their details,
+                complete their booking and get notifications.
+                    
+                </p>
 
-            Professional booking and business management
-            platform for Mumsy Braids Studio. Customers can
-            browse hairstyles, select dates and times, submit
-            their details and complete bookings, while the
-            business owner can manage bookings, view the
-            calendar and monitor business activity through
-            a custom admin dashboard.
+                <div class="project-tech">
 
-        </p>
+                    <span>HTML</span>
 
-        <div class="project-tech">
+                    <span>CSS</span>
 
-            <span>HTML</span>
+                    <span>JavaScript</span>
 
-            <span>CSS</span>
+                    <span>PayStack </span>
 
-            <span>JavaScript</span>
+                </div>
 
-            <span>Twilio</span>
+                <div class="project-links">
 
-            <span>PayStack</span>
+<a href="projects/project.html?id=mumsy">
+    View Project
+</a>
 
-            <span>Admin Dashboard</span>
+                    <a href="#">
 
-        </div>
+                        Details
 
-        <div class="project-links">
+                    </a>
 
-            <!-- CUSTOMER WEBSITE -->
+                </div>
 
-            <a
-                href="projects/project.html?id=mumsy"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
+            </div>
 
-                <i class="fas fa-globe"></i>
-
-                View Website
-
-            </a>
-
-
-            <!-- ADMIN DASHBOARD -->
-
-            <a
-                href="projects/admin-dashboard.html"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-
-                <i class="fas fa-chart-line"></i>
-
-                Admin Dashboard
-
-            </a>
-
-
-            <!-- PROJECT DETAILS -->
-
-            <button
-                type="button"
-                class="project-details-btn"
-                data-project="mumsy"
-            >
-
-                Details
-
-            </button>
-
-        </div>
-
-    </div>
-
-</article>
+        </article>
 
         <!-- PROJECT 2 -->
 
@@ -675,8 +538,7 @@ PORTFOLIO
             <div class="project-image">
 
                 <img
-                    src="images/thutisproject.webp"
-                    loading="lazy"
+                    src="images/thutisproject.png"
                     alt="Online Store">
 
             </div>
@@ -721,12 +583,11 @@ PORTFOLIO
     View Project
 </a>
 
-            <button
-                type="button"
-                class="project-details-btn"
-                data-project="store">
-                Details
-             </button>
+                    <a href="#">
+
+                        Details
+
+                    </a>
 
                 </div>
 
@@ -734,97 +595,67 @@ PORTFOLIO
 
         </article>
 
-<!-- PROJECT 3 — KASITU CREATIVE STUDIO -->
-        
-<article class="project-card creative-project-card">
+        <!-- PROJECT 3 -->
 
-    <div class="project-image creative-project-image">
+        <article class="project-card">
 
-        <img
-            src="images/kasitu-creative-studio.jpg"
-            loading="lazy"
-            alt="KASITU Creative Studio — Logo Design and Marketing Materials">
+            <div class="project-image">
 
-        <div class="creative-image-badge">
-            <i class="fas fa-wand-magic-sparkles"></i>
-            CREATIVE STUDIO
-        </div>
+                <img
+                    src="images/project3.jpg"
+                    alt="Booking System">
 
-    </div>
+            </div>
 
+            <div class="project-content">
 
-    <div class="project-content">
+                <span class="project-tag">
 
-        <span class="project-tag creative-project-tag">
-            Logo Design &amp; Marketing Materials
-        </span>
+                    Business System
 
+                </span>
 
-        <h3>
-            KASITU Creative Studio
-        </h3>
+                <h3>
 
+                    Booking Management System
 
-        <p>
-            A showcase of professional logos, promotional posters,
-            flyers and brand visuals created by KASITU Webs for real
-            businesses, organisations and marketing campaigns.
-        </p>
+                </h3>
 
+                <p>
 
-        <div class="project-tech creative-tech">
+                    Cloud-based appointment booking
+                    platform with customer management,
+                    scheduling and notifications.
 
-            <span>
-                <i class="fas fa-pen-nib"></i>
-                Logo Design
-            </span>
+                </p>
 
-            <span>
-                <i class="fas fa-image"></i>
-                Posters
-            </span>
+                <div class="project-tech">
 
-            <span>
-                <i class="fas fa-file-image"></i>
-                Flyers
-            </span>
+                    <span>Firebase</span>
 
-            <span>
-                <i class="fas fa-palette"></i>
-                Branding
-            </span>
+                    <span>Node</span>
 
-        </div>
+                    <span>Express</span>
 
+                </div>
 
-        <div class="project-links creative-project-links">
+                <div class="project-links">
 
-            <a
-                href="projects/index.html"
-                target="_blank"
-                rel="noopener noreferrer">
+<a href="projects/project.html?id=practice">
+    View Project
+</a>
 
-                <i class="fas fa-images"></i>
-                View Designs
+                    <a href="#">
 
-            </a>
+                        Details
 
+                    </a>
 
-            <button
-                type="button"
-                class="creative-explore-btn"
-                id="creative-explore-btn">
+                </div>
 
-                <i class="fas fa-arrow-up-right-from-square"></i>
-                Explore Studio Prices
+            </div>
 
-            </button>  
-
-        </div>
-
-    </div>
-
-</article>
+        </article>
 
     </div>
 
@@ -1021,10 +852,9 @@ PRICING
 
             </h3>
 
-<div class="price-wrap">
-    <div class="price">R2 999</div>
-    <span class="once-off">Once-Off</span>
-</div>
+  <div class="price">
+ R2 999
+            </div>
 
             <ul>
 
@@ -1040,7 +870,7 @@ PRICING
 
                 <li>✔ Social media links</li>
                 
-                <li>✔ Free Domain (10 Months)</li>
+                <li>✔ Free Domain (1 Year)</li>
 
                 <li>✔ SSL Certificate</li>
 
@@ -1080,10 +910,9 @@ PRICING
 
             </h3>
 
-<div class="price-wrap">
-    <div class="price">R4 999</div>
-    <span class="once-off">Once-Off</span>
-</div>
+  <div class="price">
+    R4 999
+            </div>
 
             <ul>
                 <li>✔ Everything in Starter</li>
@@ -1132,10 +961,9 @@ PRICING
 
             </h3>
 
- <div class="price-wrap">
-    <div class="price">R5 999</div>
-    <span class="once-off">Once-Off</span>
-</div>
+  <div class="price">
+      R5 999
+            </div>
                 
             <ul>
 
@@ -1181,20 +1009,19 @@ PRICING
 
             <span class="price-label">
 
-                ECOMMERCE Elite ⭐
+                ECOMMERCE PRO
 
             </span>
 
             <h3>
 
-                Online Store Premium
+                Online Store PRO
 
             </h3>
 
-<div class="price-wrap">
-    <div class="price">Starting at<br> R7 999</div>
-    <span class="once-off">Once-Off</span>
-</div>
+  <div class="price">
+ From R7 999
+            </div>
                 
             <ul>
 
@@ -1671,149 +1498,111 @@ WHY CHOOSE US
 <!-- ===========================================
 PROCESS
 =========================================== -->
+
 <section class="process">
 
     <div class="section-header">
 
         <span class="section-subtitle">
+
             OUR PROCESS
+
         </span>
 
         <h2>
+
             From Idea
+
             <span>To Reality</span>
+
         </h2>
 
     </div>
 
+    <div class="process-grid">
 
-    <div class="process-route">
+        <div class="step">
 
-        <div class="route-line"></div>
+            <span>01</span>
 
+            <h3>
 
-        <!-- START -->
-        <div class="process-step start">
+                Discovery
 
-            <div class="step-marker">
-                <span>START</span>
-            </div>
+            </h3>
 
-            <div class="step-content">
+            <p>
 
-                <span class="step-number">01</span>
+                Understanding your goals,
+                audience and business.
 
-                <h3>Discovery</h3>
-
-                <p>
-                    Understanding your goals,
-                    audience and business.
-                </p>
-
-            </div>
+            </p>
 
         </div>
 
+        <div class="step">
 
-        <!-- DESIGN -->
-        <div class="process-step">
+            <span>02</span>
 
-            <div class="step-marker">
-                <span>02</span>
-            </div>
+            <h3>
 
-            <div class="step-content">
+                Design
 
-                <span class="step-number">02</span>
+            </h3>
 
-                <h3>Design</h3>
+            <p>
 
-                <p>
-                    Creating modern,
-                    user-focused interfaces.
-                </p>
+                Creating modern,
+                user-focused interfaces.
 
-            </div>
+            </p>
 
         </div>
 
+        <div class="step">
 
-        <!-- DEVELOPMENT -->
-        <div class="process-step">
+            <span>03</span>
 
-            <div class="step-marker">
-                <span>03</span>
-            </div>
+            <h3>
 
-            <div class="step-content">
+                Development
 
-                <span class="step-number">03</span>
+            </h3>
 
-                <h3>Development</h3>
+            <p>
 
-                <p>
-                    Building fast,
-                    secure and scalable
-                    applications.
-                </p>
+                Building fast,
+                secure and scalable
+                applications.
 
-            </div>
+            </p>
 
         </div>
 
+        <div class="step">
 
-        <!-- LAUNCH -->
-        <div class="process-step">
+            <span>04</span>
 
-            <div class="step-marker">
-                <span>04</span>
-            </div>
+            <h3>
 
-            <div class="step-content">
+                Launch
 
-                <span class="step-number">04</span>
+            </h3>
 
-                <h3>Launch</h3>
+            <p>
 
-                <p>
-                    Deployment,
-                    optimisation and
-                    ongoing support.
-                </p>
+                Deployment,
+                optimisation and
+                ongoing support.
 
-            </div>
-
-        </div>
-
-
-        <!-- DESTINATION -->
-        <div class="process-step destination">
-
-            <div class="step-marker">
-                <span>🚀</span>
-            </div>
-
-            <div class="step-content">
-
-                <span class="step-number">
-                    DESTINATION
-                </span>
-
-                <h3>Your Digital Reality</h3>
-
-                <p>
-                    Your website is live,
-                    optimised and ready
-                    to grow your business.
-                </p>
-
-            </div>
+            </p>
 
         </div>
 
     </div>
 
 </section>
+
     
 <!-- ==========================================
 TESTIMONIALS
@@ -2176,7 +1965,22 @@ we'll prepare a personalised proposal.
         </div>
 
         <!-- RIGHT -->
-        
+
+        <div
+            id="contact-selection-summary"
+            class="contact-selection-summary"
+            aria-live="polite"
+            hidden>
+            <div class="selection-summary-icon"><i class="fas fa-clipboard-check"></i></div>
+            <div class="selection-summary-content">
+                <span class="selection-summary-label">YOUR SELECTION</span>
+                <h3 id="selection-summary-title">Your selected services</h3>
+                <pre id="selection-summary-details"></pre>
+                <div id="selection-summary-total" class="selection-summary-total">Estimated Total: R0</div>
+                <p id="selection-summary-instruction">Please complete the form below.</p>
+            </div>
+        </div>
+
         <form id="contact-form">
 
             <input
@@ -2213,6 +2017,13 @@ we'll prepare a personalised proposal.
                 rows="6"
                 placeholder="Tell us about your project..."
                 required></textarea>
+
+            <input type="hidden" id="email-selected-services" name="selected_services">
+            <input type="hidden" id="email-selected-package" name="selected_package">
+            <input type="hidden" id="email-selected-extras" name="selected_extras">
+            <input type="hidden" id="email-estimated-total" name="estimated_total">
+            <input type="hidden" id="email-quotation-summary" name="quotation_summary">
+            <input type="hidden" id="email-customer-intent" name="customer_intent">
 
             <button
                 type="submit"
@@ -2369,43 +2180,7 @@ we'll prepare a personalised proposal.
 
         </div>
 
-<!------ selection summary ---->
-<div
-    id="contact-selection-summary"
-    class="contact-selection-summary"
-    aria-live="polite"
-    hidden>
 
-    <div class="selection-summary-icon">
-        <i class="fas fa-clipboard-check"></i>
-    </div>
-
-    <div class="selection-summary-content">
-
-        <span class="selection-summary-label">
-            YOUR SELECTION
-        </span>
-
-        <h3 id="selection-summary-title">
-            Your selected services
-        </h3>
-
-        <pre id="selection-summary-details"></pre>
-
-        <div
-            id="selection-summary-total"
-            class="selection-summary-total">
-            Estimated Total: R0
-        </div>
-
-        <p id="selection-summary-instruction">
-            Please complete the form below.
-        </p>
-
-    </div>
-
-</div>
-        
         <!-- CONTACT -->
 
         <div class="support-card">
@@ -2625,7 +2400,54 @@ FOOTER
 
 </div>
 
-    <!-- ==================================================
+    
+<!-- ==================================================
+     KASITU UNIFIED SERVICE PRICING MODALS
+================================================== -->
+<div id="business-price-modal" class="kasitu-unified-modal" aria-hidden="true">
+  <div class="kasitu-unified-modal-box">
+    <button type="button" class="kasitu-modal-close" id="business-price-close" aria-label="Close">&times;</button>
+    <div class="kasitu-modal-head"><span class="selection-summary-label">KASITU BUSINESS SERVICES</span><h2>Business Registration</h2><p>Select a package. Your choice will be saved and you will be taken to Contact Us.</p></div>
+    <div class="kasitu-modal-grid">
+      <div class="kasitu-modal-card business-price-card" data-name="Business Registration" data-price="650"><span>BASIC</span><h3>Business Registration</h3><div class="kasitu-modal-price">R650</div><ul><li>Registration assistance</li><li>Process guidance</li><li>Required information guidance</li><li>Registration documents</li></ul></div>
+      <div class="kasitu-modal-card business-price-card" data-name="Registration + Google Business Profile setup" data-price="950"><span>MOST POPULAR</span><h3>Registration + Google Business Profile setup</h3><div class="kasitu-modal-price">R950</div><ul><li>Company registration assistance</li><li>Registration documents</li><li>Business setup guidance</li><li>Assistance throughout the process</li></ul></div>
+      <div class="kasitu-modal-card business-price-card" data-name="Business Registration Premium" data-price="1500"><span>PREMIUM</span><h3>Business Registration Premium</h3><div class="kasitu-modal-price">R1 500</div><ul><li>Everything in Popular</li><li>Professional business email setup</li><li>Social media profile setup</li><li>Logo/basic brand identity</li><li>Business WhatsApp setup</li></ul></div>
+    </div>
+  </div>
+</div>
+
+<div id="creative-price-modal" class="kasitu-unified-modal" aria-hidden="true">
+  <div class="kasitu-unified-modal-box">
+    <button type="button" class="kasitu-modal-close" id="creative-price-close" aria-label="Close">&times;</button>
+    <div class="kasitu-modal-head"><span class="selection-summary-label">KASITU CREATIVE STUDIO</span><h2>Creative Design Packages</h2><p>Choose a fixed package or start a custom design enquiry.</p></div>
+    <div class="kasitu-modal-grid">
+      <div class="kasitu-modal-card creative-price-card" data-name="Logo Design" data-price="270"><span>LOGO DESIGN</span><h3>Logo Design</h3><div class="kasitu-modal-price">R270</div><ul><li>Custom logo design</li><li>2 design concepts</li><li>2 revisions</li><li>High-resolution files</li></ul></div>
+      <div class="kasitu-modal-card creative-price-card" data-name="Premium Logo Package" data-price="390"><span>BRANDING</span><h3>Premium Logo Package</h3><div class="kasitu-modal-price">R390</div><ul><li>Professional logo design</li><li>Multiple logo concepts</li><li>Logo variations</li><li>Professional brand presentation</li></ul></div>
+      <div class="kasitu-modal-card creative-price-card" data-name="Flyer Design" data-price="399"><span>MARKETING</span><h3>Flyer Design</h3><div class="kasitu-modal-price">R399</div><ul><li>Custom flyer design</li><li>2 revisions</li><li>Print-ready design</li><li>Digital version</li></ul></div>
+      <div class="kasitu-modal-card creative-price-card" data-name="Poster Design" data-price="449"><span>MARKETING</span><h3>Poster Design</h3><div class="kasitu-modal-price">R449</div><ul><li>Custom poster design</li><li>2 revisions</li><li>Print-ready design</li><li>Digital version</li></ul></div>
+      <div class="kasitu-modal-card creative-price-card" data-name="KASITU Brand Starter" data-price="1899"><span>BEST VALUE</span><h3>KASITU Brand Starter</h3><div class="kasitu-modal-price">R1 899</div><ul><li>Logo design</li><li>Logo variation</li><li>Business card design</li><li>Flyer design</li><li>Poster design</li><li>Social profile design</li></ul></div>
+    </div>
+    <div class="kasitu-modal-footer"><strong>Need something custom?</strong><a href="#contact" class="kasitu-modal-action" id="creative-price-contact">Start Your Design <i class="fas fa-arrow-right"></i></a></div>
+  </div>
+</div>
+
+<div id="alarmPricingModal" class="kasitu-unified-modal" aria-hidden="true">
+  <div class="kasitu-unified-modal-box" style="max-width:620px">
+    <button type="button" class="kasitu-modal-close" id="closeAlarmModal" aria-label="Close">&times;</button>
+    <div class="kasitu-modal-head"><span class="selection-summary-label">SECURITY ALARM</span><h2>Security Alarm</h2><p>Affordable security alarm protection for your home, office or small business.</p><div class="kasitu-modal-price">R229.99</div><small>Installation and additional equipment may be quoted separately.</small></div>
+    <div class="kasitu-modal-footer"><span>Tell us your quantity and installation requirements.</span><a href="#contact" class="kasitu-modal-action alarm-quote-btn">Get Started <i class="fas fa-arrow-right"></i></a></div>
+  </div>
+</div>
+
+<div id="keyLocatorPricingModal" class="kasitu-unified-modal" aria-hidden="true">
+  <div class="kasitu-unified-modal-box" style="max-width:620px">
+    <button type="button" class="kasitu-modal-close" id="closeKeyLocatorModal" aria-label="Close">&times;</button>
+    <div class="kasitu-modal-head"><span class="selection-summary-label">BLUETOOTH KEY LOCATOR</span><h2>Key Locator</h2><p>Keep track of important belongings with a compact Bluetooth key locator.</p><div class="kasitu-modal-price">R209.99</div><small>Availability and delivery may vary.</small></div>
+    <div class="kasitu-modal-footer"><span>Tell us how many units you need.</span><a href="#contact" class="kasitu-modal-action key-locator-quote-btn">Get Started <i class="fas fa-arrow-right"></i></a></div>
+  </div>
+</div>
+
+<!-- ==================================================
      QUOTATION CHOICE MODAL
 ================================================== -->
 
@@ -2734,1423 +2556,34 @@ FOOTER
 
 </div>
 
-<!-- FLOATING WHATSAPP BUSINESS BUTTON -->
-
+    <!-- FLOATING WHATSAPP BUTTON -->
 <button
     id="floating-whatsapp"
     class="floating-whatsapp"
     type="button"
-    aria-label="Chat with KASITU Webs on WhatsApp Business"
-    title="Chat with KASITU Webs"
+    aria-label="Chat with KASITU Webs on WhatsApp"
+    title="Click to chat • Hold to move"
 >
-
     <span class="floating-whatsapp-ring"></span>
 
     <span class="floating-whatsapp-icon">
-
         <i class="fab fa-whatsapp"></i>
-
     </span>
 
     <span class="floating-whatsapp-label">
-        WhatsApp Business
+        Chat with us
     </span>
 
-        <span class="floating-whatsapp-hint">
+    <span class="floating-whatsapp-hint">
         Hold & drag
     </span>
 </button>
 
-    <!-- ==========================================
-PROJECT DETAILS MODAL
-========================================== -->
 
-<div id="project-modal" class="project-modal" aria-hidden="true">
-
-    <div class="project-modal-backdrop"></div>
-
-    <div
-        class="project-modal-box"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="project-modal-title"
-    >
-
-        <button
-            type="button"
-            class="project-modal-close"
-            id="project-modal-close"
-            aria-label="Close project details"
-        >
-            &times;
-        </button>
-
-        <div class="project-modal-header">
-
-            <span id="project-modal-tag" class="project-modal-tag">
-                PROJECT
-            </span>
-
-            <h2 id="project-modal-title">
-                Project Title
-            </h2>
-
-            <p id="project-modal-description">
-                Project description.
-            </p>
-
-        </div>
-
-        <div class="project-modal-content">
-
-            <div class="project-modal-section">
-
-                <h3>
-                    <i class="fas fa-star"></i>
-                    Project Highlights
-                </h3>
-
-                <ul id="project-modal-features"></ul>
-
-            </div>
-
-            <div class="project-modal-section">
-
-                <h3>
-                    <i class="fas fa-code"></i>
-                    Technologies
-                </h3>
-
-                <div
-                    id="project-modal-tech"
-                    class="project-modal-tech">
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="project-modal-footer">
-
-            <a
-                href="#"
-                id="project-modal-link"
-                class="primary-btn"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                <i class="fas fa-external-link-alt"></i>
-                Visit Website
-            </a>
-
-        </div>
-
-    </div>
-
-</div>
-
-    <!-- ==================================================
-     KASITU CREATIVE STUDIO PRICE MODAL
-================================================== -->
-
-<div
-    id="creative-price-modal"
-    class="creative-price-modal"
-    aria-hidden="true">
-
-    <div
-        class="creative-price-backdrop"
-        id="creative-price-backdrop">
-    </div>
-
-    <div
-        class="creative-price-box"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="creative-price-title">
-
-        <!-- CLOSE -->
-
-        <button
-            type="button"
-            class="creative-price-close"
-            id="creative-price-close"
-            aria-label="Close Creative Studio prices">
-
-            &times;
-
-        </button>
-
-
-        <!-- HEADER -->
-
-        <div class="creative-price-header">
-
-            <div class="creative-price-icon">
-
-                <i class="fas fa-wand-magic-sparkles"></i>
-
-            </div>
-
-            <span class="creative-price-label">
-                KASITU CREATIVE STUDIO
-            </span>
-
-            <h2 id="creative-price-title">
-                Creative Design Packages
-            </h2>
-
-            <p>
-                Professional designs created to give your
-                business a stronger and more memorable brand.
-            </p>
-
-        </div>
-
-
-        <!-- PRICE GRID -->
-
-        <div class="creative-price-grid">
-
-            <!-- LOGO -->
-
-            <div class="creative-price-card">
-
-                <div class="creative-card-icon">
-                    <i class="fas fa-pen-nib"></i>
-                </div>
-
-                <span class="creative-card-type">
-                    LOGO DESIGN
-                </span>
-
-                <h3>
-                    Logo Design
-                </h3>
-
-                <div class="creative-price">
-                    R270
-                    <small>Once-Off</small>
-                </div>
-
-                <ul>
-                    <li>Custom logo design</li>
-                    <li>2 design concepts</li>
-                    <li>2 revisions</li>
-                    <li>High-resolution files</li>
-                </ul>
-
-            </div>
-
-
-            <!-- PREMIUM LOGO -->
-
-            <div class="creative-price-card premium">
-
-                <span class="creative-best-value">
-                    PREMIUM
-                </span>
-
-                <div class="creative-card-icon">
-                    <i class="fas fa-crown"></i>
-                </div>
-
-                <span class="creative-card-type">
-                    BRANDING
-                </span>
-
-                <h3>
-                    Premium Logo Package
-                </h3>
-
-                <div class="creative-price">
-                    R390
-                    <small>Once-Off</small>
-                </div>
-
-                <ul>
-                    <li>Professional logo design</li>
-                    <li>Multiple logo concepts</li>
-                    <li>Logo variations</li>
-                    <li>High-resolution files</li>
-                    <li>Professional brand presentation</li>
-                </ul>
-
-            </div>
-
-
-            <!-- FLYER -->
-
-            <div class="creative-price-card">
-
-                <div class="creative-card-icon">
-                    <i class="fas fa-file-image"></i>
-                </div>
-
-                <span class="creative-card-type">
-                    MARKETING
-                </span>
-
-                <h3>
-                    Flyer Design
-                </h3>
-
-                <div class="creative-price">
-                    R399
-                    <small>Per Design</small>
-                </div>
-
-                <ul>
-                    <li>Custom flyer design</li>
-                    <li>2 revisions</li>
-                    <li>Print-ready design</li>
-                    <li>Digital version</li>
-                </ul>
-
-            </div>
-
-
-            <!-- POSTER -->
-
-            <div class="creative-price-card">
-
-                <div class="creative-card-icon">
-                    <i class="fas fa-image"></i>
-                </div>
-
-                <span class="creative-card-type">
-                    MARKETING
-                </span>
-
-                <h3>
-                    Poster Design
-                </h3>
-
-                <div class="creative-price">
-                    R449
-                    <small>Per Design</small>
-                </div>
-
-                <ul>
-                    <li>Custom poster design</li>
-                    <li>2 revisions</li>
-                    <li>Print-ready design</li>
-                    <li>Digital version</li>
-                </ul>
-
-            </div>
-
-
-            <!-- BRAND STARTER -->
-
-            <div class="creative-price-card brand-starter">
-
-                <span class="creative-best-value">
-                    BEST VALUE
-                </span>
-
-                <div class="creative-card-icon">
-                    <i class="fas fa-layer-group"></i>
-                </div>
-
-                <span class="creative-card-type">
-                    COMPLETE BRANDING
-                </span>
-
-                <h3>
-                    KASITU Brand Starter
-                </h3>
-
-                <div class="creative-price">
-                    R1 899
-                    <small>Once-Off</small>
-                </div>
-
-                <ul>
-                    <li>Logo design</li>
-                    <li>Logo variation</li>
-                    <li>Business card design</li>
-                    <li>Flyer design</li>
-                    <li>Poster design</li>
-                    <li>Social profile design</li>
-                </ul>
-
-            </div>
-
-        </div>
-
-
-        <!-- FOOTER -->
-
-        <div class="creative-price-footer">
-
-            <div>
-
-                <strong>
-                    Need something custom?
-                </strong>
-
-                <span>
-                    We can create a package around your business needs.
-                </span>
-
-            </div>
-
-            <a
-                href="#contact"
-                class="creative-price-action"
-                id="creative-price-contact">
-
-                Start Your Design
-
-                <i class="fas fa-arrow-right"></i>
-
-            </a>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-    <!-- ==================================================
-     KASITU BUSINESS REGISTRATION PRICE MODAL
-================================================== -->
-
-<div
-    class="business-price-modal"
-    id="business-price-modal"
-    aria-hidden="true">
-
-    <div
-        class="business-price-backdrop"
-        id="business-price-backdrop">
-    </div>
-
-    <div
-        class="business-price-box"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="business-price-title">
-
-        <!-- CLOSE -->
-        <button
-            type="button"
-            class="business-price-close"
-            id="business-price-close"
-            aria-label="Close business registration pricing">
-
-            <i class="fas fa-times"></i>
-
-        </button>
-
-
-        <!-- HEADER -->
-
-        <div class="business-price-header">
-
-            <div class="business-price-icon">
-                <i class="fas fa-building"></i>
-            </div>
-
-            <span class="business-price-label">
-                KASITU BUSINESS SERVICES
-            </span>
-
-            <h2 id="business-price-title">
-                Business Registration
-            </h2>
-
-            <p>
-                Professional business registration and setup services
-                designed to help you get started with confidence.
-            </p>
-
-        </div>
-
-
-        <!-- PRICING -->
-
-        <div class="business-price-grid">
-
-
-            <!-- BASIC -->
-
-            <div class="business-price-card">
-
-                <div class="business-card-icon">
-                    <i class="fas fa-file-signature"></i>
-                </div>
-
-                <span class="business-card-type">
-                    BASIC
-                </span>
-
-                <h3>
-                    Business Registration
-                </h3>
-
-                <div class="business-price">
-                    R650
-                    <span>Once-Off</span>
-                </div>
-
-                <p class="business-card-description">
-                    A straightforward registration service for
-                    businesses that need help getting registered.
-                </p>
-
-                <ul>
-                    <li>
-                        <i class="fas fa-check"></i>
-                        Business registration assistance
-                    </li>
-
-                    <li>
-                        <i class="fas fa-check"></i>
-                        Registration process guidance
-                    </li>
-
-                    <li>
-                        <i class="fas fa-check"></i>
-                        Required information guidance
-                    </li>
-
-                    <li>
-                        <i class="fas fa-check"></i>
-                        Registration documents
-                    </li>
-                </ul>
-
-            </div>
-
-
-            <!-- COMPLETE SETUP -->
-
-            <div class="business-price-card featured">
-
-                <div class="business-popular">
-                    MOST POPULAR
-                </div>
-
-                <div class="business-card-icon">
-                    <i class="fas fa-briefcase"></i>
-                </div>
-
-                <span class="business-card-type">
-                    COMPLETE SETUP
-                </span>
-
-                <h3>
-                    Registration + Google Business Profile setup
-                </h3>
-
-                <div class="business-price">
-                    R950
-                    <span>Once-Off</span>
-                </div>
-
-                <p class="business-card-description">
-                    Our recommended package for entrepreneurs who
-                    want registration assistance plus a more complete
-                    business setup experience.
-                </p>
-
-                <ul>
-                    <li>
-                        <i class="fas fa-check"></i>
-                        Company registration assistance
-                    </li>
-
-                    <li>
-                        <i class="fas fa-check"></i>
-                        Registration documents
-                    </li>
-
-                    <li>
-                        <i class="fas fa-check"></i>
-                        Required information guidance
-                    </li>
-
-                    <li>
-                        <i class="fas fa-check"></i>
-                        Basic business setup guidance
-                    </li>
-
-                    <li>
-                        <i class="fas fa-check"></i>
-                        Assistance throughout the process
-                    </li>
-                </ul>
-
-            </div>
-
-
-            <!-- PREMIUM -->
-
-            <div class="business-price-card">
-
-                <div class="business-card-icon">
-                    <i class="fas fa-crown"></i>
-                </div>
-
-                <span class="business-card-type">
-                    PREMIUM
-                </span>
-
-                <h3>
-                    Business Registration Premium
-                </h3>
-
-                <div class="business-price">
-                    R1 500
-                    <span>Once-Off</span>
-                </div>
-
-                <p class="business-card-description">
-                    A more comprehensive business setup package for
-                    clients who want additional support beyond basic
-                    registration.
-                </p>
-
-                <ul>
-                    <li>
-                        <i class="fas fa-check"></i>
-                        Everything in Popular
-                    </li>
-
-                    <li>
-                        <i class="fas fa-check"></i>
-                        Professional business email setup
-                    </li>
-
-                    <li>
-                        <i class="fas fa-check"></i>
-                         Social media profile setup
-                    </li>
-
-                    <li>
-                        <i class="fas fa-check"></i>
-                        Logo/basic brand identity
-                    </li>
-                    <li>
-                        <i class="fas fa-check"></i>
-                        Business WhatsApp setup
-                    </li>
-                    <li>
-                        <i class="fas fa-check"></i>
-                        Priority support
-                    </li>
-                </ul>
-
-            </div>
-
-        </div>
-
-
-        <!-- FOOTER -->
-
-        <div class="business-price-footer">
-
-            <div>
-                <strong>
-                    <i class="fas fa-circle-info"></i>
-                    Need help choosing?
-                </strong>
-
-                <span>
-                    We'll recommend the right package for your business.
-                </span>
-            </div>
-
-            <a
-                href="#contact"
-                id="business-price-contact"
-                class="business-price-contact">
-
-                Get Started
-                <i class="fas fa-arrow-right"></i>
-
-            </a>
-
-        </div>
-
-
-        <div class="business-price-note">
-            <i class="fas fa-info-circle"></i>
-            Official government/CIPC fees, where applicable, are
-            separate from KASITU's service fee.
-        </div>
-
-    </div>
-
-</div>
-
-    <!-- ================= ALARM PRICING MODAL ================= -->
-<div class="alarm-modal" id="alarmPricingModal">
-
-    <div class="alarm-modal-box">
-
-        <button class="alarm-modal-close" id="closeAlarmModal">
-            <i class="fas fa-times"></i>
-        </button>
-
-        <!-- PICTURE PLACEHOLDER -->
-        <div class="alarm-picture">
-            <img src="images/alarm.webp" alt="Security Alarm">
-        </div>
-
-        <span class="alarm-modal-label">SECURITY ALARM</span>
-
-        <h2>Security Alarm</h2>
-
-        <p class="alarm-modal-intro">
-            Affordable security alarm protection for your home,
-            office or small business.
-        </p>
-
-        <div class="alarm-price-box">
-
-            <span>PRICE</span>
-
-            <strong>R229.99</strong>
-
-            <small>Installation and additional equipment may be quoted separately.</small>
-
-        </div>
-
-        <a href="#contact" class="alarm-quote-btn">
-            Get Started
-            <i class="fas fa-arrow-right"></i>
-        </a>
-
-    </div>
-
-</div>
-
-    <!-- ================= KEY LOCATOR PRICING MODAL ================= -->
-
-<div class="key-locator-modal" id="keyLocatorPricingModal">
-
-    <div class="key-locator-modal-box">
-
-        <button
-            class="key-locator-modal-close"
-            id="closeKeyLocatorModal"
-            aria-label="Close">
-            <i class="fas fa-times"></i>
-        </button>
-
-        <!-- PICTURE PLACEHOLDER -->
-        <div class="key-locator-picture">
-
-            <img
-                src="images/key-locator.webp"
-                alt="Bluetooth Key Locator">
-
-        </div>
-
-        <span class="key-locator-label">
-            BLUETOOTH KEY LOCATOR
-        </span>
-
-        <h2>Key Locator</h2>
-
-        <p class="key-locator-intro">
-            Keep track of your important belongings with a
-            compact Bluetooth key locator.
-        </p>
-
-        <div class="key-locator-price">
-
-            <span>PRICE</span>
-
-            <strong>R209.99</strong>
-
-            <small>
-                Bluetooth locator device. Availability and
-                delivery may vary.
-            </small>
-
-        </div>
-
-        <a
-            href="#contact"
-            class="key-locator-quote-btn">
-
-            Get Started
-
-            <i class="fas fa-arrow-right"></i>
-
-        </a>
-
-    </div>
-
-</div>
-
-<script>
-    
-/* ==================================================
-   KASITU WEBS
-   BUSINESS REGISTRATION PRICE MODAL
-   Card + Button Click Support
-================================================== */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const businessCard =
-        document.querySelector(".business-registration-card");
-
-    const businessRegistrationButton =
-        document.getElementById("business-registration-btn");
-
-    const businessPriceModal =
-        document.getElementById("business-price-modal");
-
-    const businessPriceClose =
-        document.getElementById("business-price-close");
-
-    const businessPriceBackdrop =
-        document.getElementById("business-price-backdrop");
-
-    const businessPriceContact =
-        document.getElementById("business-price-contact");
-
-
-    /* ----------------------------------------------
-       CHECK REQUIRED ELEMENTS
-    ---------------------------------------------- */
-
-    if (!businessCard || !businessPriceModal) {
-        console.warn(
-            "KASITU: Business Registration modal elements missing."
-        );
-        return;
-    }
-
-
-    /* ----------------------------------------------
-       OPEN MODAL
-    ---------------------------------------------- */
-
-    function openBusinessPriceModal(event) {
-
-        if (event) {
-            event.preventDefault();
-        }
-
-        console.log(
-            "KASITU: Opening Business Registration modal..."
-        );
-
-        businessPriceModal.classList.add("active");
-
-        businessPriceModal.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-        document.body.classList.add(
-            "business-modal-open"
-        );
-    }
-
-
-    /* ----------------------------------------------
-       CLOSE MODAL
-    ---------------------------------------------- */
-
-    function closeBusinessPriceModal() {
-
-        businessPriceModal.classList.remove(
-            "active"
-        );
-
-        businessPriceModal.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-        document.body.classList.remove(
-            "business-modal-open"
-        );
-    }
-
-
-    /* ----------------------------------------------
-       WHOLE CARD CLICK
-    ---------------------------------------------- */
-
-    businessCard.addEventListener(
-        "click",
-        function (event) {
-
-            /*
-             * If the user clicked the button,
-             * the button's own click handler will
-             * handle it.
-             */
-            if (
-                event.target.closest(
-                    "#business-registration-btn"
-                )
-            ) {
-                return;
-            }
-
-            openBusinessPriceModal(event);
-        }
-    );
-
-
-    /* ----------------------------------------------
-       BUTTON CLICK
-    ---------------------------------------------- */
-
-    if (businessRegistrationButton) {
-
-        businessRegistrationButton.addEventListener(
-            "click",
-            function (event) {
-
-                event.preventDefault();
-                event.stopPropagation();
-
-                openBusinessPriceModal(event);
-            }
-        );
-    }
-
-
-    /* ----------------------------------------------
-       CLOSE BUTTON
-    ---------------------------------------------- */
-
-    if (businessPriceClose) {
-
-        businessPriceClose.addEventListener(
-            "click",
-            function (event) {
-
-                event.preventDefault();
-                event.stopPropagation();
-
-                closeBusinessPriceModal();
-            }
-        );
-    }
-
-
-    /* ----------------------------------------------
-       BACKDROP CLICK
-    ---------------------------------------------- */
-
-    if (businessPriceBackdrop) {
-
-        businessPriceBackdrop.addEventListener(
-            "click",
-            function () {
-
-                closeBusinessPriceModal();
-            }
-        );
-    }
-
-
-    /* ----------------------------------------------
-       CONTACT BUTTON
-    ---------------------------------------------- */
-
-    if (businessPriceContact) {
-
-        businessPriceContact.addEventListener(
-            "click",
-            function () {
-
-                closeBusinessPriceModal();
-            }
-        );
-    }
-
-
-    /* ----------------------------------------------
-       ESC KEY
-    ---------------------------------------------- */
-
-    document.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (
-                event.key === "Escape" &&
-                businessPriceModal.classList.contains("active")
-            ) {
-                closeBusinessPriceModal();
-            }
-
-        }
-    );
-
-
-    console.log(
-        "KASITU: Business Registration Price Modal initialized ✓"
-    );
-
-});
-
-/* =========================================================
-   KASITU WEBS
-   LOCATOR + SECURITY ALARM PRICING MODALS
-   FIXED SINGLE-CONTROLLER SYSTEM
-========================================================= */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const locatorButton = document.getElementById("key-locator-pricing-btn");
-    const locatorModal = document.getElementById("keyLocatorPricingModal");
-    const locatorClose = document.getElementById("closeKeyLocatorModal");
-    const locatorQuote = document.querySelector(".key-locator-quote-btn");
-
-    const alarmButton = document.getElementById("alarm-pricing-btn");
-    const alarmModal = document.getElementById("alarmPricingModal");
-    const alarmClose = document.getElementById("closeAlarmModal");
-    const alarmQuote = document.querySelector(".alarm-quote-btn");
-
-    /* -----------------------------------------------------
-       OPEN
-    ----------------------------------------------------- */
-    function openServiceModal(modal) {
-        if (!modal) return;
-
-        /* Close the other service modal first */
-        if (modal !== locatorModal && locatorModal) {
-            locatorModal.classList.remove("active");
-            locatorModal.setAttribute("aria-hidden", "true");
-        }
-
-        if (modal !== alarmModal && alarmModal) {
-            alarmModal.classList.remove("active");
-            alarmModal.setAttribute("aria-hidden", "true");
-        }
-
-        modal.classList.add("active");
-        modal.setAttribute("aria-hidden", "false");
-
-        document.body.classList.add("kasitu-service-modal-open");
-        document.documentElement.classList.add("kasitu-service-modal-open");
-    }
-
-    /* -----------------------------------------------------
-       CLOSE
-    ----------------------------------------------------- */
-    function closeServiceModal(modal) {
-        if (!modal) return;
-
-        modal.classList.remove("active");
-        modal.setAttribute("aria-hidden", "true");
-
-        const anyServiceModalOpen =
-            (locatorModal && locatorModal.classList.contains("active")) ||
-            (alarmModal && alarmModal.classList.contains("active"));
-
-        if (!anyServiceModalOpen) {
-            document.body.classList.remove("kasitu-service-modal-open");
-            document.documentElement.classList.remove("kasitu-service-modal-open");
-        }
-    }
-
-    /* -----------------------------------------------------
-       LOCATOR OPEN
-    ----------------------------------------------------- */
-    if (locatorButton && locatorModal) {
-        locatorButton.addEventListener("click", function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            openServiceModal(locatorModal);
-        });
-    }
-
-    /* -----------------------------------------------------
-       LOCATOR CLOSE BUTTON
-       This was missing in the previous code.
-    ----------------------------------------------------- */
-    if (locatorClose && locatorModal) {
-        locatorClose.addEventListener("click", function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            closeServiceModal(locatorModal);
-        });
-    }
-
-    /* -----------------------------------------------------
-       ALARM OPEN
-    ----------------------------------------------------- */
-    if (alarmButton && alarmModal) {
-        alarmButton.addEventListener("click", function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            openServiceModal(alarmModal);
-        });
-    }
-
-    /* -----------------------------------------------------
-       ALARM CLOSE BUTTON
-       This was missing in the previous code.
-    ----------------------------------------------------- */
-    if (alarmClose && alarmModal) {
-        alarmClose.addEventListener("click", function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            closeServiceModal(alarmModal);
-        });
-    }
-
-    /* -----------------------------------------------------
-       LOCATOR GET STARTED
-    ----------------------------------------------------- */
-    if (locatorQuote && locatorModal) {
-        locatorQuote.addEventListener("click", function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            if (typeof addSelectedService === "function") {
-                addSelectedService(
-                    "Bluetooth Key Locator",
-                    209.99,
-                    "Product"
-                );
-            }
-
-            closeServiceModal(locatorModal);
-
-            if (typeof goToContactWithSelection === "function") {
-                goToContactWithSelection(
-                    "You selected a Bluetooth Key Locator. Please fill in your name, email, phone number and tell us how many units you need and any delivery requirements."
-                );
-            } else {
-                const contact = document.getElementById("contact");
-                if (contact) {
-                    setTimeout(function () {
-                        contact.scrollIntoView({
-                            behavior: "smooth",
-                            block: "start"
-                        });
-                    }, 120);
-                }
-            }
-        });
-    }
-
-    /* -----------------------------------------------------
-       ALARM GET STARTED
-    ----------------------------------------------------- */
-    if (alarmQuote && alarmModal) {
-        alarmQuote.addEventListener("click", function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            if (typeof addSelectedService === "function") {
-                addSelectedService(
-                    "Security Alarm",
-                    229.99,
-                    "Product"
-                );
-            }
-
-            closeServiceModal(alarmModal);
-
-            if (typeof goToContactWithSelection === "function") {
-                goToContactWithSelection(
-                    "You selected a Security Alarm. Please fill in your name, email, phone number and tell us whether the alarm is for a home, office or business, plus any installation requirements."
-                );
-            } else {
-                const contact = document.getElementById("contact");
-                if (contact) {
-                    setTimeout(function () {
-                        contact.scrollIntoView({
-                            behavior: "smooth",
-                            block: "start"
-                        });
-                    }, 120);
-                }
-            }
-        });
-    }
-
-    /* -----------------------------------------------------
-       CLICK BACKDROP TO CLOSE
-    ----------------------------------------------------- */
-    [locatorModal, alarmModal].forEach(function (modal) {
-        if (!modal) return;
-
-        modal.addEventListener("click", function (event) {
-            if (event.target === modal) {
-                closeServiceModal(modal);
-            }
-        });
-    });
-
-    /* -----------------------------------------------------
-       ESCAPE KEY
-    ----------------------------------------------------- */
-    document.addEventListener("keydown", function (event) {
-        if (event.key !== "Escape") return;
-
-        if (locatorModal && locatorModal.classList.contains("active")) {
-            closeServiceModal(locatorModal);
-        }
-
-        if (alarmModal && alarmModal.classList.contains("active")) {
-            closeServiceModal(alarmModal);
-        }
-    });
-
-    /* -----------------------------------------------------
-       INITIAL STATE
-    ----------------------------------------------------- */
-    if (locatorModal) {
-        locatorModal.classList.remove("active");
-        locatorModal.setAttribute("aria-hidden", "true");
-    }
-
-    if (alarmModal) {
-        alarmModal.classList.remove("active");
-        alarmModal.setAttribute("aria-hidden", "true");
-    }
-
-    console.log(
-        "KASITU: Locator + Alarm pricing modals fixed and initialized ✓"
-    );
-});
-
-    /* ================= MAINTENANCE CARD ================= */
-document.addEventListener("DOMContentLoaded", function () {
-
-    const maintenanceCard =
-        document.getElementById("maintenanceServiceCard");
-
-    if (!maintenanceCard) return;
-
-
-    maintenanceCard.addEventListener("click", function (event) {
-
-        /*
-         * If the user clicked the actual button,
-         * let the button handle the navigation normally.
-         */
-        if (event.target.closest(".service-learn-btn")) {
-            return;
-        }
-
-        /* Clicking anywhere else on the card */
-        window.location.href = "maintenance.html";
-
-    });
-
-});
-
-    /* ==================================================
-   BUSINESS REGISTRATION PACKAGE CARDS
-   Click card → save selection → Contact
-================================================== */
-
-document
-    .querySelectorAll(".business-price-card")
-    .forEach(card => {
-
-        card.addEventListener("click", function(event) {
-
-            /*
-             * Don't trigger twice if a future button
-             * is added inside the card.
-             */
-            if (
-                event.target.closest("a, button")
-            ) {
-                return;
-            }
-
-            const heading =
-                card.querySelector("h3");
-
-            const priceElement =
-                card.querySelector(".business-price");
-
-            if (!heading || !priceElement) {
-                return;
-            }
-
-            const name =
-                heading.textContent
-                    .replace(/\s+/g, " ")
-                    .trim();
-
-            const priceText =
-                priceElement.textContent
-                    .replace(/[^\d.]/g, "");
-
-            const price =
-                Number(priceText);
-
-            addSelectedService(
-                name,
-                price,
-                "Business Registration"
-            );
-
-            closeBusinessPriceModal();
-
-            goToContactWithSelection(
-                `You selected ${name}. Please fill in your name, email, phone number and tell us any important details about your business registration needs.`
-            );
-
-        });
-
-    });
-
-/* ==================================================
-   CREATIVE DESIGN PACKAGE CARDS
-   Click card → save selection → Contact
-================================================== */
-
-document
-    .querySelectorAll(".creative-price-card")
-    .forEach(card => {
-
-        card.addEventListener("click", function(event) {
-
-            if (
-                event.target.closest("a, button")
-            ) {
-                return;
-            }
-
-            const heading =
-                card.querySelector("h3");
-
-            const priceElement =
-                card.querySelector(".creative-price");
-
-            if (!heading || !priceElement) {
-                return;
-            }
-
-            const name =
-                heading.textContent
-                    .replace(/\s+/g, " ")
-                    .trim();
-
-            const priceText =
-                priceElement.textContent
-                    .replace(/[^\d.]/g, "");
-
-            const price =
-                Number(priceText);
-
-            addSelectedService(
-                name,
-                price,
-                "Creative Design"
-            );
-
-            /*
-             * Close Creative Studio modal.
-             * Use your existing close function if available.
-             */
-            const creativeModal =
-                document.getElementById(
-                    "creative-price-modal"
-                );
-
-            if (creativeModal) {
-
-                creativeModal.classList.remove(
-                    "active"
-                );
-
-                creativeModal.setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
-
-            }
-
-            goToContactWithSelection(
-                `You selected ${name}. Please fill in your name, email, phone number and describe what you would like us to design.`
-            );
-
-        });
-
-    });
-
-  /* ==================================================
-   CONTACT SELECTION SUMMARY
-================================================== */
-
-function updateContactSelectionSummary() {
-
-    const box =
-        document.getElementById(
-            "contact-selection-summary"
-        );
-
-    const details =
-        document.getElementById(
-            "selection-summary-details"
-        );
-
-    const total =
-        document.getElementById(
-            "selection-summary-total"
-        );
-
-    if (!box || !details || !total) {
-        return;
-    }
-
-    const summary =
-        getSelectionSummaryText();
-
-    /*
-     * Nothing selected.
-     */
-    if (!summary) {
-
-        box.hidden = true;
-
-        return;
-    }
-
-    box.hidden = false;
-
-    details.textContent =
-        summary;
-
-    total.textContent =
-        `Estimated Total: ${formatCurrency(
-            calculateUnifiedTotal()
-        )}`;
-
-}
-
-  function showSelectionInstruction(text) {
-
-    const instruction =
-        document.getElementById(
-            "selection-summary-instruction"
-        );
-
-    if (instruction) {
-        instruction.textContent = text;
-    }
-
-}  
-
-</script>
 
 <script src="script.js"></script>
-    
 </body>
 
 </html>  
+
+
