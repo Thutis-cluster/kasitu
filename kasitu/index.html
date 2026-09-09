@@ -3492,213 +3492,254 @@ PROJECT DETAILS MODAL
 <script>
     
 /* ==================================================
-   KASITU WEBS
-   BUSINESS REGISTRATION PRICE MODAL
-   Card + Button Click Support
+   BUSINESS REGISTRATION PACKAGE CARDS
+   Click card → save package + actual price → Contact
 ================================================== */
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    const businessCard =
-        document.querySelector(".business-registration-card");
+    const businessCards =
+        document.querySelectorAll(".business-price-card");
 
-    const businessRegistrationButton =
-        document.getElementById("business-registration-btn");
-
-    const businessPriceModal =
-        document.getElementById("business-price-modal");
-
-    const businessPriceClose =
-        document.getElementById("business-price-close");
-
-    const businessPriceBackdrop =
-        document.getElementById("business-price-backdrop");
-
-    const businessPriceContact =
-        document.getElementById("business-price-contact");
-
-
-    /* ----------------------------------------------
-       CHECK REQUIRED ELEMENTS
-    ---------------------------------------------- */
-
-    if (!businessCard || !businessPriceModal) {
+    if (!businessCards.length) {
         console.warn(
-            "KASITU: Business Registration modal elements missing."
+            "KASITU: Business Registration cards not found."
         );
         return;
     }
 
+    businessCards.forEach(function (card) {
 
-    /* ----------------------------------------------
-       OPEN MODAL
-    ---------------------------------------------- */
+        /* Make the whole card behave like a button */
+        card.setAttribute("role", "button");
+        card.setAttribute("tabindex", "0");
 
-    function openBusinessPriceModal(event) {
-
-        if (event) {
-            event.preventDefault();
-        }
-
-        console.log(
-            "KASITU: Opening Business Registration modal..."
-        );
-
-        businessPriceModal.classList.add("active");
-
-        businessPriceModal.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-        document.body.classList.add(
-            "business-modal-open"
-        );
-    }
-
-
-    /* ----------------------------------------------
-       CLOSE MODAL
-    ---------------------------------------------- */
-
-    function closeBusinessPriceModal() {
-
-        businessPriceModal.classList.remove(
-            "active"
-        );
-
-        businessPriceModal.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-        document.body.classList.remove(
-            "business-modal-open"
-        );
-    }
-
-
-    /* ----------------------------------------------
-       WHOLE CARD CLICK
-    ---------------------------------------------- */
-
-    businessCard.addEventListener(
-        "click",
-        function (event) {
+        card.addEventListener("click", function (event) {
 
             /*
-             * If the user clicked the button,
-             * the button's own click handler will
-             * handle it.
+             * Ignore clicks on interactive elements
+             * if any are added inside the card later.
              */
-            if (
-                event.target.closest(
-                    "#business-registration-btn"
-                )
-            ) {
+            if (event.target.closest("a, button")) {
                 return;
             }
 
-            openBusinessPriceModal(event);
-        }
-    );
+            selectBusinessRegistrationCard(card);
+
+        });
 
 
-    /* ----------------------------------------------
-       BUTTON CLICK
-    ---------------------------------------------- */
-
-    if (businessRegistrationButton) {
-
-        businessRegistrationButton.addEventListener(
-            "click",
-            function (event) {
-
-                event.preventDefault();
-                event.stopPropagation();
-
-                openBusinessPriceModal(event);
-            }
-        );
-    }
-
-
-    /* ----------------------------------------------
-       CLOSE BUTTON
-    ---------------------------------------------- */
-
-    if (businessPriceClose) {
-
-        businessPriceClose.addEventListener(
-            "click",
-            function (event) {
-
-                event.preventDefault();
-                event.stopPropagation();
-
-                closeBusinessPriceModal();
-            }
-        );
-    }
-
-
-    /* ----------------------------------------------
-       BACKDROP CLICK
-    ---------------------------------------------- */
-
-    if (businessPriceBackdrop) {
-
-        businessPriceBackdrop.addEventListener(
-            "click",
-            function () {
-
-                closeBusinessPriceModal();
-            }
-        );
-    }
-
-
-    /* ----------------------------------------------
-       CONTACT BUTTON
-    ---------------------------------------------- */
-
-    if (businessPriceContact) {
-
-        businessPriceContact.addEventListener(
-            "click",
-            function () {
-
-                closeBusinessPriceModal();
-            }
-        );
-    }
-
-
-    /* ----------------------------------------------
-       ESC KEY
-    ---------------------------------------------- */
-
-    document.addEventListener(
-        "keydown",
-        function (event) {
+        /* Keyboard support */
+        card.addEventListener("keydown", function (event) {
 
             if (
-                event.key === "Escape" &&
-                businessPriceModal.classList.contains("active")
+                event.key === "Enter" ||
+                event.key === " "
             ) {
-                closeBusinessPriceModal();
+
+                event.preventDefault();
+
+                selectBusinessRegistrationCard(card);
+
+            }
+
+        });
+
+    });
+
+
+    function selectBusinessRegistrationCard(card) {
+
+        const heading =
+            card.querySelector("h3");
+
+        if (!heading) {
+            return;
+        }
+
+
+        /* ----------------------------------------------
+           GET PACKAGE NAME
+        ---------------------------------------------- */
+
+        const selectedPackage =
+            heading.textContent
+                .replace(/\s+/g, " ")
+                .trim();
+
+
+        /* ----------------------------------------------
+           GET ACTUAL PACKAGE PRICE
+           
+           First use data-price.
+           This is safer than trying to parse
+           formatted text such as "R1 500".
+        ---------------------------------------------- */
+
+        const packagePrice =
+            Number(card.dataset.price);
+
+
+        /* ----------------------------------------------
+           SAFETY CHECK
+        ---------------------------------------------- */
+
+        if (
+            !Number.isFinite(packagePrice) ||
+            packagePrice <= 0
+        ) {
+
+            console.error(
+                "KASITU: Invalid Business Registration price:",
+                packagePrice,
+                selectedPackage
+            );
+
+            return;
+        }
+
+
+        /* ----------------------------------------------
+           REMOVE PREVIOUS BUSINESS REGISTRATION
+           SELECTION
+        ---------------------------------------------- */
+
+        if (
+            typeof selectedServices !== "undefined" &&
+            Array.isArray(selectedServices)
+        ) {
+
+            for (
+                let i = selectedServices.length - 1;
+                i >= 0;
+                i--
+            ) {
+
+                if (
+                    selectedServices[i].type ===
+                    "Business Registration"
+                ) {
+
+                    selectedServices.splice(i, 1);
+
+                }
+
             }
 
         }
-    );
 
 
-    console.log(
-        "KASITU: Business Registration Price Modal initialized ✓"
-    );
+        /* ----------------------------------------------
+           ADD BUSINESS REGISTRATION WITH ACTUAL PRICE
+        ---------------------------------------------- */
+
+        if (typeof addSelectedService === "function") {
+
+            addSelectedService(
+                "Business Registration",
+                packagePrice,
+                "Business Registration"
+            );
+
+        }
+
+
+        /* ----------------------------------------------
+           SAVE SELECTED PACKAGE
+        ---------------------------------------------- */
+
+        window.selectedBusinessRegistrationPackage =
+            selectedPackage;
+
+        window.selectedBusinessRegistrationPrice =
+            packagePrice;
+
+
+        /* ----------------------------------------------
+           CLOSE PRICING MODAL
+        ---------------------------------------------- */
+
+        if (
+            typeof closeBusinessPriceModal ===
+            "function"
+        ) {
+
+            closeBusinessPriceModal();
+
+        } else {
+
+            const modal =
+                document.getElementById(
+                    "business-price-modal"
+                );
+
+            if (modal) {
+
+                modal.classList.remove("active");
+
+                modal.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+            }
+
+        }
+
+
+        /* ----------------------------------------------
+           GO TO CONTACT
+        ---------------------------------------------- */
+
+        if (
+            typeof goToContactWithSelection ===
+            "function"
+        ) {
+
+            goToContactWithSelection(
+
+                "You selected " +
+                selectedPackage +
+                " (R" +
+                packagePrice.toLocaleString("en-ZA") +
+                "). Please fill in your name, email, phone number and tell us any important details about your business registration needs."
+
+            );
+
+        } else {
+
+            const contact =
+                document.getElementById("contact");
+
+            if (contact) {
+
+                contact.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+            }
+
+        }
+
+
+        /* ----------------------------------------------
+           REFRESH CONTACT SUMMARY
+        ---------------------------------------------- */
+
+        if (
+            typeof updateContactSelectionSummary ===
+            "function"
+        ) {
+
+            updateContactSelectionSummary();
+
+        }
+
+    });
 
 });
-
+    
 /* =========================================================
    KASITU WEBS
    LOCATOR + SECURITY ALARM PRICING MODALS
