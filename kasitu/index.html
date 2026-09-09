@@ -3490,6 +3490,166 @@ PROJECT DETAILS MODAL
 </div>
 
 <script>
+
+/* ==================================================
+   BUSINESS REGISTRATION PRICE MODAL
+   OPEN / CLOSE CONTROLLER
+================================================== */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const businessButton =
+        document.getElementById("business-registration-btn");
+
+    const businessModal =
+        document.getElementById("business-price-modal");
+
+    const businessClose =
+        document.getElementById("business-price-close");
+
+    const businessBackdrop =
+        document.getElementById("business-price-backdrop");
+
+    const businessContact =
+        document.getElementById("business-price-contact");
+
+
+    /* ================= OPEN MODAL ================= */
+
+    if (businessButton && businessModal) {
+
+        businessButton.addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            businessModal.classList.add("active");
+
+            businessModal.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+
+            document.body.style.overflow = "hidden";
+
+        });
+
+    }
+
+
+    /* ================= CLOSE MODAL ================= */
+
+    function closeBusinessPriceModal() {
+
+        if (!businessModal) return;
+
+        businessModal.classList.remove("active");
+
+        businessModal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        document.body.style.overflow = "";
+
+    }
+
+
+    /* Make function available to package selector */
+
+    window.closeBusinessPriceModal =
+        closeBusinessPriceModal;
+
+
+    /* ================= CLOSE BUTTON ================= */
+
+    if (businessClose) {
+
+        businessClose.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                closeBusinessPriceModal();
+
+            }
+        );
+
+    }
+
+
+    /* ================= BACKDROP ================= */
+
+    if (businessBackdrop) {
+
+        businessBackdrop.addEventListener(
+            "click",
+            function () {
+
+                closeBusinessPriceModal();
+
+            }
+        );
+
+    }
+
+
+    /* ================= ESC KEY ================= */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape" &&
+                businessModal &&
+                businessModal.classList.contains("active")
+            ) {
+
+                closeBusinessPriceModal();
+
+            }
+
+        }
+    );
+
+
+    /* ================= GET STARTED ================= */
+
+    if (businessContact) {
+
+        businessContact.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+
+                closeBusinessPriceModal();
+
+                const contact =
+                    document.getElementById("contact");
+
+                if (contact) {
+
+                    setTimeout(function () {
+
+                        contact.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+
+                    }, 100);
+
+                }
+
+            }
+        );
+
+    }
+
+});
     
 /* ==================================================
    BUSINESS REGISTRATION PACKAGE CARDS
