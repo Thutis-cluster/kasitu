@@ -1052,6 +1052,10 @@ let selectedServices = [];
  */
 let primarySelection = null;
 
+/* Selected Business Registration package detail is kept for the owner message,
+   while the customer quotation intentionally stays generic. */
+let selectedBusinessRegistrationPackage = "";
+
 
 /* ==================================================
    STANDALONE SERVICE PRICES
@@ -2771,6 +2775,11 @@ function sendToWhatsApp(customer) {
 function getCustomerIntent(){
     const data=getQuotationData();
     if(typeof primarySelection!=="undefined" && primarySelection && primarySelection.name==="Custom Creative Design") return "Custom Creative Design enquiry — customer wants to discuss a custom design solution.";
+    if(selectedBusinessRegistrationPackage) {
+        const extras = data.items.filter(i => i.type !== "Business Registration").map(i => i.name);
+        const base = `Business Registration enquiry — customer selected: ${selectedBusinessRegistrationPackage}.`;
+        return extras.length ? base + " Other selected items: " + extras.join(", ") + "." : base;
+    }
     if(data.items.length) return "Customer is interested in: "+data.items.map(i=>i.name).join(", ")+".";
     return "General enquiry.";
 }
@@ -3174,12 +3183,16 @@ if (emailExtras) {
 
 if (emailTotal) {
 
-    emailTotal.value =
-        quotationData.items.length
-            ? formatCurrency(
-                quotationData.total
-            )
-            : "To be discussed";
+    const businessOnly =
+        selectedBusinessRegistrationPackage &&
+        !quotationData.packageName &&
+        !quotationData.extras.length &&
+        quotationData.services.length > 0 &&
+        quotationData.services.every(service => service.type === "Business Registration");
+
+    emailTotal.value = businessOnly
+        ? "To be discussed"
+        : (quotationData.items.length ? formatCurrency(quotationData.total) : "To be discussed");
 
 }
 
@@ -3385,15 +3398,19 @@ function showQuotationChoice(customer) {
         return;
     }
 
-    const itemSummary =
-        data.items
-            .map(item =>
-                `${item.name} — ${formatCurrency(item.price)}`
-            )
-            .join(" • ");
+    const businessOnly =
+        selectedBusinessRegistrationPackage &&
+        !data.packageName &&
+        !data.extras.length &&
+        data.services.length > 0 &&
+        data.services.every(service => service.type === "Business Registration");
+
+    const itemSummary = businessOnly
+        ? "Business Registration"
+        : data.items.map(item => `${item.name} — ${formatCurrency(item.price)}`).join(" • ");
 
     if (quotationPackage) quotationPackage.textContent = itemSummary;
-    if (quotationTotal) quotationTotal.textContent = formatCurrency(data.total);
+    if (quotationTotal) quotationTotal.textContent = businessOnly ? "To be discussed" : formatCurrency(data.total);
 
     if (quotationMessage) quotationMessage.textContent =
         `Thank you, ${customer.name}. Your request has been sent successfully.`;
@@ -3503,17 +3520,26 @@ async function generateQuotationPDF() {
         [`Name: ${name}`,`Email: ${email}`,`Phone: ${phone||"Not provided"}`,`Company: ${company||"Not provided"}`].forEach(t=>{doc.text(t,20,y);y+=7});
         y+=5;doc.setTextColor(...c.accent);doc.setFont("helvetica","bold");doc.setFontSize(10);doc.text("SELECTED SERVICES",20,y);y+=8;
         doc.setFont("helvetica","normal");doc.setTextColor(...c.text);doc.setFontSize(9);
-        const items=data.items.slice();
+        const businessOnly =
+            selectedBusinessRegistrationPackage &&
+            !data.packageName &&
+            !data.extras.length &&
+            data.services.length > 0 &&
+            data.services.every(service => service.type === "Business Registration");
+
+        const items = businessOnly
+            ? [{name:"Business Registration",price:0,type:"Business Registration"}]
+            : data.items.slice();
         if(customEnquiry) items.push({name:"Custom Creative Design",price:0,type:"Creative Design Enquiry"});
         if(!items.length){doc.text("General enquiry — quotation to be discussed.",20,y);y+=8;}
         for(const item of items){
-            const price=(item.name==="Custom Creative Design"?"To be discussed":formatCurrency(item.price));
+            const price=(item.name==="Custom Creative Design" || businessOnly?"To be discussed":formatCurrency(item.price));
             const wrapped=doc.splitTextToSize(`${item.type ? item.type+": " : ""}${item.name} — ${price}`,165);
             if(y+wrapped.length*5>258){doc.addPage();y=20;doc.setFillColor(...c.bg);doc.rect(0,0,210,297,"F");doc.setTextColor(...c.accent);doc.setFont("helvetica","bold");doc.text("SELECTED SERVICES — CONTINUED",20,y);y+=9;doc.setTextColor(...c.text);doc.setFont("helvetica","normal");}
             doc.text(wrapped,20,y);y+=Math.max(7,wrapped.length*5);
         }
         y+=5;doc.setFillColor(...c.primary);doc.roundedRect(20,y,170,25,5,5,"F");doc.setTextColor(...c.accent);doc.setFont("helvetica","bold");doc.setFontSize(9);doc.text("ESTIMATED INVESTMENT",28,y+10);
-        doc.setTextColor(...c.white);doc.setFontSize(17);doc.text(data.items.length?formatCurrency(data.total):"To be discussed",182,y+17,{align:"right"});y+=36;
+        doc.setTextColor(...c.white);doc.setFontSize(17);doc.text((businessOnly || !data.items.length)?"To be discussed":formatCurrency(data.total),182,y+17,{align:"right"});y+=36;
         doc.setTextColor(...c.accent);doc.setFontSize(10);doc.text("CUSTOMER REQUEST",20,y);y+=8;doc.setTextColor(...c.text);doc.setFont("helvetica","normal");doc.setFontSize(8.5);
         const wrappedMsg=doc.splitTextToSize(message||"No additional project details provided.",165);doc.text(wrappedMsg,20,y);y+=wrappedMsg.length*4.5+10;
         doc.setTextColor(...c.muted);doc.setFontSize(7.5);doc.text("KASITU Webs • Soshanguve, Pretoria, Gauteng, South Africa",20,278);doc.text("info@kasituwebs.co.za • +27 79 438 0103",20,285);
@@ -5248,9 +5274,33 @@ function goToContactWithSelection(instruction) {
         document.getElementById("alarmServiceCard")?.addEventListener("click",e=>{if(!e.target.closest("button"))openModal("alarmPricingModal")});
 
         document.querySelectorAll("#business-price-modal .business-price-card").forEach(card=>card.addEventListener("click",()=>{
-            selectService(card.dataset.name,Number(card.dataset.price),"Business Registration",`You selected ${card.dataset.name}. Please complete your name, email, phone number and company details. You can also tell us anything else you would like included.`);
+            const packageName = card.dataset.name || "Business Registration";
+            selectedBusinessRegistrationPackage = packageName;
+
+            /* Keep the quotation item generic and price-free. The package detail
+               is retained separately so the owner still knows what was chosen. */
+            selectService(
+                "Business Registration",
+                0,
+                "Business Registration",
+                `You selected Business Registration (${packageName}). Please complete your name, email, phone number and company details. You can also tell us anything else you would like included.`
+            );
+
             closeModal("business-price-modal");
         }));
+
+        document.getElementById("business-price-contact")?.addEventListener("click",e=>{
+            e.preventDefault();
+            e.stopPropagation();
+            selectedBusinessRegistrationPackage = "Business Registration";
+            selectService(
+                "Business Registration",
+                0,
+                "Business Registration",
+                "Business Registration selected. Please fill in your name, email, phone number and company details so we can review your requirements and get back to you."
+            );
+            closeModal("business-price-modal");
+        });
         document.querySelectorAll("#creative-price-modal .creative-price-card").forEach(card=>card.addEventListener("click",()=>{
             selectService(card.dataset.name,Number(card.dataset.price),"Creative Design",`You selected ${card.dataset.name}. Please enter your contact details and tell us what you would like designed.`);
             closeModal("creative-price-modal");
