@@ -3499,6 +3499,231 @@ PROJECT DETAILS MODAL
 </div>
 
 <script>
+
+    /* =========================================================
+   KASITU WEBS
+   RESTORE MAINTENANCE SELECTION
+   ---------------------------------------------------------
+   This does NOT change the All Selected Calculator.
+   It only restores the maintenance plan into selectedServices
+   so the existing All Selected Calculator can see it.
+========================================================= */
+
+(function () {
+
+    function restoreMaintenanceSelection() {
+
+        const storageKey =
+            "kasitu-selected-maintenance";
+
+        const raw =
+            localStorage.getItem(storageKey);
+
+        if (!raw) {
+            return;
+        }
+
+        try {
+
+            const selection =
+                JSON.parse(raw);
+
+            const name =
+                String(
+                    selection.name || ""
+                ).trim();
+
+            const price =
+                Number(
+                    selection.price
+                ) || 0;
+
+            if (!name || price <= 0) {
+
+                console.warn(
+                    "KASITU: Invalid maintenance selection.",
+                    selection
+                );
+
+                localStorage.removeItem(
+                    storageKey
+                );
+
+                return;
+            }
+
+
+            /* -----------------------------------------
+               REMOVE ANY PREVIOUS MAINTENANCE PLAN
+               ----------------------------------------- */
+
+            if (
+                typeof selectedServices !== "undefined" &&
+                Array.isArray(selectedServices)
+            ) {
+
+                selectedServices =
+                    selectedServices.filter(
+                        function (service) {
+
+                            if (!service) {
+                                return false;
+                            }
+
+                            const serviceType =
+                                service.type ||
+                                service.category ||
+                                "";
+
+                            const serviceName =
+                                String(
+                                    service.name || ""
+                                );
+
+                            /*
+                             * Keep everything except
+                             * previous maintenance selections.
+                             */
+
+                            return !(
+                                serviceType ===
+                                    "Maintenance & Support"
+
+                                ||
+
+                                serviceName
+                                    .toLowerCase()
+                                    .includes(
+                                        "website maintenance"
+                                    )
+                            );
+
+                        }
+                    );
+
+            }
+
+
+            /* -----------------------------------------
+               ADD MAINTENANCE TO EXISTING SELECTION
+               ----------------------------------------- */
+
+            if (
+                typeof addSelectedService ===
+                "function"
+            ) {
+
+                addSelectedService(
+                    name,
+                    price,
+                    "Maintenance & Support"
+                );
+
+            } else {
+
+                console.error(
+                    "KASITU: addSelectedService() is not available."
+                );
+
+                return;
+            }
+
+
+            /* -----------------------------------------
+               REFRESH ALL SELECTED CALCULATOR
+               ----------------------------------------- */
+
+            if (
+                typeof updateAllSelectedCalculator ===
+                "function"
+            ) {
+
+                updateAllSelectedCalculator();
+
+            }
+
+
+            /* -----------------------------------------
+               REFRESH CONTACT SUMMARY
+               ----------------------------------------- */
+
+            if (
+                typeof updateContactSelectionSummary ===
+                "function"
+            ) {
+
+                updateContactSelectionSummary();
+
+            }
+
+
+            /* -----------------------------------------
+               SHOW CONFIRMATION
+               ----------------------------------------- */
+
+            if (
+                typeof showSelectionInstruction ===
+                "function"
+            ) {
+
+                showSelectionInstruction(
+                    `${name} selected at ${formatCurrency(price)} per month. Please complete your contact details.`
+                );
+
+            }
+
+
+            /* -----------------------------------------
+               REMOVE TEMPORARY STORAGE
+               ----------------------------------------- */
+
+            localStorage.removeItem(
+                storageKey
+            );
+
+
+            console.log(
+                "KASITU: Maintenance selection restored ✓",
+                {
+                    name: name,
+                    price: price,
+                    type: "Maintenance & Support"
+                }
+            );
+
+        } catch (error) {
+
+            console.error(
+                "KASITU: Could not restore maintenance selection.",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* ---------------------------------------------
+       WAIT UNTIL EVERYTHING IS READY
+    --------------------------------------------- */
+
+    if (
+        document.readyState ===
+        "loading"
+    ) {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            restoreMaintenanceSelection
+        );
+
+    } else {
+
+        restoreMaintenanceSelection();
+
+    }
+
+})();
     
 /* ==================================================
    KASITU WEBS
