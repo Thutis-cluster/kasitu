@@ -714,7 +714,7 @@ const projectData = {
 
             "JavaScript",
 
-           "MangoesDB",
+           "MongoDB",
 
             "Twilio",
 
@@ -782,6 +782,8 @@ OPEN MODAL
 ==================================================*/
 
 function openProjectModal(projectId) {
+
+    if (!projectModal) return;
 
     const project =
         projectData[projectId];
@@ -883,6 +885,8 @@ CLOSE MODAL
 ==================================================*/
 
 function closeProjectModal() {
+
+    if (!projectModal) return;
 
     projectModal.classList.remove("active");
 
@@ -1023,9 +1027,604 @@ document.getElementById("total");
 const calculatorForm =
 document.getElementById("price-form");
 
-let selectedPackage = "";
+/* ==================================================
+   KASITU UNIFIED SERVICE SELECTION SYSTEM
+   Handles:
+   - Website Packages
+   - Business Registration
+   - Creative Design Packages
+   - Bluetooth Key Locator
+   - Security Alarm
+   - Website Extras
+================================================== */
 
+let selectedPackage = "";
 let currentTotal = 0;
+
+/*
+ * Additional non-website services selected by the customer.
+ */
+let selectedServices = [];
+
+/*
+ * Current primary service selection.
+ * Used for showing the customer what they selected.
+ */
+let primarySelection = null;
+
+
+/* ==================================================
+   STANDALONE SERVICE PRICES
+================================================== */
+
+const standaloneServices = {
+    "Business Registration": {
+        price: 650,
+        type: "Business Registration"
+    },
+
+    "Registration + Google Business Profile setup": {
+        price: 950,
+        type: "Business Registration"
+    },
+
+    "Business Registration Premium": {
+        price: 1500,
+        type: "Business Registration"
+    },
+
+    "Logo Design": {
+        price: 270,
+        type: "Creative Design"
+    },
+
+    "Premium Logo Package": {
+        price: 390,
+        type: "Creative Design"
+    },
+
+    "Flyer Design": {
+        price: 399,
+        type: "Creative Design"
+    },
+
+    "Poster Design": {
+        price: 449,
+        type: "Creative Design"
+    },
+
+    "KASITU Brand Starter": {
+        price: 1899,
+        type: "Creative Design"
+    },
+
+    "Bluetooth Key Locator": {
+        price: 209.99,
+        type: "Product"
+    },
+
+    "Security Alarm": {
+        price: 229.99,
+        type: "Product"
+    }
+};
+
+
+/* ==================================================
+   ADD SERVICE
+================================================== */
+
+function addSelectedService(name, price, type = "Service") {
+
+    /*
+     * Prevent the same service from being added twice.
+     */
+    const alreadySelected =
+        selectedServices.some(
+            service => service.name === name
+        );
+
+    if (!alreadySelected) {
+
+        selectedServices.push({
+            name,
+            price: Number(price) || 0,
+            type
+        });
+
+    }
+
+    primarySelection = {
+        name,
+        price: Number(price) || 0,
+        type
+    };
+
+    updateAllSelectedCalculator();
+
+    updateContactSelectionSummary();
+
+}
+
+
+/* ==================================================
+   REMOVE SERVICE
+================================================== */
+
+function removeSelectedService(name) {
+
+    selectedServices =
+        selectedServices.filter(
+            service =>
+                service.name !== name
+        );
+
+
+    if (
+        primarySelection &&
+        primarySelection.name === name
+    ) {
+
+        primarySelection = null;
+
+    }
+
+
+    updateAllSelectedCalculator();
+
+    updateContactSelectionSummary();
+
+}
+
+
+/* ==================================================
+   GET SELECTED SERVICES
+================================================== */
+
+function getSelectedServices() {
+
+    return selectedServices.map(service => ({
+        name: service.name,
+        price: service.price,
+        type: service.type
+    }));
+
+}
+
+
+/* ==================================================
+   CALCULATE COMPLETE TOTAL
+================================================== */
+
+function calculateUnifiedTotal() {
+
+    let total = 0;
+
+    /*
+     * Website package
+     */
+    if (selectedPackage) {
+        total +=
+            packagePrices[selectedPackage] || 0;
+    }
+
+    /*
+     * Website extras
+     */
+    extraInputs.forEach(extra => {
+
+        if (extra.checked) {
+
+            total +=
+                Number(extra.dataset.price) || 0;
+
+        }
+
+    });
+
+    /*
+     * Business / Creative / Products
+     */
+    selectedServices.forEach(service => {
+
+        total +=
+            Number(service.price) || 0;
+
+    });
+
+    return total;
+}
+
+
+/* ==================================================
+   ALL SELECTED CALCULATOR
+   IMPORTANT:
+   This is SEPARATE from LIVE ESTIMATE.
+================================================== */
+
+function calculateAllSelectedTotal() {
+
+    let total = 0;
+
+    /* Website package */
+    if (selectedPackage) {
+
+        total +=
+            packagePrices[selectedPackage] || 0;
+
+    }
+
+    /* Website extras */
+    extraInputs.forEach(extra => {
+
+        if (extra.checked) {
+
+            total +=
+                Number(extra.dataset.price) || 0;
+
+        }
+
+    });
+
+    /* Business / Creative / Products */
+    selectedServices.forEach(service => {
+
+        total +=
+            Number(service.price) || 0;
+
+    });
+
+    return total;
+}
+
+
+/* ==================================================
+   UPDATE ALL SELECTED CALCULATOR
+================================================== */
+
+function updateAllSelectedCalculator() {
+
+    const calculator =
+        document.getElementById(
+            "all-selected-calculator"
+        );
+
+    if (!calculator) return;
+
+
+    const items =
+        getAllSelectedItems();
+
+
+    const total =
+        calculateAllSelectedTotal();
+
+
+    const list =
+        calculator.querySelector(
+            "#all-selected-items"
+        );
+
+
+    const totalElement =
+        calculator.querySelector(
+            "#all-selected-total"
+        );
+
+
+    if (!items.length) {
+
+        calculator.classList.remove("active");
+
+        return;
+
+    }
+
+
+    calculator.classList.add("active");
+
+
+    if (list) {
+
+        list.innerHTML =
+            items.map(item => `
+
+                <div class="all-selected-item">
+
+                    <span>
+                        ${item.name}
+                    </span>
+
+                    <strong>
+                        ${formatCurrency(item.price)}
+                    </strong>
+
+                </div>
+
+            `).join("");
+
+    }
+
+
+    if (totalElement) {
+
+        totalElement.textContent =
+            formatCurrency(total);
+
+    }
+
+}
+
+
+/* ==================================================
+   GET EVERYTHING SELECTED
+================================================== */
+
+function getAllSelectedItems() {
+
+    const items = [];
+
+
+    /* Website package */
+
+    if (selectedPackage) {
+
+        items.push({
+
+            name: selectedPackage,
+
+            price:
+                packagePrices[selectedPackage] || 0,
+
+            type:
+                "Website Package"
+
+        });
+
+    }
+
+
+    /* Website extras */
+
+    extraInputs.forEach(extra => {
+
+        if (!extra.checked) return;
+
+
+        const option =
+            extra.closest(".extra-option");
+
+
+        const name =
+            option
+                ? option.textContent
+                    .replace(/\s+/g, " ")
+                    .trim()
+                : extra.dataset.extra;
+
+
+        items.push({
+
+            name,
+
+            price:
+                Number(extra.dataset.price) || 0,
+
+            type:
+                "Website Extra"
+
+        });
+
+    });
+
+
+    /* Standalone services */
+
+    selectedServices.forEach(service => {
+
+        items.push({
+
+            name: service.name,
+
+            price:
+                Number(service.price) || 0,
+
+            type: service.type
+
+        });
+
+    });
+
+
+    return items;
+
+}
+
+/* ==================================================
+   CREATE ALL SELECTED CALCULATOR
+================================================== */
+
+function createAllSelectedCalculator() {
+
+    if (
+        document.getElementById(
+            "all-selected-calculator"
+        )
+    ) {
+        return;
+    }
+
+
+    const calculator =
+        document.createElement("section");
+
+
+    calculator.id =
+        "all-selected-calculator";
+
+
+    calculator.innerHTML = `
+
+        <div class="all-selected-inner">
+
+            <div class="all-selected-heading">
+
+                <span class="all-selected-label">
+                    ALL SELECTED
+                </span>
+
+                <h2>
+                    Your Complete Selection
+                </h2>
+
+                <p>
+                    Everything you have selected across
+                    our website packages, extras, services
+                    and products.
+                </p>
+
+            </div>
+
+
+            <div
+                id="all-selected-items"
+                class="all-selected-items">
+            </div>
+
+
+            <div class="all-selected-total-box">
+
+                <span>
+                    TOTAL ESTIMATED INVESTMENT
+                </span>
+
+                <strong
+                    id="all-selected-total">
+                    R0
+                </strong>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    const contact =
+        document.getElementById("contact");
+
+
+    if (contact) {
+
+        contact.insertAdjacentElement(
+            "afterend",
+            calculator
+        );
+
+    } else {
+
+        document.body.appendChild(
+            calculator
+        );
+
+    }
+
+}
+
+
+/* Create immediately */
+
+createAllSelectedCalculator();
+
+
+/* ==================================================
+   SELECTION SUMMARY
+================================================== */
+
+function getSelectionSummaryText() {
+
+    const services =
+        getSelectedServices();
+
+
+    const lines = [];
+
+
+    /* Custom / primary enquiry */
+
+    if (
+        primarySelection &&
+        primarySelection.name ===
+            "Custom Creative Design"
+    ) {
+
+        lines.push(
+            "Creative Design: Custom Design Enquiry"
+        );
+
+    }
+
+
+    /* Website package */
+
+    if (selectedPackage) {
+
+        lines.push(
+            `Website Package: ${selectedPackage} — ${formatCurrency(
+                packagePrices[selectedPackage] || 0
+            )}`
+        );
+
+    }
+
+
+    /* Standalone services */
+
+    if (services.length) {
+
+        lines.push(
+            "Selected Services:"
+        );
+
+
+        services.forEach(service => {
+
+            lines.push(
+                `• ${service.name} — ${formatCurrency(service.price)}`
+            );
+
+        });
+
+    }
+
+
+    /* Website extras */
+
+    const extras =
+        getSelectedExtraData();
+
+
+    if (extras.length) {
+
+        lines.push(
+            "Website Extras:"
+        );
+
+
+        extras.forEach(extra => {
+
+            lines.push(
+                `• ${extra.name} — ${formatCurrency(extra.price)}`
+            );
+
+        });
+
+    }
+
+
+    return lines.join("\n");
+
+}
 
 /*==================================================
 RECOMMENDED EXTRAS
@@ -1088,27 +1687,7 @@ CALCULATE TOTAL
 ==================================================*/
 
 function calculateTotal() {
-    
-let total =
-    packagePrices[selectedPackage] || 0;
-
-
-extraInputs.forEach(extra => {
-
-    if (extra.checked) {
-
-        const extraPrice =
-            Number(extra.dataset.price) || 0;
-
-        total += extraPrice;
-
-    }
-
-});
-
-
-return total;
-    
+    return calculateUnifiedTotal();
 }
 
 /*==================================================
@@ -1291,15 +1870,13 @@ packageButtons.forEach(button => {
            RECALCULATE PRICE
         ------------------------------------------ */
 
-        updatePrice();
+updatePrice();
 
+updateRecommendedExtras();
 
-        /* ------------------------------------------
-           HIGHLIGHT RECOMMENDED EXTRAS
-        ------------------------------------------ */
+updateAllSelectedCalculator();
 
-        updateRecommendedExtras();
-
+updateContactSelectionSummary();
 
         /* ------------------------------------------
            NOTIFY USER
@@ -1363,157 +1940,23 @@ EXTRA FEATURE CHANGES
 
 extraInputs.forEach(extra => {
 
-extra.addEventListener(
-    "change",
-    () => {
+    extra.addEventListener(
+        "change",
+        () => {
 
-        updatePrice();
+            /* LIVE ESTIMATE */
+            updatePrice();
 
-    }
-);
+            /* ALL SELECTED */
+            updateAllSelectedCalculator();
+
+            /* CONTACT SUMMARY */
+            updateContactSelectionSummary();
+
+        }
+    );
 
 });
-
-/*==================================================
-CONTINUE BUTTON
-==================================================*/
-
-const continueButton =
-document.getElementById(
-"whatsapp-btn"
-);
-
-if (continueButton) {
-
-continueButton.addEventListener(
-    "click",
-    function () {
-
-
-        /* No package selected */
-
-        if (!selectedPackage) {
-
-            if (
-                typeof showToast ===
-                "function"
-            ) {
-
-                showToast(
-                    "Please select a package to proceed."
-                );
-
-            } else {
-
-                alert(
-                    "Please select a package to proceed."
-                );
-
-            }
-
-            return;
-
-        }
-
-        /* Make sure latest price is calculated */
-
-        currentTotal =
-            calculateTotal();
-
-        /* Find contact form */
-
-        const contactSection =
-            document.getElementById(
-                "contact"
-            );
-
-
-        const contactForm =
-            document.getElementById(
-                "contact-form"
-            );
-
-
-        /* Tell user what happened */
-
-        if (
-            typeof showToast ===
-            "function"
-        ) {
-
-            showToast(
-
-                selectedPackage +
-                " selected ✓ Scroll down to complete your proposal."
-
-            );
-
-        }
-
-        /* Smooth scroll */
-
-        if (contactSection) {
-
-            contactSection.scrollIntoView({
-
-                behavior: "smooth",
-
-                block: "start"
-
-            });
-
-        }
-
-        /* Put selected package into form */
-
-        if (packageInput) {
-
-            packageInput.value =
-                selectedPackage;
-
-        }
-
-
-        /* Highlight name field */
-
-        if (contactForm) {
-
-            setTimeout(() => {
-
-                const nameInput =
-                    contactForm.querySelector(
-                        'input[name="name"]'
-                    );
-
-
-                if (nameInput) {
-
-                    nameInput.classList.add(
-                        "form-highlight"
-                    );
-
-
-                    nameInput.focus();
-
-
-                    setTimeout(() => {
-
-                        nameInput.classList.remove(
-                            "form-highlight"
-                        );
-
-                    }, 3000);
-
-                }
-
-            }, 900);
-
-        }
-
-    }
-);
-
-}
 
 /*==================================================
 INITIAL STATE
@@ -1531,119 +1974,72 @@ console.log(
 );
 
 /*==================================================
-WHATSAPP QUOTE
-==================================================*/
-
-/*==================================================
 CONTINUE → CONTACT FORM
+Single handler for website packages, extras,
+standalone services, products and custom design.
 ==================================================*/
 
-const whatsappBtn =
-    document.getElementById("whatsapp-btn");
+const whatsappBtn = document.getElementById("whatsapp-btn");
 
-const contactSection =
-    document.getElementById("contact");
-
-const contactForm =
-    document.getElementById("contact-form");
-
-const nameInput =
-    contactForm?.querySelector('input[name="name"]');
-
-if (whatsappBtn) {
-
-    whatsappBtn.addEventListener("click", function(e) {
-
-        e.preventDefault();
-
-        e.stopPropagation();
-
-        /* ==========================================
-           NO PACKAGE
-        ========================================== */
-
-        if (!selectedPackage) {
-
-            showToast(
-                "Please select a package to proceed."
-            );
-
-            /* Take the user back to packages */
-            const pricingSection =
-                document.getElementById("pricing");
-
-if (pricingSection) {
-
-    const header = document.querySelector(".header");
-
-    const headerOffset =
-        header ? header.offsetHeight + 15 : 15;
-
-    const targetTop =
-        pricingSection.getBoundingClientRect().top +
-        window.scrollY -
-        headerOffset;
-
-    window.scrollTo({
-        top: Math.max(0, targetTop),
-        behavior: "smooth"
-    });
-
+function hasAnySelection() {
+    return Boolean(selectedPackage) ||
+        selectedServices.length > 0 ||
+        getSelectedExtraData().length > 0 ||
+        Boolean(primarySelection);
 }
 
-            return;
+function goToContact(instruction = "Please fill in your contact details and tell us about your project.") {
+    const contactSection = document.getElementById("contact");
+    const contactForm = document.getElementById("contact-form");
 
-        }
+    if (typeof updateContactSelectionSummary === "function") {
+        updateContactSelectionSummary();
+    }
 
-        /* ==========================================
-           PACKAGE SELECTED
-        ========================================== */
+    if (typeof showSelectionInstruction === "function") {
+        showSelectionInstruction(instruction);
+    }
 
-        showToast(
-            `${selectedPackage} selected ✓ — Please tell us about your project.`
-        );
+    if (contactSection) {
+        contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
 
-        /* ==========================================
-           SCROLL TO CONTACT
-        ========================================== */
-
-        if (contactSection) {
-
-            contactSection.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-
-        }
-
-        /* ==========================================
-           FOCUS NAME FIELD AFTER SCROLL
-        ========================================== */
-
+    setTimeout(() => {
+        const nameInput = contactForm?.querySelector('input[name="name"]');
+        if (!nameInput) return;
+        nameInput.focus();
+        nameInput.classList.add("input-attention", "form-highlight");
         setTimeout(() => {
+            nameInput.classList.remove("input-attention", "form-highlight");
+        }, 2500);
+    }, 900);
+}
 
-            if (nameInput) {
+if (whatsappBtn) {
+    whatsappBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
 
-                nameInput.focus();
-
-                nameInput.classList.add(
-                    "input-attention"
-                );
-
-                setTimeout(() => {
-
-                    nameInput.classList.remove(
-                        "input-attention"
-                    );
-
-                }, 2500);
-
+        if (!hasAnySelection()) {
+            showToast("Please select a service, product or website package first.");
+            const pricingSection = document.getElementById("pricing");
+            if (pricingSection) {
+                const headerEl = document.querySelector(".header");
+                const headerOffset = headerEl ? headerEl.offsetHeight + 15 : 15;
+                const targetTop = pricingSection.getBoundingClientRect().top + window.scrollY - headerOffset;
+                window.scrollTo({ top: Math.max(0, targetTop), behavior: "smooth" });
             }
+            return;
+        }
 
-        }, 900);
+        currentTotal = calculateUnifiedTotal();
 
+        const selectedNames = getAllSelectedItems().map(item => item.name);
+        const selectionLabel = selectedNames.length ? selectedNames.join(", ") : "your selected service";
+
+        showToast(`${selectionLabel} selected ✓ — Please tell us about your project.`);
+        goToContact("Please fill in your contact details and tell us about your project.");
     });
-
 }
 
 /*==================================================
@@ -1927,6 +2323,7 @@ const isSmallScreen = window.innerWidth < 768;
 const particleCount = reducedMotion ? 0 : (isSmallScreen ? 35 : 55);
 
 function resizeCanvas() {
+    if (!ctx) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const width = window.innerWidth;
     const height = window.innerHeight;
@@ -1967,6 +2364,7 @@ for (let i = 0; i < particleCount; i++) particles.push(new Particle());
 
 function animateParticles() {
     particleFrame = null;
+    if (!ctx) return;
     if (!particlesRunning || !particles.length) return;
 
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
@@ -1981,8 +2379,10 @@ const particleObserver = new IntersectionObserver(entries => {
     }
 }, { threshold: 0 });
 
-particleObserver.observe(particleCanvas);
-if (particleCount) particleFrame = requestAnimationFrame(animateParticles);
+if (particleCanvas && particleCount) {
+    particleObserver.observe(particleCanvas);
+    particleFrame = requestAnimationFrame(animateParticles);
+}
 
 document.addEventListener("visibilitychange", () => {
     particlesRunning = !document.hidden;
@@ -2025,44 +2425,32 @@ function countWords(text) {
 GET SELECTED EXTRAS
 ==================================================*/
 
-function getSelectedExtras() {
+function getSelectedExtraData() {
 
     const selected = [];
 
     extraInputs.forEach(extra => {
 
-        if (extra.checked) {
-
-            const option =
-                extra.closest(".extra-option");
-
-            let label = "";
-
-            if (option) {
-
-                label =
-                    option.textContent
-                        .replace(/\s+/g, " ")
-                        .trim();
-
-            } else {
-
-                label =
-                    extra.parentElement
-                        ? extra.parentElement.textContent
-                            .replace(/\s+/g, " ")
-                            .trim()
-                        : extra.dataset.extra || "";
-
-            }
-
-            if (label) {
-
-                selected.push(label);
-
-            }
-
+        if (!extra.checked) {
+            return;
         }
+
+        const option =
+            extra.closest(".extra-option");
+
+        const label =
+            option
+                ? option.textContent
+                    .replace(/\s+/g, " ")
+                    .trim()
+                : extra.dataset.extra;
+
+        selected.push({
+            name: label,
+            price:
+                Number(extra.dataset.price) || 0,
+            type: "Website Extra"
+        });
 
     });
 
@@ -2077,20 +2465,78 @@ BUILD WHATSAPP MESSAGE
 
 function buildWhatsAppMessage(customer) {
 
-    const selectedExtras =
-        getSelectedExtras();
+    const data =
+        getQuotationData();
+
+    const serviceText =
+        data.services.length
+            ? data.services
+                .map(service =>
+                    `• ${service.name} — ${formatCurrency(service.price)}`
+                )
+                .join("\n")
+            : "None";
 
     const packageText =
-        selectedPackage || "Package not selected";
+        data.packageName
+            ? `${data.packageName} — ${formatCurrency(data.packagePrice)}`
+            : "None";
+
+    const extrasText =
+        data.extras.length
+            ? data.extras
+                .map(extra =>
+                    `• ${extra.name} — ${formatCurrency(extra.price)}`
+                )
+                .join("\n")
+            : "None";
 
     const totalText =
-        selectedPackage
-            ? formatCurrency(currentTotal)
+        data.items.length
+            ? formatCurrency(data.total)
             : "To be discussed";
+
+let requestSummary =
+    "No specific service selected.";
+
+
+if (
+    data.items.length
+) {
+
+    requestSummary =
+        data.items
+            .map(item =>
+                `${item.name}`
+            )
+            .join(", ");
+
+}
+
+
+if (
+    primarySelection &&
+    primarySelection.name ===
+        "Custom Creative Design"
+) {
+
+    requestSummary =
+        requestSummary ===
+            "No specific service selected."
+
+            ? "Custom Creative Design enquiry"
+
+            : `${requestSummary}, plus a Custom Creative Design enquiry`;
+
+}
 
     return `Hello KASITU Webs 👋
 
-I would like to request information about a website/project.
+I would like to request information about:
+
+${requestSummary}
+
+CUSTOMER INFORMATION
 
 Name:
 ${customer.name}
@@ -2104,45 +2550,84 @@ ${customer.phone}
 Company:
 ${customer.company || "Not provided"}
 
-Package:
+
+SELECTED SERVICES
+
+${serviceText}
+
+
+WEBSITE PACKAGE
+
 ${packageText}
 
-Extras:
-${selectedExtras.join(", ") || "None"}
 
-Estimated Total:
+WEBSITE EXTRAS
+
+${extrasText}
+
+
+ESTIMATED TOTAL
+
 ${totalText}
 
-Project Details:
+
+PROJECT DETAILS
+
 ${customer.message}
+
+
+Please contact me regarding the selected services and next steps.
 
 Thank you.`;
 
 }
 
-
-/*==================================================
-GET QUOTATION DATA
-==================================================*/
+/* ==================================================
+   COMPLETE QUOTATION DATA
+================================================== */
 
 function getQuotationData() {
 
-    const selectedExtras =
-        getSelectedExtras();
+    const websiteExtras =
+        getSelectedExtraData();
+
+    const services =
+        getSelectedServices();
+
+    const websitePackage =
+        selectedPackage
+            ? [{
+                name: selectedPackage,
+                price:
+                    packagePrices[selectedPackage] || 0,
+                type: "Website Package"
+            }]
+            : [];
+
+    const allItems = [
+        ...services,
+        ...websitePackage,
+        ...websiteExtras
+    ];
 
     return {
 
         packageName:
-            selectedPackage,
+            selectedPackage || "",
 
         packagePrice:
             packagePrices[selectedPackage] || 0,
 
+        services,
+
         extras:
-            selectedExtras,
+            websiteExtras,
+
+        items:
+            allItems,
 
         total:
-            currentTotal
+            calculateUnifiedTotal()
 
     };
 
@@ -2196,14 +2681,8 @@ function sendToWhatsApp(customer) {
         was actually selected.
         */
 
-        if (selectedPackage) {
-
-            setTimeout(() => {
-
-                showQuotationChoice(customer);
-
-            }, 1200);
-
+        if (getQuotationData().items.length || (typeof primarySelection !== "undefined" && primarySelection && primarySelection.name === "Custom Creative Design")) {
+            setTimeout(() => showQuotationChoice(customer), 1200);
         }
 
         return;
@@ -2277,18 +2756,24 @@ function sendToWhatsApp(customer) {
         */
 
         if (
-            selectedPackage &&
+            (getQuotationData().items.length || (typeof primarySelection !== "undefined" && primarySelection && primarySelection.name === "Custom Creative Design")) &&
             !whatsappOpened
         ) {
-
             showQuotationChoice(customer);
-
         }
 
     }, 1800);
 
 }
 
+
+
+function getCustomerIntent(){
+    const data=getQuotationData();
+    if(typeof primarySelection!=="undefined" && primarySelection && primarySelection.name==="Custom Creative Design") return "Custom Creative Design enquiry — customer wants to discuss a custom design solution.";
+    if(data.items.length) return "Customer is interested in: "+data.items.map(i=>i.name).join(", ")+".";
+    return "General enquiry.";
+}
 
 /*==================================================
 PROPOSAL FORM SUBMIT
@@ -2615,6 +3100,100 @@ if (proposalForm) {
 
             try {
 
+/* ==================================================
+   PREPARE EMAILJS SELECTION DATA
+================================================== */
+
+const emailServices =
+    document.getElementById(
+        "email-selected-services"
+    );
+
+const emailPackage =
+    document.getElementById(
+        "email-selected-package"
+    );
+
+const emailExtras =
+    document.getElementById(
+        "email-selected-extras"
+    );
+
+const emailTotal =
+    document.getElementById(
+        "email-estimated-total"
+    );
+
+const emailSummary =
+    document.getElementById(
+        "email-quotation-summary"
+    );
+
+
+const quotationData =
+    getQuotationData();
+
+
+if (emailServices) {
+
+    emailServices.value =
+        quotationData.services.length
+            ? quotationData.services
+                .map(service =>
+                    `${service.name} (${formatCurrency(service.price)})`
+                )
+                .join("\n")
+            : "None";
+
+}
+
+
+if (emailPackage) {
+
+    emailPackage.value =
+        quotationData.packageName
+            ? `${quotationData.packageName} (${formatCurrency(quotationData.packagePrice)})`
+            : "None";
+
+}
+
+
+if (emailExtras) {
+
+    emailExtras.value =
+        quotationData.extras.length
+            ? quotationData.extras
+                .map(extra =>
+                    `${extra.name} (${formatCurrency(extra.price)})`
+                )
+                .join("\n")
+            : "None";
+
+}
+
+
+if (emailTotal) {
+
+    emailTotal.value =
+        quotationData.items.length
+            ? formatCurrency(
+                quotationData.total
+            )
+            : "To be discussed";
+
+}
+
+
+if (emailSummary) {
+
+    emailSummary.value =
+        getSelectionSummaryText();
+
+}
+
+const emailIntent = document.getElementById("email-customer-intent");
+if (emailIntent) emailIntent.value = getCustomerIntent();
+
                 const response =
                     await emailjs.sendForm(
 
@@ -2794,26 +3373,38 @@ SHOW QUOTATION CHOICE
 
 function showQuotationChoice(customer) {
 
-    /* Never show quotation modal without a package */
-    if (!selectedPackage) {
+    const data =
+        getQuotationData();
+
+    const customEnquiry = typeof primarySelection !== "undefined" && primarySelection && primarySelection.name === "Custom Creative Design";
+    if (!data.items.length && !customEnquiry) {
         return;
     }
 
-    if (!quotationModal) return;
+    if (!quotationModal) {
+        return;
+    }
 
-    quotationPackage.textContent =
-        selectedPackage;
+    const itemSummary =
+        data.items
+            .map(item =>
+                `${item.name} — ${formatCurrency(item.price)}`
+            )
+            .join(" • ");
 
-    quotationTotal.textContent =
-        `R${currentTotal.toLocaleString("en-ZA")}`;
+    if (quotationPackage) quotationPackage.textContent = itemSummary;
+    if (quotationTotal) quotationTotal.textContent = formatCurrency(data.total);
 
-    quotationMessage.textContent =
-        `Thank you, ${customer.name}. Your proposal request has been sent successfully.`;
+    if (quotationMessage) quotationMessage.textContent =
+        `Thank you, ${customer.name}. Your request has been sent successfully.`;
 
-    quotationModal.classList.add("show");
+    quotationModal.classList.add(
+        "show"
+    );
 
     document.body.style.overflow =
         "hidden";
+
 }
 
 /*==================================================
@@ -2821,6 +3412,8 @@ CLOSE QUOTATION
 ==================================================*/
 
 function closeQuotationModal() {
+
+    if (!quotationModal) return;
 
     quotationModal.classList.remove(
         "show"
@@ -2886,756 +3479,49 @@ AUTO LIGHT / DARK MODE
 ==================================================*/
 
 async function generateQuotationPDF() {
-
     try {
-
-        downloadQuotation.disabled = true;
-
-        downloadQuotation.innerHTML =
-            `<i class="fas fa-spinner fa-spin"></i> Creating PDF...`;
-
-        /* ==========================================
-           LOAD PDF LIBRARY
-        ========================================== */
-
-        const jsPDF = await loadJsPDF();
-
-        /* ==========================================
-           DETECT CURRENT WEBSITE THEME
-           
-           This checks the theme at the exact
-           moment the user downloads the PDF.
-        ========================================== */
-
-        const currentTheme =
-            document.documentElement.getAttribute("data-theme") || "dark";
-
-        const isLightMode =
-            currentTheme === "light";
-
-        console.log(
-            "Quotation theme:",
-            isLightMode ? "LIGHT" : "DARK"
-        );
-
-        /* ==========================================
-           CREATE PDF
-        ========================================== */
-
-        const doc = new jsPDF({
-
-            orientation: "portrait",
-
-            unit: "mm",
-
-            format: "a4"
-
-        });
-
-        /* ==========================================
-           GET QUOTATION DATA
-        ========================================== */
-
-        const data = getQuotationData();
-
-        /* ==========================================
-           GET CUSTOMER INFORMATION
-        ========================================== */
-
-        const name =
-            proposalForm
-                .querySelector('[name="name"]')
-                .value
-                .trim();
-
-        const email =
-            proposalForm
-                .querySelector('[name="email"]')
-                .value
-                .trim();
-
-        const phone =
-            proposalForm
-                .querySelector('[name="phone"]')
-                .value
-                .trim();
-
-        const company =
-            proposalForm
-                .querySelector('[name="company"]')
-                .value
-                .trim();
-
-        const message =
-            proposalForm
-                .querySelector('[name="message"]')
-                .value
-                .trim();
-
-
-        /* ==================================================
-           THEME COLOURS
-           
-           LIGHT MODE:
-           Elegant white / soft grey / navy / cyan
-   
-           DARK MODE:
-           Premium navy / purple / cyan
-        ================================================== */
-
-        let colors;
-
-
-        if (isLightMode) {
-
-            /* ==========================================
-               CLASSY LIGHT MODE
-            ========================================== */
-
-            colors = {
-
-                background: [248, 250, 252],
-
-                surface: [255, 255, 255],
-
-                surfaceAlt: [241, 245, 249],
-
-                primary: [15, 23, 42],
-
-                secondary: [51, 65, 85],
-
-                accent: [8, 145, 178],
-
-                accentLight: [207, 250, 254],
-
-                border: [226, 232, 240],
-
-                text: [15, 23, 42],
-
-                muted: [100, 116, 139],
-
-                white: [255, 255, 255]
-
-            };
-
-        } else {
-
-            /* ==========================================
-               PREMIUM DARK MODE
-            ========================================== */
-
-            colors = {
-
-                background: [7, 11, 23],
-
-                surface: [14, 21, 42],
-
-                surfaceAlt: [17, 23, 34],
-
-                primary: [79, 70, 229],
-
-                secondary: [45, 55, 80],
-
-                accent: [6, 182, 212],
-
-                accentLight: [30, 41, 70],
-
-                border: [45, 55, 80],
-
-                text: [245, 247, 255],
-
-                muted: [148, 163, 184],
-
-                white: [255, 255, 255]
-
-            };
-
+        if (downloadQuotation) { downloadQuotation.disabled=true; downloadQuotation.innerHTML='<i class="fas fa-spinner fa-spin"></i> Creating PDF...'; }
+        const jsPDF=await loadJsPDF();
+        const data=getQuotationData();
+        const customEnquiry=typeof primarySelection!=="undefined" && primarySelection && primarySelection.name==="Custom Creative Design";
+        const currentTheme=document.documentElement.getAttribute("data-theme")||"dark";
+        const light=currentTheme==="light";
+        const doc=new jsPDF({orientation:"portrait",unit:"mm",format:"a4"});
+        const c=light?{bg:[248,250,252],surface:[255,255,255],primary:[15,23,42],accent:[8,145,178],text:[15,23,42],muted:[100,116,139],border:[226,232,240],white:[255,255,255]}:{bg:[7,11,23],surface:[14,21,42],primary:[79,70,229],accent:[6,182,212],text:[245,247,255],muted:[148,163,184],border:[45,55,80],white:[255,255,255]};
+        const name=proposalForm?.querySelector('[name="name"]')?.value.trim()||"Client";
+        const email=proposalForm?.querySelector('[name="email"]')?.value.trim()||"";
+        const phone=proposalForm?.querySelector('[name="phone"]')?.value.trim()||"";
+        const company=proposalForm?.querySelector('[name="company"]')?.value.trim()||"";
+        const message=proposalForm?.querySelector('[name="message"]')?.value.trim()||"";
+        doc.setFillColor(...c.bg);doc.rect(0,0,210,297,"F");
+        doc.setFillColor(...c.primary);doc.roundedRect(15,15,180,32,6,6,"F");
+        doc.setTextColor(...c.white);doc.setFont("helvetica","bold");doc.setFontSize(20);doc.text("KASITU Webs",24,29);
+        doc.setFontSize(9);doc.setTextColor(...c.accent);doc.text("QUOTATION / PROJECT ENQUIRY",24,39);
+        let y=58;
+        doc.setTextColor(...c.accent);doc.setFontSize(10);doc.text("CLIENT INFORMATION",20,y);y+=9;
+        doc.setTextColor(...c.text);doc.setFont("helvetica","normal");doc.setFontSize(9);
+        [`Name: ${name}`,`Email: ${email}`,`Phone: ${phone||"Not provided"}`,`Company: ${company||"Not provided"}`].forEach(t=>{doc.text(t,20,y);y+=7});
+        y+=5;doc.setTextColor(...c.accent);doc.setFont("helvetica","bold");doc.setFontSize(10);doc.text("SELECTED SERVICES",20,y);y+=8;
+        doc.setFont("helvetica","normal");doc.setTextColor(...c.text);doc.setFontSize(9);
+        const items=data.items.slice();
+        if(customEnquiry) items.push({name:"Custom Creative Design",price:0,type:"Creative Design Enquiry"});
+        if(!items.length){doc.text("General enquiry — quotation to be discussed.",20,y);y+=8;}
+        for(const item of items){
+            const price=(item.name==="Custom Creative Design"?"To be discussed":formatCurrency(item.price));
+            const wrapped=doc.splitTextToSize(`${item.type ? item.type+": " : ""}${item.name} — ${price}`,165);
+            if(y+wrapped.length*5>258){doc.addPage();y=20;doc.setFillColor(...c.bg);doc.rect(0,0,210,297,"F");doc.setTextColor(...c.accent);doc.setFont("helvetica","bold");doc.text("SELECTED SERVICES — CONTINUED",20,y);y+=9;doc.setTextColor(...c.text);doc.setFont("helvetica","normal");}
+            doc.text(wrapped,20,y);y+=Math.max(7,wrapped.length*5);
         }
-
-
-        /* ==================================================
-           PAGE BACKGROUND
-        ================================================== */
-
-        doc.setFillColor(
-            ...colors.background
-        );
-
-        doc.rect(
-            0,
-            0,
-            210,
-            297,
-            "F"
-        );
-
-
-        /* ==================================================
-           TOP ACCENT
-        ================================================== */
-
-        doc.setFillColor(
-            ...colors.accent
-        );
-
-        doc.rect(
-            0,
-            0,
-            210,
-            4,
-            "F"
-        );
-
-
-        /* ==================================================
-           BRAND HEADER
-        ================================================== */
-
-        doc.setTextColor(
-            ...colors.primary
-        );
-
-        doc.setFont(
-            "helvetica",
-            "bold"
-        );
-
-        doc.setFontSize(25);
-
-        doc.text(
-            "KASITU",
-            20,
-            28
-        );
-
-
-        doc.setTextColor(
-            ...colors.accent
-        );
-
-        doc.setFontSize(10);
-
-        doc.text(
-            "WEBS",
-            20,
-            35
-        );
-
-
-        doc.setTextColor(
-            ...colors.muted
-        );
-
-        doc.setFont(
-            "helvetica",
-            "normal"
-        );
-
-        doc.setFontSize(8);
-
-        doc.text(
-            "Building Digital Excellence",
-            20,
-            41
-        );
-
-
-        /* ==================================================
-           QUOTATION TITLE
-        ================================================== */
-
-        doc.setTextColor(
-            ...colors.primary
-        );
-
-        doc.setFont(
-            "helvetica",
-            "bold"
-        );
-
-        doc.setFontSize(22);
-
-        doc.text(
-            "PROJECT QUOTATION",
-            190,
-            28,
-            {
-                align: "right"
-            }
-        );
-
-
-        doc.setTextColor(
-            ...colors.muted
-        );
-
-        doc.setFontSize(8);
-
-        doc.text(
-            "PRELIMINARY ESTIMATE",
-            190,
-            35,
-            {
-                align: "right"
-            }
-        );
-
-
-        doc.text(
-            new Date().toLocaleDateString(
-                "en-ZA"
-            ),
-            190,
-            41,
-            {
-                align: "right"
-            }
-        );
-
-
-        /* ==================================================
-           DIVIDER
-        ================================================== */
-
-        doc.setDrawColor(
-            ...colors.border
-        );
-
-        doc.line(
-            20,
-            52,
-            190,
-            52
-        );
-
-
-        /* ==================================================
-           CLIENT INFORMATION
-        ================================================== */
-
-        doc.setTextColor(
-            ...colors.accent
-        );
-
-        doc.setFont(
-            "helvetica",
-            "bold"
-        );
-
-        doc.setFontSize(10);
-
-        doc.text(
-            "CLIENT INFORMATION",
-            20,
-            66
-        );
-
-
-        doc.setTextColor(
-            ...colors.text
-        );
-
-        doc.setFont(
-            "helvetica",
-            "normal"
-        );
-
-        doc.setFontSize(10);
-
-        doc.text(
-            `Name: ${name}`,
-            20,
-            76
-        );
-
-        doc.text(
-            `Email: ${email}`,
-            20,
-            84
-        );
-
-        doc.text(
-            `Phone: ${phone || "Not provided"}`,
-            20,
-            92
-        );
-
-        doc.text(
-            `Company: ${company || "Not provided"}`,
-            20,
-            100
-        );
-
-
-        /* ==================================================
-           SELECTED PACKAGE CARD
-        ================================================== */
-
-        doc.setFillColor(
-            ...colors.surface
-        );
-
-        doc.setDrawColor(
-            ...colors.border
-        );
-
-        doc.roundedRect(
-            20,
-            112,
-            170,
-            38,
-            5,
-            5,
-            "FD"
-        );
-
-
-        doc.setTextColor(
-            ...colors.accent
-        );
-
-        doc.setFont(
-            "helvetica",
-            "bold"
-        );
-
-        doc.setFontSize(9);
-
-        doc.text(
-            "SELECTED PACKAGE",
-            28,
-            124
-        );
-
-
-        doc.setTextColor(
-            ...colors.primary
-        );
-
-        doc.setFontSize(15);
-
-        doc.text(
-            data.packageName,
-            28,
-            137
-        );
-
-
-        doc.setTextColor(
-            ...colors.muted
-        );
-
-        doc.setFontSize(9);
-
-        doc.text(
-            `Base price: R${data.packagePrice.toLocaleString("en-ZA")}`,
-            28,
-            145
-        );
-
-
-        /* ==================================================
-           ADDITIONAL FEATURES
-        ================================================== */
-
-        doc.setTextColor(
-            ...colors.accent
-        );
-
-        doc.setFont(
-            "helvetica",
-            "bold"
-        );
-
-        doc.setFontSize(10);
-
-        doc.text(
-            "ADDITIONAL FEATURES",
-            20,
-            168
-        );
-
-
-        let y = 178;
-
-
-        doc.setTextColor(
-            ...colors.text
-        );
-
-        doc.setFont(
-            "helvetica",
-            "normal"
-        );
-
-        doc.setFontSize(9);
-
-
-        if (data.extras.length === 0) {
-
-            doc.text(
-                "No additional features selected.",
-                20,
-                y
-            );
-
-            y += 8;
-
-        } else {
-
-            data.extras.forEach(feature => {
-
-                const cleanFeature =
-                    feature
-                        .replace(/\s+/g, " ")
-                        .trim();
-
-
-                doc.setFillColor(
-                    ...colors.accent
-                );
-
-                doc.circle(
-                    22,
-                    y - 1.5,
-                    1,
-                    "F"
-                );
-
-
-                doc.setTextColor(
-                    ...colors.text
-                );
-
-                doc.text(
-                    cleanFeature,
-                    27,
-                    y
-                );
-
-
-                y += 8;
-
-            });
-
-        }
-
-
-        /* ==================================================
-           TOTAL INVESTMENT
-        ================================================== */
-
-        y += 8;
-
-
-        doc.setFillColor(
-            ...colors.primary
-        );
-
-        doc.roundedRect(
-            20,
-            y,
-            170,
-            28,
-            5,
-            5,
-            "F"
-        );
-
-
-        doc.setTextColor(
-            ...colors.accentLight
-        );
-
-        doc.setFont(
-            "helvetica",
-            "bold"
-        );
-
-        doc.setFontSize(9);
-
-        doc.text(
-            "ESTIMATED PROJECT INVESTMENT",
-            28,
-            y + 11
-        );
-
-
-        doc.setTextColor(
-            ...colors.white
-        );
-
-        doc.setFont(
-            "helvetica",
-            "bold"
-        );
-
-        doc.setFontSize(19);
-
-        doc.text(
-            `R${data.total.toLocaleString("en-ZA")}`,
-            182,
-            y + 19,
-            {
-                align: "right"
-            }
-        );
-
-
-        /* ==================================================
-           PROJECT DESCRIPTION
-        ================================================== */
-
-        y += 43;
-
-
-        doc.setTextColor(
-            ...colors.accent
-        );
-
-        doc.setFont(
-            "helvetica",
-            "bold"
-        );
-
-        doc.setFontSize(10);
-
-        doc.text(
-            "PROJECT DESCRIPTION",
-            20,
-            y
-        );
-
-
-        y += 9;
-
-
-        doc.setTextColor(
-            ...colors.text
-        );
-
-        doc.setFont(
-            "helvetica",
-            "normal"
-        );
-
-        doc.setFontSize(8.5);
-
-
-        const wrapped =
-            doc.splitTextToSize(
-                message,
-                165
-            );
-
-
-        doc.text(
-            wrapped,
-            20,
-            y
-        );
-
-
-        /* ==================================================
-           FOOTER
-        ================================================== */
-
-        doc.setDrawColor(
-            ...colors.border
-        );
-
-        doc.line(
-            20,
-            270,
-            190,
-            270
-        );
-
-
-        doc.setTextColor(
-            ...colors.muted
-        );
-
-        doc.setFontSize(7.5);
-
-        doc.text(
-            "KASITU Webs • Soshanguve, Pretoria, Gauteng, South Africa",
-            20,
-            280
-        );
-
-
-        doc.text(
-            "info@kasituwebs.co.za • +27 79 438 0103",
-            20,
-            287
-        );
-
-
-        doc.setTextColor(
-            ...colors.accent
-        );
-
-        doc.text(
-            "This quotation is an estimate and may be adjusted after project consultation.",
-            190,
-            287,
-            {
-                align: "right"
-            }
-        );
-
-
-        /* ==================================================
-           SAVE PDF
-        ================================================== */
-
-        const safeName =
-            name
-                .replace(
-                    /[^a-z0-9]/gi,
-                    "-"
-                )
-                .toLowerCase();
-
-
-        const modeName =
-            isLightMode
-                ? "Light"
-                : "Dark";
-
-
-        doc.save(
-            `KASITU-Webs-Quotation-${safeName || "Client"}-${modeName}.pdf`
-        );
-
-
-        showToast(
-            `Quotation downloaded in ${isLightMode ? "light" : "dark"} mode ✓`
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "PDF generation failed:",
-            error
-        );
-
-        showToast(
-            "Unable to create the quotation PDF."
-        );
-
-    } finally {
-
-        downloadQuotation.disabled =
-            false;
-
-        downloadQuotation.innerHTML =
-            `<i class="fas fa-file-pdf"></i> Download Quotation`;
-
-    }
-
+        y+=5;doc.setFillColor(...c.primary);doc.roundedRect(20,y,170,25,5,5,"F");doc.setTextColor(...c.accent);doc.setFont("helvetica","bold");doc.setFontSize(9);doc.text("ESTIMATED INVESTMENT",28,y+10);
+        doc.setTextColor(...c.white);doc.setFontSize(17);doc.text(data.items.length?formatCurrency(data.total):"To be discussed",182,y+17,{align:"right"});y+=36;
+        doc.setTextColor(...c.accent);doc.setFontSize(10);doc.text("CUSTOMER REQUEST",20,y);y+=8;doc.setTextColor(...c.text);doc.setFont("helvetica","normal");doc.setFontSize(8.5);
+        const wrappedMsg=doc.splitTextToSize(message||"No additional project details provided.",165);doc.text(wrappedMsg,20,y);y+=wrappedMsg.length*4.5+10;
+        doc.setTextColor(...c.muted);doc.setFontSize(7.5);doc.text("KASITU Webs • Soshanguve, Pretoria, Gauteng, South Africa",20,278);doc.text("info@kasituwebs.co.za • +27 79 438 0103",20,285);
+        const safe=name.replace(/[^a-z0-9]/gi,"-").toLowerCase()||"client";
+        doc.save(`KASITU-Webs-Quotation-${safe}-${light?"Light":"Dark"}.pdf`);
+        showToast(`Quotation downloaded in ${light?"light":"dark"} mode ✓`);
+    }catch(error){console.error("PDF generation failed:",error);showToast("Unable to create the quotation PDF.");}
+    finally{if(downloadQuotation){downloadQuotation.disabled=false;downloadQuotation.innerHTML='<i class="fas fa-file-pdf"></i> Download Quotation';}}
 }
 
 /*==================================================
@@ -5165,3 +5051,237 @@ document.addEventListener(
 
     }
 );
+
+const creativeStart =
+    document.getElementById(
+        "creative-price-contact"
+    );
+
+if (creativeStart) {
+
+    creativeStart.addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            /*
+             * This is a CUSTOM DESIGN enquiry,
+             * not a fixed-price package.
+             */
+            primarySelection = {
+                name: "Custom Creative Design",
+                price: 0,
+                type: "Creative Design"
+            };
+
+            /*
+             * Don't add R0 to the quotation.
+             */
+            selectedServices =
+                selectedServices.filter(
+                    service =>
+                        service.name !==
+                        "Custom Creative Design"
+                );
+
+            updateAllSelectedCalculator();
+	    updateContactSelectionSummary();
+
+            const creativeModal =
+                document.getElementById(
+                    "creative-price-modal"
+                );
+
+            if (creativeModal) {
+
+                creativeModal.classList.remove(
+                    "active"
+                );
+
+                creativeModal.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+            }
+
+            goToContactWithSelection(
+                "You want a custom creative design package. Please fill in your name, email, phone number and explain what you would like designed."
+            );
+
+        }
+    );
+
+}
+
+/* ==================================================
+   GO TO CONTACT WITH SELECTION
+================================================== */
+
+function goToContactWithSelection(instruction) {
+
+    const contactSection =
+        document.getElementById("contact");
+
+    const contactForm =
+        document.getElementById("contact-form");
+
+    if (!contactSection) {
+        return;
+    }
+
+    /*
+     * Update the visible selection panel.
+     */
+    updateContactSelectionSummary();
+
+    /*
+     * Show customer instruction.
+     */
+    showSelectionInstruction(instruction);
+
+    /*
+     * Scroll to Contact.
+     */
+    contactSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+    /*
+     * Focus name field after scrolling.
+     */
+    setTimeout(() => {
+
+        const nameInput =
+            contactForm?.querySelector(
+                'input[name="name"]'
+            );
+
+        if (nameInput) {
+
+            nameInput.focus();
+
+            nameInput.classList.add(
+                "input-attention"
+            );
+
+            setTimeout(() => {
+
+                nameInput.classList.remove(
+                    "input-attention"
+                );
+
+            }, 2500);
+
+        }
+
+    }, 900);
+
+}
+
+
+
+
+/* =========================================================
+   KASITU UNIFIED SELECTION CONTROLLER
+   - Does NOT replace or alter the LIVE ESTIMATOR.
+   - Adds all non-website service selection to the same state.
+========================================================= */
+(function(){
+    function refreshSelectionUI(){
+        if (typeof updateAllSelectedCalculator === "function") updateAllSelectedCalculator();
+        if (typeof updateContactSelectionSummary === "function") updateContactSelectionSummary();
+    }
+
+    window.showSelectionInstruction = function(text){
+        const el=document.getElementById("selection-summary-instruction");
+        if(el) el.textContent=text;
+    };
+
+    window.updateContactSelectionSummary = function(){
+        const box=document.getElementById("contact-selection-summary");
+        const details=document.getElementById("selection-summary-details");
+        const total=document.getElementById("selection-summary-total");
+        if(!box || !details || !total) return;
+        const lines=[];
+        if(window.primarySelection && primarySelection.name === "Custom Creative Design") lines.push("Creative Design: Custom Design Enquiry");
+        if(typeof selectedPackage !== "undefined" && selectedPackage) lines.push(`Website Package: ${selectedPackage} — ${formatCurrency(packagePrices[selectedPackage] || 0)}`);
+        if(typeof getSelectedServices === "function") getSelectedServices().forEach(s=>lines.push(`• ${s.name} — ${formatCurrency(s.price)}`));
+        if(typeof getSelectedExtraData === "function") getSelectedExtraData().forEach(e=>lines.push(`• ${e.name} — ${formatCurrency(e.price)}`));
+        if(!lines.length){box.hidden=true;return;}
+        box.hidden=false;
+        details.textContent=lines.join("\n");
+        total.textContent=`Estimated Total: ${formatCurrency(typeof calculateUnifiedTotal === "function" ? calculateUnifiedTotal() : 0)}`;
+    };
+
+    function closeModal(id){
+        const m=document.getElementById(id); if(!m)return;
+        m.classList.remove("active");m.setAttribute("aria-hidden","true");
+        document.body.classList.remove("kasitu-service-modal-open");
+    }
+    function openModal(id){
+        document.querySelectorAll(".kasitu-unified-modal.active").forEach(m=>{m.classList.remove("active");m.setAttribute("aria-hidden","true")});
+        const m=document.getElementById(id); if(!m)return;
+        m.classList.add("active");m.setAttribute("aria-hidden","false");document.body.classList.add("kasitu-service-modal-open");
+    }
+    function goContact(instruction){
+        refreshSelectionUI();showSelectionInstruction(instruction);
+        const contact=document.getElementById("contact");
+        if(contact) contact.scrollIntoView({behavior:"smooth",block:"start"});
+        setTimeout(()=>document.querySelector('#contact-form input[name="name"]')?.focus(),700);
+    }
+    function selectService(name,price,type,instruction){
+        if(typeof addSelectedService === "function") addSelectedService(name,price,type);
+        goContact(instruction);
+    }
+
+    document.addEventListener("DOMContentLoaded",()=>{
+        document.getElementById("business-registration-btn")?.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();openModal("business-price-modal")});
+        document.getElementById("businessRegistrationCard")?.addEventListener("click",e=>{if(!e.target.closest("button"))openModal("business-price-modal")});
+        document.getElementById("creative-explore-btn")?.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();openModal("creative-price-modal")});
+        document.getElementById("creativeDesignServiceCard")?.addEventListener("click",e=>{if(!e.target.closest("button"))openModal("creative-price-modal")});
+        document.getElementById("key-locator-pricing-btn")?.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();openModal("keyLocatorPricingModal")});
+        document.getElementById("keyLocatorCard")?.addEventListener("click",e=>{if(!e.target.closest("button"))openModal("keyLocatorPricingModal")});
+        document.getElementById("alarm-pricing-btn")?.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();openModal("alarmPricingModal")});
+        document.getElementById("alarmServiceCard")?.addEventListener("click",e=>{if(!e.target.closest("button"))openModal("alarmPricingModal")});
+
+        document.querySelectorAll("#business-price-modal .business-price-card").forEach(card=>card.addEventListener("click",()=>{
+            selectService(card.dataset.name,Number(card.dataset.price),"Business Registration",`You selected ${card.dataset.name}. Please complete your name, email, phone number and company details. You can also tell us anything else you would like included.`);
+            closeModal("business-price-modal");
+        }));
+        document.querySelectorAll("#creative-price-modal .creative-price-card").forEach(card=>card.addEventListener("click",()=>{
+            selectService(card.dataset.name,Number(card.dataset.price),"Creative Design",`You selected ${card.dataset.name}. Please enter your contact details and tell us what you would like designed.`);
+            closeModal("creative-price-modal");
+        }));
+        document.getElementById("creative-price-contact")?.addEventListener("click",e=>{
+            e.preventDefault();
+            primarySelection={name:"Custom Creative Design",price:0,type:"Creative Design",enquiryOnly:true};
+            selectedServices=selectedServices.filter(s=>s.name!=="Custom Creative Design");
+            closeModal("creative-price-modal");
+            refreshSelectionUI();
+            goContact("Custom Creative Design selected. Please complete your contact details and describe what you would like designed.");
+        });
+        document.querySelector(".key-locator-quote-btn")?.addEventListener("click",e=>{
+            e.preventDefault();e.stopPropagation();
+            selectService("Bluetooth Key Locator",209.99,"Product","Bluetooth Key Locator selected. Please enter your contact details and tell us how many units you need and any delivery requirements.");
+            closeModal("keyLocatorPricingModal");
+        });
+        document.querySelector(".alarm-quote-btn")?.addEventListener("click",e=>{
+            e.preventDefault();e.stopPropagation();
+            selectService("Security Alarm",229.99,"Product","Security Alarm selected. Please enter your contact details and tell us how many units you need, plus any installation requirements.");
+            closeModal("alarmPricingModal");
+        });
+        ["business-price-modal","creative-price-modal","keyLocatorPricingModal","alarmPricingModal"].forEach(id=>{
+            const m=document.getElementById(id); if(!m)return;
+            m.addEventListener("click",e=>{if(e.target===m)closeModal(id)});
+            m.querySelector(".kasitu-modal-close")?.addEventListener("click",()=>closeModal(id));
+        });
+        document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".kasitu-unified-modal.active").forEach(m=>closeModal(m.id))});
+
+        // Keep the all-selected calculator in sync when extras change.
+        document.querySelectorAll(".extra").forEach(extra=>extra.addEventListener("change",refreshSelectionUI));
+        refreshSelectionUI();
+    });
+})();
