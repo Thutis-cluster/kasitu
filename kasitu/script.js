@@ -4990,187 +4990,164 @@ Please let me know how we can get started. Thank you!`;
 
 /* ==================================================
    KASITU CREATIVE STUDIO PRICE MODAL
+   ROBUST CONTROLLER
+   --------------------------------------------------
+   Handles the modal after the DOM is ready and keeps
+   the existing All Selected Calculator untouched.
 ================================================== */
+(function () {
+    function initCreativeStudioModal() {
+        const exploreBtn = document.getElementById("creative-explore-btn");
+        const modal = document.getElementById("creative-price-modal");
+        const closeBtn = document.getElementById("creative-price-close");
+        const backdrop = document.getElementById("creative-price-backdrop");
+        const contactBtn = document.getElementById("creative-price-contact");
 
-const creativeExploreBtn =
-    document.getElementById("creative-explore-btn");
-
-const creativePriceModal =
-    document.getElementById("creative-price-modal");
-
-const creativePriceClose =
-    document.getElementById("creative-price-close");
-
-const creativePriceBackdrop =
-    document.getElementById("creative-price-backdrop");
-
-const creativePriceContact =
-    document.getElementById("creative-price-contact");
-
-
-/* OPEN */
-
-function openCreativePriceModal() {
-
-    if (!creativePriceModal) return;
-
-    creativePriceModal.classList.add("active");
-
-    creativePriceModal.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-    document.body.style.overflow = "hidden";
-}
-
-
-/* CLOSE */
-
-function closeCreativePriceModal() {
-
-    if (!creativePriceModal) return;
-
-    creativePriceModal.classList.remove("active");
-
-    creativePriceModal.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-    document.body.style.overflow = "";
-}
-
-
-/* EXPLORE STUDIO */
-
-if (creativeExploreBtn) {
-
-    creativeExploreBtn.addEventListener(
-        "click",
-        openCreativePriceModal
-    );
-
-}
-
-
-/* CLOSE BUTTON */
-
-if (creativePriceClose) {
-
-    creativePriceClose.addEventListener(
-        "click",
-        closeCreativePriceModal
-    );
-
-}
-
-
-/* BACKDROP */
-
-if (creativePriceBackdrop) {
-
-    creativePriceBackdrop.addEventListener(
-        "click",
-        closeCreativePriceModal
-    );
-
-}
-
-
-/* CONTACT BUTTON */
-
-if (creativePriceContact) {
-
-    creativePriceContact.addEventListener(
-        "click",
-        closeCreativePriceModal
-    );
-
-}
-
-
-/* ESCAPE KEY */
-
-document.addEventListener(
-    "keydown",
-    function (event) {
-
-        if (
-            event.key === "Escape" &&
-            creativePriceModal &&
-            creativePriceModal.classList.contains("active")
-        ) {
-
-            closeCreativePriceModal();
-
+        if (!modal) {
+            console.warn("KASITU: Creative Studio price modal not found.");
+            return;
         }
 
-    }
-);
-
-const creativeStart =
-    document.getElementById(
-        "creative-price-contact"
-    );
-
-if (creativeStart) {
-
-    creativeStart.addEventListener(
-        "click",
-        function(event) {
-
-            event.preventDefault();
-
-            /*
-             * This is a CUSTOM DESIGN enquiry,
-             * not a fixed-price package.
-             */
-            primarySelection = {
-                name: "Custom Creative Design",
-                price: 0,
-                type: "Creative Design"
-            };
-
-            /*
-             * Don't add R0 to the quotation.
-             */
-            selectedServices =
-                selectedServices.filter(
-                    service =>
-                        service.name !==
-                        "Custom Creative Design"
-                );
-
-            updateAllSelectedCalculator();
-	    updateContactSelectionSummary();
-
-            const creativeModal =
-                document.getElementById(
-                    "creative-price-modal"
-                );
-
-            if (creativeModal) {
-
-                creativeModal.classList.remove(
-                    "active"
-                );
-
-                creativeModal.setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
-
+        function openCreativePriceModal(event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
             }
 
-            goToContactWithSelection(
-                "You want a custom creative design package. Please fill in your name, email, phone number and explain what you would like designed."
-            );
+            modal.classList.add("active");
+            modal.setAttribute("aria-hidden", "false");
 
+            /* Hard-set the visual state so the modal works even if the
+               Creative Studio CSS is missing, cached, or overridden. */
+            modal.style.position = "fixed";
+            modal.style.inset = "0";
+            modal.style.zIndex = "10000";
+            modal.style.display = "flex";
+            modal.style.visibility = "visible";
+            modal.style.opacity = "1";
+            modal.style.pointerEvents = "auto";
+
+            if (backdrop) {
+                backdrop.style.position = "absolute";
+                backdrop.style.inset = "0";
+                backdrop.style.zIndex = "0";
+            }
+
+            if (modal.querySelector(".creative-price-box")) {
+                modal.querySelector(".creative-price-box").style.position = "relative";
+                modal.querySelector(".creative-price-box").style.zIndex = "1";
+            }
+
+            document.body.classList.add("kasitu-service-modal-open");
+            document.documentElement.classList.add("kasitu-service-modal-open");
+            document.body.style.overflow = "hidden";
         }
-    );
 
-}
+        function closeCreativePriceModal(event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            modal.classList.remove("active");
+            modal.setAttribute("aria-hidden", "true");
+            modal.style.display = "none";
+            modal.style.visibility = "hidden";
+            modal.style.opacity = "0";
+            modal.style.pointerEvents = "none";
+            document.body.classList.remove("kasitu-service-modal-open");
+            document.documentElement.classList.remove("kasitu-service-modal-open");
+            document.body.style.overflow = "";
+        }
+
+        if (exploreBtn) {
+            /* Replace any earlier listener added by another controller. */
+            exploreBtn.addEventListener("click", openCreativePriceModal);
+        }
+
+        if (closeBtn) {
+            closeBtn.addEventListener("click", closeCreativePriceModal);
+        }
+
+        if (backdrop) {
+            backdrop.addEventListener("click", closeCreativePriceModal);
+        }
+
+        /* Clicking the modal background itself also closes it. */
+        modal.addEventListener("click", function (event) {
+            if (event.target === modal) {
+                closeCreativePriceModal(event);
+            }
+        });
+
+        if (contactBtn) {
+            contactBtn.addEventListener("click", function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                if (typeof primarySelection !== "undefined") {
+                    primarySelection = {
+                        name: "Custom Creative Design",
+                        price: 0,
+                        type: "Creative Design",
+                        enquiryOnly: true
+                    };
+                } else {
+                    window.primarySelection = {
+                        name: "Custom Creative Design",
+                        price: 0,
+                        type: "Creative Design",
+                        enquiryOnly: true
+                    };
+                }
+
+                if (typeof selectedServices !== "undefined" && Array.isArray(selectedServices)) {
+                    selectedServices = selectedServices.filter(function (service) {
+                        return !service || service.name !== "Custom Creative Design";
+                    });
+                }
+
+                closeCreativePriceModal(event);
+
+                if (typeof updateAllSelectedCalculator === "function") {
+                    updateAllSelectedCalculator();
+                }
+
+                if (typeof updateContactSelectionSummary === "function") {
+                    updateContactSelectionSummary();
+                }
+
+                if (typeof goToContactWithSelection === "function") {
+                    goToContactWithSelection(
+                        "You want a custom creative design package. Please fill in your name, email, phone number and explain what you would like designed."
+                    );
+                }
+            });
+        }
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape" && modal.classList.contains("active")) {
+                closeCreativePriceModal();
+            }
+        });
+
+        /* Ensure a clean initial state. */
+        modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
+        modal.style.display = "none";
+        modal.style.visibility = "hidden";
+        modal.style.opacity = "0";
+        modal.style.pointerEvents = "none";
+
+        console.log("KASITU: Creative Studio Price Modal initialized ✓");
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initCreativeStudioModal);
+    } else {
+        initCreativeStudioModal();
+    }
+})();
 
 /* ==================================================
    GO TO CONTACT WITH SELECTION
@@ -5297,7 +5274,6 @@ function goToContactWithSelection(instruction) {
     document.addEventListener("DOMContentLoaded",()=>{
         document.getElementById("business-registration-btn")?.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();openModal("business-price-modal")});
         document.getElementById("businessRegistrationCard")?.addEventListener("click",e=>{if(!e.target.closest("button"))openModal("business-price-modal")});
-        document.getElementById("creative-explore-btn")?.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();openModal("creative-price-modal")});
         document.getElementById("creativeDesignServiceCard")?.addEventListener("click",e=>{if(!e.target.closest("button"))openModal("creative-price-modal")});
         document.getElementById("key-locator-pricing-btn")?.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();openModal("keyLocatorPricingModal")});
         document.getElementById("keyLocatorCard")?.addEventListener("click",e=>{if(!e.target.closest("button"))openModal("keyLocatorPricingModal")});
