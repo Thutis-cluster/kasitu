@@ -4618,6 +4618,39 @@ function updateContactSelectionSummary() {
 
 }  
 
+    document.addEventListener("DOMContentLoaded", function () {
+    const openBtn = document.getElementById("creative-explore-btn");
+    const modal = document.getElementById("creative-price-modal");
+    const closeBtn = document.getElementById("creative-price-close");
+    const backdrop = document.getElementById("creative-price-backdrop");
+
+    if (!openBtn || !modal) return;
+
+    openBtn.addEventListener("click", function () {
+        modal.classList.add("active");
+        modal.setAttribute("aria-hidden", "false");
+    });
+
+    function closeCreativeModal() {
+        modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
+    }
+
+    if (closeBtn) {
+        closeBtn.addEventListener("click", closeCreativeModal);
+    }
+
+    if (backdrop) {
+        backdrop.addEventListener("click", closeCreativeModal);
+    }
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && modal.classList.contains("active")) {
+            closeCreativeModal();
+        }
+    });
+});
+
 </script>
 
 <script src="script.js"></script>
