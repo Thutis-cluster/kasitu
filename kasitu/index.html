@@ -4700,6 +4700,26 @@ function updateContactSelectionSummary() {
     });
 });
 
+    /* WhatsApp click handler: opens the configured business chat. */
+(function () {
+  const init = () => {
+    const button = document.getElementById("floating-whatsapp");
+    if (!button || button.dataset.whatsappReady === "true") return;
+    button.dataset.whatsappReady = "true";
+    button.addEventListener("click", () => {
+      const phone = "27794380103"; // South African number, digits only
+      const message = encodeURIComponent("Hi KASITU Webs, I'd like to enquire about your services.");
+      window.open(`https://wa.me/${phone}?text=${message}`, "_blank", "noopener,noreferrer");
+    });
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+  } else {
+    init();
+  }
+})();
+
+
 </script>
 
 <script src="script.js"></script>
