@@ -91,3 +91,41 @@ body.dark .filter{border-color:rgba(255,255,255,.12);color:#cbd4df}body.dark .fi
 .secondary-btn:active {
     transform: translateY(-1px);
 }
+
+/* Light mode (default) */
+.secondary-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
+
+  background: #ffffff;          /* light background */
+  color: #1f2937;               /* readable text */
+  border: 1px solid rgba(31, 41, 55, 0.25);
+
+  text-decoration: none;
+  transition: background .2s ease, border-color .2s ease, transform .05s ease;
+}
+
+.secondary-btn:hover{
+  background: #f3f4f6;          /* subtle hover */
+  border-color: rgba(31, 41, 55, 0.4);
+}
+
+.secondary-btn:active{
+  transform: translateY(1px);
+}
+
+/* Dark mode override (if you use .dark on <html> or <body>) */
+.dark .secondary-btn{
+  background: #111827;
+  color: #e5e7eb;
+  border: 1px solid rgba(229, 231, 235, 0.15);
+}
+
+.dark .secondary-btn:hover{
+  background: #0b1220;
+  border-color: rgba(229, 231, 235, 0.3);
+}
