@@ -1,7 +1,7 @@
 /* ==================================================
    KASITU WEBS — LEGAL FOOTER LINKS
-   Injects the legal/policy navigation into the
-   existing homepage footer without replacing index.html.
+   Places the legal/policy navigation above the existing
+   footer contact area without replacing index.html.
 ================================================== */
 
 (function () {
@@ -22,9 +22,6 @@
     function addLegalFooter() {
         const footer = document.querySelector("footer.footer");
         if (!footer || document.querySelector(".legal-footer-links")) return;
-
-        const bottom = footer.querySelector(".footer-bottom");
-        if (!bottom) return;
 
         const wrapper = document.createElement("div");
         wrapper.className = "legal-footer-links";
@@ -47,7 +44,14 @@
         });
 
         wrapper.appendChild(nav);
-        footer.insertBefore(wrapper, bottom);
+
+        /* Put Legal & Policies BEFORE the footer contact/columns. */
+        const footerTop = footer.querySelector(".footer-top");
+        if (footerTop) {
+            footer.insertBefore(wrapper, footerTop);
+        } else {
+            footer.insertBefore(wrapper, footer.firstChild);
+        }
     }
 
     if (document.readyState === "loading") {
