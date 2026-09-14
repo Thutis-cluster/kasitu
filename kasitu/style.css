@@ -12250,3 +12250,584 @@ html[data-theme="light"] .business-price-card .business-price span {
   color: #000 !important;
 }
 
+/* =========================================================
+   KASITU WEBS — FINAL MOBILE NORMALIZATION
+   Prevents the website from looking zoomed/tight on phones
+   without changing the desktop design.
+   ========================================================= */
+
+html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* Keep media from creating unexpected width */
+img,
+video,
+iframe,
+canvas {
+    max-width: 100%;
+}
+
+/* Prevent long text from forcing the layout wider */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+span,
+li {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+/* =========================================================
+   TABLETS / SMALL LAPTOPS
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    section {
+        width: 100%;
+        max-width: 100%;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .header {
+        width: 100%;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .hero {
+        width: 100%;
+        max-width: 100%;
+        gap: 45px;
+    }
+
+    .hero h1 {
+        font-size: clamp(2.5rem, 8vw, 3.4rem);
+    }
+
+    .hero p {
+        max-width: 650px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .calculator,
+    .why-us,
+    .contact-grid {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .calculator-right {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .footer {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* =========================================================
+   PHONES
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    html,
+    body {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow-x: hidden;
+    }
+
+    body {
+        font-size: 16px;
+    }
+
+    /* ---------- PAGE SECTIONS ---------- */
+
+    section {
+        width: 100%;
+        max-width: 100%;
+        padding: 55px 18px;
+    }
+
+    .trusted {
+        width: 100%;
+        padding: 50px 18px;
+    }
+
+    /* ---------- HEADER ---------- */
+
+    .header {
+        width: 100%;
+        padding: 12px 16px;
+    }
+
+    .logo {
+        gap: 10px;
+    }
+
+    .logo-circle {
+        width: 48px;
+        height: 48px;
+        font-size: 1.15rem;
+    }
+
+    .logo h2 {
+        font-size: 1.15rem;
+    }
+
+    .logo span {
+        font-size: .68rem;
+    }
+
+    .nav-actions {
+        gap: 8px;
+    }
+
+    #theme-toggle {
+        width: 44px;
+        height: 44px;
+    }
+
+    .menu-btn {
+        width: 44px;
+        height: 44px;
+    }
+
+    /* ---------- MOBILE MENU ---------- */
+
+    .nav-links {
+        width: calc(100% - 28px);
+        max-width: 500px;
+        padding: 24px 20px;
+        top: 72px;
+    }
+
+    /* ---------- HERO ---------- */
+
+    .hero {
+        width: 100%;
+        max-width: 100%;
+        min-height: auto;
+        gap: 35px;
+        padding-top: 115px;
+        padding-bottom: 55px;
+    }
+
+    .hero h1 {
+        font-size: clamp(2.25rem, 11vw, 3.1rem);
+        line-height: 1.08;
+        margin-bottom: 22px;
+    }
+
+    .hero p {
+        width: 100%;
+        max-width: 100%;
+        font-size: 1rem;
+        line-height: 1.65;
+        margin-bottom: 28px;
+    }
+
+    .hero-buttons {
+        width: 100%;
+        gap: 12px;
+        margin-bottom: 35px;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+        width: 100%;
+        min-height: 52px;
+        padding: 14px 20px;
+    }
+
+    /* ---------- HERO STATS ---------- */
+
+    .hero-stats {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .hero-stats div {
+        min-width: 0;
+        width: 100%;
+        padding: 15px 10px;
+    }
+
+    .hero-stats h2 {
+        font-size: 1.55rem;
+    }
+
+    /* ---------- LAPTOP ---------- */
+
+    .hero-right {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 10px;
+    }
+
+    .laptop {
+        width: min(100%, 440px);
+        max-width: 100%;
+        padding: 18px;
+    }
+
+    .screen {
+        height: auto;
+        min-height: 220px;
+        padding: 20px;
+    }
+
+    .code {
+        font-size: 12px;
+        line-height: 1.7;
+        overflow-wrap: anywhere;
+    }
+
+    /* Keep floating tech inside the phone */
+    .floating-tech {
+        width: 48px;
+        height: 48px;
+        font-size: 1.35rem;
+    }
+
+    .floating-tech.html {
+        left: -8px;
+    }
+
+    .floating-tech.css {
+        left: -5px;
+    }
+
+    .floating-tech.js {
+        right: -5px;
+    }
+
+    .floating-tech.node {
+        right: -8px;
+    }
+
+    /* ---------- SECTION HEADERS ---------- */
+
+    .section-header {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 35px;
+    }
+
+    .section-header h2 {
+        font-size: clamp(1.9rem, 8vw, 2.4rem);
+        line-height: 1.15;
+    }
+
+    .section-header p {
+        font-size: .95rem;
+        line-height: 1.6;
+    }
+
+    /* ---------- SERVICES ---------- */
+
+    .services-grid {
+        width: 100%;
+        max-width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .service-card {
+        width: 100%;
+        min-width: 0;
+        padding: 20px 12px;
+    }
+
+    .service-icon {
+        width: 54px;
+        height: 54px;
+        font-size: 1.35rem;
+        margin-bottom: 12px;
+    }
+
+    .service-card h3 {
+        font-size: .9rem;
+        line-height: 1.3;
+    }
+
+    .service-card p {
+        font-size: .78rem;
+        line-height: 1.5;
+    }
+
+    /* ---------- PORTFOLIO ---------- */
+
+    .portfolio-grid {
+        width: 100%;
+        max-width: 100%;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .project-card {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .project-image {
+        height: 210px;
+    }
+
+    .project-content {
+        padding: 22px;
+    }
+
+    /* ---------- TRUSTED TECHNOLOGIES ---------- */
+
+    .trusted-grid {
+        width: 100%;
+        max-width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .trusted-grid div {
+        min-width: 0;
+        min-height: 135px;
+        padding: 15px 8px;
+    }
+
+    .trusted-grid i {
+        font-size: 2.3rem;
+        margin-bottom: 12px;
+    }
+
+    /* ---------- WHY US ---------- */
+
+    .why-us {
+        width: 100%;
+        max-width: 100%;
+        gap: 30px;
+    }
+
+    .why-right {
+        width: 100%;
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .feature {
+        width: 100%;
+        padding: 18px;
+    }
+
+    /* ---------- PRICING ---------- */
+
+    .pricing-grid {
+        width: 100%;
+        max-width: 100%;
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .price-card {
+        width: 100%;
+        min-width: 0;
+        padding: 25px 20px;
+    }
+
+    .price {
+        font-size: 2.45rem;
+    }
+
+    /* ---------- CALCULATOR ---------- */
+
+    .calculator {
+        width: 100%;
+        max-width: 100%;
+        gap: 30px;
+    }
+
+    .calculator-right {
+        width: 100%;
+        max-width: 100%;
+        padding: 22px 18px;
+    }
+
+    fieldset {
+        padding: 18px 14px;
+    }
+
+    #total {
+        font-size: 2.4rem;
+    }
+
+    /* ---------- CONTACT ---------- */
+
+    .contact-grid {
+        width: 100%;
+        max-width: 100%;
+        gap: 25px;
+    }
+
+    .info-card {
+        width: 100%;
+        min-width: 0;
+        padding: 18px;
+        gap: 14px;
+    }
+
+    .info-card i {
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    #contact-form {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    #contact-form input,
+    #contact-form textarea {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* ---------- FOOTER ---------- */
+
+    .footer {
+        width: 100%;
+        max-width: 100%;
+        padding: 55px 18px 25px;
+    }
+
+    .footer-top {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* ---------- MODALS ---------- */
+
+    .quotation-modal,
+    .info-modal,
+    .business-price-modal,
+    .creative-price-modal,
+    .key-locator-modal,
+    .alarm-modal {
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+
+    /* ---------- WHATSAPP ---------- */
+
+    .floating-whatsapp {
+        right: 14px;
+        bottom: 105px;
+        width: 54px;
+        height: 54px;
+    }
+
+    .floating-whatsapp-icon {
+        font-size: 1.5rem;
+    }
+}
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    section,
+    .trusted {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .header {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .logo h2 {
+        font-size: 1rem;
+    }
+
+    .logo span {
+        font-size: .62rem;
+    }
+
+    .hero h1 {
+        font-size: 2.15rem;
+    }
+
+    .hero-stats {
+        gap: 8px;
+    }
+
+    .hero-stats div {
+        padding: 13px 7px;
+    }
+
+    .hero-stats h2 {
+        font-size: 1.4rem;
+    }
+
+    .services-grid {
+        gap: 9px;
+    }
+
+    .service-card {
+        padding: 18px 8px;
+    }
+
+    .service-card h3 {
+        font-size: .82rem;
+    }
+
+    .service-card p {
+        font-size: .72rem;
+    }
+
+    .trusted-grid {
+        gap: 8px;
+    }
+
+    .price-card {
+        padding: 22px 17px;
+    }
+
+    .calculator-right {
+        padding: 20px 14px;
+    }
+
+    .floating-whatsapp {
+        right: 10px;
+        width: 52px;
+        height: 52px;
+    }
+}
+
