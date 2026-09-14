@@ -1,0 +1,116 @@
+/* ==================================================
+   KASITU WEBS — LEGAL FOOTER
+   Matches the existing premium dark/light design.
+================================================== */
+
+.legal-footer-links {
+    width: min(1180px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 22px 0 18px;
+    border-top: 1px solid rgba(255,255,255,.08);
+    text-align: center;
+}
+
+.legal-footer-title {
+    display: block;
+    margin-bottom: 12px;
+    color: #06b6d4;
+    font-size: .76rem;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+
+.legal-footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 7px 18px;
+}
+
+.legal-footer-nav a {
+    position: relative;
+    display: inline-block;
+    padding: 4px 0;
+    color: rgba(255,255,255,.68);
+    font-size: .82rem;
+    font-weight: 500;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: color .25s ease, transform .25s ease;
+}
+
+.legal-footer-nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: 0;
+    height: 1px;
+    background: #06b6d4;
+    transition: right .25s ease;
+}
+
+.legal-footer-nav a:hover,
+.legal-footer-nav a:focus-visible {
+    color: #06b6d4;
+    transform: translateY(-1px);
+}
+
+.legal-footer-nav a:hover::after,
+.legal-footer-nav a:focus-visible::after {
+    right: 0;
+}
+
+/* Light theme */
+html[data-theme="light"] .legal-footer-links {
+    border-top-color: rgba(15,23,42,.10);
+}
+
+html[data-theme="light"] .legal-footer-nav a {
+    color: rgba(15,23,42,.62);
+}
+
+html[data-theme="light"] .legal-footer-nav a:hover,
+html[data-theme="light"] .legal-footer-nav a:focus-visible {
+    color: #0891b2;
+}
+
+/* Tablet */
+@media (max-width: 700px) {
+    .legal-footer-links {
+        width: min(100% - 28px, 600px);
+        padding: 20px 0 16px;
+    }
+
+    .legal-footer-nav {
+        gap: 8px 14px;
+    }
+
+    .legal-footer-nav a {
+        font-size: .79rem;
+    }
+}
+
+/* Small phones */
+@media (max-width: 420px) {
+    .legal-footer-links {
+        width: calc(100% - 24px);
+    }
+
+    .legal-footer-nav {
+        gap: 6px 11px;
+    }
+
+    .legal-footer-nav a {
+        font-size: .74rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .legal-footer-nav a,
+    .legal-footer-nav a::after {
+        transition: none;
+    }
+}
