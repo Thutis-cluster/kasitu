@@ -15,4 +15,13 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url><loc>https://kasituwebs.co.za/legal.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://kasituwebs.co.za/about.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://kasituwebs.co.za/faq.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://kasituwebs.co.za/terms-and-conditions.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://kasituwebs.co.za/privacy-policy.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://kasituwebs.co.za/refund-policy.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://kasituwebs.co.za/cookie-policy.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://kasituwebs.co.za/disclaimer.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://kasituwebs.co.za/services-pricing.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>
