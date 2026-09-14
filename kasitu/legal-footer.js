@@ -1,9 +1,7 @@
 /* ==================================================
-   KASITU WEBS — LEGAL FOOTER LINKS
-   Places the legal/policy navigation above the existing
-   footer contact area without replacing index.html.
+   KASITU WEBS — HOMEPAGE LEGAL NAVIGATION
+   Places Legal & Policies between Contact and SEO.
 ================================================== */
-
 (function () {
     "use strict";
 
@@ -19,21 +17,29 @@
         ["Services & Pricing", "services-pricing.html"]
     ];
 
-    function addLegalFooter() {
+    function addLegalNavigation() {
         const footer = document.querySelector("footer.footer");
-        if (!footer || document.querySelector(".legal-footer-links")) return;
+        if (!footer || document.querySelector(".kasitu-home-legal-links")) return;
+
+        const footerTop = footer.querySelector(".footer-top");
+        if (!footerTop) return;
+
+        const seoHeading = Array.from(footerTop.querySelectorAll("h1,h2,h3,h4,h5,h6"))
+            .find(function (heading) {
+                return heading.textContent.trim().toLowerCase() === "seo";
+            });
 
         const wrapper = document.createElement("div");
-        wrapper.className = "legal-footer-links";
+        wrapper.className = "kasitu-home-legal-links";
         wrapper.setAttribute("aria-label", "Legal and policy links");
 
         const heading = document.createElement("span");
-        heading.className = "legal-footer-title";
+        heading.className = "kasitu-home-legal-title";
         heading.textContent = "Legal & Policies";
         wrapper.appendChild(heading);
 
         const nav = document.createElement("nav");
-        nav.className = "legal-footer-nav";
+        nav.className = "kasitu-home-legal-nav";
         nav.setAttribute("aria-label", "Legal navigation");
 
         links.forEach(function ([label, href]) {
@@ -45,18 +51,32 @@
 
         wrapper.appendChild(nav);
 
-        /* Put Legal & Policies BEFORE the footer contact/columns. */
-        const footerTop = footer.querySelector(".footer-top");
-        if (footerTop) {
-            footer.insertBefore(wrapper, footerTop);
+        /* Insert immediately before the SEO column. */
+        if (seoHeading) {
+            const seoColumn = seoHeading.closest("div");
+            if (seoColumn && seoColumn !== footerTop) {
+                footerTop.insertBefore(wrapper, seoColumn);
+                return;
+            }
+        }
+
+        /* Safe fallback: place after the footer column containing Contact. */
+        const contactHeading = Array.from(footerTop.querySelectorAll("h1,h2,h3,h4,h5,h6"))
+            .find(function (heading) {
+                return heading.textContent.trim().toLowerCase() === "contact";
+            });
+        const contactColumn = contactHeading && contactHeading.closest("div");
+
+        if (contactColumn && contactColumn !== footerTop) {
+            contactColumn.insertAdjacentElement("afterend", wrapper);
         } else {
-            footer.insertBefore(wrapper, footer.firstChild);
+            footerTop.appendChild(wrapper);
         }
     }
 
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", addLegalFooter, { once: true });
+        document.addEventListener("DOMContentLoaded", addLegalNavigation, { once: true });
     } else {
-        addLegalFooter();
+        addLegalNavigation();
     }
 })();
