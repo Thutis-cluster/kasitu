@@ -1,153 +1,241 @@
-/* KASITU WEBS — RESPONSIVE MOBILE STYLES */
-/* Keep the exact desktop stylesheet as the base. */
+/* KASITU WEBS — RESPONSIVE MOBILE LAYER */
+/* Preserve the original desktop design as the base. */
 @import url("https://cdn.jsdelivr.net/gh/Thutis-cluster/kasitu@e8756d800ffc8a2f2e2081f42ce0901ca47cf38d/kasitu/style.css");
 
-/* TABLETS */
-@media (max-width: 1024px) {
-  section,.trusted { padding-left:5.5%; padding-right:5.5%; }
-  .hero { grid-template-columns:1fr 1fr; gap:38px; padding-top:125px; }
-  .hero h1 { font-size:clamp(2.9rem,6vw,4.5rem); }
-  .hero p { font-size:1.02rem; }
-  .primary-btn,.secondary-btn { padding:14px 23px; font-size:.95rem; }
-  .laptop { width:min(440px,100%); }
+html,body{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+img,video,iframe,canvas{max-width:100%;}
+
+/* =========================================================
+   TABLETS
+========================================================= */
+@media (max-width:900px){
+  section{width:100%;max-width:100%;padding-left:5%;padding-right:5%;}
+  .header{padding-left:5%;padding-right:5%;}
+  .hero{width:100%;max-width:100%;gap:42px;}
+  .hero h1{font-size:clamp(3rem,8vw,4rem);}
+  .hero p{font-size:1.08rem;}
 }
 
-/* PHONES — larger, clearer and still compact */
-@media (max-width:767px) {
-  html { font-size:16px; overflow-x:hidden; }
-  body { width:100%; max-width:100%; overflow-x:hidden; line-height:1.6; -webkit-text-size-adjust:100%; }
+/* =========================================================
+   PHONES — BIGGER / CLEARER / CLOSER SECTIONS
+========================================================= */
+@media (max-width:600px){
+  body{font-size:16.5px;line-height:1.62;}
 
-  section,.trusted { width:100%; padding:62px 5%; }
-  .section-header { width:100%; margin-bottom:34px; }
-  .section-header h2 { font-size:clamp(1.95rem,8vw,2.45rem); line-height:1.15; margin-bottom:13px; }
-  .section-header p { font-size:.98rem; line-height:1.65; }
-  .section-subtitle,.section-tag { font-size:.74rem; letter-spacing:1.6px; }
+  /* Much less empty space between sections */
+  section{padding:30px 18px;}
+  .trusted{padding:28px 18px;}
+  .section-header{margin-bottom:22px;}
+  .section-header h2{font-size:clamp(2.2rem,9vw,2.65rem);line-height:1.12;margin-bottom:10px;}
+  .section-header p{font-size:1rem;line-height:1.62;}
+  .section-tag,.section-subtitle{font-size:.76rem;}
 
   /* Header */
-  .header { padding:10px 4.5%; }
-  .navbar { min-height:54px; }
-  .logo { gap:10px; }
-  .logo-circle { width:45px; height:45px; min-width:45px; font-size:1.05rem; }
-  .logo h2 { font-size:1.08rem; letter-spacing:1.4px; }
-  .logo span { font-size:.62rem; }
-  .nav-actions { gap:8px; }
-  #theme-toggle,.menu-btn { width:43px; height:43px; min-width:43px; font-size:1rem; }
-  .nav-links { top:68px; left:4%; right:4%; padding:12px; border-radius:19px; gap:5px; }
-  .nav-links a { min-height:48px; padding:11px 14px; font-size:.98rem; }
+  .header{padding:11px 16px;}
+  .navbar{min-height:54px;}
+  .logo{gap:10px;}
+  .logo-circle{width:48px;height:48px;min-width:48px;font-size:1.15rem;}
+  .logo h2{font-size:1.15rem;letter-spacing:1.5px;}
+  .logo span{font-size:.68rem;}
+  .nav-actions{gap:8px;}
+  #theme-toggle,.menu-btn{width:44px;height:44px;min-width:44px;font-size:1rem;}
+  .nav-links{top:72px;width:calc(100% - 28px);padding:20px;border-radius:20px;}
+  .nav-links a{min-height:50px;padding:12px 15px;font-size:1rem;}
 
   /* Hero */
-  .hero { min-height:auto; grid-template-columns:1fr; gap:42px; padding:112px 5% 60px; text-align:center; }
-  .hero-left,.hero-right { width:100%; min-width:0; }
-  .hero-left { display:flex; flex-direction:column; align-items:center; }
-  .hero-badge { padding:9px 14px; margin-bottom:18px; font-size:.78rem; }
-  .hero h1 { width:100%; font-size:clamp(2.6rem,11vw,3.65rem); line-height:1.06; margin-bottom:18px; letter-spacing:-.7px; }
-  .hero p { width:100%; max-width:590px; font-size:1rem; line-height:1.7; margin-bottom:25px; }
-  .hero-buttons { width:100%; max-width:450px; gap:10px; margin-bottom:29px; }
-  .hero-buttons .primary-btn,.hero-buttons .secondary-btn,.hero-buttons button { min-height:48px; padding:12px 17px; font-size:.92rem; border-radius:13px; }
-  .hero-stats { width:100%; max-width:450px; gap:10px; }
-  .hero-stats div { padding:14px 9px; border-radius:15px; }
-  .hero-stats h2 { font-size:1.62rem; }
-  .hero-stats span { font-size:.73rem; }
-  .hero-right { min-height:285px; }
-  .laptop { width:min(100%,380px); padding:16px; border-radius:18px; }
-  .laptop-top { margin-bottom:13px; }
-  .laptop-top span { width:10px; height:10px; }
-  .code { font-size:.74rem; line-height:1.7; }
-  .floating-tech { width:46px; height:46px; min-width:46px; border-radius:13px; font-size:1.08rem; transform:scale(.86); }
+  .hero{padding:108px 0 32px;gap:30px;}
+  .hero-badge{padding:10px 15px;margin-bottom:17px;font-size:.8rem;}
+  .hero h1{font-size:clamp(2.75rem,12vw,3.55rem);line-height:1.05;margin-bottom:18px;}
+  .hero p{font-size:1.04rem;line-height:1.68;margin-bottom:23px;}
+  .hero-buttons{gap:10px;margin-bottom:25px;}
+  .hero-buttons .primary-btn,.hero-buttons .secondary-btn,.hero-buttons button{min-height:50px;padding:13px 18px;font-size:.95rem;}
+  .hero-stats{gap:10px;}
+  .hero-stats div{padding:15px 9px;border-radius:15px;}
+  .hero-stats h2{font-size:1.65rem;}
+  .hero-stats span{font-size:.75rem;}
+
+  /* Laptop */
+  .hero-right{min-height:275px;margin-top:0;}
+  .laptop{width:min(100%,400px);padding:18px;border-radius:19px;}
+  .laptop-top{gap:9px;margin-bottom:15px;}
+  .laptop-top span{width:11px;height:11px;}
+  .code{font-size:.78rem;line-height:1.72;min-height:230px;}
+
+  /* RESTORE THE ORIGINAL FLOATING TECH STYLE + POSITIONS */
+  .floating-tech{
+    position:absolute;
+    width:58px;
+    height:58px;
+    min-width:58px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.55rem;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.08);
+    animation:float 6s ease-in-out infinite;
+    transform:none;
+  }
+  .floating-tech.html{top:15%;left:-10px;right:auto;color:#E34F26;}
+  .floating-tech.css{top:65%;left:-10px;right:auto;color:#1572B6;}
+  .floating-tech.js{top:12%;right:-10px;left:auto;color:#F7DF1E;}
+  .floating-tech.node{top:55%;right:-10px;left:auto;color:#68A063;}
+  .floating-tech.github{bottom:-20px;left:50%;right:auto;top:auto;transform:translateX(-50%);color:#fff;}
 
   /* Services */
-  .services-grid { width:100%; grid-template-columns:repeat(2,minmax(0,1fr)); gap:13px; }
-  .service-card { padding:21px 14px; border-radius:17px; }
-  .service-icon { width:56px; height:56px; min-width:56px; border-radius:16px; margin-bottom:11px; }
-  .service-icon i { font-size:1.4rem; }
-  .service-card h3 { font-size:.92rem; line-height:1.3; margin-bottom:6px; }
-  .service-card p { font-size:.82rem; line-height:1.52; }
-  .service-learn-btn { min-height:41px; margin-top:10px; padding:9px 8px; font-size:.76rem; border-radius:10px; }
+  .services-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  .service-card{min-width:0;padding:23px 13px;border-radius:19px;}
+  .service-icon{width:58px;height:58px;min-width:58px;border-radius:18px;margin-bottom:13px;}
+  .service-icon i{font-size:1.48rem;}
+  .service-card h3{font-size:1rem;line-height:1.28;margin-bottom:5px;}
+  .service-card p{font-size:.86rem;line-height:1.55;margin-top:7px;}
+  .service-learn-btn{min-height:43px;margin-top:10px;padding:10px 8px;font-size:.78rem;}
 
   /* Portfolio */
-  .portfolio-grid { grid-template-columns:1fr; gap:19px; }
-  .project-card { width:100%; border-radius:18px; }
-  .project-image { height:205px; }
-  .project-content { padding:20px; }
-  .project-tag { font-size:.71rem; }
-  .project-content h3 { font-size:1.25rem; }
-  .project-content p { font-size:.88rem; line-height:1.6; }
-  .project-tech { gap:7px; margin-top:13px; }
-  .project-tech span { font-size:.69rem; padding:6px 8px; }
-  .project-links { gap:9px; margin-top:14px; }
-  .project-links a,.project-links button,.creative-project-links a,.creative-project-links button { min-height:43px; padding:10px; font-size:.8rem; }
+  .portfolio-grid{grid-template-columns:1fr;gap:15px;}
+  .project-image{height:205px;}
+  .project-content{padding:20px;}
+  .project-tag{font-size:.73rem;}
+  .project-content h3{font-size:1.28rem;}
+  .project-content p{font-size:.9rem;line-height:1.62;}
+  .project-tech span{font-size:.72rem;padding:6px 9px;}
+  .project-links{gap:9px;margin-top:14px;}
+  .project-links a,.project-links button,.creative-project-links a,.creative-project-links button{min-height:46px;font-size:.82rem;}
 
   /* Technologies */
-  .trusted { padding-top:55px; padding-bottom:55px; }
-  .trusted-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:11px; }
-  .trusted-grid div,.tech-info-card { padding:16px 9px; border-radius:15px; }
-  .trusted-grid i,.tech-info-card i { font-size:1.45rem; }
-  .trusted-grid h3,.tech-info-card h3 { font-size:.82rem; margin-top:7px; }
+  .trusted-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .trusted-grid div,.tech-info-card{padding:16px 8px;min-height:140px;border-radius:16px;}
+  .trusted-grid i,.tech-info-card i{font-size:2.5rem;margin-bottom:12px;}
+  .trusted-grid h3,.tech-info-card h3{font-size:.86rem;}
 
   /* Pricing */
-  .pricing-grid { grid-template-columns:1fr; gap:17px; }
-  .price-card { padding:24px 20px; border-radius:18px; }
-  .price-card h3 { font-size:1.25rem; }
-  .price-wrap { margin:11px 0 16px; }
-  .price-card .price { font-size:clamp(2rem,9vw,2.55rem); }
-  .once-off { font-size:.7rem; }
-  .price-card li { font-size:.84rem; line-height:1.5; margin-bottom:8px; }
-  .price-card .primary-btn,.select-price { min-height:45px; padding:11px 15px; font-size:.84rem; }
+  .pricing-grid{grid-template-columns:1fr;gap:14px;margin-top:20px;}
+  .price-card{padding:25px 20px;border-radius:19px;}
+  .price-card h3{font-size:1.3rem;}
+  .price-card .price{font-size:2.55rem;}
+  .price-card li{font-size:.88rem;line-height:1.52;}
+  .price-card .primary-btn,.select-price{min-height:47px;font-size:.86rem;}
 
   /* Calculator / forms */
-  .calculator { grid-template-columns:1fr; gap:28px; padding:60px 5%; }
-  .calculator-left h2 { font-size:clamp(2rem,8.5vw,2.55rem); }
-  .calculator-left p { font-size:.94rem; }
-  .calculator-right,#price-form { width:100%; min-width:0; }
-  input,select,textarea { font-size:.95rem; }
+  .calculator{grid-template-columns:1fr;gap:22px;padding:30px 18px;}
+  .calculator-left h2{font-size:clamp(2.1rem,9vw,2.65rem);}
+  .calculator-left p{font-size:1rem;}
+  .calculator-right,#price-form{width:100%;min-width:0;padding:22px 18px;}
+  input,select,textarea{font-size:1rem;}
 
-  /* Common cards / process / testimonials / FAQ */
-  .why-grid,.process-grid,.testimonial-grid,.faq-grid,.support-grid { grid-template-columns:1fr; gap:16px; }
-  .why-card,.process-card,.testimonial-card,.faq-item,.support-card { padding:21px 18px; border-radius:17px; }
-  .why-card h3,.process-card h3,.testimonial-card h3,.support-card h3 { font-size:1.02rem; }
-  .why-card p,.process-card p,.testimonial-card p,.faq-item p,.support-card p { font-size:.88rem; line-height:1.6; }
+  /* Why / process / testimonials / FAQ / support */
+  .why-us,.contact-grid{grid-template-columns:1fr;gap:20px;}
+  .why-right{grid-template-columns:1fr;gap:10px;}
+  .feature,.why-card,.testimonial-card,.faq-item,.support-card{padding:20px 18px;}
+  .feature p,.why-card p,.testimonial-card p,.faq-item p,.support-card p{font-size:.92rem;line-height:1.62;}
+
+  /* =====================================================
+     RESTORE THE LAST / ORIGINAL PROCESS ROUTE
+     ===================================================== */
+  .process-route{position:relative;max-width:1000px;margin:35px auto 0;padding:20px 0 20px 45px;}
+  .route-line{position:absolute;left:35px;top:35px;bottom:35px;width:3px;transform:none;background:linear-gradient(to bottom,#4F46E5,#06B6D4,#8B5CF6);border-radius:50px;box-shadow:0 0 15px rgba(6,182,212,.35);}
+  .process-step{position:relative;display:flex;align-items:center;min-height:auto;margin-bottom:24px;padding-left:55px;}
+  .step-marker{position:absolute;left:35px;transform:translateX(-50%);width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3;background:linear-gradient(135deg,#4F46E5,#06B6D4);border:5px solid var(--bg);box-shadow:0 0 0 7px rgba(6,182,212,.08),0 0 30px rgba(6,182,212,.35);color:white;font-weight:800;font-size:.85rem;}
+  .step-content{width:100%;margin:0!important;text-align:left!important;padding:20px;border-radius:20px;background:var(--glass);border:1px solid var(--border);backdrop-filter:blur(20px);box-shadow:0 15px 40px rgba(0,0,0,.12);}
+  .step-content h3{margin:7px 0 8px;font-size:1.2rem;}
+  .step-content p{margin:0;color:var(--muted);font-size:.92rem;line-height:1.62;}
 
   /* Contact */
-  .contact-grid { grid-template-columns:1fr; gap:22px; }
-  .contact-card,.contact-form { padding:22px 18px; border-radius:18px; }
-  .contact-card h3,.contact-form h3 { font-size:1.25rem; }
-  .contact-card p,.contact-form label { font-size:.88rem; }
-  .contact-form button { min-height:46px; font-size:.86rem; }
+  .contact-grid{gap:18px;}
+  .contact-link.info-card{padding:18px;min-height:92px;gap:14px;border-radius:18px;}
+  .info-card-icon{width:48px;height:48px;border-radius:14px;font-size:1.1rem;}
+  .contact-link.info-card h3{font-size:.95rem;}
+  .contact-link.info-card p{font-size:.78rem;}
 
   /* Footer */
-  footer { padding:42px 5% 30px; }
-  footer p,footer a { font-size:.82rem; }
+  .footer{margin-top:25px;padding:35px 18px 25px;}
 
-  /* Floating WhatsApp */
-  .whatsapp-float { width:58px; height:58px; right:16px; bottom:16px; }
-  .whatsapp-float svg { width:34px; height:34px; }
+  /* =====================================================
+     WHATSAPP — RESTORE ORIGINAL POSITION
+     ===================================================== */
+  .floating-whatsapp{
+    position:fixed !important;
+    right:16px !important;
+    bottom:120px !important;
+    left:auto !important;
+    top:auto !important;
+    width:54px !important;
+    height:54px !important;
+    min-width:54px;
+    border-radius:16px;
+    z-index:10050;
+  }
+  .floating-whatsapp:hover{width:54px !important;border-radius:16px;}
+  .floating-whatsapp-icon{font-size:1.55rem;position:relative;}
+
+  /* WhatsApp Business badge — clear B at small sizes */
+  .floating-whatsapp-icon::after{
+    content:"B";
+    position:absolute;
+    right:7px;
+    bottom:7px;
+    width:16px;
+    height:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:#fff;
+    color:#128C7E;
+    border:2px solid #25D366;
+    font-family:Arial,sans-serif;
+    font-size:10px;
+    font-weight:900;
+    line-height:1;
+    box-shadow:0 2px 7px rgba(0,0,0,.28);
+    z-index:5;
+  }
+
+  /* Remove the old text label on mobile but keep icon visually strong */
+  .floating-whatsapp-label{display:none;}
 }
 
-/* SMALL PHONES — readable without becoming oversized */
-@media (max-width:480px) {
-  section,.trusted { padding-left:5.5%; padding-right:5.5%; }
-  .hero { padding-left:5.5%; padding-right:5.5%; }
-  .hero h1 { font-size:clamp(2.35rem,10.5vw,3.1rem); }
-  .hero p { font-size:.96rem; }
-  .services-grid { gap:11px; }
-  .service-card { padding:19px 11px; }
-  .service-card h3 { font-size:.88rem; }
-  .service-card p { font-size:.79rem; }
-  .project-image { height:190px; }
-  .project-content { padding:18px; }
-  .price-card { padding:22px 17px; }
+/* =========================================================
+   SMALL PHONES — KEEP WORDS READABLE, NOT TINY
+========================================================= */
+@media (max-width:380px){
+  section,.trusted{padding-left:14px;padding-right:14px;}
+  .header{padding-left:12px;padding-right:12px;}
+  .logo h2{font-size:1.05rem;}
+  .logo span{font-size:.64rem;}
+  .hero{padding-top:105px;padding-bottom:28px;}
+  .hero h1{font-size:2.5rem;}
+  .hero p{font-size:.98rem;}
+  .section-header h2{font-size:2.15rem;}
+  .section-header p{font-size:.95rem;}
+  .service-card{padding:20px 9px;}
+  .service-card h3{font-size:.94rem;}
+  .service-card p{font-size:.82rem;}
+  .floating-tech{width:54px;height:54px;min-width:54px;font-size:1.4rem;}
+  .floating-tech.html{left:-8px;}
+  .floating-tech.css{left:-8px;}
+  .floating-tech.js{right:-8px;}
+  .floating-tech.node{right:-8px;}
+  .floating-whatsapp{right:10px !important;bottom:120px !important;width:52px !important;height:52px !important;min-width:52px;}
+  .floating-whatsapp-icon::after{width:15px;height:15px;right:6px;bottom:6px;font-size:9px;}
 }
 
-@media (max-width:380px) {
-  .logo h2 { font-size:1rem; }
-  .logo span { font-size:.58rem; }
-  #theme-toggle,.menu-btn { width:40px; height:40px; min-width:40px; }
-  .hero h1 { font-size:2.25rem; }
-  .hero p { font-size:.92rem; }
-  .service-card p { font-size:.75rem; }
-  .project-content p,.why-card p,.process-card p,.testimonial-card p,.faq-item p { font-size:.84rem; }
+/* =========================================================
+   REDUCE SECTION GAPS — INCLUDING SPECIAL SECTIONS
+========================================================= */
+@media (max-width:600px){
+  #home{padding-bottom:25px;}
+  #services,#projects,#technologies,#pricing,#why-us,#process,#testimonials,#faq,#contact,#support{padding-top:28px;padding-bottom:28px;}
+  .support-section{padding-top:28px;padding-bottom:28px;}
+  .support-grid{margin-top:22px;gap:10px;}
+  .faq-container{margin:25px auto;}
+  .contact-grid{margin-top:22px;}
 }
 
-@media (prefers-reduced-motion:reduce) {
-  *,*::before,*::after { scroll-behavior:auto !important; transition-duration:.01ms !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; }
+/* Reduced motion */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;}
 }
