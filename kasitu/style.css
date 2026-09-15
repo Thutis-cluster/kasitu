@@ -1,12 +1,10 @@
 /* KASITU WEBS — RESPONSIVE MOBILE LAYER */
-/* Desktop base stylesheet is loaded directly by index.html so CSS files can download in parallel. */
+/* Preserve the original desktop design as the base. */
+@import url("https://cdn.jsdelivr.net/gh/Thutis-cluster/kasitu@e8756d800ffc8a2f2e2081f42ce0901ca47cf38d/kasitu/style.css");
 
 html,body{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%;}
 img,video,iframe,canvas{max-width:100%;}
 
-/* =========================================================
-   TABLETS
-========================================================= */
 @media (max-width:900px){
   section{width:100%;max-width:100%;padding-left:5%;padding-right:5%;}
   .header{padding-left:5%;padding-right:5%;}
@@ -15,9 +13,6 @@ img,video,iframe,canvas{max-width:100%;}
   .hero p{font-size:1.08rem;}
 }
 
-/* =========================================================
-   PHONES — BIGGER / CLEARER / CLOSER SECTIONS
-========================================================= */
 @media (max-width:600px){
   body{font-size:16.5px;line-height:1.62;}
   section{padding:30px 18px;}
@@ -26,7 +21,6 @@ img,video,iframe,canvas{max-width:100%;}
   .section-header h2{font-size:clamp(2.2rem,9vw,2.65rem);line-height:1.12;margin-bottom:10px;}
   .section-header p{font-size:1rem;line-height:1.62;}
   .section-tag,.section-subtitle{font-size:.76rem;}
-
   .header{padding:11px 16px;}
   .navbar{min-height:54px;}
   .logo{gap:10px;}
@@ -37,7 +31,6 @@ img,video,iframe,canvas{max-width:100%;}
   #theme-toggle,.menu-btn{width:44px;height:44px;min-width:44px;font-size:1rem;}
   .nav-links{top:72px;width:calc(100% - 28px);padding:20px;border-radius:20px;}
   .nav-links a{min-height:50px;padding:12px 15px;font-size:1rem;}
-
   .hero{padding:108px 0 32px;gap:30px;}
   .hero-badge{padding:10px 15px;margin-bottom:17px;font-size:.8rem;}
   .hero h1{font-size:clamp(2.75rem,12vw,3.55rem);line-height:1.05;margin-bottom:18px;}
@@ -48,20 +41,17 @@ img,video,iframe,canvas{max-width:100%;}
   .hero-stats div{padding:15px 9px;border-radius:15px;}
   .hero-stats h2{font-size:1.65rem;}
   .hero-stats span{font-size:.75rem;}
-
   .hero-right{min-height:275px;margin-top:0;}
   .laptop{width:min(100%,400px);padding:18px;border-radius:19px;}
   .laptop-top{gap:9px;margin-bottom:15px;}
   .laptop-top span{width:11px;height:11px;}
   .code{font-size:.78rem;line-height:1.72;min-height:230px;}
-
   .floating-tech{position:absolute;width:58px;height:58px;min-width:58px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.55rem;background:rgba(255,255,255,.08);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08);animation:float 6s ease-in-out infinite;transform:none;}
   .floating-tech.html{top:15%;left:-10px;right:auto;color:#E34F26;}
   .floating-tech.css{top:65%;left:-10px;right:auto;color:#1572B6;}
   .floating-tech.js{top:12%;right:-10px;left:auto;color:#F7DF1E;}
   .floating-tech.node{top:55%;right:-10px;left:auto;color:#68A063;}
   .floating-tech.github{bottom:-20px;left:50%;right:auto;top:auto;transform:translateX(-50%);color:#fff;}
-
   .services-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
   .service-card{min-width:0;padding:23px 13px;border-radius:19px;}
   .service-icon{width:58px;height:58px;min-width:58px;border-radius:18px;margin-bottom:13px;}
@@ -69,7 +59,6 @@ img,video,iframe,canvas{max-width:100%;}
   .service-card h3{font-size:1rem;line-height:1.28;margin-bottom:5px;}
   .service-card p{font-size:.86rem;line-height:1.55;margin-top:7px;}
   .service-learn-btn{min-height:43px;margin-top:10px;padding:10px 8px;font-size:.78rem;}
-
   .portfolio-grid{grid-template-columns:1fr;gap:15px;}
   .project-image{height:205px;}
   .project-content{padding:20px;}
@@ -79,30 +68,25 @@ img,video,iframe,canvas{max-width:100%;}
   .project-tech span{font-size:.72rem;padding:6px 9px;}
   .project-links{gap:9px;margin-top:14px;}
   .project-links a,.project-links button,.creative-project-links a,.creative-project-links button{min-height:46px;font-size:.82rem;}
-
   .trusted-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
   .trusted-grid div,.tech-info-card{padding:16px 8px;min-height:140px;border-radius:16px;}
   .trusted-grid i,.tech-info-card i{font-size:2.5rem;margin-bottom:12px;}
   .trusted-grid h3,.tech-info-card h3{font-size:.86rem;}
-
   .pricing-grid{grid-template-columns:1fr;gap:14px;margin-top:20px;}
   .price-card{padding:25px 20px;border-radius:19px;}
   .price-card h3{font-size:1.3rem;}
   .price-card .price{font-size:2.55rem;}
   .price-card li{font-size:.88rem;line-height:1.52;}
   .price-card .primary-btn,.select-price{min-height:47px;font-size:.86rem;}
-
   .calculator{grid-template-columns:1fr;gap:22px;padding:30px 18px;}
   .calculator-left h2{font-size:clamp(2.1rem,9vw,2.65rem);}
   .calculator-left p{font-size:1rem;}
   .calculator-right,#price-form{width:100%;min-width:0;padding:22px 18px;}
   input,select,textarea{font-size:1rem;}
-
   .why-us,.contact-grid{grid-template-columns:1fr;gap:20px;}
   .why-right{grid-template-columns:1fr;gap:10px;}
   .feature,.why-card,.testimonial-card,.faq-item,.support-card{padding:20px 18px;}
   .feature p,.why-card p,.testimonial-card p,.faq-item p,.support-card p{font-size:.92rem;line-height:1.62;}
-
   .process-route{position:relative;max-width:1000px;margin:35px auto 0;padding:20px 0 20px 45px;}
   .route-line{position:absolute;left:35px;top:35px;bottom:35px;width:3px;transform:none;background:linear-gradient(to bottom,#4F46E5,#06B6D4,#8B5CF6);border-radius:50px;box-shadow:0 0 15px rgba(6,182,212,.35);}
   .process-step{position:relative;display:flex;align-items:center;min-height:auto;margin-bottom:24px;padding-left:55px;}
@@ -110,15 +94,12 @@ img,video,iframe,canvas{max-width:100%;}
   .step-content{width:100%;margin:0!important;text-align:left!important;padding:20px;border-radius:20px;background:var(--glass);border:1px solid var(--border);backdrop-filter:blur(20px);box-shadow:0 15px 40px rgba(0,0,0,.12);}
   .step-content h3{margin:7px 0 8px;font-size:1.2rem;}
   .step-content p{margin:0;color:var(--muted);font-size:.92rem;line-height:1.62;}
-
   .contact-grid{gap:18px;}
   .contact-link.info-card{padding:18px;min-height:92px;gap:14px;border-radius:18px;}
   .info-card-icon{width:48px;height:48px;border-radius:14px;font-size:1.1rem;}
   .contact-link.info-card h3{font-size:.95rem;}
   .contact-link.info-card p{font-size:.78rem;}
-
   .footer{margin-top:25px;padding:35px 18px 25px;}
-
   .floating-whatsapp{position:fixed!important;right:16px!important;bottom:120px!important;left:auto!important;top:auto!important;width:54px!important;height:54px!important;min-width:54px;border-radius:16px;z-index:10050;}
   .floating-whatsapp:hover{width:54px!important;border-radius:16px;}
   .floating-whatsapp-icon{font-size:1.55rem;position:relative;}
@@ -129,78 +110,34 @@ img,video,iframe,canvas{max-width:100%;}
 @media (max-width:380px){
   section,.trusted{padding-left:14px;padding-right:14px;}
   .header{padding-left:12px;padding-right:12px;}
-  .logo h2{font-size:1.05rem;}
-  .logo span{font-size:.64rem;}
-  .hero{padding-top:105px;padding-bottom:28px;}
-  .hero h1{font-size:2.5rem;}
-  .hero p{font-size:.98rem;}
-  .section-header h2{font-size:2.15rem;}
-  .section-header p{font-size:.95rem;}
-  .service-card{padding:20px 9px;}
-  .service-card h3{font-size:.94rem;}
-  .service-card p{font-size:.82rem;}
+  .logo h2{font-size:1.05rem;}.logo span{font-size:.64rem;}
+  .hero{padding-top:105px;padding-bottom:28px;}.hero h1{font-size:2.5rem;}.hero p{font-size:.98rem;}
+  .section-header h2{font-size:2.15rem;}.section-header p{font-size:.95rem;}
+  .service-card{padding:20px 9px;}.service-card h3{font-size:.94rem;}.service-card p{font-size:.82rem;}
   .floating-tech{width:54px;height:54px;min-width:54px;font-size:1.4rem;}
-  .floating-tech.html,.floating-tech.css{left:-8px;}
-  .floating-tech.js,.floating-tech.node{right:-8px;}
+  .floating-tech.html,.floating-tech.css{left:-8px;}.floating-tech.js,.floating-tech.node{right:-8px;}
   .floating-whatsapp{right:10px!important;bottom:120px!important;width:52px!important;height:52px!important;min-width:52px;}
   .floating-whatsapp-icon::after{width:15px;height:15px;right:6px;bottom:6px;font-size:9px;}
 }
 
-/* =========================================================
-   REDUCE SECTION GAPS — INCLUDING SPECIAL SECTIONS
-========================================================= */
 @media (max-width:600px){
   #home{padding-bottom:25px;}
   #services,#projects,#technologies,#pricing,#why-us,#process,#testimonials,#faq,#contact,#support{padding-top:28px;padding-bottom:28px;}
   .support-section{padding-top:28px;padding-bottom:28px;}
-  .support-grid{margin-top:22px;gap:10px;}
-  .faq-container{margin:25px auto;}
-  .contact-grid{margin-top:22px;}
+  .support-grid{margin-top:22px;gap:10px;}.faq-container{margin:25px auto;}.contact-grid{margin-top:22px;}
 }
 
 /* =========================================================
    MOBILE PERFORMANCE MODE
-   Preserve the visual design while removing the most expensive
-   continuous effects on small touch devices.
 ========================================================= */
 @media (max-width:600px){
-  /* Particle canvas is decorative and is not needed on phones. */
   #particles{display:none!important;}
-
-  /* Stop continuous background movement on small screens. */
   .bg-grid,.gradient-1,.gradient-2{animation:none!important;}
-
-  /* Remove costly blur layers on small screens. */
-  .floating-tech,
-  .service-card,
-  .trusted-grid div,
-  .secondary-btn,
-  .hero-stats div,
-  .step-content,
-  .support-card,
-  .contact-link.info-card,
-  .nav-links,
-  .info-modal,
-  .quotation-modal,
-  .project-modal-backdrop,
-  .creative-price-backdrop,
-  .business-price-backdrop,
-  .key-locator-modal,
-  .alarm-modal{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
-
-  /* Stop decorative icon/indicator animations. */
+  .floating-tech,.service-card,.trusted-grid div,.secondary-btn,.hero-stats div,.step-content,.support-card,.contact-link.info-card,.nav-links,.info-modal,.quotation-modal,.project-modal-backdrop,.creative-price-backdrop,.business-price-backdrop,.key-locator-modal,.alarm-modal{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
   .service-icon::before{animation:none!important;}
   .hero-badge i,.online-status span{animation:none!important;}
-
-  /* Keep the hero responsive but avoid unnecessary animation work. */
   .laptop,.floating-whatsapp,.floating-whatsapp-ring{animation:none!important;}
-
-  /* Avoid expensive 3D layer promotion on touch devices. */
   .project-card{will-change:auto!important;transform-style:flat!important;}
-}
-
-/* Render below-the-fold sections only when they approach the viewport. */
-@media (max-width:600px){
   #services,#portfolio,#technologies,#pricing,.calculator,.why-us,.process,#testimonials,#faq,#contact,#support{content-visibility:auto;contain-intrinsic-size:700px;}
 }
 
