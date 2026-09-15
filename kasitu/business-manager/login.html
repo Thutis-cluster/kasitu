@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>KASITU Webs | Business Manager Login</title>
+<link rel="stylesheet" href="manager.css">
+</head>
+<body>
+<main style="min-height:100vh;display:grid;place-items:center;padding:20px">
+  <section class="panel" style="width:min(430px,100%);padding:30px">
+    <div class="brand" style="padding:0 0 24px">
+      <div class="brand-mark">K</div>
+      <div><strong>KASITU</strong><span>Business Manager</span></div>
+    </div>
+    <p class="eyebrow">PRIVATE BUSINESS AREA</p>
+    <h1 style="margin:6px 0 8px">Sign in</h1>
+    <p style="color:var(--muted);font-size:13px;line-height:1.6">Your business records will only be available after authenticated access is connected.</p>
+    <form id="loginForm" style="display:grid;gap:14px;margin-top:22px">
+      <div class="field"><label>Email</label><input id="email" type="email" autocomplete="username" required placeholder="you@example.com"></div>
+      <div class="field"><label>Password</label><input id="password" type="password" autocomplete="current-password" required placeholder="Your password"></div>
+      <button class="btn primary" type="submit">Sign in</button>
+      <p id="loginMessage" style="font-size:12px;color:var(--muted);margin:2px 0 0"></p>
+    </form>
+  </section>
+</main>
+<script>
+  document.getElementById('loginForm').addEventListener('submit',function(e){
+    e.preventDefault();
+    document.getElementById('loginMessage').textContent='Authentication is the next connection step. Do not enter real credentials until Supabase is connected.';
+  });
+</script>
+</body>
+</html>
