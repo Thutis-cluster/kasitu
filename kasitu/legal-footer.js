@@ -4,6 +4,8 @@
    - Removes the unnecessary SEO footer column.
    - Closes the mobile menu on scroll.
    - Corrects the KASITU Webs contact number.
+   - Keeps floating service icons animated while reducing
+     unnecessary animation work when the hero is off-screen.
 ================================================== */
 (function () {
     "use strict";
@@ -136,11 +138,67 @@
         }, { passive: true });
     }
 
+    /*
+       Keep the floating service icons moving.
+       The original script already uses ONE shared requestAnimationFrame
+       loop for all .service-icon elements. This wrapper only reduces the
+       callback frequency while the hero is completely off-screen, then
+       immediately returns to the normal smooth 60fps loop when the hero
+       comes back into view.
+    */
+    function optimizeFloatingIconAnimation() {
+        if (typeof window.requestAnimationFrame !== "function") return;
+
+        const hero = document.querySelector("#home, .hero");
+        if (!hero) return;
+
+        let heroVisible = true;
+        let delayedFrame = false;
+        const originalRequestAnimationFrame = window.requestAnimationFrame.bind(window);
+
+        try {
+            const observer = new IntersectionObserver(function (entries) {
+                heroVisible = !!entries[0] && entries[0].isIntersecting;
+            }, { threshold: 0.01 });
+
+            observer.observe(hero);
+        } catch (error) {
+            return;
+        }
+
+        window.requestAnimationFrame = function (callback) {
+            let callbackSource = "";
+
+            try {
+                callbackSource = Function.prototype.toString.call(callback);
+            } catch (error) {
+                callbackSource = "";
+            }
+
+            const isFloatingIconFrame = callbackSource.indexOf("animateFloatingIcons") !== -1;
+
+            if (!isFloatingIconFrame || heroVisible) {
+                return originalRequestAnimationFrame(callback);
+            }
+
+            if (delayedFrame) return 0;
+
+            delayedFrame = true;
+            window.setTimeout(function () {
+                delayedFrame = false;
+                originalRequestAnimationFrame(callback);
+            }, 250);
+
+            return 0;
+        };
+    }
+
     function finishHomepageFooter() {
         removeSeoColumn();
         addLegalNavigation();
         correctContactNumber();
         setupMobileMenuScrollClose();
+        optimizeFloatingIconAnimation();
     }
 
     if (document.readyState === "loading") {
