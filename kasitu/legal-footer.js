@@ -1,7 +1,7 @@
 /* ==================================================
    KASITU WEBS — HOMEPAGE FOOTER FINISHER
-   - Places Legal & Policies between Contact and SEO.
-   - Creates the SEO column when the homepage footer does not contain one.
+   - Places Legal & Policies between Services and Contact.
+   - Removes the unnecessary SEO footer column.
    - Closes the mobile menu on scroll.
    - Corrects the KASITU Webs contact number.
 ================================================== */
@@ -31,34 +31,17 @@
         return heading.closest(".footer-column") || heading.parentElement;
     }
 
-    function createSeoColumn() {
-        const column = document.createElement("div");
-        column.className = "seo-footer-column footer-column";
+    function removeSeoColumn() {
+        const footer = document.querySelector("footer.footer");
+        if (!footer) return;
 
-        const title = document.createElement("h3");
-        title.textContent = "SEO";
-        column.appendChild(title);
+        const footerTop = footer.querySelector(".footer-top");
+        if (!footerTop) return;
 
-        const text = document.createElement("p");
-        text.textContent =
-            "Explore our services, portfolio and digital solutions designed to help your business grow online.";
-        column.appendChild(text);
-
-        const seoLinks = [
-            ["Services & Pricing", "services-pricing.html"],
-            ["Portfolio", "projects/"],
-            ["Maintenance & Support", "maintenance.html"]
-        ];
-
-        seoLinks.forEach(function ([label, href]) {
-            const link = document.createElement("a");
-            link.href = href;
-            link.textContent = label;
-            link.style.display = "block";
-            column.appendChild(link);
-        });
-
-        return column;
+        const seoColumn = getFooterColumnByHeading(footerTop, "SEO");
+        if (seoColumn && seoColumn !== footerTop) {
+            seoColumn.remove();
+        }
     }
 
     function addLegalNavigation() {
@@ -70,14 +53,8 @@
 
         if (document.querySelector(".legal-footer-links")) return;
 
-        let seoColumn = getFooterColumnByHeading(footerTop, "SEO");
+        const servicesColumn = getFooterColumnByHeading(footerTop, "Services");
         const contactColumn = getFooterColumnByHeading(footerTop, "Contact");
-
-        /* The current homepage footer has no SEO column, so create it. */
-        if (!seoColumn || seoColumn === footerTop) {
-            seoColumn = createSeoColumn();
-            footerTop.appendChild(seoColumn);
-        }
 
         const wrapper = document.createElement("div");
         wrapper.className = "legal-footer-links";
@@ -109,11 +86,11 @@
 
         wrapper.appendChild(nav);
 
-        /* Final required order: Contact → Legal & Policies → SEO. */
-        if (seoColumn && seoColumn !== footerTop) {
-            footerTop.insertBefore(wrapper, seoColumn);
+        /* Final required order: Services → Legal & Policies → Contact. */
+        if (servicesColumn && servicesColumn !== footerTop) {
+            servicesColumn.insertAdjacentElement("afterend", wrapper);
         } else if (contactColumn && contactColumn !== footerTop) {
-            contactColumn.insertAdjacentElement("afterend", wrapper);
+            footerTop.insertBefore(wrapper, contactColumn);
         } else {
             footerTop.appendChild(wrapper);
         }
@@ -160,6 +137,7 @@
     }
 
     function finishHomepageFooter() {
+        removeSeoColumn();
         addLegalNavigation();
         correctContactNumber();
         setupMobileMenuScrollClose();
