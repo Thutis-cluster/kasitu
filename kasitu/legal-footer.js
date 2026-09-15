@@ -1,7 +1,7 @@
 /* ==================================================
    KASITU WEBS — HOMEPAGE LEGAL NAVIGATION
-   Places the styled Legal & Policies links directly
-   between the Contact and SEO footer columns.
+   Places Legal & Policies between Contact and SEO.
+   Links are displayed next to each other.
 ================================================== */
 (function () {
     "use strict";
@@ -39,7 +39,7 @@
         wrapper.className = "legal-footer-links";
         wrapper.setAttribute("aria-label", "Legal and policy links");
 
-        const title = document.createElement("span");
+        const title = document.createElement("h3");
         title.className = "legal-footer-title";
         title.textContent = "Legal & Policies";
         wrapper.appendChild(title);
@@ -48,11 +48,19 @@
         nav.className = "legal-footer-nav";
         nav.setAttribute("aria-label", "Legal navigation");
 
-        links.forEach(function ([label, href]) {
+        links.forEach(function ([label, href], index) {
             const link = document.createElement("a");
             link.href = href;
             link.textContent = label;
             nav.appendChild(link);
+
+            if (index < links.length - 1) {
+                const separator = document.createElement("span");
+                separator.className = "legal-footer-separator";
+                separator.setAttribute("aria-hidden", "true");
+                separator.textContent = "·";
+                nav.appendChild(separator);
+            }
         });
 
         wrapper.appendChild(nav);
