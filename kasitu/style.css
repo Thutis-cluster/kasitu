@@ -104,7 +104,6 @@ img,video,iframe,canvas{max-width:100%;}
   .floating-whatsapp:hover{width:54px!important;border-radius:16px;}
   .floating-whatsapp-icon{font-size:1.55rem;position:relative;}
   .floating-whatsapp-icon::after{content:"B";position:absolute;right:7px;bottom:7px;width:16px;height:16px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#fff;color:#128C7E;border:2px solid #25D366;font-family:Arial,sans-serif;font-size:10px;font-weight:900;line-height:1;box-shadow:0 2px 7px rgba(0,0,0,.28);z-index:5;}
-  .floating-whatsapp-label{display:none;}
 }
 
 @media (max-width:380px){
@@ -143,4 +142,63 @@ img,video,iframe,canvas{max-width:100%;}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;}
+}
+
+/* =========================================================
+   FLOATING WHATSAPP BUSINESS — ALWAYS VISIBLE
+   Keep the button fixed to the viewport on every screen size.
+========================================================= */
+.floating-whatsapp{
+  position:fixed!important;
+  right:22px!important;
+  bottom:28px!important;
+  left:auto!important;
+  top:auto!important;
+  width:62px!important;
+  height:62px!important;
+  min-width:62px!important;
+  min-height:62px!important;
+  margin:0!important;
+  padding:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  visibility:visible!important;
+  opacity:1!important;
+  z-index:2147483000!important;
+  transform:none!important;
+  pointer-events:auto!important;
+  border-radius:18px!important;
+}
+
+.floating-whatsapp-icon{
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  height:100%!important;
+}
+
+@media (max-width:600px){
+  .floating-whatsapp{
+    right:16px!important;
+    bottom:120px!important;
+    width:56px!important;
+    height:56px!important;
+    min-width:56px!important;
+    min-height:56px!important;
+    border-radius:17px!important;
+  }
+}
+
+@media (max-width:380px){
+  .floating-whatsapp{
+    right:10px!important;
+    bottom:120px!important;
+    width:52px!important;
+    height:52px!important;
+    min-width:52px!important;
+    min-height:52px!important;
+  }
 }
