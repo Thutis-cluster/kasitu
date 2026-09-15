@@ -1,21 +1,23 @@
 /* ==================================================
    KASITU WEBS — HOMEPAGE LEGAL NAVIGATION
-   Premium footer styling for links placed between
-   Contact and SEO.
+   Premium horizontal footer styling.
+   Position: Contact → Legal & Policies → SEO
 ================================================== */
 
 .legal-footer-links {
-    flex: 0 0 190px;
-    width: 190px;
+    flex: 0 1 auto;
+    width: auto;
+    min-width: 0;
     margin: 0;
-    padding: 4px 10px;
+    padding: 4px 18px;
     text-align: left;
     border: 0;
 }
 
+/* KASITU cyan heading */
 .legal-footer-title {
     display: block;
-    margin: 0 0 14px;
+    margin: 0 0 12px;
     color: #06b6d4;
     font-size: .76rem;
     font-weight: 800;
@@ -24,25 +26,29 @@
     text-transform: uppercase;
 }
 
+/* Clean horizontal navigation */
 .legal-footer-nav {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px 10px;
 }
 
 .legal-footer-nav a {
     position: relative;
     display: inline-block;
-    padding: 2px 0;
+    padding: 3px 0;
     color: rgba(255,255,255,.68);
     font-size: .82rem;
     font-weight: 500;
     line-height: 1.45;
     text-decoration: none;
+    white-space: nowrap;
     transition: color .25s ease, transform .25s ease;
 }
 
+/* Cyan underline animation */
 .legal-footer-nav a::after {
     content: "";
     position: absolute;
@@ -54,10 +60,11 @@
     transition: right .25s ease;
 }
 
+/* Subtle hover animation */
 .legal-footer-nav a:hover,
 .legal-footer-nav a:focus-visible {
     color: #06b6d4;
-    transform: translateX(2px);
+    transform: translateY(-1px);
     outline: none;
 }
 
@@ -66,16 +73,43 @@
     right: 0;
 }
 
+/* Horizontal separators */
+.legal-footer-separator {
+    display: inline-block;
+    color: rgba(255,255,255,.28);
+    font-size: .82rem;
+    line-height: 1;
+    user-select: none;
+}
+
+/* Dark theme */
+html:not([data-theme="light"]) .legal-footer-nav a {
+    color: rgba(255,255,255,.68);
+}
+
+html:not([data-theme="light"]) .legal-footer-separator {
+    color: rgba(255,255,255,.28);
+}
+
+/* Light theme support */
+html[data-theme="light"] .legal-footer-title {
+    color: #0891b2;
+}
+
 html[data-theme="light"] .legal-footer-nav a {
     color: rgba(15,23,42,.62);
 }
 
 html[data-theme="light"] .legal-footer-nav a:hover,
-html[data-theme="light"] .legal-footer-nav a:focus-visible,
-html[data-theme="light"] .legal-footer-title {
+html[data-theme="light"] .legal-footer-nav a:focus-visible {
     color: #0891b2;
 }
 
+html[data-theme="light"] .legal-footer-separator {
+    color: rgba(15,23,42,.28);
+}
+
+/* Tablet — keep the navigation horizontal and allow clean wrapping. */
 @media (max-width: 900px) {
     .legal-footer-links {
         flex: 1 1 100%;
@@ -85,37 +119,49 @@ html[data-theme="light"] .legal-footer-title {
     }
 
     .legal-footer-nav {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 8px 22px;
+        gap: 5px 9px;
     }
 }
 
+/* Phones */
 @media (max-width: 600px) {
     .legal-footer-links {
         padding: 16px 0 3px;
     }
 
     .legal-footer-title {
-        margin-bottom: 11px;
+        margin-bottom: 10px;
         font-size: .72rem;
     }
 
     .legal-footer-nav {
-        gap: 7px 16px;
+        gap: 4px 8px;
     }
 
-    .legal-footer-nav a {
-        font-size: .78rem;
+    .legal-footer-nav a,
+    .legal-footer-separator {
+        font-size: .76rem;
     }
 }
 
+/* Very small screens — smaller spacing and typography while staying horizontal. */
 @media (max-width: 380px) {
     .legal-footer-nav {
-        grid-template-columns: 1fr;
+        gap: 3px 6px;
+    }
+
+    .legal-footer-nav a,
+    .legal-footer-separator {
+        font-size: .70rem;
+    }
+
+    .legal-footer-title {
+        font-size: .68rem;
+        letter-spacing: .11em;
     }
 }
 
+/* Reduced-motion support */
 @media (prefers-reduced-motion: reduce) {
     .legal-footer-nav a,
     .legal-footer-nav a::after {
