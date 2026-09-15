@@ -1,20 +1,18 @@
 /* ==================================================
    KASITU WEBS — HOMEPAGE LEGAL NAVIGATION
-   Premium horizontal footer styling.
-   Position: Contact → Legal & Policies → SEO
+   Premium footer styling.
+   Position: Services → Legal & Policies → Contact
 ================================================== */
 
 .legal-footer-links {
-    flex: 0 1 auto;
-    width: auto;
-    min-width: 0;
+    flex: 1 1 0;
+    min-width: 220px;
     margin: 0;
-    padding: 4px 18px;
-    text-align: left;
+    padding: 4px 22px;
+    text-align: center;
     border: 0;
 }
 
-/* KASITU cyan heading */
 .legal-footer-title {
     display: block;
     margin: 0 0 12px;
@@ -26,12 +24,11 @@
     text-transform: uppercase;
 }
 
-/* Clean horizontal navigation */
 .legal-footer-nav {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 5px 10px;
 }
 
@@ -48,7 +45,6 @@
     transition: color .25s ease, transform .25s ease;
 }
 
-/* Cyan underline animation */
 .legal-footer-nav a::after {
     content: "";
     position: absolute;
@@ -60,7 +56,6 @@
     transition: right .25s ease;
 }
 
-/* Subtle hover animation */
 .legal-footer-nav a:hover,
 .legal-footer-nav a:focus-visible {
     color: #06b6d4;
@@ -73,7 +68,6 @@
     right: 0;
 }
 
-/* Horizontal separators */
 .legal-footer-separator {
     display: inline-block;
     color: rgba(255,255,255,.28);
@@ -82,7 +76,6 @@
     user-select: none;
 }
 
-/* Dark theme */
 html:not([data-theme="light"]) .legal-footer-nav a {
     color: rgba(255,255,255,.68);
 }
@@ -91,7 +84,6 @@ html:not([data-theme="light"]) .legal-footer-separator {
     color: rgba(255,255,255,.28);
 }
 
-/* Light theme support */
 html[data-theme="light"] .legal-footer-title {
     color: #0891b2;
 }
@@ -109,11 +101,11 @@ html[data-theme="light"] .legal-footer-separator {
     color: rgba(15,23,42,.28);
 }
 
-/* Tablet — keep the navigation horizontal and allow clean wrapping. */
 @media (max-width: 900px) {
     .legal-footer-links {
         flex: 1 1 100%;
         width: 100%;
+        min-width: 0;
         padding: 18px 0 4px;
         border-top: 1px solid rgba(255,255,255,.08);
     }
@@ -123,7 +115,6 @@ html[data-theme="light"] .legal-footer-separator {
     }
 }
 
-/* Phones */
 @media (max-width: 600px) {
     .legal-footer-links {
         padding: 16px 0 3px;
@@ -144,7 +135,6 @@ html[data-theme="light"] .legal-footer-separator {
     }
 }
 
-/* Very small screens — smaller spacing and typography while staying horizontal. */
 @media (max-width: 380px) {
     .legal-footer-nav {
         gap: 3px 6px;
@@ -161,7 +151,6 @@ html[data-theme="light"] .legal-footer-separator {
     }
 }
 
-/* Reduced-motion support */
 @media (prefers-reduced-motion: reduce) {
     .legal-footer-nav a,
     .legal-footer-nav a::after {
