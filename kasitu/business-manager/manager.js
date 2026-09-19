@@ -144,7 +144,7 @@ function bindNavigation(){
   document.getElementById('signOutButton').addEventListener('click',async()=>{await window.kasituSupabase.auth.signOut();window.location.replace('login.html');});
 }
 function bindNavigationButtons(){
-  document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>document.querySelector(`[data-view="${b.dataset.go}"]`)?.click());
+  document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>document.querySelector(`[data-view="${b.dataset.go}"]`)?.click()));
   document.querySelectorAll('[data-add="client"]').forEach(b=>b.addEventListener('click',()=>openModal('Client')));
   document.querySelectorAll('[data-add="lead"]').forEach(b=>b.addEventListener('click',()=>openModal('Lead')));
 }
