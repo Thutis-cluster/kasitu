@@ -87,9 +87,13 @@ function leadTable(rows){
   return `<div class="table-wrap"><table class="table"><thead><tr><th>Date</th><th>Business / Person</th><th>Service</th><th>Status</th><th>Follow-up</th><th></th></tr></thead><tbody>${rows.map(l=>`<tr><td>${esc(l.date||'—')}</td><td><strong>${esc(l.business)}</strong><br><span style="color:var(--muted)">${esc(l.contact||'')}</span></td><td>${esc(l.service||'—')}</td><td><span class="badge">${esc(l.status)}</span></td><td>${esc(l.followUp||'—')}</td><td><button class="btn" data-edit-lead="${esc(l.id)}">Edit</button></td></tr>`).join('')}</tbody></table></div>`;
 }
 function openModal(type,existing=null){
-  modal.hidden=false;document.body.style.overflow='hidden';modalTitle.textContent=existing?`Edit ${type}`:`Add ${type}`;
-  form.innerHTML=type==='Client'?clientForm(existing):leadForm(existing);form.querySelector('input')?.focus();
+  modal.hidden=false;
+  document.body.style.overflow='hidden';
+  modalTitle.textContent=existing?`Edit ${type}`:`Add New ${type}`;
+  form.innerHTML=type==='Client'?clientForm(existing):leadForm(existing);
+  requestAnimationFrame(()=>form.querySelector('input')?.focus());
   form.onsubmit=e=>{e.preventDefault();type==='Client'?saveClient(existing):saveLead(existing);};
+  document.getElementById('cancelModal')?.addEventListener('click',closeModal,{once:true});
 }
 function clientForm(c={}){return `<div class="form-grid">
 <div class="field"><label>Business / Client name *</label><input name="business" required value="${esc(c.business)}"></div>
