@@ -95,7 +95,7 @@ function openModal(type,existing=null){
   form.onsubmit=e=>{e.preventDefault();type==='Client'?saveClient(existing):saveLead(existing);};
   document.getElementById('cancelModal')?.addEventListener('click',closeModal,{once:true});
 }
-function clientForm(c={}){return `<div class="form-grid">
+function clientForm(c={}){c=c||{};return `<div class="form-grid">
 <div class="field"><label>Business / Client name *</label><input name="business" required value="${esc(c.business)}"></div>
 <div class="field"><label>Contact person</label><input name="contact" value="${esc(c.contact)}"></div>
 <div class="field"><label>Email</label><input type="email" name="email" value="${esc(c.email)}"></div>
@@ -104,7 +104,7 @@ function clientForm(c={}){return `<div class="form-grid">
 <div class="field"><label>Status</label><select name="status">${['Active','Prospect','Inactive'].map(x=>`<option ${x===(c.status||'Active')?'selected':''}>${x}</option>`).join('')}</select></div>
 <div class="field" style="grid-column:1/-1"><label>Notes</label><textarea name="notes">${esc(c.notes)}</textarea></div>
 </div><div class="form-actions"><button type="button" class="btn" id="cancelModal">Cancel</button><button class="btn primary">Save Client</button></div>`;}
-function leadForm(l={}){return `<div class="form-grid">
+function leadForm(l={}){l=l||{};return `<div class="form-grid">
 <div class="field"><label>Business / Person *</label><input name="business" required value="${esc(l.business)}"></div>
 <div class="field"><label>Contact person</label><input name="contact" value="${esc(l.contact)}"></div>
 <div class="field"><label>Phone / WhatsApp</label><input name="phone" value="${esc(l.phone)}"></div>
