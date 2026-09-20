@@ -118,10 +118,26 @@ function leadForm(l={}){l=l||{};return `<div class="form-grid">
 function values(){return Object.fromEntries(new FormData(form).entries());}
 async function saveClient(existing){
   const v=values(),session=await getSession();if(!session)return;
-  const payload={owner_id:session.user.id,client_code:existing?.id||nextClientId(),business_name:v.business,contact_name:v.contact||null,email:v.email||null,phone:v.phone||null,service:v.service||null,status:v.status,notes:v.notes||null};
-  const result=existing
-    ? await window.kasituSupabase.from('clients').update(payload).eq('id',existing._id)
-    : await window.kasituSupabase.from('clients').insert(payload);
+  const base={owner_id:session.user.id,business_name:v.business,contact_name:v.contact||null,email:v.email||null,phone:v.phone||null,service:v.service||null,status:v.status,notes:v.notes||null};
+  let result;
+  if(existing){
+    result=await window.kasituSupabase.from('clients').update({...base,client_code:existing.id}).eq('id',existing._id);
+  }else{
+    // Read the latest client IDs from Supabase so a stale browser state can never reuse an existing ID.
+    const latest=await window.kasituSupabase.from('clients').select('client_code').eq('owner_id',session.user.id);
+    if(latest.error){alert(latest.error.message);return;}
+    const used=(latest.data||[]).map(row=>String(row.client_code||''))
+      .map(code=>Number(code.match(/^KAS-\\d{4}-(\\d+)$/)?.[1]||0))
+      .filter(Number.isFinite);
+    let next=Math.max(0,...used)+1;
+    for(let attempt=0;attempt<5;attempt++){
+      const clientCode=`KAS-${new Date().getFullYear()}-${String(next).padStart(3,'0')}`;
+      result=await window.kasituSupabase.from('clients').insert({...base,client_code:clientCode});
+      if(!result.error)break;
+      if(!String(result.error.message||'').toLowerCase().includes('duplicate key'))break;
+      next++;
+    }
+  }
   if(result.error){alert(result.error.message);return;}
   await loadData();closeModal();renderClients();
 }
