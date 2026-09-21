@@ -52,3 +52,16 @@
 .quote-summary-row.total{font-size:16px;font-weight:800;padding-top:10px;border-top:1px solid var(--border)}
 @media(max-width:800px){.line-item{grid-template-columns:1fr 1fr}.line-item .line-description{grid-column:1/-1}.line-item .line-remove{width:100%}}
 @media(max-width:600px){.quote-toolbar{flex-direction:column;align-items:stretch}.quote-card-head{flex-direction:column}.quote-summary{max-width:none}}
+
+/* Phase 3 — Invoices */
+.invoice-status{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:800}
+.invoice-status.draft{background:rgba(145,160,184,.12);color:var(--muted)}
+.invoice-status.sent{background:rgba(85,214,255,.10);color:var(--accent)}
+.invoice-status.partially-paid{background:rgba(255,200,87,.10);color:var(--warning)}
+.invoice-status.paid{background:rgba(57,217,138,.10);color:var(--success)}
+.invoice-status.overdue,.invoice-status.cancelled{background:rgba(255,107,129,.10);color:var(--danger)}
+.invoice-card{border:1px solid var(--border);border-radius:14px;padding:15px;margin-bottom:12px;background:rgba(7,16,31,.35)}
+.invoice-card-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.invoice-number{font-size:11px;color:var(--accent);font-weight:800;letter-spacing:.05em}
+.invoice-total{font-size:20px;font-weight:800}
+@media(max-width:600px){.invoice-card-head{flex-direction:column}}
