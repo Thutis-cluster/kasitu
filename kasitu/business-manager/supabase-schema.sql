@@ -220,3 +220,48 @@ drop policy if exists "quotations_delete_own" on public.quotations;
 create policy "quotations_delete_own" on public.quotations for delete to authenticated using (owner_id = auth.uid());
 drop trigger if exists quotations_set_updated_at on public.quotations;
 create trigger quotations_set_updated_at before update on public.quotations for each row execute function public.set_updated_at();
+
+
+-- Phase 3: invoices
+create table if not exists public.invoices (
+  id uuid primary key default gen_random_uuid(),
+  owner_id uuid not null references auth.users(id) on delete cascade,
+  invoice_number text not null,
+  quotation_id uuid references public.quotations(id) on delete set null,
+  client_id uuid references public.clients(id) on delete set null,
+  client_code text,
+  client_name text not null,
+  client_contact text,
+  client_email text,
+  client_phone text,
+  invoice_date date not null default current_date,
+  due_date date,
+  status text not null default 'Draft' check (status in ('Draft','Sent','Partially Paid','Paid','Overdue','Cancelled')),
+  line_items jsonb not null default '[]'::jsonb,
+  subtotal numeric(12,2) not null default 0,
+  discount numeric(12,2) not null default 0,
+  vat_rate numeric(5,2) not null default 0,
+  vat_amount numeric(12,2) not null default 0,
+  total numeric(12,2) not null default 0,
+  amount_paid numeric(12,2) not null default 0,
+  balance_due numeric(12,2) not null default 0,
+  notes text,
+  terms text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique(owner_id, invoice_number)
+);
+create index if not exists invoices_owner_idx on public.invoices(owner_id);
+create index if not exists invoices_quotation_idx on public.invoices(owner_id, quotation_id);
+create index if not exists invoices_status_idx on public.invoices(owner_id, status);
+alter table public.invoices enable row level security;
+drop policy if exists "invoices_select_own" on public.invoices;
+create policy "invoices_select_own" on public.invoices for select to authenticated using (owner_id = auth.uid());
+drop policy if exists "invoices_insert_own" on public.invoices;
+create policy "invoices_insert_own" on public.invoices for insert to authenticated with check (owner_id = auth.uid());
+drop policy if exists "invoices_update_own" on public.invoices;
+create policy "invoices_update_own" on public.invoices for update to authenticated using (owner_id = auth.uid()) with check (owner_id = auth.uid());
+drop policy if exists "invoices_delete_own" on public.invoices;
+create policy "invoices_delete_own" on public.invoices for delete to authenticated using (owner_id = auth.uid());
+drop trigger if exists invoices_set_updated_at on public.invoices;
+create trigger invoices_set_updated_at before update on public.invoices for each row execute function public.set_updated_at();
