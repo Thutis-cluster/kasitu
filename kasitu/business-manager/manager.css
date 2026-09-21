@@ -31,3 +31,24 @@
  .modal #recordForm .form-actions{flex-direction:column-reverse}
  .modal #recordForm .form-actions .btn{width:100%}
 }
+
+/* Phase 2 — Quotations */
+.quote-toolbar{display:flex;gap:9px;align-items:center}
+.quote-status{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:800}
+.quote-status.draft{background:rgba(145,160,184,.12);color:var(--muted)}
+.quote-status.sent{background:rgba(85,214,255,.10);color:var(--accent)}
+.quote-status.approved{background:rgba(57,217,138,.10);color:var(--success)}
+.quote-status.rejected,.quote-status.expired{background:rgba(255,107,129,.10);color:var(--danger)}
+.quote-card{border:1px solid var(--border);border-radius:14px;padding:15px;margin-bottom:12px;background:rgba(7,16,31,.35)}
+.quote-card-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.quote-number{font-size:11px;color:var(--accent);font-weight:800;letter-spacing:.05em}
+.quote-total{font-size:20px;font-weight:800}
+.line-items{display:grid;gap:10px}
+.line-item{display:grid;grid-template-columns:minmax(180px,1.5fr) 90px 130px 130px 42px;gap:8px;align-items:end}
+.line-item .field{min-width:0}
+.line-remove{height:44px;width:42px;padding:0;color:var(--danger);font-size:20px}
+.quote-summary{margin-left:auto;max-width:360px;display:grid;gap:9px;margin-top:18px}
+.quote-summary-row{display:flex;justify-content:space-between;gap:20px;font-size:12px}
+.quote-summary-row.total{font-size:16px;font-weight:800;padding-top:10px;border-top:1px solid var(--border)}
+@media(max-width:800px){.line-item{grid-template-columns:1fr 1fr}.line-item .line-description{grid-column:1/-1}.line-item .line-remove{width:100%}}
+@media(max-width:600px){.quote-toolbar{flex-direction:column;align-items:stretch}.quote-card-head{flex-direction:column}.quote-summary{max-width:none}}
