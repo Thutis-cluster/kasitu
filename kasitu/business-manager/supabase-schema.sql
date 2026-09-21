@@ -176,3 +176,47 @@ for each row execute function public.handle_new_user();
 --
 -- insert into public.clients (owner_id, client_code, business_name, service, status)
 -- values ('YOUR_AUTH_USER_UUID', 'KAS-2026-002', 'Thutis Project', 'Business Website', 'Active');
+
+-- Phase 2: quotations
+create table if not exists public.quotations (
+  id uuid primary key default gen_random_uuid(),
+  owner_id uuid not null references auth.users(id) on delete cascade,
+  quote_number text not null,
+  client_id uuid references public.clients(id) on delete set null,
+  client_code text,
+  client_name text not null,
+  client_contact text,
+  client_email text,
+  client_phone text,
+  quote_date date not null default current_date,
+  valid_until date,
+  status text not null default 'Draft' check (status in ('Draft','Sent','Approved','Rejected','Expired')),
+  line_items jsonb not null default '[]'::jsonb,
+  subtotal numeric(12,2) not null default 0,
+  discount numeric(12,2) not null default 0,
+  vat_rate numeric(5,2) not null default 0,
+  vat_amount numeric(12,2) not null default 0,
+  total numeric(12,2) not null default 0,
+  deposit_rate numeric(5,2) not null default 50,
+  deposit_amount numeric(12,2) not null default 0,
+  balance_amount numeric(12,2) not null default 0,
+  notes text,
+  terms text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique(owner_id, quote_number)
+);
+create index if not exists quotations_owner_idx on public.quotations(owner_id);
+create index if not exists quotations_client_idx on public.quotations(owner_id, client_id);
+create index if not exists quotations_status_idx on public.quotations(owner_id, status);
+alter table public.quotations enable row level security;
+drop policy if exists "quotations_select_own" on public.quotations;
+create policy "quotations_select_own" on public.quotations for select to authenticated using (owner_id = auth.uid());
+drop policy if exists "quotations_insert_own" on public.quotations;
+create policy "quotations_insert_own" on public.quotations for insert to authenticated with check (owner_id = auth.uid());
+drop policy if exists "quotations_update_own" on public.quotations;
+create policy "quotations_update_own" on public.quotations for update to authenticated using (owner_id = auth.uid()) with check (owner_id = auth.uid());
+drop policy if exists "quotations_delete_own" on public.quotations;
+create policy "quotations_delete_own" on public.quotations for delete to authenticated using (owner_id = auth.uid());
+drop trigger if exists quotations_set_updated_at on public.quotations;
+create trigger quotations_set_updated_at before update on public.quotations for each row execute function public.set_updated_at();
