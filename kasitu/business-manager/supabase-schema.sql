@@ -265,3 +265,38 @@ drop policy if exists "invoices_delete_own" on public.invoices;
 create policy "invoices_delete_own" on public.invoices for delete to authenticated using (owner_id = auth.uid());
 drop trigger if exists invoices_set_updated_at on public.invoices;
 create trigger invoices_set_updated_at before update on public.invoices for each row execute function public.set_updated_at();
+
+
+-- Phase 4: payments
+create table if not exists public.payments (
+  id uuid primary key default gen_random_uuid(),
+  owner_id uuid not null references auth.users(id) on delete cascade,
+  payment_number text not null,
+  invoice_id uuid references public.invoices(id) on delete set null,
+  client_id uuid references public.clients(id) on delete set null,
+  client_code text,
+  client_name text,
+  invoice_number text,
+  payment_date date not null default current_date,
+  amount numeric(12,2) not null default 0 check (amount > 0),
+  method text not null default 'EFT' check (method in ('EFT','Cash','Card','PayPal','Other')),
+  reference text,
+  notes text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique(owner_id, payment_number)
+);
+create index if not exists payments_owner_idx on public.payments(owner_id);
+create index if not exists payments_invoice_idx on public.payments(owner_id, invoice_id);
+create index if not exists payments_date_idx on public.payments(owner_id, payment_date);
+alter table public.payments enable row level security;
+drop policy if exists "payments_select_own" on public.payments;
+create policy "payments_select_own" on public.payments for select to authenticated using (owner_id = auth.uid());
+drop policy if exists "payments_insert_own" on public.payments;
+create policy "payments_insert_own" on public.payments for insert to authenticated with check (owner_id = auth.uid());
+drop policy if exists "payments_update_own" on public.payments;
+create policy "payments_update_own" on public.payments for update to authenticated using (owner_id = auth.uid()) with check (owner_id = auth.uid());
+drop policy if exists "payments_delete_own" on public.payments;
+create policy "payments_delete_own" on public.payments for delete to authenticated using (owner_id = auth.uid());
+drop trigger if exists payments_set_updated_at on public.payments;
+create trigger payments_set_updated_at before update on public.payments for each row execute function public.set_updated_at();
