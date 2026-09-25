@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>KASITU Webs | Business Manager Login</title>
+<link rel="stylesheet" href="manager.css">
+</head>
+<body>
+<main style="min-height:100vh;display:grid;place-items:center;padding:20px">
+  <section class="panel" style="width:min(430px,100%);padding:30px">
+    <div class="brand" style="padding:0 0 24px">
+      <div class="brand-mark">K</div>
+      <div><strong>KASITU</strong><span>Business Manager</span></div>
+    </div>
+    <p class="eyebrow">PRIVATE BUSINESS AREA</p>
+    <h1 style="margin:6px 0 8px">Sign in</h1>
+    <p style="color:var(--muted);font-size:13px;line-height:1.6">Sign in with your KASITU Business Manager account. Your business records are protected by Supabase Authentication and Row Level Security.</p>
+    <form id="loginForm" style="display:grid;gap:14px;margin-top:22px">
+      <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="username" required placeholder="you@example.com"></div>
+      <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required placeholder="Your password"></div>
+      <button class="btn primary" id="loginButton" type="submit">Sign in</button>
+      <button class="btn" id="resetButton" type="button">Forgot password?</button>
+      <p id="loginMessage" role="status" aria-live="polite" style="font-size:12px;color:var(--muted);margin:2px 0 0"></p>
+    </form>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+(() => {
+  const message = document.getElementById('loginMessage');
+  const form = document.getElementById('loginForm');
+  const button = document.getElementById('loginButton');
+  const reset = document.getElementById('resetButton');
+  const email = document.getElementById('email');
+
+  if (!window.supabase || !window.KASITU_SUPABASE_URL || !window.KASITU_SUPABASE_PUBLISHABLE_KEY) {
+    message.textContent = 'Authentication could not be loaded. Please refresh or contact the site administrator.';
+    return;
+  }
+
+  const client = window.supabase.createClient(
+    window.KASITU_SUPABASE_URL,
+    window.KASITU_SUPABASE_PUBLISHABLE_KEY
+  );
+
+  async function redirectIfSignedIn() {
+    const { data } = await client.auth.getSession();
+    if (data.session) window.location.replace('index.html');
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    message.textContent = 'Signing in…';
+    button.disabled = true;
+
+    const { error } = await client.auth.signInWithPassword({
+      email: email.value.trim(),
+      password: document.getElementById('password').value
+    });
+
+    if (error) {
+      message.textContent = error.message || 'Sign-in failed. Check your email and password.';
+      button.disabled = false;
+      return;
+    }
+
+    window.location.replace('index.html');
+  });
+
+  reset.addEventListener('click', async () => {
+    const address = email.value.trim();
+    if (!address) {
+      message.textContent = 'Enter your email address first, then choose Forgot password.';
+      email.focus();
+      return;
+    }
+
+    reset.disabled = true;
+    message.textContent = 'Sending password reset email…';
+
+    const redirectTo = new URL('reset-password.html', window.location.href).href;
+    const { error } = await client.auth.resetPasswordForEmail(address, { redirectTo });
+
+    if (error) message.textContent = error.message || 'Could not send the reset email.';
+    else message.textContent = 'If that email belongs to your manager account, a password reset link has been sent.';
+    reset.disabled = false;
+  });
+
+  redirectIfSignedIn();
+})();
+</script>
+</body>
+</html>
