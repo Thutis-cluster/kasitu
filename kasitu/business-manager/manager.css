@@ -76,3 +76,10 @@
 .project-status.cancelled{background:rgba(255,107,129,.12);color:var(--danger)}
 .progress-track{width:105px;height:7px;background:rgba(145,160,184,.18);border-radius:999px;overflow:hidden;margin:0 0 5px}
 .progress-track span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+
+/* Phase 6 — Maintenance */
+.maintenance-status{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:800;background:rgba(145,160,184,.12);color:var(--muted)}
+.maintenance-status.active{background:rgba(57,217,138,.12);color:var(--success)}
+.maintenance-status.paused{background:rgba(255,200,87,.12);color:var(--warning)}
+.maintenance-status.completed{background:rgba(85,214,255,.12);color:var(--accent)}
+.maintenance-status.cancelled{background:rgba(255,107,129,.12);color:var(--danger)}
