@@ -100,7 +100,7 @@ function quoteForm(q={}){
 function collectQuoteItems(){return [...form.querySelectorAll('[data-line-row]')].map(row=>({description:row.querySelector('[name="item_description"]').value.trim(),quantity:Number(row.querySelector('[name="item_qty"]').value||0),unit_price:Number(row.querySelector('[name="item_price"]').value||0)})).filter(i=>i.description||i.unit_price>0)}
 function calculateQuote(){const items=collectQuoteItems(),subtotal=items.reduce((s,i)=>s+i.quantity*i.unit_price,0),discount=Math.max(0,Number(form.querySelector('[name="discount"]')?.value||0)),taxable=Math.max(0,subtotal-discount),vatRate=Math.max(0,Number(form.querySelector('[name="vat_rate"]')?.value||0)),vat=taxable*vatRate/100,total=taxable+vat,depositRate=Math.min(100,Math.max(0,Number(form.querySelector('[name="deposit_rate"]')?.value||0))),deposit=total*depositRate/100,balance=Math.max(0,total-deposit);form.querySelector('#quoteSummary').innerHTML=`<div class="quote-summary-row"><span>Subtotal</span><strong>${money(subtotal)}</strong></div><div class="quote-summary-row"><span>Discount</span><strong>− ${money(discount)}</strong></div><div class="quote-summary-row"><span>VAT (${vatRate.toFixed(2)}%)</span><strong>${money(vat)}</strong></div><div class="quote-summary-row total"><span>Total</span><strong>${money(total)}</strong></div><div class="quote-summary-row"><span>Deposit (${depositRate.toFixed(2)}%)</span><strong>${money(deposit)}</strong></div><div class="quote-summary-row"><span>Balance due</span><strong>${money(balance)}</strong></div>`;form.querySelectorAll('[data-line-row]').forEach(row=>{const qty=Number(row.querySelector('[name="item_qty"]').value||0),price=Number(row.querySelector('[name="item_price"]').value||0);row.querySelector('[name="item_total"]').value=money(qty*price)});return {items,subtotal,discount,vatRate,vat,total,depositRate,deposit,balance}}
 
-function maintenanceStatus(s){return '<span class="maintenance-status '+String(s||'Planned').toLowerCase().replace(/\\s+/g,'-')+'">'+esc(s||'Planned')+'</span>'}
+function maintenanceStatus(s){return '<span class="maintenance-status '+String(s||'Planned').toLowerCase().replace(/\s+/g,'-')+'">'+esc(s||'Planned')+'</span>'}
 function renderMaintenance(filter=''){
  title.textContent='Maintenance';
  if(!maintenanceReady){content.innerHTML='<div class="panel"><h2>Maintenance setup needed</h2><p>Run the SQL in <strong>maintenance-schema.sql</strong> in your Supabase SQL Editor, then refresh this page. Your other Business Manager sections will continue to work.</p></div>';return}
@@ -120,7 +120,7 @@ function maintenanceForm(m={}){
 async function nextMaintenanceNumber(session){
  const {data,error}=await window.kasituSupabase.from('maintenance').select('maintenance_number').eq('owner_id',session.user.id);
  if(error)throw error;
- const nums=(data||[]).map(r=>Number(String(r.maintenance_number||'').match(/^KAS-M-\\d{4}-(\\d+)$/)?.[1]||0)).filter(Number.isFinite);
+ const nums=(data||[]).map(r=>Number(String(r.maintenance_number||'').match(/^KAS-M-\d{4}-(\d+)$/)?.[1]||0)).filter(Number.isFinite);
  return 'KAS-M-'+new Date().getFullYear()+'-'+String(Math.max(0,...nums)+1).padStart(3,'0')
 }
 async function saveMaintenance(existing){
