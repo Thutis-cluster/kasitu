@@ -94,3 +94,14 @@
 .receipt-link{color:var(--accent);font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap}.receipt-link:hover{text-decoration:underline}
 @media(max-width:800px){.expense-toolbar{grid-template-columns:1fr 1fr}.expense-toolbar #expenseSearch{grid-column:1/-1}}
 @media(max-width:600px){.expense-toolbar{grid-template-columns:1fr}.expense-toolbar #expenseSearch{grid-column:auto}.expense-filter-total{flex-wrap:wrap}.expense-actions{flex-wrap:wrap}}
+
+/* Phase 8 — Documents */
+.document-toolbar{display:grid;grid-template-columns:minmax(200px,1.5fr) minmax(180px,1fr);gap:10px;margin-bottom:16px}
+.document-type-badge{display:inline-flex;padding:5px 9px;border-radius:999px;background:rgba(85,214,255,.1);color:var(--accent);font-size:10px;font-weight:800;white-space:nowrap}
+.document-file-name{display:inline-block;max-width:220px;overflow-wrap:anywhere;font-size:11px}
+.document-actions{display:flex;gap:6px;flex-wrap:wrap}
+.document-hint,.current-document-file{display:block;margin-top:8px;color:var(--muted);font-size:11px;line-height:1.5}
+.current-document-file{padding:9px 11px;border:1px solid var(--border);border-radius:9px;background:rgba(7,16,31,.35)}
+.document-stats .stat-value{font-size:25px}
+@media(max-width:800px){.document-toolbar{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.document-toolbar{grid-template-columns:1fr}.document-actions{min-width:190px}.document-file-name{max-width:160px}}
