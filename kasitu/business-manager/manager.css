@@ -83,3 +83,14 @@
 .maintenance-status.paused{background:rgba(255,200,87,.12);color:var(--warning)}
 .maintenance-status.completed{background:rgba(85,214,255,.12);color:var(--accent)}
 .maintenance-status.cancelled{background:rgba(255,107,129,.12);color:var(--danger)}
+
+/* Phase 7 — Expenses */
+.expense-toolbar{display:grid;grid-template-columns:minmax(180px,1.5fr) minmax(170px,1fr) minmax(140px,.8fr);gap:10px;margin-bottom:16px}
+.expense-filter-total{display:flex;align-items:center;gap:14px;padding:0 0 16px;margin-bottom:4px;border-bottom:1px solid var(--border);color:var(--muted);font-size:12px}
+.expense-filter-total strong{color:var(--text);font-size:18px}.expense-filter-total span:last-child{margin-left:auto}
+.expense-category{display:inline-flex;padding:5px 8px;border-radius:8px;background:rgba(124,92,255,.14);color:#b8a9ff;font-size:10px;font-weight:700}
+.expense-top-category{font-size:17px;line-height:1.3}.expense-actions{display:flex;gap:6px}
+.danger-btn{color:var(--danger);border-color:rgba(255,107,129,.25)}
+.receipt-link{color:var(--accent);font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap}.receipt-link:hover{text-decoration:underline}
+@media(max-width:800px){.expense-toolbar{grid-template-columns:1fr 1fr}.expense-toolbar #expenseSearch{grid-column:1/-1}}
+@media(max-width:600px){.expense-toolbar{grid-template-columns:1fr}.expense-toolbar #expenseSearch{grid-column:auto}.expense-filter-total{flex-wrap:wrap}.expense-actions{flex-wrap:wrap}}
