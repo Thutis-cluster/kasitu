@@ -15,7 +15,8 @@ async function loadData(){
  leads=lr.data.map(l=>({id:l.id,business:l.business_name,contact:l.contact_name||'',phone:l.phone||'',email:l.email||'',service:l.service_requested||'',status:l.status,followUp:l.follow_up_date||'',source:l.source||'',notes:l.notes||'',date:l.created_at?.slice(0,10)||''}));
  quotations=qr.data.map(q=>({...q,items:Array.isArray(q.line_items)?q.line_items:[]}));
 invoices=ir.data.map(i=>({...i,items:Array.isArray(i.line_items)?i.line_items:[]}));
-payments=pr.data.map(p=>({...p}));\nprojects=projectsReady?(xr.data||[]).map(p=>({...p})):[];
+payments=pr.data.map(p=>({...p}));
+projects=projectsReady?(xr.data||[]).map(p=>({...p})):[];
  return true
 }
 function renderDashboard(){
@@ -133,7 +134,8 @@ async function saveProject(existing){
  if(result.error){alert(result.error.message);return}
  await loadData();closeModal();renderProjects()
 }
-\nfunction openModal(type,existing=null){
+
+function openModal(type,existing=null){
  modal.hidden=false;document.body.style.overflow='hidden';modalTitle.textContent=existing?`Edit ${type}`:`Add New ${type}`;form.innerHTML=type==='Client'?clientForm(existing):type==='Lead'?leadForm(existing):type==='Quotation'?quoteForm(existing):type==='Invoice'?invoiceForm(existing):type==='Project'?projectForm(existing):paymentForm(existing);requestAnimationFrame(()=>form.querySelector('input,select')?.focus());form.onsubmit=e=>{e.preventDefault();type==='Client'?saveClient(existing):type==='Lead'?saveLead(existing):type==='Quotation'?saveQuotation(existing):type==='Invoice'?saveInvoice(existing):type==='Project'?saveProject(existing):type==='Payment'?savePayment(existing):saveInvoice(existing)};document.getElementById('cancelModal')?.addEventListener('click',closeModal,{once:true});
  if(type==='Quotation'){document.getElementById('addQuoteLine').addEventListener('click',()=>{document.getElementById('quoteLines').insertAdjacentHTML('beforeend',itemRows([{description:'',quantity:1,unit_price:0}]));calculateQuote()});calculateQuote();form.addEventListener('input',e=>{if(e.target.closest('#quoteLines')||['discount','vat_rate','deposit_rate'].includes(e.target.name))calculateQuote()});form.addEventListener('click',e=>{if(e.target.closest('[data-remove-line]')){e.target.closest('[data-line-row]').remove();if(!document.querySelector('[data-line-row]'))document.getElementById('quoteLines').insertAdjacentHTML('beforeend',itemRows([{description:'',quantity:1,unit_price:0}]));calculateQuote()}})}
  if(type==='Invoice'){document.getElementById('addInvoiceLine').addEventListener('click',()=>{document.getElementById('invoiceLines').insertAdjacentHTML('beforeend',itemRows([{description:'',quantity:1,unit_price:0}]).replaceAll('name="item_qty"','name="invoice_qty"').replaceAll('name="item_price"','name="invoice_price"').replaceAll('name="item_description"','name="invoice_description"').replaceAll('name="item_total"','name="invoice_total"'));calculateInvoice()});calculateInvoice();form.addEventListener('input',e=>{if(e.target.closest('#invoiceLines')||['discount','vat_rate','amount_paid'].includes(e.target.name))calculateInvoice()});form.addEventListener('click',e=>{if(e.target.closest('[data-remove-line]')){e.target.closest('[data-line-row]').remove();if(!document.querySelector('#invoiceLines [data-line-row]'))document.getElementById('invoiceLines').insertAdjacentHTML('beforeend',itemRows([{description:'',quantity:1,unit_price:0}]).replaceAll('name="item_qty"','name="invoice_qty"').replaceAll('name="item_price"','name="invoice_price"').replaceAll('name="item_description"','name="invoice_description"').replaceAll('name="item_total"','name="invoice_total"'));calculateInvoice()}})}
