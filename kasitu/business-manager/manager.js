@@ -1,6 +1,6 @@
 /* KASITU Webs Business Manager — Phase 4 Payments */
 const content=document.getElementById('appContent'),title=document.getElementById('pageTitle'),sidebar=document.getElementById('sidebar'),modal=document.getElementById('modalBackdrop'),modalTitle=document.getElementById('modalTitle'),form=document.getElementById('recordForm');
-let clients=[],leads=[],quotations=[],invoices=[],payments=[],projects=[];
+let clients=[],leads=[],quotations=[],invoices=[],payments=[],projects=[],projectsReady=true;
 const esc=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
 const money=n=>`R${Number(n||0).toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2})}`;
 const today=()=>new Date().toISOString().slice(0,10);
@@ -9,12 +9,12 @@ async function getSession(){const {data,error}=await window.kasituSupabase.auth.
 async function loadData(){
  const session=await getSession();if(!session)return false;
  const [cr,lr,qr,ir,pr,xr]=await Promise.all([window.kasituSupabase.from('clients').select('*').order('created_at',{ascending:true}),window.kasituSupabase.from('leads').select('*').order('created_at',{ascending:false}),window.kasituSupabase.from('quotations').select('*').order('created_at',{ascending:false}),window.kasituSupabase.from('invoices').select('*').order('created_at',{ascending:false}),window.kasituSupabase.from('payments').select('*').order('payment_date',{ascending:false}).order('created_at',{ascending:false}),window.kasituSupabase.from('projects').select('*').order('created_at',{ascending:false})]);
- if(cr.error||lr.error||qr.error||ir.error||pr.error||xr.error){console.error(cr.error||lr.error||qr.error||ir.error||pr.error||xr.error);content.innerHTML='<div class="panel"><h2>Database setup required</h2><p>Run the <strong>Projects module SQL</strong> from <strong>projects-schema.sql</strong> in Supabase SQL Editor, then refresh.</p></div>';return false}
+ if(cr.error||lr.error||qr.error||ir.error||pr.error){console.error(cr.error||lr.error||qr.error||ir.error||pr.error);content.innerHTML='<div class="panel"><h2>Database setup required</h2><p>Check your existing Business Manager database setup, then refresh.</p></div>';return false}\n projectsReady=!xr.error;if(xr.error)console.warn('Projects module setup required. Run projects-schema.sql in Supabase.',xr.error);
  clients=cr.data.map(c=>({id:c.client_code,business:c.business_name,contact:c.contact_name||'',email:c.email||'',phone:c.phone||'',service:c.service||'',status:c.status,notes:c.notes||'',_id:c.id}));
  leads=lr.data.map(l=>({id:l.id,business:l.business_name,contact:l.contact_name||'',phone:l.phone||'',email:l.email||'',service:l.service_requested||'',status:l.status,followUp:l.follow_up_date||'',source:l.source||'',notes:l.notes||'',date:l.created_at?.slice(0,10)||''}));
  quotations=qr.data.map(q=>({...q,items:Array.isArray(q.line_items)?q.line_items:[]}));
 invoices=ir.data.map(i=>({...i,items:Array.isArray(i.line_items)?i.line_items:[]}));
-payments=pr.data.map(p=>({...p}));\nprojects=xr.data.map(p=>({...p}));
+payments=pr.data.map(p=>({...p}));\nprojects=projectsReady?(xr.data||[]).map(p=>({...p})):[];
  return true
 }
 function renderDashboard(){
@@ -98,7 +98,7 @@ function calculateQuote(){const items=collectQuoteItems(),subtotal=items.reduce(
 
 function projectStatus(s){return '<span class="project-status '+String(s||'Planning').toLowerCase().replace(/\s+/g,'-')+'">'+esc(s||'Planning')+'</span>'}
 function renderProjects(filter=''){
- title.textContent='Projects';
+ title.textContent='Projects';if(!projectsReady){content.innerHTML='<div class="panel"><h2>Projects setup needed</h2><p>Run the SQL in <strong>projects-schema.sql</strong> in your Supabase SQL Editor, then refresh this page. Your other Business Manager sections will continue to work.</p></div>';return}
  const rows=projects.filter(p=>(p.project_number+' '+p.project_name+' '+p.client_name+' '+p.status+' '+p.priority).toLowerCase().includes(filter.toLowerCase()));
  const active=projects.filter(p=>p.status==='In Progress').length,completed=projects.filter(p=>p.status==='Completed').length,overdue=projects.filter(p=>p.due_date&&p.due_date<today()&&!['Completed','Cancelled'].includes(p.status)).length;
  content.innerHTML='<div class="stats"><div class="stat"><div class="stat-label">All projects</div><div class="stat-value">'+projects.length+'</div><div class="stat-note">Projects in your register</div></div><div class="stat"><div class="stat-label">In progress</div><div class="stat-value">'+active+'</div><div class="stat-note">Currently underway</div></div><div class="stat"><div class="stat-label">Completed</div><div class="stat-value">'+completed+'</div><div class="stat-note">Delivered projects</div></div><div class="stat"><div class="stat-label">Past due</div><div class="stat-value">'+overdue+'</div><div class="stat-note">Needs a deadline review</div></div></div><div class="section-head"><div><h2>Projects</h2><p>Manage client work, deadlines, budgets and progress.</p></div><div class="quote-toolbar"><input id="projectSearch" class="search" placeholder="Search projects..." value="'+esc(filter)+'"><button class="btn primary" data-add="project">+ New Project</button></div></div><div class="panel">'+projectTable(rows)+'</div>';
@@ -119,6 +119,7 @@ async function nextProjectNumber(session){
  return 'KAS-PR-'+new Date().getFullYear()+'-'+String(Math.max(0,...nums)+1).padStart(3,'0')
 }
 async function saveProject(existing){
+ if(!projectsReady){alert('Run projects-schema.sql in Supabase before saving projects.');return}
  const v=values(),session=await getSession();if(!session)return;
  const client=clients.find(c=>c._id===v.client_id);
  if(!client){alert('Please select a client for this project.');return}
