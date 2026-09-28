@@ -111,3 +111,15 @@
 
 /* Phase 10 — Settings */
 .settings-layout{display:grid;gap:18px;margin-bottom:18px}.settings-section-head{display:flex;align-items:flex-start;gap:13px;margin-bottom:20px}.settings-section-head h3{margin:1px 0 5px;font-size:16px}.settings-section-head p{margin:0;color:var(--muted);font-size:12px;line-height:1.6}.settings-icon{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;border-radius:13px;background:var(--panel2);color:var(--accent);font-size:20px}.settings-fields{margin-top:8px}.settings-fields input{min-height:42px;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text)}.settings-hint{font-size:11px;line-height:1.7;color:var(--muted);margin:14px 0 0}.settings-save-row{display:flex;align-items:center;gap:14px;margin-top:18px}.settings-save-row span{font-size:12px;color:var(--success)}.settings-account{margin-top:18px}.settings-account-row{display:flex;align-items:center;justify-content:space-between;gap:18px}.settings-account-row>div:first-child{display:grid;gap:7px}.settings-label{font-size:11px;color:var(--muted)}.settings-account-row strong{font-size:14px;overflow-wrap:anywhere}.settings-account-row>p{max-width:620px;margin:0}.settings-actions{display:flex;gap:10px;flex-wrap:wrap}.settings-layout button:disabled,.settings-account button:disabled{opacity:.55;cursor:wait}@media(max-width:650px){.settings-account-row{align-items:stretch;flex-direction:column}.settings-actions{display:grid;grid-template-columns:1fr}.settings-actions button{width:100%}.settings-save-row{align-items:flex-start;flex-direction:column}}
+
+
+/* Sidebar navigation: keep every menu item reachable on short and small screens. */
+.sidebar{height:100vh;height:100dvh;overflow:hidden;}
+.nav{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;align-content:start;padding:0 4px 8px 0;scrollbar-width:thin;scrollbar-color:rgba(145,160,184,.45) transparent;}
+.nav::-webkit-scrollbar{width:6px;}
+.nav::-webkit-scrollbar-track{background:transparent;}
+.nav::-webkit-scrollbar-thumb{background:rgba(145,160,184,.4);border-radius:999px;}
+.nav-item{flex:0 0 auto;min-width:0;white-space:normal;line-height:1.35;}
+.nav-item span{flex:0 0 20px;}
+.sidebar-footer{flex:0 0 auto;margin-top:12px;}
+@media(max-height:620px){.sidebar{padding-top:14px;padding-bottom:12px}.brand{padding-bottom:16px}.sidebar-footer{padding-top:12px}.system-status{margin-bottom:9px}}
