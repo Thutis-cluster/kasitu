@@ -383,6 +383,12 @@ function renderTeam(){
    result.hidden=false;msg.textContent='Invite created successfully.';f.reset();f.querySelector('[name="role"]').value='staff';
    document.getElementById('copyTeamInvite').addEventListener('click',async()=>{await navigator.clipboard.writeText(inviteUrl.toString());document.getElementById('copyTeamInvite').textContent='Copied';setTimeout(()=>document.getElementById('copyTeamInvite').textContent='Copy link',1600)});
    await loadTeamData();
+   const pendingNow=teamInvitations.filter(i=>!i.accepted_at&&!i.revoked_at&&new Date(i.expires_at)>new Date());
+   const pendingPanel=document.querySelector('.team-pending');
+   if(pendingPanel){
+    pendingPanel.innerHTML='<div class="settings-section-head"><span class="settings-icon">✉</span><div><h3>Pending invitations</h3><p>Unused invitation links can be revoked at any time.</p></div></div>'+
+     (pendingNow.length?'<div class="table-wrap"><table class="table team-table"><thead><tr><th>Email</th><th>Role</th><th>Expires</th><th></th></tr></thead><tbody>'+pendingNow.map(i=>'<tr><td>'+esc(i.email)+'</td><td>'+teamRoleBadge(i.role)+'</td><td>'+esc(new Date(i.expires_at).toLocaleString('en-ZA'))+'</td><td><button class="btn danger-btn" data-revoke-invite="'+esc(i.id)+'">Revoke</button></td></tr>').join('')+'</tbody></table></div>':'<div class="empty">No pending invitations.</div>');
+   }
   });
  });
 }
