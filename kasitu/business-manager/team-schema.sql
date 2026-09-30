@@ -2,8 +2,6 @@
 -- Run once in Supabase SQL Editor AFTER account-schema.sql.
 -- Creates secure, server-side invitation functions without exposing a service key.
 
-create extension if not exists pgcrypto;
-
 alter table public.business_members
   add column if not exists business_owner_id uuid references auth.users(id) on delete cascade;
 
@@ -126,7 +124,7 @@ begin
     raise exception 'This email already has active team access';
   end if;
 
-  v_token := encode(gen_random_bytes(32), 'hex');
+  v_token := replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', '');
   v_expires := now() + interval '7 days';
 
   insert into public.business_invitations(
@@ -134,7 +132,7 @@ begin
   )
   values(
     v_owner, auth.uid(), lower(trim(p_email)), p_role,
-    encode(digest(v_token, 'sha256'), 'hex'), v_expires
+    md5(v_token), v_expires
   )
   returning id into v_id;
 
@@ -189,7 +187,7 @@ begin
 
   select lower(email) into v_email from auth.users where id = auth.uid();
 
-  v_hash := encode(digest(coalesce(p_token,''), 'sha256'), 'hex');
+  v_hash := md5(coalesce(p_token,''));
 
   select * into v_inv
   from public.business_invitations
