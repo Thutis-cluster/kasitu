@@ -123,3 +123,18 @@
 .nav-item span{flex:0 0 20px;}
 .sidebar-footer{flex:0 0 auto;margin-top:12px;}
 @media(max-height:620px){.sidebar{padding-top:14px;padding-bottom:12px}.brand{padding-bottom:16px}.sidebar-footer{padding-top:12px}.system-status{margin-bottom:9px}}
+
+/* Phase 11 — Account */
+.account-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:start}
+.account-grid>.panel:last-child{grid-column:1/-1}
+.account-fields .field.full{grid-column:1/-1}
+.account-readonly{min-height:42px;display:flex;align-items:center;padding:9px 0}
+.account-status{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:800;background:rgba(57,217,138,.1);color:var(--success);text-transform:capitalize}
+.account-status.inactive{background:rgba(255,200,87,.1);color:var(--warning)}
+.account-status.suspended{background:rgba(255,107,129,.1);color:var(--danger)}
+.account-danger{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:22px;padding-top:18px;border-top:1px solid var(--border)}
+.team-role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.team-role-grid>div{display:grid;gap:7px;padding:14px;border:1px solid var(--border);border-radius:12px;background:rgba(7,16,31,.3)}
+.team-role-grid strong{font-size:13px}
+@media(max-width:800px){.account-grid{grid-template-columns:1fr}.account-grid>.panel:last-child{grid-column:auto}.team-role-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.account-danger{align-items:stretch;flex-direction:column}.account-danger .btn{width:100%}}
