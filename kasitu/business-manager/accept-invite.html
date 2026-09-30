@@ -22,7 +22,12 @@
 <script src="supabase-config.js"></script>
 <script>
 const app=document.getElementById('inviteApp');
-const token=new URLSearchParams(location.search).get('token')||'';
+const params=new URLSearchParams(location.search);
+const queryToken=params.get('token')||'';
+const hashToken=new URLSearchParams(location.hash.replace(/^#\/?/, '')).get('token')||'';
+const storedToken=sessionStorage.getItem('kasitu_invite_token')||localStorage.getItem('kasitu_invite_token')||'';
+const token=queryToken||hashToken||storedToken;
+if(queryToken||hashToken){sessionStorage.setItem('kasitu_invite_token',token);localStorage.setItem('kasitu_invite_token',token);}
 const esc=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
 function renderMessage(html){app.innerHTML=html}
 async function init(){
@@ -50,7 +55,7 @@ async function init(){
    e.preventDefault();const f=e.currentTarget,b=f.querySelector('button'),msg=document.getElementById('acceptMessage'),v=Object.fromEntries(new FormData(f).entries());b.disabled=true;msg.textContent='Accepting invitation…';
    const {error}=await client.rpc('accept_business_invitation',{p_token:token,p_full_name:v.full_name,p_phone:v.phone});
    b.disabled=false;if(error){msg.textContent='Could not accept invitation: '+error.message;return}
-   msg.textContent='Invitation accepted. Redirecting…';setTimeout(()=>location.replace('index.html'),700);
+   msg.textContent='Invitation accepted. Redirecting…';sessionStorage.removeItem('kasitu_invite_token');localStorage.removeItem('kasitu_invite_token');setTimeout(()=>location.replace('index.html'),700);
   });
   return;
  }
