@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>KASITU Webs | Team Invitation</title>
+<link rel="stylesheet" href="manager.css">
+</head>
+<body>
+<div class="app-shell">
+<main class="main" style="margin-left:0;min-height:100vh;display:grid;place-items:center">
+<section class="content" style="width:min(620px,100%)">
+<div class="panel">
+<div class="settings-section-head"><span class="settings-icon">👥</span><div><h3>KASITU Webs Business Manager</h3><p>Secure team invitation</p></div></div>
+<div id="inviteApp"><p class="report-note">Checking invitation…</p></div>
+</div>
+</section>
+</main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+const app=document.getElementById('inviteApp');
+const token=new URLSearchParams(location.search).get('token')||'';
+const esc=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
+function renderMessage(html){app.innerHTML=html}
+async function init(){
+ if(!token){renderMessage('<div class="report-alert">This invitation link is missing its security token.</div>');return}
+ if(!window.supabase||!window.KASITU_SUPABASE_URL||!window.KASITU_SUPABASE_PUBLISHABLE_KEY){renderMessage('<div class="report-alert">Supabase configuration is missing.</div>');return}
+ const client=window.supabase.createClient(window.KASITU_SUPABASE_URL,window.KASITU_SUPABASE_PUBLISHABLE_KEY);
+ const {data:{session}}=await client.auth.getSession();
+ if(session){
+  renderMessage('<h2 style="margin-top:0">Accept team invitation</h2><p class="report-note">Signed in as <strong>'+esc(session.user.email||'')+'</strong>. Complete your profile to join the business.</p><form id="acceptForm" class="form-grid"><div class="field"><label>Full name</label><input name="full_name" maxlength="160" placeholder="Your full name"></div><div class="field"><label>Phone / WhatsApp</label><input name="phone" maxlength="40" placeholder="Optional"></div><div class="field" style="grid-column:1/-1"><button class="btn primary" type="submit">Accept invitation</button></div></form><p id="acceptMessage" class="settings-hint"></p>');
+  document.getElementById('acceptForm').addEventListener('submit',async e=>{
+   e.preventDefault();const f=e.currentTarget,b=f.querySelector('button'),msg=document.getElementById('acceptMessage'),v=Object.fromEntries(new FormData(f).entries());b.disabled=true;msg.textContent='Accepting invitation…';
+   const {error}=await client.rpc('accept_business_invitation',{p_token:token,p_full_name:v.full_name,p_phone:v.phone});
+   b.disabled=false;if(error){msg.textContent='Could not accept invitation: '+error.message;return}
+   msg.textContent='Invitation accepted. Redirecting…';setTimeout(()=>location.replace('index.html'),700);
+  });
+  return;
+ }
+ renderMessage('<h2 style="margin-top:0">Join the KASITU team</h2><p class="report-note">Create your Business Manager account using the invited email address.</p><form id="signupForm" class="form-grid"><div class="field"><label>Full name</label><input name="full_name" maxlength="160" required></div><div class="field"><label>Phone / WhatsApp</label><input name="phone" maxlength="40"></div><div class="field" style="grid-column:1/-1"><label>Email</label><input name="email" type="email" required></div><div class="field"><label>Password</label><input name="password" type="password" minlength="8" required></div><div class="field"><label>Confirm password</label><input name="confirm" type="password" minlength="8" required></div><div class="field" style="grid-column:1/-1"><button class="btn primary" type="submit">Create account & continue</button></div></form><p id="signupMessage" class="settings-hint"></p>');
+  document.getElementById('signupForm').addEventListener('submit',async e=>{
+   e.preventDefault();const f=e.currentTarget,b=f.querySelector('button'),msg=document.getElementById('signupMessage'),v=Object.fromEntries(new FormData(f).entries());if(v.password!==v.confirm){msg.textContent='Passwords do not match.';return}b.disabled=true;msg.textContent='Creating account…';
+   const {data,error}=await client.auth.signUp({email:v.email,password:v.password,options:{data:{full_name:v.full_name}}});
+   if(error){b.disabled=false;msg.textContent=error.message;return}
+   if(!data.session){b.disabled=false;msg.textContent='Account created. Confirm your email, then return to this invitation link to finish joining the team.';return}
+   const {error:acceptError}=await client.rpc('accept_business_invitation',{p_token:token,p_full_name:v.full_name,p_phone:v.phone});
+   b.disabled=false;if(acceptError){msg.textContent='Account created, but invitation could not be accepted: '+acceptError.message;return}
+   msg.textContent='Invitation accepted. Redirecting…';setTimeout(()=>location.replace('index.html'),700);
+  });
+ }
+}
+init();
+</script>
+</body>
+</html>
