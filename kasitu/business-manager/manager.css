@@ -138,3 +138,19 @@
 .team-role-grid strong{font-size:13px}
 @media(max-width:800px){.account-grid{grid-template-columns:1fr}.account-grid>.panel:last-child{grid-column:auto}.team-role-grid{grid-template-columns:1fr}}
 @media(max-width:600px){.account-danger{align-items:stretch;flex-direction:column}.account-danger .btn{width:100%}}
+/* Phase 12 — Team */
+.team-grid{display:grid;grid-template-columns:1fr 1.35fr;gap:18px;align-items:start}
+.team-grid>.panel{min-width:0}
+.team-invite-form .field.full{grid-column:1/-1}
+.team-invite-result{display:grid;gap:8px;margin-top:18px;padding:14px;border:1px solid rgba(85,214,255,.25);border-radius:12px;background:rgba(85,214,255,.05);font-size:12px}
+.team-invite-result strong{color:var(--accent)}
+.team-invite-result span{color:var(--muted);line-height:1.5}
+.team-invite-link{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:5px}
+.team-invite-link input{min-width:0;padding:10px 12px;border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:9px}
+.team-role{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:800;background:rgba(85,214,255,.1);color:var(--accent)}
+.team-role.manager{background:rgba(124,92,255,.14);color:#b8a9ff}
+.team-role.staff{background:rgba(57,217,138,.1);color:var(--success)}
+.team-role.viewer{background:rgba(145,160,184,.12);color:var(--muted)}
+.team-pending{margin-top:18px}
+@media(max-width:900px){.team-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.team-invite-link{grid-template-columns:1fr}.team-invite-link .btn{width:100%}}
