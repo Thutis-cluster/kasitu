@@ -39,7 +39,7 @@ for select to authenticated using (user_id = auth.uid());
 
 drop policy if exists "business_members_insert_own" on public.business_members;
 create policy "business_members_insert_own" on public.business_members
-for insert to authenticated with check (user_id = auth.uid());
+for insert to authenticated with check (user_id = auth.uid() and role = 'owner' and status = 'active');
 
 drop policy if exists "business_profiles_updated_at" on public.business_profiles;
 create trigger business_profiles_updated_at before update on public.business_profiles
