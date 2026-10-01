@@ -18,21 +18,40 @@
 </section>
 </main>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
+<script>
+/* Load dependencies asynchronously so a blocked CDN can never leave the page stuck on "Checking invitation…". */
+(function loadScript(src, onload, onerror){
+ const s=document.createElement('script');
+ s.src=src;s.onload=onload;s.onerror=onerror;document.head.appendChild(s);
+})('supabase-config.js',function(){
+ window.__kasituConfigLoaded=true;
+},function(){
+ window.__kasituConfigLoaded=false;
+});
+</script>
 <script>
 const app=document.getElementById('inviteApp');
 const params=new URLSearchParams(location.search);
 const queryToken=params.get('token')||'';
 const hashToken=new URLSearchParams(location.hash.replace(/^#\/?/, '')).get('token')||'';
-const storedToken=sessionStorage.getItem('kasitu_invite_token')||localStorage.getItem('kasitu_invite_token')||'';
+let storedToken='';
+try{storedToken=sessionStorage.getItem('kasitu_invite_token')||localStorage.getItem('kasitu_invite_token')||'';}catch(_){storedToken='';}
 const token=queryToken||hashToken||storedToken;
-if(queryToken||hashToken){sessionStorage.setItem('kasitu_invite_token',token);localStorage.setItem('kasitu_invite_token',token);}
+try{if(queryToken||hashToken){sessionStorage.setItem('kasitu_invite_token',token);localStorage.setItem('kasitu_invite_token',token);}}catch(_){}
 const esc=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
 function renderMessage(html){app.innerHTML=html}
 async function init(){
  if(!token){renderMessage('<div class="report-alert">This invitation link is missing its security token.</div>');return}
- if(!window.supabase||!window.KASITU_SUPABASE_URL||!window.KASITU_SUPABASE_PUBLISHABLE_KEY){renderMessage('<div class="report-alert">Supabase configuration is missing.</div>');return}
+ renderMessage('<p class="report-note">Loading invitation service…</p>');
+ if(!window.__kasituConfigLoaded){await new Promise(resolve=>setTimeout(resolve,1200));}
+ if(!window.KASITU_SUPABASE_URL||!window.KASITU_SUPABASE_PUBLISHABLE_KEY){renderMessage('<div class="report-alert">Supabase configuration could not be loaded. Please refresh this invitation link.</div>');return}
+ if(!window.supabase){
+  await new Promise(resolve=>{
+   loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2',resolve,resolve);
+   setTimeout(resolve,8000);
+  });
+ }
+ if(!window.supabase){renderMessage('<div class="report-alert">The invitation service could not load. Please check your internet connection and refresh the page.</div>');return}
  let client;
  try{
   client=window.supabase.createClient(window.KASITU_SUPABASE_URL,window.KASITU_SUPABASE_PUBLISHABLE_KEY);
