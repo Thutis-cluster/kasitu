@@ -170,10 +170,16 @@ async function init(){
     b.disabled=true;
     msg.textContent='Creating account…';
 
+    const emailRedirectTo=new URL('accept-invite.html',window.location.href);
+    emailRedirectTo.searchParams.set('token',token);
+
     const {data,error}=await client.auth.signUp({
       email:v.email,
       password:v.password,
-      options:{data:{full_name:v.full_name}}
+      options:{
+        data:{full_name:v.full_name},
+        emailRedirectTo:emailRedirectTo.toString()
+      }
     });
 
     if(error){
