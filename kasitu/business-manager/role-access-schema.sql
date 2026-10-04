@@ -134,9 +134,10 @@ using (owner_id = public.current_business_owner_id() and public.current_business
 
 -- Business settings remain owner-only.
 drop policy if exists "business_settings_select_own" on public.business_settings;
-create policy "business_settings_select_owner" on public.business_settings
+drop policy if exists "business_settings_select_owner" on public.business_settings;
+create policy "business_settings_select_business" on public.business_settings
 for select to authenticated
-using (owner_id = auth.uid() and public.current_business_role() = 'owner');
+using (owner_id = public.current_business_owner_id());
 drop policy if exists "business_settings_insert_own" on public.business_settings;
 create policy "business_settings_insert_owner" on public.business_settings
 for insert to authenticated
