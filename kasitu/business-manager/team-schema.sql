@@ -232,6 +232,90 @@ begin
 end;
 $$;
 
+
+
+create or replace function public.update_business_member(
+  p_user_id uuid,
+  p_role text,
+  p_status text
+)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $
+declare
+  v_owner uuid;
+begin
+  v_owner := public.current_business_owner_id();
+
+  if v_owner is null or public.current_business_role() <> 'owner' then
+    raise exception 'Only the business owner can manage team members';
+  end if;
+
+  if p_user_id = v_owner then
+    raise exception 'The business owner cannot be changed here';
+  end if;
+
+  if p_role not in ('manager','staff','viewer') then
+    raise exception 'Invalid team role';
+  end if;
+
+  if p_status not in ('active','inactive','suspended') then
+    raise exception 'Invalid team status';
+  end if;
+
+  update public.business_members
+  set role = p_role,
+      status = p_status
+  where user_id = p_user_id
+    and business_owner_id = v_owner
+    and role <> 'owner';
+
+  if not found then
+    raise exception 'Team member not found';
+  end if;
+
+  return true;
+end;
+$;
+
+create or replace function public.remove_business_member(
+  p_user_id uuid
+)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $
+declare
+  v_owner uuid;
+begin
+  v_owner := public.current_business_owner_id();
+
+  if v_owner is null or public.current_business_role() <> 'owner' then
+    raise exception 'Only the business owner can remove team members';
+  end if;
+
+  if p_user_id = v_owner then
+    raise exception 'The business owner cannot be removed';
+  end if;
+
+  delete from public.business_members
+  where user_id = p_user_id
+    and business_owner_id = v_owner
+    and role <> 'owner';
+
+  if not found then
+    raise exception 'Team member not found';
+  end if;
+
+  return true;
+end;
+$;
+
 grant execute on function public.create_business_invitation(text,text) to authenticated;
 grant execute on function public.revoke_business_invitation(uuid) to authenticated;
+grant execute on function public.update_business_member(uuid,text,text) to authenticated;
+grant execute on function public.remove_business_member(uuid) to authenticated;
 grant execute on function public.accept_business_invitation(text,text,text) to authenticated;
