@@ -167,3 +167,11 @@
 .team-member-warning strong{color:var(--warning)}
 .team-member-warning span{color:var(--muted)}
 @media(max-width:600px){.team-actions{display:grid;grid-template-columns:1fr 1fr}.team-actions .btn{width:100%}}
+
+/* Phase 15 — Activity & Audit Log */
+.audit-action{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:9px;font-weight:800;background:rgba(85,214,255,.1);color:var(--accent)}
+.audit-action.created{background:rgba(57,217,138,.1);color:var(--success)}
+.audit-action.updated{background:rgba(85,214,255,.1);color:var(--accent)}
+.audit-action.deleted,.audit-action.removed,.audit-action.revoked{background:rgba(255,107,129,.1);color:var(--danger)}
+.audit-details{display:inline-block;max-width:280px;overflow-wrap:anywhere;color:var(--muted);font-size:10px}
+.audit-table{min-width:900px}
