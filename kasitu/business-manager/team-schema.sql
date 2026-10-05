@@ -243,7 +243,7 @@ returns boolean
 language plpgsql
 security definer
 set search_path = public
-as $
+as $team$
 declare
   v_owner uuid;
 begin
@@ -278,7 +278,7 @@ begin
 
   return true;
 end;
-$;
+$team$;
 
 create or replace function public.remove_business_member(
   p_user_id uuid
@@ -287,7 +287,7 @@ returns boolean
 language plpgsql
 security definer
 set search_path = public
-as $
+as $team$
 declare
   v_owner uuid;
 begin
@@ -312,7 +312,7 @@ begin
 
   return true;
 end;
-$;
+$team$;
 
 grant execute on function public.create_business_invitation(text,text) to authenticated;
 grant execute on function public.revoke_business_invitation(uuid) to authenticated;
