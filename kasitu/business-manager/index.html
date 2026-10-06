@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>KASITU Webs | Business Manager</title>
+  <link rel="icon" type="image/png" sizes="512x512" href="../images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="manager.css">
+  <link rel="stylesheet" href="notifications.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">K</div>
+        <div><strong>KASITU</strong><span>Business Manager</span></div>
+      </div>
+      <nav class="nav" aria-label="Business Manager navigation">
+        <button class="nav-item active" data-view="dashboard"><span>⌂</span> Dashboard</button>
+        <button class="nav-item" data-view="clients"><span>♙</span> Clients</button>
+        <button class="nav-item" data-view="leads"><span>◎</span> Leads</button>
+        <button class="nav-item" data-view="quotations"><span>▣</span> Quotations</button>
+        <button class="nav-item" data-view="invoices"><span>▤</span> Invoices</button>
+        <button class="nav-item" data-view="payments"><span>R</span> Payments</button>
+        <button class="nav-item" data-view="projects" type="button"><span>◆</span> Projects</button>
+        <button class="nav-item" data-view="maintenance" type="button"><span>⚒</span> Maintenance</button>
+        <button class="nav-item" data-view="expenses" type="button"><span>−</span> Expenses</button>
+        <button class="nav-item" data-view="documents" type="button"><span>□</span> Documents</button>
+        <button class="nav-item" data-view="reports" type="button"><span>◈</span> Reports</button>
+        <button class="nav-item" data-view="settings" type="button"><span>⚙</span> Settings</button>
+        <button class="nav-item" data-view="account" type="button"><span>♙</span> My Account</button>
+        <button class="nav-item" data-view="team" type="button"><span>👥</span> Team</button>
+        <button class="nav-item" data-view="audit" type="button"><span>☷</span> Activity Log</button>
+        <button class="nav-item" data-view="communications" type="button"><span>✉</span> Client Communication</button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="system-status"><i></i> Supabase connected</div>
+        <button class="btn" id="signOutButton" type="button">Sign out</button>
+        <a href="../index.html">← Back to KASITU Webs</a>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button>
+        <div><p class="eyebrow">KASITU WEBS</p><h1 id="pageTitle">Dashboard</h1></div>
+        <div class="topbar-actions"><span class="mode-badge">BUSINESS MANAGEMENT</span></div>
+      </header>
+      <section class="content" id="appContent"></section>
+    </main>
+  </div>
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+      <h2 id="modalTitle">Add</h2>
+      <form id="recordForm"></form>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="manager.js" defer></script>
+  <script src="notifications.js" defer></script>
+</body>
+</html>
