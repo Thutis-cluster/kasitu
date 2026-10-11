@@ -41,15 +41,47 @@ begin
 end
 $delete_policies$;
 
--- Remove the old settings write policies; the hardened *_own policies remain.
+-- Remove the old settings write policies; Phase 19's *_own policies remain.
 drop policy if exists "business_settings_insert_owner" on public.business_settings;
 drop policy if exists "business_settings_update_owner" on public.business_settings;
 
--- Remove the old storage role policies; Phase 19's *_own policies now govern
--- document storage access using the business owner folder and role check.
+-- Storage policies must retain the hardened *_own names and conditions.
+-- Drop the legacy *_role policies, then restore role-checked write access.
 drop policy if exists "business_documents_insert_role" on storage.objects;
 drop policy if exists "business_documents_update_role" on storage.objects;
 drop policy if exists "business_documents_delete_role" on storage.objects;
+
+drop policy if exists "business_documents_insert_own" on storage.objects;
+create policy "business_documents_insert_own"
+on storage.objects for insert to authenticated
+with check (
+  bucket_id = 'business-documents'
+  and (storage.foldername(name))[1] = public.current_business_owner_id()::text
+  and public.current_business_can_write('documents')
+);
+
+drop policy if exists "business_documents_update_own" on storage.objects;
+create policy "business_documents_update_own"
+on storage.objects for update to authenticated
+using (
+  bucket_id = 'business-documents'
+  and (storage.foldername(name))[1] = public.current_business_owner_id()::text
+  and public.current_business_can_write('documents')
+)
+with check (
+  bucket_id = 'business-documents'
+  and (storage.foldername(name))[1] = public.current_business_owner_id()::text
+  and public.current_business_can_write('documents')
+);
+
+drop policy if exists "business_documents_delete_own" on storage.objects;
+create policy "business_documents_delete_own"
+on storage.objects for delete to authenticated
+using (
+  bucket_id = 'business-documents'
+  and (storage.foldername(name))[1] = public.current_business_owner_id()::text
+  and public.current_business_can_write('documents')
+);
 
 commit;
 
