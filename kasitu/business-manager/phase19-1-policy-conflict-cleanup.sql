@@ -1,12 +1,11 @@
 -- KASITU Webs Business Manager — Phase 19.1 RLS policy conflict cleanup
 -- Run once in Supabase SQL Editor AFTER production-hardening-schema.sql.
--- This removes legacy *_role write policies that otherwise OR together with
--- the hardened *_own policies. No business records are deleted or rewritten.
+-- Removes legacy *_role write policies that can OR together with the
+-- hardened *_own policies. No business records are deleted or rewritten.
 
 begin;
 
--- Remove the legacy role-based write policies. The hardened *_own policies
--- remain responsible for inserts and updates; delete access is recreated below.
+-- Remove legacy role-based write policies from the shared business tables.
 do $cleanup$
 declare
   t text;
@@ -23,9 +22,8 @@ begin
 end
 $cleanup$;
 
--- The Phase 19 can_write function intentionally allows staff to create/update
--- selected records. Staff must not gain DELETE access through the generic
--- can_write check, so restrict all shared-data deletes to owner/manager.
+-- Staff may create/update the modules allowed by Phase 19, but only owners
+-- and managers may delete business records.
 do $delete_policies$
 declare
   t text;
@@ -43,16 +41,20 @@ begin
 end
 $delete_policies$;
 
--- These legacy settings policies are superseded by the Phase 19 role-aware
--- policies. Remove the older equivalents to keep one clear rule per operation.
+-- Remove the old settings write policies; the hardened *_own policies remain.
 drop policy if exists "business_settings_insert_owner" on public.business_settings;
 drop policy if exists "business_settings_update_owner" on public.business_settings;
 
+-- Remove the old storage role policies; Phase 19's *_own policies now govern
+-- document storage access using the business owner folder and role check.
+drop policy if exists "business_documents_insert_role" on storage.objects;
+drop policy if exists "business_documents_update_role" on storage.objects;
+drop policy if exists "business_documents_delete_role" on storage.objects;
+
 commit;
 
--- Verify remaining multiple policies for the same operation.
--- Multiple SELECT policies may be intentional (for example, own profile plus
--- team/business visibility). Review any remaining write duplicates separately.
+-- Read-only verification: remaining duplicate table/operation groups.
+-- Multiple SELECT policies can be intentional; inspect remaining write groups.
 select
   tablename,
   cmd,
