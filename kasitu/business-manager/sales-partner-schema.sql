@@ -42,6 +42,12 @@ begin
  insert into public.sales_partner_leads(manager_id,salesperson_id,business_name,contact_name,phone,email,service_requested,notes)
  values(v_manager,v_user,trim(p_business_name),trim(p_contact_name),trim(p_phone),nullif(trim(coalesce(p_email,'')),''),trim(p_service_requested),nullif(trim(coalesce(p_notes,'')),''))
  returning id into v_lead;
+ -- Also publish to the existing Business Manager Leads view.
+ insert into public.leads(owner_id,business_name,contact_name,phone,email,service_requested,status,source,notes)
+ select v_manager,trim(p_business_name),trim(p_contact_name),trim(p_phone),nullif(trim(coalesce(p_email,'')),''),
+        trim(p_service_requested),'New','Sales Partner: '||coalesce(sp.full_name,'Sales Partner'),
+        'Sales partner user ID: '||v_user::text||E'\n'||coalesce(nullif(trim(coalesce(p_notes,'')),''),'No extra notes')||E'\nPortal lead reference: '||v_lead::text
+ from public.sales_partners sp where sp.user_id=v_user;
  return v_lead;
 end $$;
 revoke all on function public.submit_sales_partner_lead(text,text,text,text,text,text) from public;
