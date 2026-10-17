@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>KASITU Webs | Sales Partner Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sales.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="top"><a class="brand" href="../index.html"><span class="mark">K</span><span><b>KASITU WEBS</b><small>Sales Partner Portal</small></span></a><button id="signOut" class="btn quiet" hidden>Sign out</button></header>
+    <section id="loginPanel" class="auth panel">
+      <p class="eyebrow">SALES PARTNER ACCESS</p><h1>Turn connections into opportunities.</h1><p class="muted">Sign in with the account provided by KASITU Webs management.</p>
+      <form id="loginForm"><label>Email<input id="email" type="email" autocomplete="username" required placeholder="you@example.com"></label><label>Password<input id="password" type="password" autocomplete="current-password" required></label><button class="btn primary" type="submit">Sign in securely</button><p id="loginMessage" class="message" role="status"></p></form>
+    </section>
+    <section id="portal" hidden>
+      <div class="welcome"><div><p class="eyebrow">YOUR SALES WORKSPACE</p><h1>Welcome, <span id="partnerName">Sales Partner</span></h1><p class="muted">Submit genuine client enquiries and follow their progress.</p></div><div class="rate"><strong>14%</strong><span>commission rate</span></div></div>
+      <div class="stats"><article class="stat"><span>Leads submitted</span><strong id="totalLeads">0</strong></article><article class="stat"><span>Won opportunities</span><strong id="wonLeads">0</strong></article><article class="stat"><span>Estimated commission</span><strong id="commissionTotal">R0.00</strong><small>Based on service prices recorded by management</small></article></div>
+      <div class="columns">
+        <section class="panel"><div class="panel-head"><div><h2>Submit a client</h2><p class="muted">The lead is sent directly to KASITU management.</p></div></div>
+          <form id="leadForm" class="lead-form">
+            <label>Business / client name *<input name="business_name" required maxlength="160" placeholder="e.g. ABC Hair Studio"></label>
+            <label>Contact person *<input name="contact_name" required maxlength="120" placeholder="Full name"></label>
+            <label>Phone number *<input name="phone" required maxlength="40" placeholder="e.g. 071 234 5678"></label>
+            <label>Email address<input name="email" type="email" maxlength="254" placeholder="client@example.com"></label>
+            <label>Service interested in *<select name="service_requested" required><option value="">Choose a service</option><option>Website Development</option><option>Business Website — R4,999</option><option>Starter Website — R2,999</option><option>Online Store — R5,999</option><option>Online Store PRO — R7,999</option><option>Mobile Application</option><option>Graphic Design</option><option>Business Registration</option><option>Maintenance & Support</option><option>Other / Not sure yet</option></select></label>
+            <label>Extra details<textarea name="notes" rows="3" maxlength="1500" placeholder="Client needs, preferred contact time, etc."></textarea></label>
+            <button class="btn primary" id="submitLead" type="submit">Send lead to management →</button><p id="leadMessage" class="message" role="status"></p>
+          </form>
+        </section>
+        <section class="panel"><div class="panel-head"><div><h2>My submitted leads</h2><p class="muted">Status and commission updates from management.</p></div><button id="refresh" class="btn quiet" type="button">Refresh</button></div><div id="leadList" class="lead-list"><p class="muted">Loading your leads…</p></div></section>
+      </div>
+      <p class="footnote">Commission is calculated at 14% of the full service price when management records the purchased service. Lead submission alone does not guarantee commission.</p>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../business-manager/supabase-config.js"></script><script src="sales.js"></script>
+</body></html>
