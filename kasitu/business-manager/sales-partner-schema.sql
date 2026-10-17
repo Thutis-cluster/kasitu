@@ -52,5 +52,9 @@ begin
 end $$;
 revoke all on function public.submit_sales_partner_lead(text,text,text,text,text,text) from public;
 grant execute on function public.submit_sales_partner_lead(text,text,text,text,text,text) to authenticated;
--- Provision a partner after creating their Supabase Auth user:
+-- IMPORTANT: provision immediately after creating the Auth user, before sharing credentials.
+-- The existing profile trigger defaults new profiles to 'owner'; downgrade the new account first.
+-- begin;
+-- update public.profiles set role='staff' where id='AUTH-USER-UUID';
 -- insert into public.sales_partners(user_id,full_name,email,phone) values ('AUTH-USER-UUID','Salesperson Name','person@example.com','0712345678');
+-- commit;
