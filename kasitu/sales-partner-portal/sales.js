@@ -35,12 +35,12 @@
     catch(err){await db.auth.signOut();say('loginMessage',err.message||'Could not sign in.');if(btn)btn.disabled=false;}
   });
   $('leadForm').addEventListener('submit',async e=>{
-    e.preventDefault(); const btn=$('submitLead'); btn.disabled=true; say('leadMessage','Sending lead securely to management…');
-    const f=new FormData(e.currentTarget);
+    e.preventDefault(); const form=e.currentTarget; const btn=$('submitLead'); btn.disabled=true; say('leadMessage','Sending lead securely to management…');
+    const f=new FormData(form);
     try{
       const {data,error}=await db.rpc('submit_sales_partner_lead',{p_business_name:f.get('business_name'),p_contact_name:f.get('contact_name'),p_phone:f.get('phone'),p_email:f.get('email')||'',p_service_requested:f.get('service_requested'),p_notes:f.get('notes')||''});
       if(error)throw error;
-      e.currentTarget.reset(); say('leadMessage','Lead sent successfully to KASITU management. Reference: '+String(data).slice(0,8).toUpperCase());
+      form.reset(); say('leadMessage','Lead sent successfully to KASITU management. Reference: '+String(data).slice(0,8).toUpperCase());
       await loadLeads();
     }catch(err){say('leadMessage',err.message||'Lead could not be sent. Please try again.');}
     finally{btn.disabled=false;}
