@@ -18,9 +18,14 @@ update public.sales_partners sp
 set manager_id = (
  select bm.user_id
  from public.business_members bm
- where bm.role = 'owner' and bm.status = 'active'
- order by bm.created_at asc
- limit 1
+ where bm.role = 'owner'
+   and bm.status = 'active'
+   and (
+     select count(*)
+     from public.business_members active_owner
+     where active_owner.role = 'owner'
+       and active_owner.status = 'active'
+   ) = 1
 )
 where sp.manager_id is null;
 
