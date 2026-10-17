@@ -1,12 +1,29 @@
 -- KASITU Webs Sales Partner Portal Phase 1
 create table if not exists public.sales_partners (
  user_id uuid primary key references auth.users(id) on delete cascade,
+ manager_id uuid references auth.users(id) on delete cascade,
  full_name text not null,
  email text, phone text,
  status text not null default 'active' check (status in ('active','paused','disabled')),
  commission_rate numeric(5,2) not null default 14.00 check (commission_rate = 14.00),
  created_at timestamptz not null default now()
 );
+
+-- Existing partner rows need an explicit link to the KASITU Business Manager owner.
+-- This is safe to rerun: only rows without a manager assignment are backfilled.
+alter table public.sales_partners
+ add column if not exists manager_id uuid references auth.users(id) on delete cascade;
+
+update public.sales_partners sp
+set manager_id = (
+ select bm.user_id
+ from public.business_members bm
+ where bm.role = 'owner' and bm.status = 'active'
+ order by bm.created_at asc
+ limit 1
+)
+where sp.manager_id is null;
+
 create table if not exists public.sales_partner_leads (
  id uuid primary key default gen_random_uuid(),
  manager_id uuid not null references auth.users(id) on delete cascade,
@@ -37,8 +54,10 @@ begin
  if v_user is null then raise exception 'Please sign in first.'; end if;
  if not exists(select 1 from public.sales_partners sp where sp.user_id=v_user and sp.status='active') then raise exception 'Sales partner account is not active.'; end if;
  if nullif(trim(p_business_name),'') is null or nullif(trim(p_contact_name),'') is null or nullif(trim(p_phone),'') is null or nullif(trim(p_service_requested),'') is null then raise exception 'Business, contact, phone and service are required.'; end if;
- select id into v_manager from public.profiles where role='owner' order by created_at asc limit 1;
- if v_manager is null then raise exception 'KASITU manager account is not configured.'; end if;
+ select sp.manager_id into v_manager
+ from public.sales_partners sp
+ where sp.user_id = v_user and sp.status = 'active';
+ if v_manager is null then raise exception 'Sales partner is not assigned to an active KASITU manager. Check sales_partners.manager_id and business_members.'; end if;
  insert into public.sales_partner_leads(manager_id,salesperson_id,business_name,contact_name,phone,email,service_requested,notes)
  values(v_manager,v_user,trim(p_business_name),trim(p_contact_name),trim(p_phone),nullif(trim(coalesce(p_email,'')),''),trim(p_service_requested),nullif(trim(coalesce(p_notes,'')),''))
  returning id into v_lead;
