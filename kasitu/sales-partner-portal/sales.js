@@ -5,6 +5,7 @@
     say('loginMessage', 'Portal configuration did not load. Please refresh or contact KASITU management.'); return;
   }
   const db = window.supabase.createClient(window.KASITU_SUPABASE_URL, window.KASITU_SUPABASE_PUBLISHABLE_KEY);
+  if (window.emailjs) window.emailjs.init({ publicKey: 'a3wBtn2bKfskDS4Sa' });
   let profile = null, leads = [], currentUserId = null;
   const money = (n) => new Intl.NumberFormat('en-ZA',{style:'currency',currency:'ZAR'}).format(Number(n||0));
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
