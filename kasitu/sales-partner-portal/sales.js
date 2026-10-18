@@ -5,7 +5,7 @@
     say('loginMessage', 'Portal configuration did not load. Please refresh or contact KASITU management.'); return;
   }
   const db = window.supabase.createClient(window.KASITU_SUPABASE_URL, window.KASITU_SUPABASE_PUBLISHABLE_KEY);
-  let profile = null, leads = [];
+  let profile = null, leads = [], currentUserId = null;
   const money = (n) => new Intl.NumberFormat('en-ZA',{style:'currency',currency:'ZAR'}).format(Number(n||0));
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   async function loadProfile(user) {
@@ -15,8 +15,9 @@
     profile=data; $('partnerName').textContent=data.full_name||user.email||'Sales Partner';
   }
   async function loadLeads() {
+    if (!currentUserId) throw new Error('Please sign in again to view your leads.');
     $('leadList').innerHTML='<p class="muted">Refreshing leads…</p>';
-    const {data,error}=await db.from('sales_partner_leads').select('id,business_name,contact_name,service_requested,status,service_price,commission_amount,commission_status,manager_notes,updated_at,created_at').order('created_at',{ascending:false});
+    const {data,error}=await db.from('sales_partner_leads').select('id,business_name,contact_name,service_requested,status,service_price,commission_amount,commission_status,manager_notes,updated_at,created_at').eq('salesperson_id', currentUserId).order('created_at',{ascending:false});
     if(error) throw error;
     leads=data||[];
     $('totalLeads').textContent=leads.length;
@@ -25,6 +26,7 @@
     $('leadList').innerHTML=leads.length?leads.map(l=>{const outcome=l.status==='Won'?'<div class="manager-update success"><strong>Purchase confirmed by management</strong><p>'+(l.commission_amount==null?'Your commission will appear after management records the purchased service price.':money(l.commission_amount)+' estimated commission at 14%. Payment status: '+esc(l.commission_status)+'.')+'</p></div>':l.status==='Lost'?'<div class="manager-update lost"><strong>Management update: purchase did not proceed</strong><p>This enquiry is marked as not purchased. No commission is due for this lead.'+(l.manager_notes?' Management note: '+esc(l.manager_notes):'')+'</p></div>':l.manager_notes?'<div class="manager-update"><strong>Message from KASITU management</strong><p>'+esc(l.manager_notes)+'</p></div>':'';const priceLine=l.service_price==null?'Commission pending service price':money(l.commission_amount)+' estimated commission';return '<article class="lead-card"><div class="lead-card-head"><strong>'+esc(l.business_name)+'</strong><span class="badge '+(l.status==='Won'?'won':'')+'">'+esc(l.status)+'</span></div><p>'+esc(l.contact_name)+' · '+esc(l.service_requested)+'<br>Submitted '+esc(new Date(l.created_at).toLocaleDateString('en-ZA'))+'</p>'+outcome+'<div class="lead-card-head"><span class="commission">'+priceLine+'</span><span class="badge '+(l.commission_status==='Paid'?'paid':'')+'">'+esc(l.commission_status)+'</span></div></article>'}).join(''):'<div class="empty">No leads submitted yet. Use the form to send your first client enquiry.</div>';
   }
   async function showPortal(user) {
+    currentUserId = user.id;
     await loadProfile(user);
     $('loginPanel').hidden=true; $('portal').hidden=false; $('signOut').hidden=false;
     await loadLeads();
@@ -47,6 +49,6 @@
   });
   $('refresh').addEventListener('click',()=>loadLeads().catch(e=>say('leadMessage',e.message)));
   $('signOut').addEventListener('click',async()=>{await db.auth.signOut();location.reload();});
-  db.auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_OUT'){profile=null;leads=[];$('portal').hidden=true;$('loginPanel').hidden=false;$('signOut').hidden=true;}});
+  db.auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_OUT'){profile=null;leads=[];currentUserId=null;$('portal').hidden=true;$('loginPanel').hidden=false;$('signOut').hidden=true;}});
   db.auth.getSession().then(async({data,error})=>{if(error)throw error;if(data.session){try{await showPortal(data.session.user);}catch(e){say('loginMessage',e.message);await db.auth.signOut();}}}).catch(e=>say('loginMessage',e.message));
 })();
