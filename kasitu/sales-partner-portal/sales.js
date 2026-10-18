@@ -48,25 +48,34 @@
       let notificationMessage=' Lead saved, but the email notification could not be sent. Please contact management if urgent.';
       try {
         if (!window.emailjs) throw new Error('EmailJS did not load.');
+        const { data: authData } = await db.auth.getUser();
+        const salespersonEmail = authData.user?.email || 'Not available';
+        const clientEmail = String(f.get('email') || '');
+        const clientPhone = String(f.get('phone') || '');
+        const businessName = String(f.get('business_name') || '');
+        const contactName = String(f.get('contact_name') || '');
+        const serviceRequested = String(f.get('service_requested') || '');
+        const notes = String(f.get('notes') || '');
         await window.emailjs.send('service_9a3fush','template_3lwzm3g',{
-          name: profile.full_name || 'Sales Partner',
-          email: (await db.auth.getUser()).data.user?.email || '',
-          phone: String(f.get('phone') || ''),
-          company: String(f.get('business_name') || ''),
+          name: contactName,
+          email: clientEmail || 'Not provided',
+          phone: clientPhone,
+          company: businessName,
           subject: 'New Sales Partner Lead — ' + leadReference,
           message: [
             'NEW SALES PARTNER LEAD',
-            'Reference: ' + leadReference,
-            'Salesperson: ' + (profile.full_name || 'Sales Partner'),
-            'Salesperson email: ' + ((await db.auth.getUser()).data.user?.email || 'Not available'),
-            'Client business: ' + String(f.get('business_name') || ''),
-            'Contact person: ' + String(f.get('contact_name') || ''),
-            'Client phone: ' + String(f.get('phone') || ''),
-            'Client email: ' + String(f.get('email') || 'Not provided'),
-            'Service requested: ' + String(f.get('service_requested') || ''),
-            'Notes: ' + String(f.get('notes') || 'None'),
+            'Lead reference: ' + leadReference,
+            'Salesperson name: ' + (profile.full_name || 'Sales Partner'),
+            'Salesperson email: ' + salespersonEmail,
+            'Client contact person: ' + contactName,
+            'Client email: ' + (clientEmail || 'Not provided'),
+            'Service requested: ' + serviceRequested,
+            'Additional notes: ' + (notes || 'None'),
             'Submitted: ' + new Date().toLocaleString('en-ZA')
-          ].join('\\n')
+          ].join('\n'),
+          selected_package: serviceRequested,
+          selected_extras: notes || 'None',
+          estimated_total: 'Not quoted yet — pending management review'
         });
         notificationMessage=' Email notification sent to KASITU management.';
       } catch(notificationError) {
