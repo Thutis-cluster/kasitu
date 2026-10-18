@@ -71,3 +71,9 @@ document.addEventListener('click',async e=>{
   }
   await renderSalesCommissions();
 });
+// Connect the Sales Commissions sidebar item to this register.
+// manager.js owns the shared navigation; this listener renders the dedicated view after its click handler.
+document.addEventListener('click',e=>{
+  const nav=e.target.closest('.nav-item[data-view="commissions"]');
+  if(nav) renderSalesCommissions();
+});
